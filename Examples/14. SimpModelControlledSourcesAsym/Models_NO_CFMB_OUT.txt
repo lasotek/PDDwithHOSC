@@ -1,0 +1,510 @@
+
+Preparing of model: E:\VS\BNPDDEngine\SimpModelControlledSourcesAsym\Release\FBCFOA_0_xp_xn_yp_yn_wp_wn_zp_zn.pddm - 0.00149119 s
+
+Preparing of model: E:\VS\BNPDDEngine\SimpModelControlledSourcesAsym\Release\FBCFOA_TE_0_xp_xn_yp_yn_wp_wn_zp_zn.pddm - 0.0112155 s
+
+Preparing of model: E:\VS\BNPDDEngine\SimpModelControlledSourcesAsym\Release\FloatVCVS_0_p_r_k_l.pddm - 0.00210832 s
+
+Preparing of model: E:\VS\BNPDDEngine\SimpModelControlledSourcesAsym\Release\TestFloatVCVS_p_r_k_l.pddm - 0.000763947 s
+
+Preparing of main results - 0.0110986 s
+SubId: 1
+The subcircuit: FBCFOA(0, xp, xn, yp, yn, wp, wn, zp, zn)
+Components:
+Voltage Follower : (In_p = yp, In_n = yn, Out_p = xp', Out_n = xn'
+Voltage Follower : (In_p = xp', In_n = 0, Out_p = 0, Out_n = xn'
+Current Follower : (In_p = xp, In_n = xp', Out_p = zp, Out_n = 0
+Current Follower : (In_p = xn, In_n = xn', Out_p = zn, Out_n = 0
+Voltage Follower : (In_p = zp, In_n = 0, Out_p = wp, Out_n = 0
+Voltage Follower : (In_p = zn, In_n = 0, Out_p = wn, Out_n = 0
+Meta set of Resistance:  : Rm(NodeA=zp, NodeB=0) || Rm(NodeA=zn, NodeB=0) 1e4
+D Vertex: 2
+2: Rm(EP0, EP1, EP2)
+Ext.Par. No:0 represented by: 2*D(xp+0)(xp+0),(xn+0)(xn+0),(wp+0)(wp+0),(wn+0)(wn+0),(zp+0)(zp+0),(zn+0)(zn+0) || -D(xp+0)(xn-xp),(xn+0)(yn+yp),(wp+0)(wp+0),(wn+0)(wn+0),(zp+0)(zp+0),(zn+0)(zn+0)
+Ext.Par. No:1 represented by: -2*D(xp+0)(xp+0),(wp+0)(xn+0),(wn+0)(wp+0),(zp+0)(zp+0),(zn-xn)(zn+wn) || -2*D(xn+0)(xp+0),(wp+0)(xn+0),(wn+0)(wn+0),(zp-xp)(zp+wp),(zn+0)(zn+0) || D(xp+0)(xn-xp),(wp+0)(yn+yp),(wn+0)(wp+0),(zp+0)(zp+0),(zn-xn)(zn+wn) || D(xn+0)(xn-xp),(wp+0)(yn+yp),(wn+0)(wn+0),(zp-xp)(zp+wp),(zn+0)(zn+0)
+Ext.Par. No:2 represented by: 2*D(wp+0)(xp+0),(wn+0)(xn+0),(zp-xp)(zp+wp),(zn-xn)(zn+wn) || -D(wp+0)(xn-xp),(wn+0)(yn+yp),(zp-xp)(zp+wp),(zn-xn)(zn+wn)
+No of multiplication is 2(2) and no of additions is 2
+
+SubId: 2
+The subcircuit: FBCFOA_TE(0, xp, xn, yp, yn, wp, wn, zp, zn)
+Components:
+Voltage gain: \alpha_1(P=xn', R=xp', K=yp, L=yn) 1
+Voltage gain: \chi_1(P=xn', R=0, K=xp', L=0) 1
+Current gain: \beta_1(P=zp, R=0, K=xp, L=xp') 1
+Current gain: \beta_2(P=zn, R=0, K=xn, L=xn') 1
+Meta set of Resistance:  : Rm(NodeA=zp, NodeB=0) || Rm(NodeA=zn, NodeB=0) 1e4
+Voltage gain: \alpha_21(P=0, R=wp, K=zp, L=0) 1
+Voltage gain: \alpha_22(P=0, R=wn, K=zn, L=0) 1
+D Vertex: 2
+2: \alpha_1(3, 4)
+3: \chi_1(5, 5)
+4: \chi_1(6, 7)
+5: \beta_1(11, 9)
+6: \beta_1(8, 10)
+7: \beta_1(12, 13)
+8: \beta_2(19, 18)
+9: \beta_2(17, 16)
+10: \beta_2(15, 14)
+11: \beta_2(20, 25)
+12: \beta_2(21, 22)
+13: \beta_2(23, 24)
+14: Rm(0, 0, 26)
+15: Rm(0, 35, 27)
+16: Rm(0, 0, 28)
+17: Rm(0, 34, 29)
+18: Rm(0, 44, 30)
+19: Rm(EP30, 31, 32)
+20: Rm(EP9, 43, 33)
+21: Rm(EP59, 42, 36)
+22: Rm(0, 71, 37)
+23: Rm(0, 41, 38)
+24: Rm(0, 0, 39)
+25: Rm(0, 70, 40)
+26: \alpha_21(58, 51)
+27: \alpha_21(57, 56)
+28: \alpha_21(55, 54)
+29: \alpha_21(53, 52)
+30: \alpha_21(45, 50)
+31: \alpha_21(46, EP6)
+32: \alpha_21(49, 48)
+33: \alpha_21(59, 60)
+34: \alpha_21(EP37, EP38)
+35: \alpha_21(EP39, EP40)
+36: \alpha_21(47, 61)
+37: \alpha_21(62, 63)
+38: \alpha_21(64, 65)
+39: \alpha_21(66, 67)
+40: \alpha_21(68, 69)
+41: \alpha_21(EP62, EP63)
+42: \alpha_21(72, EP68)
+43: \alpha_21(73, EP71)
+44: \alpha_22(EP0, EP1)
+45: \alpha_22(EP2, EP3)
+46: \alpha_22(EP4, EP5)
+47: \alpha_22(EP7, EP8)
+48: \alpha_22(EP10, EP11)
+49: \alpha_22(EP12, EP13)
+50: \alpha_22(EP14, EP15)
+51: \alpha_22(EP16, EP17)
+52: \alpha_22(EP18, EP19)
+53: \alpha_22(EP20, EP21)
+54: \alpha_22(EP22, EP23)
+55: \alpha_22(EP24, EP25)
+56: \alpha_22(EP26, EP27)
+57: \alpha_22(EP28, EP29)
+58: \alpha_22(EP31, EP32)
+59: \alpha_22(EP33, EP34)
+60: \alpha_22(EP35, EP36)
+61: \alpha_22(EP41, EP42)
+62: \alpha_22(EP43, EP44)
+63: \alpha_22(EP45, EP46)
+64: \alpha_22(EP47, EP48)
+65: \alpha_22(EP49, EP50)
+66: \alpha_22(EP51, EP52)
+67: \alpha_22(EP53, EP54)
+68: \alpha_22(EP55, EP56)
+69: \alpha_22(EP57, EP58)
+70: \alpha_22(EP60, EP61)
+71: \alpha_22(EP64, EP65)
+72: \alpha_22(EP66, EP67)
+73: \alpha_22(EP69, EP70)
+Ext.Par. No:0 represented by: D(xp+0)(xn+0),(wp+0)(yn+yp),(wn+0)(wp+0),(zp+0)(wn+0),(zn+0)(zp+0)
+Ext.Par. No:1 represented by: D(xp+0)(xn+0),(wp+0)(yn+yp),(wn+0)(wp+0),(zp+0)(zp+0),(zn+0)(zn+0)
+Ext.Par. No:2 represented by: -D(xp+0)(xn+0),(wp+0)(yn+yp),(wn+0)(wp+0),(zn+0)(wn+0)
+Ext.Par. No:3 represented by: D(xp+0)(xn+0),(wp+0)(yn+yp),(wn+0)(wp+0),(zn+0)(zn+0)
+Ext.Par. No:4 represented by: -D(xp+0)(xn+0),(xn+0)(yn+yp),(wp+0)(wp+0),(wn+0)(wn+0),(zp+0)(zp+0) || -D(xp+0)(xn+0),(xn+0)(yn+yp),(wp+0)(wp+0),(wn+0)(wn+0),(zn+0)(zn+0)
+Ext.Par. No:5 represented by: -D(xp+0)(xn+0),(xn+0)(yn+yp),(wp+0)(wp+0),(wn+0)(zp+0),(zp+0)(zn+0)
+Ext.Par. No:6 represented by: -D(xp+0)(xn+0),(xn+0)(yn+yp),(wp+0)(wn+0),(wn+0)(zp+0),(zn+0)(zn+0)
+Ext.Par. No:7 represented by: -D(xp+0)(xp+0),(xn+0)(yn+yp),(wp+0)(wp+0),(wn+0)(wn+0)
+Ext.Par. No:8 represented by: D(xp+0)(xp+0),(xn+0)(yn+yp),(wp+0)(wp+0),(wn+0)(zn+0)
+Ext.Par. No:9 represented by: D(xp+0)(xp+0),(xn+0)(xn+0),(wp+0)(wp+0),(wn+0)(wn+0),(zp+0)(zp+0),(zn+0)(zn+0)
+Ext.Par. No:10 represented by: -D(xp+0)(xn+0),(xn+0)(yn+yp),(wp+0)(wn+0),(wn+0)(zp+0)
+Ext.Par. No:11 represented by: -D(xp+0)(xn+0),(xn+0)(yn+yp),(wp+0)(zp+0),(wn+0)(zn+0)
+Ext.Par. No:12 represented by: -D(xp+0)(xn+0),(xn+0)(yn+yp),(wp+0)(wp+0),(wn+0)(wn+0)
+Ext.Par. No:13 represented by: D(xp+0)(xn+0),(xn+0)(yn+yp),(wp+0)(wp+0),(wn+0)(zn+0)
+Ext.Par. No:14 represented by: -D(xp+0)(xn+0),(wp+0)(yn+yp),(wn+0)(wn+0),(zn+0)(zp+0)
+Ext.Par. No:15 represented by: -D(xp+0)(xn+0),(wp+0)(yn+yp),(wn+0)(zp+0),(zn+0)(zn+0)
+Ext.Par. No:16 represented by: -D(wp+0)(xn+0),(wn+0)(yn+yp),(zp+0)(wn+0),(zn+0)(zp+0)
+Ext.Par. No:17 represented by: -D(wp+0)(xn+0),(wn+0)(yn+yp),(zp+0)(zp+0),(zn+0)(zn+0)
+Ext.Par. No:18 represented by: -D(xn+0)(xp+0),(wp+0)(xn+0),(wn+0)(wn+0),(zp+0)(zp+0)
+Ext.Par. No:19 represented by: -D(xn+0)(xp+0),(wp+0)(xn+0),(wn+0)(zp+0),(zp+0)(zn+0)
+Ext.Par. No:20 represented by: -D(xn+0)(xp+0),(wp+0)(xn+0),(wn+0)(wp+0),(zp+0)(wn+0)
+Ext.Par. No:21 represented by: D(xn+0)(xp+0),(wp+0)(xn+0),(wn+0)(wp+0),(zp+0)(zn+0)
+Ext.Par. No:22 represented by: D(wp+0)(xp+0),(wn+0)(xn+0),(zp+0)(wn+0),(zn+0)(zp+0)
+Ext.Par. No:23 represented by: D(wp+0)(xp+0),(wn+0)(xn+0),(zp+0)(zp+0),(zn+0)(zn+0)
+Ext.Par. No:24 represented by: D(wp+0)(xp+0),(wn+0)(xn+0),(zp+0)(wp+0),(zn+0)(wn+0)
+Ext.Par. No:25 represented by: -D(wp+0)(xp+0),(wn+0)(xn+0),(zp+0)(wp+0),(zn+0)(zn+0)
+Ext.Par. No:26 represented by: D(xn+0)(xn+0),(wp+0)(yn+yp),(wn+0)(wn+0),(zp+0)(zp+0)
+Ext.Par. No:27 represented by: D(xn+0)(xn+0),(wp+0)(yn+yp),(wn+0)(zp+0),(zp+0)(zn+0)
+Ext.Par. No:28 represented by: D(xn+0)(xn+0),(wp+0)(yn+yp),(wn+0)(wp+0),(zp+0)(wn+0)
+Ext.Par. No:29 represented by: -D(xn+0)(xn+0),(wp+0)(yn+yp),(wn+0)(wp+0),(zp+0)(zn+0)
+Ext.Par. No:30 represented by: -D(xp+0)(xn+0),(xn+0)(yn+yp),(wp+0)(wp+0),(wn+0)(wn+0),(zp+0)(zp+0),(zn+0)(zn+0)
+Ext.Par. No:31 represented by: -D(wp+0)(xn+0),(wn+0)(yn+yp),(zp+0)(wp+0),(zn+0)(wn+0)
+Ext.Par. No:32 represented by: D(wp+0)(xn+0),(wn+0)(yn+yp),(zp+0)(wp+0),(zn+0)(zn+0)
+Ext.Par. No:33 represented by: D(xp+0)(xp+0),(xn+0)(xn+0),(wp+0)(wp+0),(wn+0)(wn+0)
+Ext.Par. No:34 represented by: -D(xp+0)(xp+0),(xn+0)(xn+0),(wp+0)(wp+0),(wn+0)(zn+0)
+Ext.Par. No:35 represented by: D(xp+0)(xp+0),(xn+0)(xn+0),(wp+0)(wn+0),(wn+0)(zp+0)
+Ext.Par. No:36 represented by: D(xp+0)(xp+0),(xn+0)(xn+0),(wp+0)(zp+0),(wn+0)(zn+0)
+Ext.Par. No:37 represented by: -D(xn+0)(xp+0),(wp+0)(xn+0),(wn+0)(wp+0),(zp+0)(wn+0),(zn+0)(zn+0)
+Ext.Par. No:38 represented by: -D(xn+0)(xp+0),(wp+0)(xn+0),(wn+0)(wn+0),(zp+0)(zp+0),(zn+0)(zn+0)
+Ext.Par. No:39 represented by: D(xn+0)(xn+0),(wp+0)(yn+yp),(wn+0)(wp+0),(zp+0)(wn+0),(zn+0)(zn+0)
+Ext.Par. No:40 represented by: D(xn+0)(xn+0),(wp+0)(yn+yp),(wn+0)(wn+0),(zp+0)(zp+0),(zn+0)(zn+0)
+Ext.Par. No:41 represented by: -D(xp+0)(xp+0),(xn+0)(yn+yp),(wp+0)(wn+0),(wn+0)(zp+0)
+Ext.Par. No:42 represented by: -D(xp+0)(xp+0),(xn+0)(yn+yp),(wp+0)(zp+0),(wn+0)(zn+0)
+Ext.Par. No:43 represented by: -D(xp+0)(xp+0),(wp+0)(yn+yp),(wn+0)(wp+0),(zn+0)(wn+0)
+Ext.Par. No:44 represented by: D(xp+0)(xp+0),(wp+0)(yn+yp),(wn+0)(wp+0),(zn+0)(zn+0)
+Ext.Par. No:45 represented by: -D(xp+0)(xp+0),(wp+0)(yn+yp),(wn+0)(wn+0),(zn+0)(zp+0)
+Ext.Par. No:46 represented by: -D(xp+0)(xp+0),(wp+0)(yn+yp),(wn+0)(zp+0),(zn+0)(zn+0)
+Ext.Par. No:47 represented by: D(xn+0)(xp+0),(wp+0)(yn+yp),(wn+0)(wp+0),(zp+0)(wn+0)
+Ext.Par. No:48 represented by: -D(xn+0)(xp+0),(wp+0)(yn+yp),(wn+0)(wp+0),(zp+0)(zn+0)
+Ext.Par. No:49 represented by: D(xn+0)(xp+0),(wp+0)(yn+yp),(wn+0)(wn+0),(zp+0)(zp+0)
+Ext.Par. No:50 represented by: D(xn+0)(xp+0),(wp+0)(yn+yp),(wn+0)(zp+0),(zp+0)(zn+0)
+Ext.Par. No:51 represented by: -D(wp+0)(xp+0),(wn+0)(yn+yp),(zp+0)(wp+0),(zn+0)(wn+0)
+Ext.Par. No:52 represented by: D(wp+0)(xp+0),(wn+0)(yn+yp),(zp+0)(wp+0),(zn+0)(zn+0)
+Ext.Par. No:53 represented by: -D(wp+0)(xp+0),(wn+0)(yn+yp),(zp+0)(wn+0),(zn+0)(zp+0)
+Ext.Par. No:54 represented by: -D(wp+0)(xp+0),(wn+0)(yn+yp),(zp+0)(zp+0),(zn+0)(zn+0)
+Ext.Par. No:55 represented by: D(xp+0)(xp+0),(wp+0)(xn+0),(wn+0)(wp+0),(zn+0)(wn+0)
+Ext.Par. No:56 represented by: -D(xp+0)(xp+0),(wp+0)(xn+0),(wn+0)(wp+0),(zn+0)(zn+0)
+Ext.Par. No:57 represented by: D(xp+0)(xp+0),(wp+0)(xn+0),(wn+0)(wn+0),(zn+0)(zp+0)
+Ext.Par. No:58 represented by: D(xp+0)(xp+0),(wp+0)(xn+0),(wn+0)(zp+0),(zn+0)(zn+0)
+Ext.Par. No:59 represented by: -D(xp+0)(xp+0),(xn+0)(yn+yp),(wp+0)(wp+0),(wn+0)(wn+0),(zp+0)(zp+0),(zn+0)(zn+0)
+Ext.Par. No:60 represented by: -D(xp+0)(xp+0),(wp+0)(xn+0),(wn+0)(wp+0),(zp+0)(wn+0),(zn+0)(zp+0)
+Ext.Par. No:61 represented by: -D(xp+0)(xp+0),(wp+0)(xn+0),(wn+0)(wp+0),(zp+0)(zp+0),(zn+0)(zn+0)
+Ext.Par. No:62 represented by: D(xn+0)(xp+0),(wp+0)(yn+yp),(wn+0)(wp+0),(zp+0)(wn+0),(zn+0)(zn+0)
+Ext.Par. No:63 represented by: D(xn+0)(xp+0),(wp+0)(yn+yp),(wn+0)(wn+0),(zp+0)(zp+0),(zn+0)(zn+0)
+Ext.Par. No:64 represented by: D(xp+0)(xp+0),(wp+0)(yn+yp),(wn+0)(wp+0),(zp+0)(wn+0),(zn+0)(zp+0)
+Ext.Par. No:65 represented by: D(xp+0)(xp+0),(wp+0)(yn+yp),(wn+0)(wp+0),(zp+0)(zp+0),(zn+0)(zn+0)
+Ext.Par. No:66 represented by: -D(xp+0)(xp+0),(xn+0)(yn+yp),(wp+0)(wp+0),(wn+0)(wn+0),(zp+0)(zp+0) || -D(xp+0)(xp+0),(xn+0)(yn+yp),(wp+0)(wp+0),(wn+0)(wn+0),(zn+0)(zn+0)
+Ext.Par. No:67 represented by: -D(xp+0)(xp+0),(xn+0)(yn+yp),(wp+0)(wp+0),(wn+0)(zp+0),(zp+0)(zn+0)
+Ext.Par. No:68 represented by: -D(xp+0)(xp+0),(xn+0)(yn+yp),(wp+0)(wn+0),(wn+0)(zp+0),(zn+0)(zn+0)
+Ext.Par. No:69 represented by: D(xp+0)(xp+0),(xn+0)(xn+0),(wp+0)(wp+0),(wn+0)(wn+0),(zp+0)(zp+0) || D(xp+0)(xp+0),(xn+0)(xn+0),(wp+0)(wp+0),(wn+0)(wn+0),(zn+0)(zn+0)
+Ext.Par. No:70 represented by: D(xp+0)(xp+0),(xn+0)(xn+0),(wp+0)(wp+0),(wn+0)(zp+0),(zp+0)(zn+0)
+Ext.Par. No:71 represented by: D(xp+0)(xp+0),(xn+0)(xn+0),(wp+0)(wn+0),(wn+0)(zp+0),(zn+0)(zn+0)
+No of multiplication is 81(81) and no of additions is 72
+
+SubId: 3
+The subcircuit: FloatVCVS(0, p, r, k, l)
+Components:
+Macromodel : FD(0=0, xp=xp, xn=xn, yp=k, yn=l, wp=p, wn=r, zp=zp, zn=zn) FBCFOA
+Resistance: k*R(NodeA=zp, NodeB=zn) 1e3
+Resistance: R(NodeA=xp, NodeB=xn) 1e3
+D Vertex: (2) * 2
+2: FD(0 = 3, 1 = 4)
+3: k*R(0, 5)
+4: k*R(2*5, EP0)
+5: R(0, EP1)
+Ext.Par. No:0 represented by: -D(p+0)(r-p),(r+0)(l+k)
+Ext.Par. No:1 represented by: D(p+0)(p+0),(r+0)(r+0)
+No of multiplication is 5(4) and no of additions is 2
+
+SubId: 4
+The subcircuit: TestFloatVCVS(p, r, k, l)
+Components:
+Macromodel : T(0=[nc], p=p, r=r, k=k, l=l) FloatVCVS
+D Vertex: 2
+2: T(0 = 2*EP1, 1 = EP0)
+Ext.Par. No:0 represented by: D(r+p)(r+p)
+Ext.Par. No:1 represented by: -D(r+p)(l+k)
+No of multiplication is 3(2) and no of additions is 1
+
+SubId: 0
+Main Circuit
+Components:
+Macromodel : K(0=0, p=7, r=8, k=5, l=6) FloatVCVS
+Resistance: R1a(NodeA=1, NodeB=3) 1e3
+Capacitance: C1a(NodeA=3, NodeB=7) 1e-9
+Resistance: R1b(NodeA=2, NodeB=4) 1e3
+Capacitance: C1b(NodeA=4, NodeB=8) 1e-9
+Resistance: R2b(NodeA=4, NodeB=6) 1e3
+Resistance: R2a(NodeA=3, NodeB=5) 1e3
+Capacitance: C2a(NodeA=5, NodeB=g) 1e-9
+Capacitance: C2b(NodeA=6, NodeB=g) 1e-9
+D(2+1)(2+1) Vertex: (-1) * 3
+D(2+1)(8+7) Vertex: (2) * 5
+D(2+0)(2+0),(2+1)(2+1) Vertex: (-1) * 6
+D(2+0)(7+8),(2+1)(2+1) Vertex: (2) * 4
+D(1+0)(7+8),(2+0)(2-1) Vertex: (2) * 2
+2: K(0 = 12)
+3: K(0 = 2*11, 1 = (-1)*10)
+4: K(0 = 7)
+5: K(0 = 14)
+6: K(0 = 8, 1 = (-1)*9)
+7: R1a(21, (-1)*20)
+8: R1a(21, 19)
+9: R1a(25, 18)
+10: R1a(13, 16)
+11: R1a(17, 15)
+12: R1a(22, 20)
+13: C1a(26, 25)
+14: C1a(28, 34)
+15: C1a(0, 28)
+16: C1a(27, 30)
+17: C1a(0, 21)
+18: C1a(24, 25)
+19: C1a(0, 23)
+20: C1a(0, 34)
+21: R1b(0, 28)
+22: R1b(2*34, 28)
+23: R1b(34, 2*28)
+24: R1b(33, 27)
+25: R1b(31, 30)
+26: R1b(29, 27)
+27: C1b(0, 33)
+28: C1b(0, 34)
+29: C1b(0, 31)
+30: C1b(33, 31)
+31: R2b(32, 33)
+32: R2a(34, 33)
+33: C2a(0, 35)
+34: C2a(35, 1)
+35: C2b(0, 1)
+No of multiplication is 42(34) and no of additions is 21
+
+Multilevel result raporting - 0.00193718 s
+
+Direct numerical cof/rem value determination - 0.00196706 s
+
+D(2+1)(2+1)= + s^4*1.68e-22 + s^3*3.44e-16 + s^2*1.68e-10
+List of roots:
+-1.24332e6
+-8.04297e5
+
+
+
+
+Direct numerical cof/rem value determination - 3.92643e-005 s
+
+Direct numerical cof/rem value determination - 0.000121634 s
+
+Direct numerical cof/rem value determination - 4.35322e-005 s
+
+Direct numerical cof/rem value determination - 4.9934e-005 s
+
+Factorization of cofactor No. 0 s power: 0 - 4.26786e-007 s
+
+Factorization of cofactor No. 0 s power: 1 - 4.26786e-007 s
+
+Factorization of cofactor No. 0 s power: 2 - 2.26197e-005 s
+
+Factorization of cofactor No. 0 s power: 3 - 8.49304e-005 s
+
+Factorization of cofactor No. 0 s power: 4 - 4.09715e-005 s
+
+Factorization of cofactor No. 1 s power: 0 - 4.26786e-007 s
+
+Factorization of cofactor No. 1 s power: 1 - 4.26786e-007 s
+
+Factorization of cofactor No. 1 s power: 2 - 1.15232e-005 s
+
+Factorization of cofactor No. 2 s power: 0 - 4.26786e-007 s
+
+Factorization of cofactor No. 2 s power: 1 - 1.10964e-005 s
+
+Factorization of cofactor No. 2 s power: 2 - 5.46286e-005 s
+
+Factorization of cofactor No. 2 s power: 3 - 8.49304e-005 s
+
+Factorization of cofactor No. 2 s power: 4 - 1.7925e-005 s
+
+Factorization of cofactor No. 3 s power: 0 - 0 s
+
+Factorization of cofactor No. 3 s power: 1 - 0 s
+
+Factorization of cofactor No. 3 s power: 2 - 1.195e-005 s
+
+Factorization of cofactor No. 4 s power: 0 - 4.26786e-007 s
+
+Factorization of cofactor No. 4 s power: 1 - 6.82858e-006 s
+
+Factorization of cofactor No. 4 s power: 2 - 1.15232e-005 s
+
+Factorisation of all - 0.00742565 s
+
+FlatSimpolified determination - 0.0342863 s
+
+Approximated 1-level tree for the accurracy=1e-3 , range angular frequency from 0 to 1e6.
+D(2+1)(2+1) = 
+s^4*(2)*(#34)
+ + s^3*(2)*(#27)
+ + s^2*(2)*(#8)
+(#0)
+
+D(2+1)(8+7) = 
+s^2*(4)*(#36)
+(#0)
+
+D(2+0)(2+0),(2+1)(2+1) = 
+s^4*(2)*(#59)
+ + s^3*(2)*(#55)
+ + s^2*(2)*(#47)
+ + s^1*(2)*(#39)
+(#0)
+
+D(2+0)(7+8),(2+1)(2+1) = 
+s^2*(4)*(#62)
+(#0)
+
+D(1+0)(7+8),(2+0)(2-1) = 
+s^2*(4)*(#66)
+ + s^1*(8)*(#64)
+(#0)
+
+#2: C2b[#1, #0]
+#3: C2a[#1, #2]
+#4: C1b[#3, #0]
+#5: C1a[#3, #4]
+#6: K.R[#5, #0]
+#7: K.k*R[#6, #0]
+#8: K.FD.Rm[#0, (2)*#6, #7]
+#9: C2a[#2, #0]
+#10: R2a[#9, #0]
+#11: R2b[#9, #10]
+#12: C1b[#11, #0]
+#13: C1b[#9, #0]
+#14: R1b[#13, #12]
+#15: C1b[#3, #9]
+#16: R1b[#15, #11]
+#17: C1a[#16, #14]
+#18: C1a[#15, #13]
+#19: R1a[#18, #17]
+#20: K.R[#19, #0]
+#21: K.k*R[#20, #0]
+#22: R1b[#4, #0]
+#23: C1a[#22, #0]
+#24: C1a[#4, #0]
+#25: R1a[#24, #23]
+#26: K.k*R[(-1)*#25, #20]
+#27: K.FD.Rm[#0, (2)*#26, #21]
+#28: R1b[#12, #0]
+#29: C1a[#28, #0]
+#30: C1a[#12, #0]
+#31: R1a[#30, #29]
+#32: K.R[#31, #0]
+#33: K.k*R[#32, #0]
+#34: K.FD.Rm[#0, (2)*#32, #33]
+#35: K.k*R[#5, #0]
+#36: K.FD.Rm[#0, #35, #0]
+#37: K.R[#3, #0]
+#38: K.k*R[#37, #0]
+#39: K.FD.Rm[#0, (2)*#37, #38]
+#40: C1a[#3, #9]
+#41: R1a[#40, #16]
+#42: K.R[#41, #0]
+#43: K.k*R[#42, #0]
+#44: C1a[#3, #0]
+#45: R1a[#44, #22]
+#46: K.k*R[(-1)*#45, (2)*#42]
+#47: K.FD.Rm[#0, #46, #43]
+#48: R1b[#13, #0]
+#49: C1a[#16, #48]
+#50: R1a[#49, #28]
+#51: K.R[#50, #0]
+#52: K.k*R[#51, #0]
+#53: R1a[#23, #0]
+#54: K.k*R[(-1)*#53, #51]
+#55: K.FD.Rm[#0, (2)*#54, #52]
+#56: R1a[#29, #0]
+#57: K.R[#56, #0]
+#58: K.k*R[#57, #0]
+#59: K.FD.Rm[#0, (2)*#57, #58]
+#60: R1a[(-1)*#44, #22]
+#61: K.k*R[#60, #0]
+#62: K.FD.Rm[#0, #61, #0]
+#63: K.k*R[#3, #0]
+#64: K.FD.Rm[#0, #63, #0]
+#65: K.k*R[#45, #0]
+#66: K.FD.Rm[#0, #65, #0]
+Nof of multiplications is 0(0) and additions is 0
+
+X13 = C2a + C2b
+X14 = C1a + C1b
+X15 = K.k*R + (2)*K.FD.Rm
+X16 = X15 * X14 * X13 * K.R
+X18 = R1b + R1a
+X19 = C2a * C2b
+X20 = X13 * C1b
+X21 = X20 + X19
+X22 = X21 * C1a
+X23 = C2a * C2b * C1b
+X24 = X23 + X22
+X25 = R2b + R2a
+X26 = X21 * R1b
+X27 = X25 * C2a * C2b
+X28 = X27 + X26
+X29 = R1b + R2b + R2a
+X30 = X28 * C1a
+X31 = X29 * C2a * C2b * C1b
+X33 = X24 * R1a
+X34 = X33 + X31 + X30
+X35 = X18 * X13 * C1a * C1b * K.k*R
+X36 = X34 * K.R
+X37 = X36 - X35
+X38 = X37 * K.FD.Rm
+X39 = X34 * K.R * K.k*R
+X40 = X39 + (2)*X38
+X41 = X25 * X18 * X15 * K.R * C1a * C2a * C2b * C1b
+X42 = X14 * X13 * K.k*R * K.FD.Rm
+X43 = X15 * X13 * K.R
+X44 = C1a * R1a
+X45 = C1b * R1b
+X46 = X45 + X44
+X47 = X13 * C1a
+X48 = X47 + X19
+X49 = X48 * R1a
+X50 = X49 + X27 + X26
+X51 = X46 * X13 * K.k*R
+X52 = X50 * K.R
+X53 =  - (2)*X52 + X51
+X54 = X53 * K.FD.Rm
+X55 = X50 * K.R * K.k*R
+X56 = X55 - X54
+X57 = C2a * C2b * C1b * R1b
+X58 = X57 + X30
+X59 = X58 * R1a
+X60 = X25 * C2a * C2b * C1b * R1b
+X61 = X60 + X59
+X62 = X13 * C1a * C1b * K.k*R * R1b * R1a
+X63 = X61 * K.R
+X64 = X63 - X62
+X65 = X64 * K.FD.Rm
+X66 = X61 * K.R * K.k*R
+X67 = X66 + (2)*X65
+X68 = X25 * X15 * K.R * C1a * C2a * C2b * C1b * R1b * R1a
+X69 = X45 - X44
+X70 = X69 * X13 * K.k*R * K.FD.Rm
+X71 = X13 * K.k*R * K.FD.Rm
+X72 = X46 * X13 * K.k*R * K.FD.Rm
+D(2+1)(2+1) = (2)*s^4*X41(2)*s^3*X40(2)*s^2*X16
+D(2+1)(8+7) = (4)*s^2*X42
+D(2+0)(2+0),(2+1)(2+1) = (2)*s^4*X68(2)*s^3*X67(2)*s^2*X56(2)*s^1*X43
+D(2+0)(7+8),(2+1)(2+1) = (4)*s^2*X70
+D(1+0)(7+8),(2+0)(2-1) = (4)*s^2*X72(8)*s^1*X71
+Developed values are:
+X16 = (K.k*R + (2)*K.FD.Rm) * (C1a + C1b) * (C2a + C2b) * K.R
+X40 = (((C2a * C2b * C1b + ((C2a + C2b) * C1b + C2a * C2b) * C1a) * R1a + (R1b + R2b + R2a) * C2a * C2b * C1b + ((R2b + R2a) * C2a * C2b + ((C2a + C2b) * C1b + C2a * C2b) * R1b) * C1a) * K.R * K.k*R + (2)*(((C2a * C2b * C1b + ((C2a + C2b) * C1b + C2a * C2b) * C1a) * R1a + (R1b + R2b + R2a) * C2a * C2b * C1b + ((R2b + R2a) * C2a * C2b + ((C2a + C2b) * C1b + C2a * C2b) * R1b) * C1a) * K.R - (R1b + R1a) * (C2a + C2b) * C1a * C1b * K.k*R) * K.FD.Rm)
+X41 = (R2b + R2a) * (R1b + R1a) * (K.k*R + (2)*K.FD.Rm) * K.R * C1a * C2a * C2b * C1b
+X42 = (C1a + C1b) * (C2a + C2b) * K.k*R * K.FD.Rm
+X43 = (K.k*R + (2)*K.FD.Rm) * (C2a + C2b) * K.R
+X56 = ((((C2a + C2b) * C1a + C2a * C2b) * R1a + (R2b + R2a) * C2a * C2b + ((C2a + C2b) * C1b + C2a * C2b) * R1b) * K.R * K.k*R - ( - (2)*(((C2a + C2b) * C1a + C2a * C2b) * R1a + (R2b + R2a) * C2a * C2b + ((C2a + C2b) * C1b + C2a * C2b) * R1b) * K.R + (C1b * R1b + C1a * R1a) * (C2a + C2b) * K.k*R) * K.FD.Rm)
+X67 = (((R2b + R2a) * C2a * C2b * C1b * R1b + (C2a * C2b * C1b * R1b + ((R2b + R2a) * C2a * C2b + ((C2a + C2b) * C1b + C2a * C2b) * R1b) * C1a) * R1a) * K.R * K.k*R + (2)*(((R2b + R2a) * C2a * C2b * C1b * R1b + (C2a * C2b * C1b * R1b + ((R2b + R2a) * C2a * C2b + ((C2a + C2b) * C1b + C2a * C2b) * R1b) * C1a) * R1a) * K.R - (C2a + C2b) * C1a * C1b * K.k*R * R1b * R1a) * K.FD.Rm)
+X68 = (R2b + R2a) * (K.k*R + (2)*K.FD.Rm) * K.R * C1a * C2a * C2b * C1b * R1b * R1a
+X70 = (C1b * R1b - C1a * R1a) * (C2a + C2b) * K.k*R * K.FD.Rm
+X71 = (C2a + C2b) * K.k*R * K.FD.Rm
+X72 = (C1b * R1b + C1a * R1a) * (C2a + C2b) * K.k*R * K.FD.Rm
+
+Transfer function after simplifications:
+
+                                        s^(2)*4*1
+K_ud1 = (X14 * X13 * K.k*R * K.FD.Rm) * ---------------------------------------------------------------------------------------------------
+                                                                   s^(4)*2*X25 * X18 * X15 * K.R * C1a * C2a * C2b * C1b + s^(3)*2*X40 + s^(2)*2*X15 * X14 * X13 * K.R
+
+                                  s^(2)*4*X46 + s*8*1
+K_ud2 = (X13 * K.k*R * K.FD.Rm) * -------------------------------------------------------------------------------------------------------------
+                                                       s^(4)*2*X25 * X15 * K.R * C1a * C2a * C2b * C1b * R1b * R1a + s^(3)*2*X67 + s^(2)*2*X56 + s*2*X15 * X13 * K.R
+
+                                       s^(2)*4*1
+K_uc = (X69 * X13 * K.k*R * K.FD.Rm) * -------------------------------------------------------------------------------------------------------------
+                                                                  s^(4)*2*X25 * X15 * K.R * C1a * C2a * C2b * C1b * R1b * R1a + s^(3)*2*X67 + s^(2)*2*X56 + s*2*X15 * X13 * K.R
+
+
+Flat vertices report - 0.00215314 s

@@ -1,0 +1,96 @@
+
+Preparing of main results - 0.00412832 s
+SubId: 0
+Main Circuit
+Components:
+Resistance: h_ix(NodeA=B, NodeB=E') 7.5e2
+Current gain: h_fe(P=C, R=E, K=E', L=E) 1e2
+Resistance: R_E(NodeA=E, NodeB=0) 1e2
+Resistance: R_B(NodeA=B, NodeB=0) 1e3
+Inductance: L1(NodeA=B, NodeB=0) 1e-3
+Inductance: L2(NodeA=C, NodeB=0) 1e-3
+Capacitance: C_0(NodeA=B, NodeB=C) 1e-9
+D Vertex: 2
+2: h_ix(3, 7)
+3: h_fe(4, 5)
+4: R_E(6, 7)
+5: R_E(8, 7)
+6: R_B(0, 9)
+7: R_B(9, 10)
+8: R_B(0, 11)
+9: L1(0, 12)
+10: L1(12, 14)
+11: L1(0, 13)
+12: L2(1, 14)
+13: L2(0, 14)
+14: C_0(0, 1)
+No of multiplication is 13(12) and no of additions is 7
+
+Multilevel result raporting - 0.000467333 s
+
+Direct numerical cof/rem value determination - 0.000588114 s
+
+Factorization of cofactor No. 0 s power: 0 - 3.20091e-005 s
+
+Factorization of cofactor No. 0 s power: 1 - 1.49376e-005 s
+
+Factorization of cofactor No. 0 s power: 2 - 3.71305e-005 s
+
+Factorization of cofactor No. 0 s power: 3 - 2.04858e-005 s
+
+Factorisation of all - 0.00160259 s
+
+FlatSimpolified determination - 0.00608813 s
+
+Approximated 1-level tree for the accurracy=0 , range angular frequency from 0 to 0.
+D = 
+s^3*(#23)
+ + s^2*(#18)
+ + s^1*(#11)
+ + (#5)
+
+#2: R_B[#1, #0]
+#3: R_E[#2, #0]
+#4: h_fe[#3, #3]
+#5: h_ix[#2, #4]
+#6: L1[#1, #0]
+#7: R_B[#6, #0]
+#8: R_E[#6, #7]
+#9: R_E[#6, #0]
+#10: h_fe[#9, #8]
+#11: h_ix[#6, #10]
+#12: C_0[#1, #0]
+#13: L2[#12, #0]
+#14: L1[#12, #13]
+#15: R_B[#14, #0]
+#16: R_E[#15, #0]
+#17: h_fe[#16, #16]
+#18: h_ix[#15, #17]
+#19: L1[#13, #0]
+#20: R_B[#19, #0]
+#21: R_E[#19, #20]
+#22: h_fe[#21, #21]
+#23: h_ix[#19, #22]
+Nof of multiplications is 0(0) and additions is 0
+
+X9 = h_fe + 1
+X10 = X9 * R_E
+X11 = X10 + h_ix
+X12 = X11 * R_B
+X13 = R_E + R_B
+X14 = R_E * h_fe
+X16 = X14 + R_E + R_B + h_ix
+X17 = X16 * L1
+X18 = L2 + L1
+X19 = X18 * X11 * R_B * C_0
+X20 = X13 * X9
+X21 = X20 + h_ix
+X22 = X21 * L2 * C_0 * L1
+D = s^3*X22 + s^2*X19 + s^1*X17 + X12
+Developed values are:
+X12 = ((h_fe + 1) * R_E + h_ix) * R_B
+X17 = (R_E * h_fe + R_E + R_B + h_ix) * L1
+X19 = (L2 + L1) * ((h_fe + 1) * R_E + h_ix) * R_B * C_0
+X22 = ((R_E + R_B) * (h_fe + 1) + h_ix) * L2 * C_0 * L1
+
+Flat vertices report - 0.00101917 s

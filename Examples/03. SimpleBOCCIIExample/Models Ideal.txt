@@ -1,0 +1,143 @@
+
+Preparing of model: E:\VS\BNPDDEngine\SimpleBOCCIIExample\Release\BOCCII_ggnd_x_y_zp_zn.pddm - 0.0007887 s
+
+Preparing of model: E:\VS\BNPDDEngine\SimpleBOCCIIExample\Release\BOCCII_TE_ggnd_x_y_zp_zn.pddm - 0.00140583 s
+
+Preparing of model: E:\VS\BNPDDEngine\SimpleBOCCIIExample\Release\BOCCII_TE2_ggnd_x_y_zp_zn.pddm - 0.00190901 s
+
+Preparing of main results - 0.00379413 s
+SubId: 1
+The subcircuit: BOCCII(0, x, y, zp, zn)
+Components:
+Voltage Follower : (In_p = y, In_n = 0, Out_p = 1, Out_n = 0
+Current Follower : (In_p = 2, In_n = 1, Out_p = zp, Out_n = 0
+Current Follower : (In_p = x, In_n = 2, Out_p = 0, Out_n = zn
+D Vertex: 2
+Ext.Par. No:0 represented by: -D(zp-x)(y+x) || D(zn+0)(y+x)
+No of multiplication is 0(0) and no of additions is 0
+
+SubId: 2
+The subcircuit: BOCCII_TE(0, x, y, zp, zn)
+Components:
+Meta set of Current gain:  : \beta(P=zp, R=0, K=2, L=1) || \beta(P=0, R=zn, K=x, L=2) 1
+Voltage gain: \alpha(P=0, R=1, K=y, L=0) 1
+D Vertex: 2
+2: \beta(3, 4, 0)
+3: \alpha(EP0, EP1)
+4: \alpha(EP2, EP3)
+Ext.Par. No:0 represented by: D(x+0)(x+0)
+Ext.Par. No:1 represented by: -D(x+0)(y+0)
+Ext.Par. No:2 represented by: -D(zn+zp)(x+0)
+Ext.Par. No:3 represented by: D(zn+zp)(y+0)
+No of multiplication is 3(3) and no of additions is 3
+
+SubId: 3
+The subcircuit: BOCCII_TE2(0, x, y, zp, zn)
+Components:
+Current gain: \beta_p(P=zp, R=0, K=2, L=1) 1
+Current gain: \beta_n(P=0, R=zn, K=x, L=2) 1
+Voltage gain: \alpha(P=0, R=1, K=y, L=0) 1
+D Vertex: 2
+2: \beta_p(3, 6)
+3: \beta_n(5, 4)
+4: \alpha(EP2, EP1)
+5: \alpha(EP3, EP0)
+6: \alpha(EP4, EP5)
+Ext.Par. No:0 represented by: -D(x+0)(y+0)
+Ext.Par. No:1 represented by: D(zn+0)(y+0)
+Ext.Par. No:2 represented by: -D(zn+0)(x+0)
+Ext.Par. No:3 represented by: D(x+0)(x+0)
+Ext.Par. No:4 represented by: D(zp+0)(x+0)
+Ext.Par. No:5 represented by: -D(zp+0)(y+0)
+No of multiplication is 5(5) and no of additions is 5
+
+SubId: 0
+Main Circuit
+Components:
+Macromodel : M1(0=0, x=3, y=0, zp=5, zn=2) BOCCII
+Macromodel : M2(0=0, x=4, y=0, zp=1, zn=2) BOCCII
+Resistance: R1(NodeA=1, NodeB=3) 1e3
+Capacitance: C1(NodeA=1, NodeB=0) 1e-9
+Capacitance: C2(NodeA=2, NodeB=0) 1e-9
+Resistance: R2(NodeA=2, NodeB=4) 1e3
+D(5+0)(5+0) Vertex: 2
+D(1+0)(5+0) Vertex: (-1) * 4
+D(2+0)(5+0) Vertex: 1
+2: R1(5, 3)
+3: C1(0, 4)
+4: C2(0, 6)
+5: C2(1, 6)
+6: R2(0, 1)
+No of multiplication is 5(4) and no of additions is 2
+
+Multilevel result raporting - 0.000725109 s
+
+Direct numerical cof/rem value determination - 0.000320089 s
+
+D(5+0)(5+0)= + s^2*1e-12 + s^1*1e-6 + 1
+List of roots:
+-5e5+j*8.66025e5
+-5e5-j*8.66025e5
+
+
+Direct numerical cof/rem value determination - 2.9875e-005 s
+
+Direct numerical cof/rem value determination - 4.26786e-007 s
+
+Factorization of cofactor No. 0 s power: 0 - 1.70714e-006 s
+
+Factorization of cofactor No. 0 s power: 1 - 1.74982e-005 s
+
+Factorization of cofactor No. 0 s power: 2 - 5.975e-006 s
+
+Factorization of cofactor No. 1 s power: 0 - 4.26786e-007 s
+
+Factorization of cofactor No. 1 s power: 1 - 2.9875e-006 s
+
+Factorization of cofactor No. 2 s power: 0 - 8.53572e-007 s
+
+Factorisation of all - 0.00216082 s
+
+FlatSimpolified determination - 0.0114904 s
+
+Approximated 1-level tree for the accurracy=1e-3 , range angular frequency from 0 to 1e6.
+D(5+0)(5+0) = 
+s^2*(#5)
+ + s^1*(#3)
+ + (#1)
+
+D(1+0)(5+0) = 
+s^1*(-1)*(#3)
+(#0)
+
+D(2+0)(5+0) = 
+(#1)
+
+#2: R2[#1, #0]
+#3: C2[#2, #0]
+#4: C1[#3, #0]
+#5: R1[#4, #0]
+Nof of multiplications is 0(0) and additions is 0
+
+X6 = C2 * R2
+X7 = R1 * C1 * C2 * R2
+D(5+0)(5+0) = s^2*X7 + s^1*X6 + 1
+D(1+0)(5+0) =  - s^1*X6
+D(2+0)(5+0) = 1
+Developed values are:
+X1 = 1
+X6 = C2 * R2
+X7 = R1 * C1 * C2 * R2
+
+Transfer function after simplifications:
+
+                    - s*1
+K_i1 = (C2 * R2) * ---------------------------------------
+                          s^(2)*R1 * C1 * C2 * R2 + s*C2 * R2 + 1
+
+             1
+K_i2 = (1) * ---------------------------------------
+              s^(2)*R1 * C1 * C2 * R2 + s*C2 * R2 + 1
+
+
+Flat vertices report - 0.000725536 s

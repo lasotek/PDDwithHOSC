@@ -1,0 +1,548 @@
+
+Preparing of model: F:\PDDwithHOSC\_Old_version_But_Working\25. FDCCII FIlter\FDCII_Id_ggnd_y1_y2_y3_y4_x1_x2_z1_z2.pddm - 0.00162287 s
+
+Preparing of model: F:\PDDwithHOSC\_Old_version_But_Working\25. FDCCII FIlter\FDCII_TE_ggnd_y1_y2_y3_y4_x1_x2_z1_z2.pddm - 0.0146038 s
+
+Preparing of main results - 0.133262 s
+SubId: 1
+The subcircuit: FDCII_Id(0, y1, y2, y3, y4, x1, x2, z1, z2)
+Components:
+Voltage Follower : (In_p = y1, In_n = y2, Out_p = 1, Out_n = y3
+Voltage Follower : (In_p = y1, In_n = y2, Out_p = y4, Out_n = 2
+Voltage Follower : (In_p = 1, In_n = 0, Out_p = 3, Out_n = 0
+Voltage Follower : (In_p = 2, In_n = 0, Out_p = 4, Out_n = 0
+Current Follower : (In_p = x1, In_n = 3, Out_p = z1, Out_n = 0
+Current Follower : (In_p = x2, In_n = 4, Out_p = z2, Out_n = 0
+D Vertex: 2
+Ext.Par. No:0 represented by: D(z1-x1)(y2+y1),(z2-x2)(x1+y3) || D(z1-x1)(y2+y1),(z2-x2)(x2+y4) || D(z1-x1)(x1+y3),(z2-x2)(x2+y4)
+No of multiplication is 0(0) and no of additions is 0
+
+SubId: 2
+The subcircuit: FDCII_TE(0, y1, y2, y3, y4, x1, x2, z1, z2)
+Components:
+Meta set of Voltage gain:  : \alpha_1(P=y3, R=1', K=y1, L=0) || \alpha_1(P=2', R=y4, K=y1, L=0) 1
+Meta set of Voltage gain:  : \alpha_2(P=1, R=1', K=y2, L=0) || \alpha_2(P=2', R=2, K=y2, L=0) 1
+Voltage gain: \alpha_3(P=0, R=3, K=1, L=0) 1
+Voltage gain: \alpha_4(P=0, R=4, K=2, L=0) 1
+Current gain: \beta_1(P=z1, R=0, K=x1, L=3) 1
+Current gain: \beta_2(P=z2, R=0, K=x2, L=4) 1
+D Vertex: 2
+2: \alpha_1(3, 4, 0)
+3: \alpha_2(6, 5, 0)
+4: \alpha_3(9, 8)
+5: \alpha_3(7, 10)
+6: \alpha_3(11, 12)
+7: \alpha_4(0, 13)
+8: \alpha_4(14, 15)
+9: \alpha_4(0, 22)
+10: \alpha_4(21, 20)
+11: \alpha_4(19, 18)
+12: \alpha_4(17, 16)
+13: \beta_1(28, 27)
+14: \beta_1(26, 23)
+15: \beta_1(24, 25)
+16: \beta_1(30, 37)
+17: \beta_1(29, 32)
+18: \beta_1(31, 33)
+19: \beta_1(34, 35)
+20: \beta_1(36, 38)
+21: \beta_1(39, 40)
+22: \beta_1(41, 42)
+23: \beta_2(EP3, EP5)
+24: \beta_2(EP6, EP7)
+25: \beta_2(EP8, EP9)
+26: \beta_2(EP2, EP1)
+27: \beta_2(EP4, EP0)
+28: \beta_2(EP11, EP12)
+29: \beta_2(EP13, EP14)
+30: \beta_2(EP10, EP15)
+31: \beta_2(EP16, EP17)
+32: \beta_2(EP18, EP19)
+33: \beta_2(EP20, EP21)
+34: \beta_2(EP22, EP23)
+35: \beta_2(EP24, EP25)
+36: \beta_2(EP26, EP27)
+37: \beta_2(EP28, EP29)
+38: \beta_2(EP30, EP31)
+39: \beta_2(EP32, EP33)
+40: \beta_2(EP34, EP35)
+41: \beta_2(EP36, EP37)
+42: \beta_2(EP38, EP39)
+Ext.Par. No:0 represented by: D(z1+0)(y2+0),(z2+0)(x1+0)
+Ext.Par. No:1 represented by: -D(x1+0)(y1+0),(z2+0)(x2+0)
+Ext.Par. No:2 represented by: -D(x1+0)(y1+0),(x2+0)(x2+0)
+Ext.Par. No:3 represented by: D(x2+0)(y1+0),(z1+0)(x2+0)
+Ext.Par. No:4 represented by: -D(x2+0)(y2+0),(z1+0)(x1+0)
+Ext.Par. No:5 represented by: -D(z1+0)(y1+0),(z2+0)(x2+0)
+Ext.Par. No:6 represented by: D(x1+0)(y1+0),(x2+0)(y4-y3)
+Ext.Par. No:7 represented by: D(x1+0)(y1+0),(z2+0)(y4-y3)
+Ext.Par. No:8 represented by: -D(x2+0)(y1+0),(z1+0)(y4-y3)
+Ext.Par. No:9 represented by: D(z1+0)(y1+0),(z2+0)(y4-y3)
+Ext.Par. No:10 represented by: D(x1+0)(y3+0),(x2+0)(y4+0)
+Ext.Par. No:11 represented by: D(x1+0)(y2+0),(x2+0)(x1+0)
+Ext.Par. No:12 represented by: D(x1+0)(y2+0),(z2+0)(x1+0)
+Ext.Par. No:13 represented by: -D(x1+0)(y3+0),(x2+0)(x2+0)
+Ext.Par. No:14 represented by: -D(x1+0)(y3+0),(z2+0)(x2+0)
+Ext.Par. No:15 represented by: D(x1+0)(y3+0),(z2+0)(y4+0)
+Ext.Par. No:16 represented by: D(x1+0)(y4+0),(x2+0)(x1+0)
+Ext.Par. No:17 represented by: D(x1+0)(y4+0),(z2+0)(x1+0)
+Ext.Par. No:18 represented by: D(x2+0)(y3+0),(z1+0)(x2+0)
+Ext.Par. No:19 represented by: -D(z1+0)(y3+0),(z2+0)(x2+0)
+Ext.Par. No:20 represented by: -D(x2+0)(y4+0),(z1+0)(x1+0)
+Ext.Par. No:21 represented by: D(z1+0)(y4+0),(z2+0)(x1+0)
+Ext.Par. No:22 represented by: D(x1+0)(x1+0),(x2+0)(x2+0)
+Ext.Par. No:23 represented by: D(x1+0)(x1+0),(z2+0)(x2+0)
+Ext.Par. No:24 represented by: -D(x2+0)(x1+0),(z1+0)(x2+0)
+Ext.Par. No:25 represented by: D(z1+0)(x1+0),(z2+0)(x2+0)
+Ext.Par. No:26 represented by: -D(x1+0)(y2+0),(x2+0)(y4-y3)
+Ext.Par. No:27 represented by: -D(x1+0)(y2+0),(z2+0)(y4-y3)
+Ext.Par. No:28 represented by: -D(x2+0)(y3+0),(z1+0)(y4+0)
+Ext.Par. No:29 represented by: D(z1+0)(y3+0),(z2+0)(y4+0)
+Ext.Par. No:30 represented by: D(x2+0)(y2+0),(z1+0)(y4-y3)
+Ext.Par. No:31 represented by: -D(z1+0)(y2+0),(z2+0)(y4-y3)
+Ext.Par. No:32 represented by: D(x1+0)(y2+0),(x2+0)(x2+0)
+Ext.Par. No:33 represented by: D(x1+0)(y2+0),(z2+0)(x2+0)
+Ext.Par. No:34 represented by: -D(x2+0)(y2+0),(z1+0)(x2+0)
+Ext.Par. No:35 represented by: D(z1+0)(y2+0),(z2+0)(x2+0)
+Ext.Par. No:36 represented by: -D(x1+0)(y1+0),(x2+0)(x1+0)
+Ext.Par. No:37 represented by: -D(x1+0)(y1+0),(z2+0)(x1+0)
+Ext.Par. No:38 represented by: D(x2+0)(y1+0),(z1+0)(x1+0)
+Ext.Par. No:39 represented by: -D(z1+0)(y1+0),(z2+0)(x1+0)
+No of multiplication is 41(41) and no of additions is 39
+
+SubId: 0
+Main Circuit
+Components:
+Capacitance: C2a(NodeA=5, NodeB=0) 1e-9
+Macromodel : C(0=0, y1=0, y2=0, y3=5, y4=6, x1=12, x2=11, z1=8, z2=7) FDCII_TE
+Macromodel : B(0=0, y1=0, y2=0, y3=3, y4=4, x1=10, x2=9, z1=5, z2=6) FDCII_TE
+Macromodel : A(0=0, y1=1, y2=2, y3=4, y4=3, x1=8, x2=7, z1=3, z2=4) FDCII_TE
+Conductance: G2a(NodeA=10, NodeB=0) 1e3
+Conductance: G3b(NodeA=11, NodeB=0) 1e3
+Conductance: G1b(NodeA=7, NodeB=0) 1e3
+Capacitance: C1b(NodeA=4, NodeB=0) 1e-9
+Conductance: G1a(NodeA=8, NodeB=0) 1e3
+Conductance: G3a(NodeA=12, NodeB=0) 1e3
+Capacitance: C1a(NodeA=3, NodeB=0) 1e-9
+Conductance: G2b(NodeA=9, NodeB=0) 1e3
+Capacitance: C2b(NodeA=6, NodeB=0) 1e-9
+D(1+0)(1+0),(2+0)(2+0) Vertex: 6
+D(1+0)(3+4),(2+0)(1-2) Vertex: 5
+D(1+0)(5+6),(2+0)(1-2) Vertex: 4
+D(2+1)(2+1),(2+0)(3+4) Vertex: (-1) * 3
+D(2+1)(2+1),(2+0)(5+6) Vertex: 2
+2: C2a(10, (-1)*20)
+3: C2a(11, (-1)*7)
+4: C2a(12, 23)
+5: C2a(13, 9)
+6: C2a(14, 8)
+7: C(17 = 16, 22 = 32)
+8: C(17 = 21, 22 = (-1)*43)
+9: C(17 = 18, 22 = 33)
+10: C(17 = 15, 18 = (-1)*19, 22 = 27)
+11: C(18 = 17)
+12: C(17 = 26, 18 = 28, 22 = 24)
+13: C(18 = 29)
+14: C(18 = 22, 29 = 25)
+15: B(29 = 42)
+16: B(17 = 36)
+17: B(18 = 35)
+18: B(17 = 34)
+19: B(29 = 31)
+20: B(17 = 38)
+21: B(17 = 39)
+22: B(18 = 37)
+23: B(17 = 30)
+24: B(18 = 45)
+25: B(29 = 41)
+26: B(29 = 44)
+27: B(18 = 40)
+28: B(29 = 46)
+29: B(18 = 47)
+30: A(9 = (-1)*59, 12 = 58, 31 = (-1)*59, 37 = 58)
+31: A(0 = 54, 39 = (-1)*54)
+32: A(3 = 65, 9 = (-2)*61, 12 = (-1)*62, 31 = 2*61, 34 = (-1)*65, 37 = 62)
+33: A(3 = 65, 9 = (-2)*61, 12 = 62, 31 = (-2)*61, 34 = 65, 37 = 62)
+34: A(5 = 55, 35 = 55)
+35: A(0 = 49, 39 = (-1)*49)
+36: A(5 = 55, 35 = (-1)*55)
+37: A(24 = 50)
+38: A(9 = 59, 12 = 58, 31 = (-1)*59, 37 = (-1)*58)
+39: A(23 = 56)
+40: A(3 = 53, 9 = (-1)*48, 31 = 48, 34 = (-1)*53)
+41: A(25 = 51)
+42: A(5 = 52, 35 = (-1)*52)
+43: A(22 = (-1)*64, 29 = 61)
+44: A(5 = 52, 35 = 52)
+45: A(3 = 53, 9 = (-1)*48, 31 = (-1)*48, 34 = 53)
+46: A(0 = 54, 39 = 54)
+47: A(0 = 49, 39 = 49)
+48: G2a(0, 61)
+49: G2a(0, 63)
+50: G2a(0, 66)
+51: G2a(0, 57)
+52: G2a(0, 55)
+53: G2a(0, 65)
+54: G2a(0, 60)
+55: G3b(0, 68)
+56: G3b(0, 72)
+57: G3b(0, 69)
+58: G1b(0, 72)
+59: G1b(0, 68)
+60: G1b(0, 69)
+61: G1b(0, 67)
+62: G1b(0, 71)
+63: G1b(0, 70)
+64: C1b(0, 71)
+65: C1b(0, 67)
+66: C1b(0, 70)
+67: G1a(0, 74)
+68: G1a(0, 73)
+69: G3a(0, 73)
+70: G3a(0, 74)
+71: C1a(0, 74)
+72: C1a(0, 73)
+73: G2b(0, 1)
+74: C2b(0, 1)
+No of multiplication is 131(106) and no of additions is 44
+
+Multilevel result raporting - 0.00288969 s
+
+Direct numerical cof/rem value determination - 0.00999155 s
+
+Direct numerical cof/rem value determination - 0.000364242 s
+
+Direct numerical cof/rem value determination - 0.000559846 s
+
+Direct numerical cof/rem value determination - 0.000223256 s
+
+Direct numerical cof/rem value determination - 0.000286068 s
+
+Factorization of cofactor No. 0 s power: 0 - 2.52614e-005 s
+
+Factorization of cofactor No. 0 s power: 1 - 3.4137e-007 s
+
+Factorization of cofactor No. 0 s power: 2 - 3.17474e-005 s
+
+Factorization of cofactor No. 0 s power: 3 - 0 s
+
+Factorization of cofactor No. 0 s power: 4 - 5.80329e-006 s
+
+Factorization of cofactor No. 1 s power: 0 - 3.4137e-007 s
+
+Factorization of cofactor No. 1 s power: 1 - 4.0623e-005 s
+
+Factorization of cofactor No. 1 s power: 2 - 1.5703e-005 s
+
+Factorization of cofactor No. 1 s power: 3 - 2.2189e-005 s
+
+Factorization of cofactor No. 2 s power: 0 - 4.64263e-005 s
+
+Factorization of cofactor No. 2 s power: 1 - 5.01814e-005 s
+
+Factorization of cofactor No. 2 s power: 2 - 4.54022e-005 s
+
+Factorization of cofactor No. 3 s power: 0 - 0 s
+
+Factorization of cofactor No. 3 s power: 1 - 2.62855e-005 s
+
+Factorization of cofactor No. 3 s power: 2 - 9.89972e-006 s
+
+Factorization of cofactor No. 3 s power: 3 - 7.8515e-006 s
+
+Factorization of cofactor No. 4 s power: 0 - 2.93578e-005 s
+
+Factorization of cofactor No. 4 s power: 1 - 2.492e-005 s
+
+Factorization of cofactor No. 4 s power: 2 - 2.38959e-005 s
+
+Factorisation of all - 0.0137149 s
+
+FlatSimpolified determination - 0.0754164 s
+
+Approximated 1-level tree for the accurracy=1e-3 , range angular frequency from 0 to 1e6.
+D(1+0)(1+0),(2+0)(2+0) = 
+s^4*(#41)
+ + s^2*(#38)
+ + (#15)
+
+D(1+0)(3+4),(2+0)(1-2) = 
+s^3*(#76)
+ + s^2*(-2)*(#67)
+ + s^1*(#64)
+(#0)
+
+D(1+0)(5+6),(2+0)(1-2) = 
+s^2*(#135)
+ + s^1*(-1)*(#120)
+ + (#101)
+
+D(2+1)(2+1),(2+0)(3+4) = 
+s^3*(-1)*(#150)
+ + s^2*(2)*(#148)
+ + s^1*(-1)*(#146)
+(#0)
+
+D(2+1)(2+1),(2+0)(5+6) = 
+s^2*(-1)*(#178)
+ + s^1*(#171)
+ + (-1)*(#164)
+
+#2: G2b[#1, #0]
+#3: G3a[#2, #0]
+#4: G3b[#3, #0]
+#5: G2a[#4, #0]
+#6: A.\beta_2[#5, #0]
+#7: A.\beta_1[#6, #0]
+#8: B.\beta_2[#7, #0]
+#9: B.\beta_1[#8, #0]
+#10: B.\alpha_4[#9, #0]
+#11: B.\alpha_3[#10, #0]
+#12: C.\beta_2[#11, #0]
+#13: C.\beta_1[#12, #0]
+#14: C.\alpha_4[#13, #0]
+#15: C.\alpha_3[#14, #0]
+#16: C2b[#1, #0]
+#17: G3a[#16, #0]
+#18: C1b[#17, #0]
+#19: G2a[#18, #0]
+#20: A.\beta_1[#19, #0]
+#21: B.\beta_1[#20, #0]
+#22: B.\alpha_3[#21, #0]
+#23: C.\beta_1[#22, #0]
+#24: C.\alpha_3[#23, #0]
+#25: G1a[#16, #0]
+#26: G1b[#25, #0]
+#27: A.\beta_2[#26, #0]
+#28: A.\beta_1[#27, #0]
+#29: A.\alpha_4[#28, #0]
+#30: A.\alpha_3[#29, #0]
+#31: C1a[#2, #0]
+#32: G3b[#31, #0]
+#33: A.\beta_2[#32, #0]
+#34: B.\beta_2[#33, #0]
+#35: B.\alpha_4[#34, #0]
+#36: C.\beta_2[#35, #0]
+#37: C.\alpha_4[(-1)*#36, #30]
+#38: C2a[(-1)*#37, #24]
+#39: C1a[#16, #0]
+#40: C1b[#39, #0]
+#41: C2a[#40, #0]
+#42: G1b[#17, #0]
+#43: G2a[#42, #0]
+#44: A.\beta_2[#43, #0]
+#45: A.\beta_1[#44, #0]
+#46: A.\alpha_4[#45, #0]
+#47: A.\alpha_2[#0, #46, #0]
+#48: A.\alpha_1[#0, #46, #47]
+#49: B.\beta_1[#48, #0]
+#50: B.\alpha_3[#49, #0]
+#51: C.\beta_1[#50, #0]
+#52: C.\alpha_3[#51, #0]
+#53: G1a[#2, #0]
+#54: G3b[#53, #0]
+#55: A.\beta_2[#54, #0]
+#56: A.\beta_1[#55, #0]
+#57: A.\alpha_3[#56, #0]
+#58: A.\alpha_2[#0, #57, #0]
+#59: A.\alpha_1[#0, #57, #58]
+#60: B.\beta_2[#59, #0]
+#61: B.\alpha_4[#60, #0]
+#62: C.\beta_2[#61, #0]
+#63: C.\alpha_4[#62, #0]
+#64: C2a[#63, #52]
+#65: A.\alpha_2[#0, #30, #0]
+#66: A.\alpha_1[#0, #30, #65]
+#67: C2a[#66, #0]
+#68: G1b[#39, #0]
+#69: A.\beta_2[#68, #0]
+#70: A.\alpha_4[#69, #0]
+#71: C1b[#25, #0]
+#72: A.\beta_1[#71, #0]
+#73: A.\alpha_3[#72, #70]
+#74: A.\alpha_2[#0, #73, #0]
+#75: A.\alpha_1[#0, #73, #74]
+#76: C2a[#75, #0]
+#77: G2a[#54, #0]
+#78: A.\beta_2[#77, #0]
+#79: A.\beta_1[#78, #0]
+#80: A.\alpha_3[#79, #0]
+#81: A.\alpha_2[#0, #80, #0]
+#82: A.\alpha_1[#0, #80, #81]
+#83: B.\beta_2[#82, #0]
+#84: B.\beta_1[#83, #0]
+#85: B.\alpha_4[#84, #0]
+#86: B.\alpha_3[#85, #0]
+#87: C.\beta_2[#86, #0]
+#88: C.\alpha_4[#87, #0]
+#89: G1b[#3, #0]
+#90: G2a[#89, #0]
+#91: A.\beta_2[#90, #0]
+#92: A.\beta_1[#91, #0]
+#93: A.\alpha_4[#92, #0]
+#94: A.\alpha_2[#0, #93, #0]
+#95: A.\alpha_1[#0, #93, #94]
+#96: B.\beta_2[#95, #0]
+#97: B.\beta_1[#96, #0]
+#98: B.\alpha_4[#97, #0]
+#99: B.\alpha_3[#98, #0]
+#100: C.\beta_1[#99, #0]
+#101: C.\alpha_3[#100, #88]
+#102: G2a[#26, #0]
+#103: A.\beta_2[#102, #0]
+#104: A.\beta_1[#103, #0]
+#105: A.\alpha_4[#104, #0]
+#106: A.\alpha_3[#105, #0]
+#107: A.\alpha_2[#0, #106, #0]
+#108: A.\alpha_1[#0, #106, #107]
+#109: B.\beta_1[#108, #0]
+#110: B.\alpha_3[#109, #0]
+#111: G1b[#53, #0]
+#112: A.\beta_2[#111, #0]
+#113: A.\beta_1[#112, #0]
+#114: A.\alpha_4[#113, #0]
+#115: A.\alpha_3[#114, #0]
+#116: A.\alpha_2[#0, #115, #0]
+#117: A.\alpha_1[#0, #115, #116]
+#118: B.\beta_2[#117, #0]
+#119: B.\alpha_4[#118, #0]
+#120: C2a[#119, #110]
+#121: G2a[#71, #0]
+#122: A.\beta_1[#121, #0]
+#123: A.\alpha_3[#122, #0]
+#124: A.\alpha_2[#0, #123, #0]
+#125: A.\alpha_1[#0, #123, #124]
+#126: B.\beta_1[#125, #0]
+#127: B.\alpha_3[#126, #0]
+#128: G1b[#31, #0]
+#129: A.\beta_2[#128, #0]
+#130: A.\alpha_4[#129, #0]
+#131: A.\alpha_2[#0, #130, #0]
+#132: A.\alpha_1[#0, #130, #131]
+#133: B.\beta_2[#132, #0]
+#134: B.\alpha_4[#133, #0]
+#135: C2a[#134, #127]
+#136: A.\alpha_1[#0, (-1)*#46, #47]
+#137: B.\beta_1[#136, #0]
+#138: B.\alpha_3[#137, #0]
+#139: C.\beta_1[#138, #0]
+#140: C.\alpha_3[#139, #0]
+#141: A.\alpha_1[#0, (-1)*#57, #58]
+#142: B.\beta_2[#141, #0]
+#143: B.\alpha_4[#142, #0]
+#144: C.\beta_2[#143, #0]
+#145: C.\alpha_4[#144, #0]
+#146: C2a[#145, #140]
+#147: A.\alpha_1[#0, (-1)*#30, #65]
+#148: C2a[#147, #0]
+#149: A.\alpha_1[#0, (-1)*#73, #74]
+#150: C2a[#149, #0]
+#151: A.\alpha_1[#0, (-1)*#80, #81]
+#152: B.\beta_2[#151, #0]
+#153: B.\beta_1[#152, #0]
+#154: B.\alpha_4[#153, #0]
+#155: B.\alpha_3[#154, #0]
+#156: C.\beta_2[#155, #0]
+#157: C.\alpha_4[#156, #0]
+#158: A.\alpha_1[#0, (-1)*#93, #94]
+#159: B.\beta_2[#158, #0]
+#160: B.\beta_1[#159, #0]
+#161: B.\alpha_4[#160, #0]
+#162: B.\alpha_3[#161, #0]
+#163: C.\beta_1[#162, #0]
+#164: C.\alpha_3[#163, #157]
+#165: A.\alpha_1[#0, (-1)*#106, #107]
+#166: B.\beta_1[#165, #0]
+#167: B.\alpha_3[#166, #0]
+#168: A.\alpha_1[#0, (-1)*#115, #116]
+#169: B.\beta_2[#168, #0]
+#170: B.\alpha_4[#169, #0]
+#171: C2a[#170, #167]
+#172: A.\alpha_1[#0, (-1)*#123, #124]
+#173: B.\beta_1[#172, #0]
+#174: B.\alpha_3[#173, #0]
+#175: A.\alpha_1[#0, (-1)*#130, #131]
+#176: B.\beta_2[#175, #0]
+#177: B.\alpha_4[#176, #0]
+#178: C2a[#177, #174]
+Nof of multiplications is 0(0) and additions is 0
+
+X26 = G2b * C.\alpha_3 * C.\beta_1 * B.\alpha_3 * B.\beta_1 * A.\beta_1 * G2a * G3a * C.\alpha_4 * C.\beta_2 * B.\alpha_4 * B.\beta_2 * A.\beta_2 * G3b
+X28 = G2b * C1a * C.\alpha_4 * C.\beta_2 * B.\alpha_4 * B.\beta_2 * G3b
+X29 = A.\alpha_3 * G1a * A.\beta_1 * G1b * C2b * A.\alpha_4
+X30 = X29 - X28
+X31 = X30 * A.\beta_2 * C2a
+X32 = C.\alpha_3 * C.\beta_1 * B.\alpha_3 * B.\beta_1 * A.\beta_1 * G2a * G3a * C1b * C2b
+X33 = X32 - X31
+X34 = C1a * C1b * C2b * C2a
+X37 = A.\alpha_1 + A.\alpha_2
+X40 = G2b * A.\alpha_3 * G1a * C.\alpha_4 * C.\beta_2 * B.\alpha_4 * B.\beta_2 * G3b * C2a
+X41 = C.\alpha_3 * C.\beta_1 * B.\alpha_3 * B.\beta_1 * G2a * G3a * G1b * C2b * A.\alpha_4
+X42 = X41 + X40
+X43 = X42 * X37 * A.\beta_1 * A.\beta_2
+X45 = X37 * A.\alpha_3 * G1a * A.\beta_1 * G1b * C2b * A.\beta_2 * C2a * A.\alpha_4
+X46 = A.\alpha_3 * G1a * A.\beta_1 * C1b
+X47 = C1a * G1b * A.\beta_2 * A.\alpha_4
+X48 = X47 + X46
+X51 = X48 * X37 * C2b * C2a
+X56 = C.\alpha_3 * C.\beta_1 * G3a * G1b * A.\alpha_4
+X57 = A.\alpha_3 * G1a * C.\alpha_4 * C.\beta_2 * G3b
+X58 = X57 + X56
+X59 = X58 * X37 * G2b * B.\alpha_3 * B.\beta_1 * A.\beta_1 * G2a * B.\alpha_4 * B.\beta_2 * A.\beta_2
+X64 = G2b * B.\alpha_4 * B.\beta_2 * C2a
+X65 = B.\alpha_3 * B.\beta_1 * G2a * C2b
+X66 = X65 + X64
+X67 = X66 * X37 * A.\alpha_3 * G1a * A.\beta_1 * G1b * A.\beta_2 * A.\alpha_4
+X72 = G2b * C1a * G1b * B.\alpha_4 * B.\beta_2 * A.\beta_2 * C2a * A.\alpha_4
+X73 = A.\alpha_3 * G1a * B.\alpha_3 * B.\beta_1 * A.\beta_1 * G2a * C1b * C2b
+X74 = X73 + X72
+X75 = X74 * X37
+X76 =  - A.\alpha_1 + A.\alpha_2
+X77 = X76 * X42 * A.\beta_1 * A.\beta_2
+X78 = X76 * A.\alpha_3 * G1a * A.\beta_1 * G1b * C2b * A.\beta_2 * C2a * A.\alpha_4
+X79 = X76 * X48 * C2b * C2a
+X80 = X76 * X58 * G2b * B.\alpha_3 * B.\beta_1 * A.\beta_1 * G2a * B.\alpha_4 * B.\beta_2 * A.\beta_2
+X81 = X76 * X66 * A.\alpha_3 * G1a * A.\beta_1 * G1b * A.\beta_2 * A.\alpha_4
+X82 = X76 * X74
+D(1+0)(1+0),(2+0)(2+0) = s^4*X34 + s^2*X33 + X26
+D(1+0)(3+4),(2+0)(1-2) = s^3*X51 - (2)*s^2*X45 + s^1*X43
+D(1+0)(5+6),(2+0)(1-2) = s^2*X75 - s^1*X67 + X59
+D(2+1)(2+1),(2+0)(3+4) =  - s^3*X79(2)*s^2*X78 - s^1*X77
+D(2+1)(2+1),(2+0)(5+6) =  - s^2*X82 + s^1*X81 - X80
+Developed values are:
+X26 = G2b * C.\alpha_3 * C.\beta_1 * B.\alpha_3 * B.\beta_1 * A.\beta_1 * G2a * G3a * C.\alpha_4 * C.\beta_2 * B.\alpha_4 * B.\beta_2 * A.\beta_2 * G3b
+X33 = (C.\alpha_3 * C.\beta_1 * B.\alpha_3 * B.\beta_1 * A.\beta_1 * G2a * G3a * C1b * C2b - (A.\alpha_3 * G1a * A.\beta_1 * G1b * C2b * A.\alpha_4 - G2b * C1a * C.\alpha_4 * C.\beta_2 * B.\alpha_4 * B.\beta_2 * G3b) * A.\beta_2 * C2a)
+X34 = C1a * C1b * C2b * C2a
+X43 = (C.\alpha_3 * C.\beta_1 * B.\alpha_3 * B.\beta_1 * G2a * G3a * G1b * C2b * A.\alpha_4 + G2b * A.\alpha_3 * G1a * C.\alpha_4 * C.\beta_2 * B.\alpha_4 * B.\beta_2 * G3b * C2a) * (A.\alpha_1 + A.\alpha_2) * A.\beta_1 * A.\beta_2
+X45 = (A.\alpha_1 + A.\alpha_2) * A.\alpha_3 * G1a * A.\beta_1 * G1b * C2b * A.\beta_2 * C2a * A.\alpha_4
+X51 = (C1a * G1b * A.\beta_2 * A.\alpha_4 + A.\alpha_3 * G1a * A.\beta_1 * C1b) * (A.\alpha_1 + A.\alpha_2) * C2b * C2a
+X59 = (A.\alpha_3 * G1a * C.\alpha_4 * C.\beta_2 * G3b + C.\alpha_3 * C.\beta_1 * G3a * G1b * A.\alpha_4) * (A.\alpha_1 + A.\alpha_2) * G2b * B.\alpha_3 * B.\beta_1 * A.\beta_1 * G2a * B.\alpha_4 * B.\beta_2 * A.\beta_2
+X67 = (B.\alpha_3 * B.\beta_1 * G2a * C2b + G2b * B.\alpha_4 * B.\beta_2 * C2a) * (A.\alpha_1 + A.\alpha_2) * A.\alpha_3 * G1a * A.\beta_1 * G1b * A.\beta_2 * A.\alpha_4
+X75 = (A.\alpha_3 * G1a * B.\alpha_3 * B.\beta_1 * A.\beta_1 * G2a * C1b * C2b + G2b * C1a * G1b * B.\alpha_4 * B.\beta_2 * A.\beta_2 * C2a * A.\alpha_4) * (A.\alpha_1 + A.\alpha_2)
+X77 = ( - A.\alpha_1 + A.\alpha_2) * (C.\alpha_3 * C.\beta_1 * B.\alpha_3 * B.\beta_1 * G2a * G3a * G1b * C2b * A.\alpha_4 + G2b * A.\alpha_3 * G1a * C.\alpha_4 * C.\beta_2 * B.\alpha_4 * B.\beta_2 * G3b * C2a) * A.\beta_1 * A.\beta_2
+X78 = ( - A.\alpha_1 + A.\alpha_2) * A.\alpha_3 * G1a * A.\beta_1 * G1b * C2b * A.\beta_2 * C2a * A.\alpha_4
+X79 = ( - A.\alpha_1 + A.\alpha_2) * (C1a * G1b * A.\beta_2 * A.\alpha_4 + A.\alpha_3 * G1a * A.\beta_1 * C1b) * C2b * C2a
+X80 = ( - A.\alpha_1 + A.\alpha_2) * (A.\alpha_3 * G1a * C.\alpha_4 * C.\beta_2 * G3b + C.\alpha_3 * C.\beta_1 * G3a * G1b * A.\alpha_4) * G2b * B.\alpha_3 * B.\beta_1 * A.\beta_1 * G2a * B.\alpha_4 * B.\beta_2 * A.\beta_2
+X81 = ( - A.\alpha_1 + A.\alpha_2) * (B.\alpha_3 * B.\beta_1 * G2a * C2b + G2b * B.\alpha_4 * B.\beta_2 * C2a) * A.\alpha_3 * G1a * A.\beta_1 * G1b * A.\beta_2 * A.\alpha_4
+X82 = ( - A.\alpha_1 + A.\alpha_2) * (A.\alpha_3 * G1a * B.\alpha_3 * B.\beta_1 * A.\beta_1 * G2a * C1b * C2b + G2b * C1a * G1b * B.\alpha_4 * B.\beta_2 * A.\beta_2 * C2a * A.\alpha_4)
+
+Transfer function after simplifications:
+
+                s^(3)*X48 * C2b * C2a - s^(2)*2*A.\alpha_3 * G1a * A.\beta_1 * G1b * C2b * A.\beta_2 * C2a * A.\alpha_4 + s*X42 * A.\beta_1 * A.\beta_2
+Ku_BP = (X37) * -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+                   s^(4)*C1a * C1b * C2b * C2a + s^(2)*X33 + G2b * C.\alpha_3 * C.\beta_1 * B.\alpha_3 * B.\beta_1 * A.\beta_1 * G2a * G3a * C.\alpha_4 * C.\beta_2 * B.\alpha_4 * B.\beta_2 * A.\beta_2 * G3b
+
+                s^(2)*X74 - s*X66 * A.\alpha_3 * G1a * A.\beta_1 * G1b * A.\beta_2 * A.\alpha_4 + X58 * G2b * B.\alpha_3 * B.\beta_1 * A.\beta_1 * G2a * B.\alpha_4 * B.\beta_2 * A.\beta_2
+Ku_LP = (X37) * -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+                   s^(4)*C1a * C1b * C2b * C2a + s^(2)*X33 + G2b * C.\alpha_3 * C.\beta_1 * B.\alpha_3 * B.\beta_1 * A.\beta_1 * G2a * G3a * C.\alpha_4 * C.\beta_2 * B.\alpha_4 * B.\beta_2 * A.\beta_2 * G3b
+
+                  - s^(3)*X48 * C2b * C2a + s^(2)*2*A.\alpha_3 * G1a * A.\beta_1 * G1b * C2b * A.\beta_2 * C2a * A.\alpha_4 - s*X42 * A.\beta_1 * A.\beta_2
+Ku_BPC = (X76) * -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+                    s^(4)*C1a * C1b * C2b * C2a + s^(2)*X33 + G2b * C.\alpha_3 * C.\beta_1 * B.\alpha_3 * B.\beta_1 * A.\beta_1 * G2a * G3a * C.\alpha_4 * C.\beta_2 * B.\alpha_4 * B.\beta_2 * A.\beta_2 * G3b
+
+                  - s^(2)*X74 + s*X66 * A.\alpha_3 * G1a * A.\beta_1 * G1b * A.\beta_2 * A.\alpha_4 - X58 * G2b * B.\alpha_3 * B.\beta_1 * A.\beta_1 * G2a * B.\alpha_4 * B.\beta_2 * A.\beta_2
+Ku_LPC = (X76) * -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+                    s^(4)*C1a * C1b * C2b * C2a + s^(2)*X33 + G2b * C.\alpha_3 * C.\beta_1 * B.\alpha_3 * B.\beta_1 * A.\beta_1 * G2a * G3a * C.\alpha_4 * C.\beta_2 * B.\alpha_4 * B.\beta_2 * A.\beta_2 * G3b
+
+
+Flat vertices report - 0.0076105 s

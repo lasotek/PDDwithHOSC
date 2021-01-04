@@ -1,0 +1,147 @@
+
+Preparing of main results - 0.00581709 s
+SubId: 0
+Main Circuit
+Components:
+Resistance: R_f(NodeA=5, NodeB=0) 1e2
+Capacitance: C_i(NodeA=2, NodeB=5) 1e-9
+Resistance: R_s(NodeA=1, NodeB=2) 1e2
+Resistance: R_o(NodeA=3, NodeB=4) 1e1
+Voltage gain: A(P=3, R=5, K=2, L=5) 1e1
+Capacitance: C_f(NodeA=2, NodeB=3) 10e-13
+Resistance: R_i(NodeA=2, NodeB=5) 1e6
+D(1+0)(1+0),(4+5)(4+5) Vertex: 2
+D(1+0)(3+5),(4+5)(4+5) Vertex: (-1) * 11
+D(2+0)(3+5),(1+0)(1+0),(4+5)(4+5) Vertex: (-1) * 7
+D(1+0)(4+5) Vertex: (-1) * 13
+D(2+0)(4+5),(1+0)(1+0) Vertex: (-1) * 6
+2: R_f(3, 4)
+3: C_i(8, 5)
+4: C_i(10, 9)
+5: R_s(0, 9)
+6: R_s(0, 13)
+7: R_s(0, 11)
+8: R_s(9, 10)
+9: R_o(0, 16)
+10: R_o(0, 12)
+11: R_o(0, 13)
+12: A(14, 15)
+13: A(0, 16)
+14: C_f(1, 16)
+15: C_f(0, 16)
+16: R_i(0, 1)
+No of multiplication is 15(14) and no of additions is 6
+
+Multilevel result raporting - 0.000616279 s
+
+Direct numerical cof/rem value determination - 0.000441723 s
+
+D(1+0)(1+0),(4+5)(4+5)= + s^1*2.022 + 1.0002e7
+List of roots:
+-4.94659e6
+
+
+Direct numerical cof/rem value determination - 3.79839e-005 s
+
+Direct numerical cof/rem value determination - 5.12143e-006 s
+
+Direct numerical cof/rem value determination - 2.51804e-005 s
+
+Direct numerical cof/rem value determination - 6.82858e-006 s
+
+Factorization of cofactor No. 0 s power: 0 - 3.92643e-005 s
+
+Factorization of cofactor No. 0 s power: 1 - 2.51804e-005 s
+
+Factorization of cofactor No. 1 s power: 0 - 4.69465e-006 s
+
+Factorization of cofactor No. 2 s power: 0 - 5.12143e-006 s
+
+Factorization of cofactor No. 3 s power: 0 - 3.84107e-006 s
+
+Factorization of cofactor No. 4 s power: 0 - 4.69465e-006 s
+
+Factorisation of all - 0.00243183 s
+
+FlatSimpolified determination - 0.0189216 s
+
+Approximated 1-level tree for the accurracy=1e-3 , range angular frequency from 0 to 1e6.
+D(1+0)(1+0),(4+5)(4+5) = 
+s^1*(#14)
+ + (#6)
+
+D(1+0)(3+5),(4+5)(4+5) = 
+(-1)*(#16)
+
+D(2+0)(3+5),(1+0)(1+0),(4+5)(4+5) = 
+(-1)*(#17)
+
+D(1+0)(4+5) = 
+(-1)*(#15)
+
+D(2+0)(4+5),(1+0)(1+0) = 
+(-1)*(#18)
+
+#2: R_i[#1, #0]
+#3: R_o[#2, #0]
+#4: R_o[#1, #0]
+#5: R_s[#4, #3]
+#6: R_f[#4, #5]
+#7: C_f[#2, #0]
+#8: A[#7, #7]
+#9: R_o[#8, #0]
+#10: R_s[#9, #0]
+#11: R_s[#3, #0]
+#12: C_i[#11, #10]
+#13: C_i[#3, #9]
+#14: R_f[#13, #12]
+#15: A[#2, #0]
+#16: R_o[#15, #0]
+#17: R_s[#16, #0]
+#18: R_s[#15, #0]
+Nof of multiplications is 0(0) and additions is 0
+
+X10 = R_f + R_s + R_i
+X11 = X10 * R_o
+X12 = A + 1
+X13 = X12 * C_f
+X14 = X13 + C_i
+X15 = R_f + R_s
+X16 = X15 * X14 * R_i * R_o
+X17 = A * R_i * R_o
+X18 = A * R_s * R_i * R_o
+X19 = A * R_i
+X20 = A * R_s * R_i
+D(1+0)(1+0),(4+5)(4+5) = s^1*X16 + X11
+D(1+0)(3+5),(4+5)(4+5) =  - X17
+D(2+0)(3+5),(1+0)(1+0),(4+5)(4+5) =  - X18
+D(1+0)(4+5) =  - X19
+D(2+0)(4+5),(1+0)(1+0) =  - X20
+Developed values are:
+X11 = (R_f + R_s + R_i) * R_o
+X16 = (R_f + R_s) * ((A + 1) * C_f + C_i) * R_i * R_o
+X17 = A * R_i * R_o
+X18 = A * R_s * R_i * R_o
+X19 = A * R_i
+X20 = A * R_s * R_i
+
+Transfer function after simplifications:
+
+                       - 1
+K_vo_vi = (A * R_i) * -----------------------
+                             s*X15 * X14 * R_i + X10
+
+                             - 1
+M_vo_ii = (A * R_s * R_i) * -----------------------
+                                         s*X15 * X14 * R_i + X10
+
+          A * R_i      - 1
+N_io_vi = ------- * -----------------------
+          R_o         s*X15 * X14 * R_i + X10
+
+          A * R_s * R_i      - 1
+K_io_ii = ------------- * -----------------------
+          R_o               s*X15 * X14 * R_i + X10
+
+
+Flat vertices report - 0.00107465 s

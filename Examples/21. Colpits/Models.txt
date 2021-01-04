@@ -1,0 +1,90 @@
+
+Preparing of main results - 0.0555917 s
+SubId: 0
+Main Circuit
+Components:
+Resistance: R_B(NodeA=B, NodeB=0) 1e3
+Resistance: R_E(NodeA=E, NodeB=0) 1e2
+Current gain: h_fe(P=C, R=E, K=E', L=E) 1e2
+Resistance: h_ix(NodeA=B, NodeB=E') 7.5e2
+D Vertex: 0
+D(B+0)(B+0) Vertex: 0
+D(C+0)(C+0) Vertex: 2
+D(C+B)(C+B) Vertex: 3
+D(B+0)(B+0),(C+0)(C+0) Vertex: 4
+2: R_B(5, 1)
+3: R_B(5, 6)
+4: R_B(0, 5)
+5: R_E(7, 6)
+6: h_fe(1, 1)
+7: h_ix(0, 1)
+No of multiplication is 6(3) and no of additions is 4
+
+Multilevel result raporting - 0.00113526 s
+
+Direct numerical cof/rem value determination - 1.79251e-005 s
+
+Direct numerical cof/rem value determination - 7.68218e-006 s
+
+Direct numerical cof/rem value determination - 0.00208358 s
+
+Direct numerical cof/rem value determination - 0.000571896 s
+
+Direct numerical cof/rem value determination - 0.000342711 s
+
+Factorization of cofactor No. 0 s power: 0 - 3.84109e-006 s
+
+Factorization of cofactor No. 1 s power: 0 - 4.26788e-006 s
+
+Factorization of cofactor No. 2 s power: 0 - 0.000902229 s
+
+Factorization of cofactor No. 3 s power: 0 - 0.000784436 s
+
+Factorization of cofactor No. 4 s power: 0 - 0.000150229 s
+
+Factorisation of all - 0.0046921 s
+
+FlatSimpolified determination - 0.0153686 s
+
+Approximated 1-level tree for the accurracy=0 , range angular frequency from 0 to 0.
+D = 
+(#0)
+
+D(B+0)(B+0) = 
+(#0)
+
+D(C+0)(C+0) = 
+(#5)
+
+D(C+B)(C+B) = 
+(#6)
+
+D(B+0)(B+0),(C+0)(C+0) = 
+(#7)
+
+#2: h_ix[#1, #0]
+#3: h_fe[#1, #1]
+#4: R_E[#3, #2]
+#5: R_B[#1, #4]
+#6: R_B[#3, #4]
+#7: R_B[#4, #0]
+Nof of multiplications is 0(0) and additions is 0
+
+X6 = h_fe + 1
+X7 = X6 * R_E
+X8 = X7 + h_ix
+X9 = X7 + h_ix + R_B
+X10 = X6 * R_B
+X11 = X10 + X7 + h_ix
+X12 = X8 * R_B
+D = 
+D(B+0)(B+0) = 
+D(C+0)(C+0) = X9
+D(C+B)(C+B) = X11
+D(B+0)(B+0),(C+0)(C+0) = X12
+Developed values are:
+X9 = ((h_fe + 1) * R_E + h_ix + R_B)
+X11 = ((h_fe + 1) * R_B + (h_fe + 1) * R_E + h_ix)
+X12 = ((h_fe + 1) * R_E + h_ix) * R_B
+
+Flat vertices report - 0.00247494 s

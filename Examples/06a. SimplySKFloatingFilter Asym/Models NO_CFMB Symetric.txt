@@ -1,0 +1,144 @@
+
+Preparing of main results - 0.00525931 s
+SubId: 0
+Main Circuit
+Components:
+Meta set of Resistance:  : R1(NodeA=1, NodeB=3) || R1(NodeA=2, NodeB=4) 1e3
+Voltage gain: k(P=8, R=7, K=5, L=6) 1e1
+Meta set of Resistance:  : R2(NodeA=3, NodeB=5) || R2(NodeA=4, NodeB=6) 1e3
+Meta set of Capacitance:  : C1(NodeA=3, NodeB=7) || C1(NodeA=4, NodeB=8) 1e-9
+Meta set of Capacitance:  : C2(NodeA=5, NodeB=g) || C2(NodeA=6, NodeB=g) 1e-9
+D(2+1)(2+1) Vertex: 0
+D(2+1)(8+7) Vertex: 0
+D(2+0)(2+0),(2+1)(2+1) Vertex: (4) * 2
+D(2+0)(7+8),(2+1)(2+1) Vertex: 0
+D(1+0)(7+8),(2+0)(2-1) Vertex: (8) * 4
+2: R1(6, 3, 0)
+3: k(5, (-1)*7)
+4: k(0, 9)
+5: R2(11, 10, 0)
+6: R2(9, 8, 0)
+7: C1(0, 0, 13)
+8: C1(0, 12, 0)
+9: C1(0, 13, 0)
+10: C1(0, 0, 12)
+11: C1(0, 12, 13)
+12: C2(0, 0, 1)
+13: C2(0, 1, 0)
+No of multiplication is 14(11) and no of additions is 5
+
+Multilevel result raporting - 0.000603051 s
+
+Direct numerical cof/rem value determination - 4.26788e-007 s
+
+D(2+1)(2+1)=0
+List of roots:
+
+
+Direct numerical cof/rem value determination - 4.26788e-007 s
+
+Direct numerical cof/rem value determination - 4.26788e-007 s
+
+Direct numerical cof/rem value determination - 0.000461784 s
+
+Direct numerical cof/rem value determination - 4.26788e-007 s
+
+Direct numerical cof/rem value determination - 3.20091e-005 s
+
+Factorization of cofactor No. 0 s power: 0 - 0 s
+
+Factorization of cofactor No. 1 s power: 0 - 0 s
+
+Factorization of cofactor No. 2 s power: 0 - 4.26788e-007 s
+
+Factorization of cofactor No. 2 s power: 1 - 4.26788e-007 s
+
+Factorization of cofactor No. 2 s power: 2 - 1.66447e-005 s
+
+Factorization of cofactor No. 2 s power: 3 - 2.64608e-005 s
+
+Factorization of cofactor No. 2 s power: 4 - 6.40182e-006 s
+
+Factorization of cofactor No. 3 s power: 0 - 0 s
+
+Factorization of cofactor No. 4 s power: 0 - 4.26788e-007 s
+
+Factorization of cofactor No. 4 s power: 1 - 0 s
+
+Factorization of cofactor No. 4 s power: 2 - 6.8286e-006 s
+
+Factorisation of all - 0.00658021 s
+
+FlatSimpolified determination - 0.0215737 s
+
+Approximated 1-level tree for the accurracy=1e-3 , range angular frequency from 0 to 1e6.
+D(2+1)(2+1) = 
+(#0)
+
+D(2+1)(8+7) = 
+(#0)
+
+D(2+0)(2+0),(2+1)(2+1) = 
+s^4*(4)*(#13)
+ + s^3*(4)*(#10)
+ + s^2*(4)*(#3)
+(#0)
+
+D(2+0)(7+8),(2+1)(2+1) = 
+(#0)
+
+D(1+0)(7+8),(2+0)(2-1) = 
+s^2*(8)*(#14)
+(#0)
+
+#2: C2[#0, #1, #0]
+#3: C1[#0, #2, #0]
+#4: C2[#1, #0, #0]
+#5: C1[#0, #4, #0]
+#6: R2[#0, #5, #0]
+#7: C1[#2, #4, #0]
+#8: C1[#2, #0, #0]
+#9: k[(-1)*#8, #7]
+#10: R1[#0, #9, #6]
+#11: C1[#4, #0, #0]
+#12: R2[#0, #11, #0]
+#13: R1[#0, #12, #0]
+#14: k[#3, #0]
+Nof of multiplications is 0(0) and additions is 0
+
+X7 = C1 * C2
+X10 = C1 * k
+X11 =  - X10 + C1 + C2
+X12 = X11 * R1
+X13 = C2 * R2
+X14 = X13 + X12
+X15 = X14 * C1 * C2
+X16 = C1 * C1 * C2 * C2 * R1 * R2
+X17 = C1 * C2 * k
+D(2+1)(2+1) = 
+D(2+1)(8+7) = 
+D(2+0)(2+0),(2+1)(2+1) = (4)*s^4*X16(4)*s^3*X15(4)*s^2*X7
+D(2+0)(7+8),(2+1)(2+1) = 
+D(1+0)(7+8),(2+0)(2-1) = (8)*s^2*X17
+Developed values are:
+X7 = C1 * C2
+X15 = (C2 * R2 + ( - C1 * k + C1 + C2) * R1) * C1 * C2
+X16 = C1 * C1 * C2 * C2 * R1 * R2
+X17 = C1 * C2 * k
+
+Transfer function after simplifications:
+
+             
+K_ud1 = 
+             
+
+              s^(2)*8*1
+K_ud2 = (k) * ---------------------------------------------------
+               s^(4)*4*C1 * C2 * R1 * R2 + s^(3)*4*X14 + s^(2)*4*1
+
+       1           
+K_uc = ------- * ---------------------------------------------------
+       C1 * C2     s^(4)*4*C1 * C2 * R1 * R2 + s^(3)*4*X14 + s^(2)*4*1
+
+
+Flat vertices report - 0.00121378 s

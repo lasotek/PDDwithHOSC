@@ -1,0 +1,63 @@
+
+Preparing of model: E:\VS\BNPDDEngine\SimplyDDCCModel\Release\DDCC_ggnd_x_y1_y2_y3_z.pddm - 0.000980754 s
+
+Preparing of model: E:\VS\BNPDDEngine\SimplyDDCCModel\Release\DDCC_TE_ggnd_x_y1_y2_y3_z.pddm - 0.00293842 s
+
+Preparing of model: E:\VS\BNPDDEngine\SimplyDDCCModel\Release\DDCC_TES_ggnd_x_y1_y2_y3_z.pddm - 0.00170074 s
+SubId: 1
+The subcircuit: DDCC(0, x, y1, y2, y3, z)
+Components:
+Voltage Follower : (In_p = y1, In_n = 0, Out_p = 1, Out_n = 2
+Voltage Follower : (In_p = y2, In_n = 0, Out_p = 3, Out_n = 2
+Voltage Follower : (In_p = y3, In_n = 0, Out_p = 3, Out_n = 0
+Current Follower : (In_p = x, In_n = 1, Out_p = z, Out_n = 0
+D Vertex: 2
+Ext.Par. No:0 represented by: D(z-x)(y2+y1) || -D(z-x)(y3+x)
+No of multiplication is 0(0) and no of additions is 0
+
+SubId: 2
+The subcircuit: DDCC_TE(0, x, y1, y2, y3, z)
+Components:
+Voltage gain: \alpha_1(P=2, R=1, K=y1, L=0) 1
+Voltage gain: \alpha_2(P=2, R=3, K=y2, L=0) 1
+Voltage gain: \alpha_3(P=0, R=3, K=y3, L=0) 1
+Current gain: \beta(P=z, R=0, K=x, L=1) 1
+D Vertex: 2
+2: \alpha_1(3, 7)
+3: \alpha_2(4, 5)
+4: \alpha_3(6, 8)
+5: \beta(EP1, EP2)
+6: \beta(EP3, EP0)
+7: \beta(EP4, EP5)
+8: \beta(EP6, EP7)
+Ext.Par. No:0 represented by: D(z+0)(x+0)
+Ext.Par. No:1 represented by: D(x+0)(y2+0)
+Ext.Par. No:2 represented by: D(z+0)(y2+0)
+Ext.Par. No:3 represented by: D(x+0)(x+0)
+Ext.Par. No:4 represented by: -D(x+0)(y1+0)
+Ext.Par. No:5 represented by: -D(z+0)(y1+0)
+Ext.Par. No:6 represented by: -D(x+0)(y3+0)
+Ext.Par. No:7 represented by: -D(z+0)(y3+0)
+No of multiplication is 7(7) and no of additions is 7
+
+SubId: 3
+The subcircuit: DDCC_TES(0, x, y1, y2, y3, z)
+Components:
+Meta set of Voltage gain:  : \alpha(P=2, R=1, K=y1, L=0) || \alpha(P=2, R=3, K=y2, L=0) || \alpha(P=0, R=3, K=y3, L=0) 1
+Current gain: \beta(P=z, R=0, K=x, L=1) 1
+D Vertex: 2
+2: \alpha(3, 4, 0, 0)
+3: \beta(EP0, EP1)
+4: \beta(EP2, EP3)
+Ext.Par. No:0 represented by: D(x+0)(x+0)
+Ext.Par. No:1 represented by: D(z+0)(x+0)
+Ext.Par. No:2 represented by: D(x+0)(y2+y1) || -D(x+0)(y3+0)
+Ext.Par. No:3 represented by: D(z+0)(y2+y1) || -D(z+0)(y3+0)
+No of multiplication is 3(3) and no of additions is 3
+
+SubId: 0
+Main Circuit
+Components:
+No of multiplication is 0(0) and no of additions is 0
+
+Multilevel result raporting - 0.0006692 s

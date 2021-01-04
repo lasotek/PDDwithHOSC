@@ -1,0 +1,123 @@
+
+Preparing of main results - 0.00275918 s
+SubId: 0
+Main Circuit
+Components:
+Resistance: h_ix(NodeA=B, NodeB=E') 7.5e2
+Resistance: R_B(NodeA=B, NodeB=0) 1e3
+Current gain: h_fe(P=C, R=E, K=E', L=E) 1e2
+Resistance: R_E(NodeA=E, NodeB=0) 1e2
+D Vertex: 0
+D(B+0)(B+0) Vertex: 0
+D(C+0)(C+0) Vertex: 2
+D(C+B)(C+B) Vertex: 3
+D(B+0)(C+0) Vertex: (-1) * 6
+D(C+0)(B+0) Vertex: 0
+D(B+0)(B+0),(C+0)(C+0) Vertex: 4
+2: h_ix(8, 1)
+3: h_ix(7, 1)
+4: h_ix(9, 5)
+5: R_B(0, 1)
+6: R_B(0, 12)
+7: R_B(10, 11)
+8: R_B(10, 1)
+9: R_B(0, 10)
+10: h_fe(13, 13)
+11: h_fe(1, 1)
+12: h_fe(0, 1)
+13: R_E(0, 1)
+No of multiplication is 12(5) and no of additions is 7
+
+Multilevel result raporting - 0.000657253 s
+
+Direct numerical cof/rem value determination - 4.26788e-007 s
+
+Direct numerical cof/rem value determination - 4.26788e-007 s
+
+Direct numerical cof/rem value determination - 0.0003999 s
+
+Direct numerical cof/rem value determination - 7.17003e-005 s
+
+Direct numerical cof/rem value determination - 3.58502e-005 s
+
+Direct numerical cof/rem value determination - 4.26788e-007 s
+
+Direct numerical cof/rem value determination - 6.40182e-005 s
+
+Factorization of cofactor No. 0 s power: 0 - 4.26788e-007 s
+
+Factorization of cofactor No. 1 s power: 0 - 0 s
+
+Factorization of cofactor No. 2 s power: 0 - 3.32894e-005 s
+
+Factorization of cofactor No. 3 s power: 0 - 1.87787e-005 s
+
+Factorization of cofactor No. 4 s power: 0 - 4.69467e-006 s
+
+Factorization of cofactor No. 5 s power: 0 - 4.26788e-007 s
+
+Factorization of cofactor No. 6 s power: 0 - 8.53576e-006 s
+
+Factorisation of all - 0.00323249 s
+
+FlatSimpolified determination - 0.00846107 s
+
+Approximated 1-level tree for the accurracy=0 , range angular frequency from 0 to 0.
+D = 
+(#0)
+
+D(B+0)(B+0) = 
+(#0)
+
+D(C+0)(C+0) = 
+(#5)
+
+D(C+B)(C+B) = 
+(#8)
+
+D(B+0)(C+0) = 
+(-1)*(#10)
+
+D(C+0)(B+0) = 
+(#0)
+
+D(B+0)(B+0),(C+0)(C+0) = 
+(#13)
+
+#2: R_E[#1, #0]
+#3: h_fe[#2, #2]
+#4: R_B[#1, #3]
+#5: h_ix[#1, #4]
+#6: h_fe[#1, #1]
+#7: R_B[#6, #3]
+#8: h_ix[#1, #7]
+#9: h_fe[#1, #0]
+#10: R_B[#9, #0]
+#11: R_B[#3, #0]
+#12: R_B[#1, #0]
+#13: h_ix[#12, #11]
+Nof of multiplications is 0(0) and additions is 0
+
+X6 = h_fe + 1
+X7 = X6 * R_E
+X9 = X7 + h_ix + R_B
+X10 = R_B + R_E
+X11 = X10 * X6
+X12 = X11 + h_ix
+X13 = R_B * h_fe
+X14 = X7 + h_ix
+X15 = X14 * R_B
+D = 
+D(B+0)(B+0) = 
+D(C+0)(C+0) = X9
+D(C+B)(C+B) = X12
+D(B+0)(C+0) =  - X13
+D(C+0)(B+0) = 
+D(B+0)(B+0),(C+0)(C+0) = X15
+Developed values are:
+X9 = ((h_fe + 1) * R_E + h_ix + R_B)
+X12 = ((R_B + R_E) * (h_fe + 1) + h_ix)
+X13 = R_B * h_fe
+X15 = ((h_fe + 1) * R_E + h_ix) * R_B
+
+Flat vertices report - 0.000994842 s

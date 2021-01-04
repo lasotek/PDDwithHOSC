@@ -1,0 +1,158 @@
+
+Preparing of model: E:\VS\BNPDDEngine\SimplyDVCII\Release\DVCII_ggnd_x_yp_yn_zp_zn.pddm - 0.000791261 s
+
+Preparing of model: E:\VS\BNPDDEngine\SimplyDVCII\Release\DVCII_TE_ggnd_x_yp_yn_zp_zn.pddm - 0.00189706 s
+
+Preparing of model: E:\VS\BNPDDEngine\SimplyDVCII\Release\DVCII_TEA_ggnd_x_yp_yn_zp_zn.pddm - 0.00304554 s
+
+Preparing of main results - 0.00526697 s
+SubId: 1
+The subcircuit: DVCII(0, x, yp, yn, zp, zn)
+Components:
+Voltage Follower : (In_p = yp, In_n = 0, Out_p = 1, Out_n = 2
+Voltage Follower : (In_p = yn, In_n = 0, Out_p = 0, Out_n = 2
+Current Follower : (In_p = x, In_n = 1, Out_p = zp, Out_n = zn
+D Vertex: 2
+Ext.Par. No:0 represented by: -D(x+0)(yp+0) || D(zn+zp)(yp+0) || D(x+0)(yn-x) || -D(zn+zp)(yn-x)
+No of multiplication is 0(0) and no of additions is 0
+
+SubId: 2
+The subcircuit: DVCII_TE(0, x, yp, yn, zp, zn)
+Components:
+Meta set of Current gain:  : \beta(P=zp, R=0, K=1', L=1) || \beta(P=0, R=zn, K=x, L=1') 1
+Meta set of Voltage gain:  : \alpha(P=2, R=1, K=yp, L=0) || \alpha(P=2, R=0, K=yn, L=0) 1
+D Vertex: 2
+2: \beta(3, 4, 0)
+3: \alpha(EP0, EP1, 0)
+4: \alpha(EP2, EP3, 0)
+Ext.Par. No:0 represented by: D(x+0)(x+0)
+Ext.Par. No:1 represented by: D(x+0)(yn+yp)
+Ext.Par. No:2 represented by: -D(zn+zp)(x+0)
+Ext.Par. No:3 represented by: -D(zn+zp)(yn+yp)
+No of multiplication is 3(3) and no of additions is 3
+
+SubId: 3
+The subcircuit: DVCII_TEA(0, x, yp, yn, zp, zn)
+Components:
+Current gain: \beta_p(P=zp, R=0, K=1', L=1) 1
+Current gain: \beta_n(P=0, R=zn, K=x, L=1') 1
+Voltage gain: \alpha_p(P=2, R=1, K=yp, L=0) 1
+Voltage gain: \alpha_n(P=2, R=0, K=yn, L=0) 1
+D Vertex: 2
+2: \beta_p(3, 4)
+3: \beta_n(6, 5)
+4: \alpha_p(7, EP3)
+5: \alpha_p(8, EP1)
+6: \alpha_p(9, EP8)
+7: \alpha_n(EP2, EP0)
+8: \alpha_n(EP4, EP5)
+9: \alpha_n(EP6, EP7)
+Ext.Par. No:0 represented by: D(zp+0)(yn+0)
+Ext.Par. No:1 represented by: D(zn+0)(yp+0)
+Ext.Par. No:2 represented by: D(zp+0)(x+0)
+Ext.Par. No:3 represented by: -D(zp+0)(yp+0)
+Ext.Par. No:4 represented by: -D(zn+0)(x+0)
+Ext.Par. No:5 represented by: -D(zn+0)(yn+0)
+Ext.Par. No:6 represented by: D(x+0)(x+0)
+Ext.Par. No:7 represented by: D(x+0)(yn+0)
+Ext.Par. No:8 represented by: -D(x+0)(yp+0)
+No of multiplication is 8(8) and no of additions is 8
+
+SubId: 0
+Main Circuit
+Components:
+Macromodel : M1(0=0, x=4, yp=5, yn=1, zp=3, zn=0) DVCII
+Macromodel : M2(0=0, x=6, yp=2, yn=3, zp=5, zn=0) DVCII
+Capacitance: C1(NodeA=3, NodeB=0) 1e-9
+Resistance: R3(NodeA=4, NodeB=0) 1e3
+Resistance: R1(NodeA=3, NodeB=0) 1e3
+Resistance: R2(NodeA=6, NodeB=0) 1e3
+Capacitance: C2(NodeA=5, NodeB=0) 1e-9
+D(1+0)(1+0),(2+0)(2+0) Vertex: 2
+D(1+0)(3+0),(2+0)(2+0) Vertex: (-1) * 6
+D(1+0)(1+0),(2+0)(3+0) Vertex: 5
+2: C1(3, 4)
+3: R3(5, 7)
+4: R3(0, 6)
+5: R1(0, 1)
+6: R1(0, 7)
+7: R2(0, 8)
+8: C2(0, 1)
+No of multiplication is 7(5) and no of additions is 2
+
+Multilevel result raporting - 0.000859547 s
+
+Direct numerical cof/rem value determination - 0.000407581 s
+
+D(1+0)(1+0),(2+0)(2+0)= + s^2*1e-9 + s^1*1e-3 + 1e3
+List of roots:
+-5e5+j*8.66025e5
+-5e5-j*8.66025e5
+
+
+Direct numerical cof/rem value determination - 2.81679e-005 s
+
+Direct numerical cof/rem value determination - 1.23768e-005 s
+
+Factorization of cofactor No. 0 s power: 0 - 1.28036e-005 s
+
+Factorization of cofactor No. 0 s power: 1 - 5.975e-006 s
+
+Factorization of cofactor No. 0 s power: 2 - 6.40179e-006 s
+
+Factorization of cofactor No. 1 s power: 0 - 0 s
+
+Factorization of cofactor No. 1 s power: 1 - 5.12143e-006 s
+
+Factorization of cofactor No. 2 s power: 0 - 1.28036e-006 s
+
+Factorisation of all - 0.00236013 s
+
+FlatSimpolified determination - 0.0128181 s
+
+Approximated 1-level tree for the accurracy=1e-3 , range angular frequency from 0 to 1e6.
+D(1+0)(1+0),(2+0)(2+0) = 
+s^2*(#8)
+ + s^1*(#5)
+ + (#2)
+
+D(1+0)(3+0),(2+0)(2+0) = 
+s^1*(-1)*(#6)
+(#0)
+
+D(1+0)(1+0),(2+0)(3+0) = 
+(#2)
+
+#2: R1[#1, #0]
+#3: C2[#1, #0]
+#4: R2[#3, #0]
+#5: R3[#4, #0]
+#6: R1[#4, #0]
+#7: R3[#6, #0]
+#8: C1[#7, #0]
+Nof of multiplications is 0(0) and additions is 0
+
+X7 = C2 * R3 * R2
+X8 = C2 * R3 * R1 * R2 * C1
+X9 = C2 * R1 * R2
+D(1+0)(1+0),(2+0)(2+0) = s^2*X8 + s^1*X7 + R1
+D(1+0)(3+0),(2+0)(2+0) =  - s^1*X9
+D(1+0)(1+0),(2+0)(3+0) = R1
+Developed values are:
+X4 = R1
+X7 = C2 * R3 * R2
+X8 = C2 * R3 * R1 * R2 * C1
+X9 = C2 * R1 * R2
+
+Transfer function after simplifications:
+
+                         - s*1
+K_u1 = (C2 * R1 * R2) * --------------------------------------------------
+                                    s^(2)*C2 * R3 * R1 * R2 * C1 + s*C2 * R3 * R2 + R1
+
+              1
+K_u2 = (R1) * --------------------------------------------------
+                s^(2)*C2 * R3 * R1 * R2 * C1 + s*C2 * R3 * R2 + R1
+
+
+Flat vertices report - 0.000866375 s

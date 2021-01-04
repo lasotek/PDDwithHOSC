@@ -1,0 +1,121 @@
+
+Preparing of model: E:\VS\BNPDDEngine\Meissner\Release\Tr_ggnd_p1_r1_p2_r2.pddm - 0.00353037 s
+
+Preparing of main results - 0.00400453 s
+SubId: 1
+The subcircuit: Tr(0, p1, r1, p2, r2)
+Components:
+Inductance: L1(NodeA=r1, NodeB=r11) 1e-3
+Meta set of Transimpedance:  : [M^1](P=p1, R=r12, K=r22, L=r21) || [M^1](P=p2, R=r22, K=r12, L=r11) 1e-4
+Inductance: L2(NodeA=r2, NodeB=r21) 1e-3
+D Vertex: 2
+2: L1(3, 4)
+3: [M^1](5, EP4, (-1)*EP1)
+4: L2(EP0, EP1)
+5: L2(EP2, EP3)
+Ext.Par. No:0 represented by: D(r2+p2)(r2+p2)
+Ext.Par. No:1 represented by: D
+Ext.Par. No:2 represented by: D(r1+p1)(r1+p1),(r2+p2)(r2+p2)
+Ext.Par. No:3 represented by: D(r1+p1)(r1+p1)
+Ext.Par. No:4 represented by: D(r2+p2)(r1+p1) || D(r1+p1)(r2+p2)
+No of multiplication is 6(5) and no of additions is 5
+
+SubId: 0
+Main Circuit
+Components:
+Current gain: h_fe(P=C, R=E, K=E', L=E) 1e2
+Resistance: h_ix(NodeA=B, NodeB=E') 7.5e2
+Resistance: R_E(NodeA=E, NodeB=0) 1e2
+Capacitance: C_0(NodeA=C, NodeB=0) 1e-9
+Macromodel : T(0=0, p1=C, r1=0, p2=0, r2=B) Tr
+Resistance: R_B(NodeA=B, NodeB=0) 1e3
+D Vertex: 2
+2: h_fe(3, 4)
+3: h_ix(5, 7)
+4: R_E(9, 7)
+5: R_E(6, 7)
+6: C_0(8, 12)
+7: C_0(10, 11)
+8: T(3 = 13)
+9: T(4 = 13)
+10: T(2 = 13, 3 = 1)
+11: T(0 = 13, 1 = 1)
+12: T(1 = 13)
+13: R_B(0, 1)
+No of multiplication is 13(10) and no of additions is 8
+
+Multilevel result raporting - 0.000619266 s
+
+Direct numerical cof/rem value determination - 0.0016299 s
+
+Factorization of cofactor No. 0 s power: 0 - 2.60339e-005 s
+
+Factorization of cofactor No. 0 s power: 1 - 2.17661e-005 s
+
+Factorization of cofactor No. 0 s power: 2 - 1.53643e-005 s
+
+Factorization of cofactor No. 0 s power: 3 - 3.41429e-005 s
+
+Factorisation of all - 0.00196663 s
+
+FlatSimpolified determination - 0.010344 s
+
+Approximated 1-level tree for the accurracy=2.22045e-16 , range angular frequency from 0 to 1e6.
+D = 
+s^3*(-1)*(#27)
+ + s^2*(#17)
+ + s^1*(#12)
+ + (#5)
+
+#2: R_B[#1, #0]
+#3: R_E[#2, #0]
+#4: h_ix[#2, #3]
+#5: h_fe[#3, #4]
+#6: T.L2[#2, #0]
+#7: T.L2[#1, #0]
+#8: R_E[#7, #6]
+#9: h_ix[#7, #8]
+#10: T.[M^1][#0, #2, #0]
+#11: R_E[#7, #10]
+#12: h_fe[#11, #9]
+#13: T.L1[#2, #0]
+#14: C_0[#13, #0]
+#15: R_E[#14, #0]
+#16: h_ix[#14, #15]
+#17: h_fe[#15, #16]
+#18: T.[M^1][#2, #0, #0]
+#19: T.L1[(-1)*#6, #18]
+#20: C_0[#19, #0]
+#21: T.[M^1][#1, #0, #0]
+#22: T.L1[(-1)*#7, #21]
+#23: C_0[#22, #0]
+#24: R_E[#23, #20]
+#25: h_ix[#23, #24]
+#26: R_E[#23, #0]
+#27: h_fe[#26, #25]
+Nof of multiplications is 0(0) and additions is 0
+
+X11 = R_E * h_fe
+X12 = X11 + R_E + h_ix
+X13 = X12 * R_B
+X14 = R_E * T.L2
+X15 = T.[M^1] * R_B
+X16 = X15 + X14
+X18 = R_E + R_B + h_ix
+X19 = X16 * h_fe
+X20 = X18 * T.L2
+X21 = X20 + X19
+X22 = X12 * C_0 * T.L1 * R_B
+X23 = T.L1 * T.L2
+X24 = T.[M^1] * T.[M^1]
+X25 = X24 - X23
+X26 = X11 + R_E + R_B + h_ix
+X27 = X26 * X25 * C_0
+D =  - s^3*X27 + s^2*X22 + s^1*X21 + X13
+Developed values are:
+X13 = (R_E * h_fe + R_E + h_ix) * R_B
+X21 = ((R_E + R_B + h_ix) * T.L2 + (T.[M^1] * R_B + R_E * T.L2) * h_fe)
+X22 = (R_E * h_fe + R_E + h_ix) * C_0 * T.L1 * R_B
+X27 = (R_E * h_fe + R_E + R_B + h_ix) * (T.[M^1] * T.[M^1] - T.L1 * T.L2) * C_0
+
+Flat vertices report - 0.000932527 s

@@ -1,0 +1,5 @@
+# PDD with HOSC - A New C++ Library for the Symbolic Analysis of Electic Networks 
+The C++ library to the Symbolic Circuit Analysis based on Parameter Decision Diagrams with Higher Order Summative Cofactors. 
+This is a version under development. The library and the algorithm have been created since 2009. Thus, the original library (in the sub-folder [_Old_version_But_Working](_Old_version_But_Working/)) contains a lot of fragment of code that is not in use anymore, which is unnecessary burden. Today, the size of the code is so large that even authors have problems with the orientation in the code. The only advantage of this code is that it can be compiled to obtain quite optimally working program. However optimization takes ages. Thus, the whole code is going to be rewritten and adopted to new C++ standards (C++17, C++2a). The results of rearrangement should be gradually available, with examples how to use the library.  New vesion is available in [_New_version](_New_version).
+
+Folder [Examples](./Examples/) constains examples from [_Old_version_But_Working](_Old_version_But_Working/)), but post processed and documented in *.docx files.  

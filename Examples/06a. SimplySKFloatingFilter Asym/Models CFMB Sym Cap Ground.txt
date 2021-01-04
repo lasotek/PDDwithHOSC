@@ -1,0 +1,229 @@
+
+Preparing of main results - 0.0104196 s
+SubId: 0
+Main Circuit
+Components:
+Voltage Follower : (In_p = 8, In_n = 0, Out_p = 0, Out_n = 7
+Meta set of Resistance:  : R1(NodeA=1, NodeB=3) || R1(NodeA=2, NodeB=4) 1e3
+Meta set of Capacitance:  : C1(NodeA=3, NodeB=7) || C1(NodeA=4, NodeB=8) 1e-9
+Voltage gain: k(P=8, R=7, K=5, L=6) 1e1
+Meta set of Resistance:  : R2(NodeA=3, NodeB=5) || R2(NodeA=4, NodeB=6) 1e3
+Meta set of Capacitance:  : C2(NodeA=5, NodeB=0) || C2(NodeA=6, NodeB=0) 1e-9
+D(2+1)(2+1) Vertex: (4) * 2
+D(2+1)(8+7) Vertex: (4) * 7
+D(2+0)(2+0),(2+1)(2+1) Vertex: (2) * 3
+D(2+0)(7+8),(2+1)(2+1) Vertex: 0
+D(1+0)(7+8),(2+0)(2-1) Vertex: (4) * 4
+2: R1(5, 6, 0)
+3: R1(16, 8, 6)
+4: R1(10, 7, 0)
+5: C1(14, 16, 0)
+6: C1(17, 12, 11)
+7: C1(13, 10, 0)
+8: C1(2*14, 9, 0)
+9: k(2*16, (-1)*15)
+10: k(0, 15)
+11: k(16, (-1)*15)
+12: k(2*14, (-1)*18)
+13: k(0, 18)
+14: R2(18, 17, 0)
+15: R2(1, 18, 0)
+16: R2(1, 2*18, 17)
+17: C2(0, 0, 1)
+18: C2(0, 1, 0)
+No of multiplication is 27(18) and no of additions is 16
+
+Multilevel result raporting - 0.00083437 s
+
+Direct numerical cof/rem value determination - 0.000578724 s
+
+D(2+1)(2+1)= + s^4*4e-27 - s^3*2e-20 - s^2*5.2e-14 + s^1*8e-9
+List of roots:
+-2e6
+
+1.45898e5
+6.8541e6
+
+
+Direct numerical cof/rem value determination - 9.00522e-005 s
+
+Direct numerical cof/rem value determination - 0.000128463 s
+
+Direct numerical cof/rem value determination - 4.26788e-007 s
+
+Direct numerical cof/rem value determination - 2.60341e-005 s
+
+Factorization of cofactor No. 0 s power: 0 - 0 s
+
+Factorization of cofactor No. 0 s power: 1 - 1.74983e-005 s
+
+Factorization of cofactor No. 0 s power: 2 - 3.58502e-005 s
+
+Factorization of cofactor No. 0 s power: 3 - 2.30465e-005 s
+
+Factorization of cofactor No. 0 s power: 4 - 8.96254e-006 s
+
+Factorization of cofactor No. 1 s power: 0 - 0 s
+
+Factorization of cofactor No. 1 s power: 1 - 1.10965e-005 s
+
+Factorization of cofactor No. 1 s power: 2 - 1.19501e-005 s
+
+Factorization of cofactor No. 2 s power: 0 - 1.28036e-006 s
+
+Factorization of cofactor No. 2 s power: 1 - 1.45108e-005 s
+
+Factorization of cofactor No. 2 s power: 2 - 3.58502e-005 s
+
+Factorization of cofactor No. 2 s power: 3 - 1.92054e-005 s
+
+Factorization of cofactor No. 2 s power: 4 - 7.68218e-006 s
+
+Factorization of cofactor No. 3 s power: 0 - 4.26788e-007 s
+
+Factorization of cofactor No. 4 s power: 0 - 2.13394e-006 s
+
+Factorization of cofactor No. 4 s power: 1 - 1.06697e-005 s
+
+Factorization of cofactor No. 4 s power: 2 - 5.97503e-006 s
+
+Factorisation of all - 0.0115732 s
+
+FlatSimpolified determination - 0.0453462 s
+
+Approximated 1-level tree for the accurracy=1e-3 , range angular frequency from 0 to 1e6.
+D(2+1)(2+1) = 
+s^4*(4)*(#18)
+ + s^3*(4)*(#16)
+ + s^2*(4)*(#11)
+ + s^1*(4)*(#3)
+(#0)
+
+D(2+1)(8+7) = 
+s^2*(4)*(#23)
+ + s^1*(4)*(#21)
+(#0)
+
+D(2+0)(2+0),(2+1)(2+1) = 
+s^4*(2)*(#31)
+ + s^3*(2)*(#30)
+ + s^2*(2)*(#29)
+ + s^1*(2)*(#26)
+ + (2)*(#1)
+
+D(2+0)(7+8),(2+1)(2+1) = 
+(#0)
+
+D(1+0)(7+8),(2+0)(2-1) = 
+s^2*(4)*(#33)
+ + s^1*(4)*(#32)
+ + (4)*(#20)
+
+#2: C2[#0, #1, #0]
+#3: C1[#0, #1, #2]
+#4: C2[#1, #0, #0]
+#5: R2[#0, #4, #0]
+#6: R2[#0, #2, #0]
+#7: C1[#0, (2)*#6, #5]
+#8: k[(-1)*#2, (2)*#2]
+#9: k[(-1)*#1, #1]
+#10: C1[#9, #8, #4]
+#11: R1[#0, #10, #7]
+#12: R2[#4, #0, #0]
+#13: C1[#0, #12, #0]
+#14: k[(-1)*#6, (2)*#6]
+#15: C1[#14, (2)*#5, #0]
+#16: R1[#0, #15, #13]
+#17: C1[#12, #0, #0]
+#18: R1[#0, #17, #0]
+#19: k[#2, #0]
+#20: k[#1, #0]
+#21: C1[#0, #20, #19]
+#22: k[#6, #0]
+#23: C1[#0, #22, #0]
+#24: k[(-1)*#1, (2)*#1]
+#25: C1[#0, #24, (2)*#2]
+#26: R1[#0, #25, (2)*#6]
+#27: k[(-1)*#6, (4)*#6]
+#28: C1[#0, #27, (2)*#5]
+#29: R1[#10, #28, #12]
+#30: R1[#15, (2)*#13, #0]
+#31: R1[#17, #0, #0]
+#32: R1[#0, #21, #22]
+#33: R1[#0, #23, #0]
+Nof of multiplications is 0(0) and additions is 0
+
+X7 = C1 + C2
+X8 =  - k + 1
+X9 = k - (2)*1
+X10 = X8 * C1
+X11 = X9 * C2
+X12 = X11 - X10
+X13 = C2 * C2
+X14 = X12 * C1
+X15 =  - X14 + X13
+X16 = R2 * C2
+X18 = (2)*C1 + C2
+X19 = X15 * R1
+X20 = X18 * R2 * C2
+X21 = X20 + X19
+X22 = X9 * C1
+X23 = X22 - (2)*C2
+X24 = R2 * R2 * C2 * C2
+X26 = X23 * R1
+X27 =  - X26 + X16
+X28 = X27 * C1 * R2 * C2
+X29 = R1 * C1 * C1 * R2 * R2 * C2 * C2
+X30 = X7 * k
+X32 = k * C1 * R2 * C2
+X33 = X26 - (2)*X16
+X34 = k - (4)*1
+X35 = X34 * C1
+X36 = X35 - (2)*C2
+X37 = X36 * R2 * C2
+X38 = X37 - X19
+X39 = X38 * R1
+X40 =  - X39 + X24
+X41 = X33 * R1 * C1 * R2 * C2
+X42 = R1 * R1 * C1 * C1 * R2 * R2 * C2 * C2
+X43 = X7 * R1
+X44 = X43 + X16
+X45 = X44 * k
+X46 = R1 * k * C1 * R2 * C2
+D(2+1)(2+1) = (4)*s^4*X29(4)*s^3*X28(4)*s^2*X21(4)*s^1*X7
+D(2+1)(8+7) = (4)*s^2*X32(4)*s^1*X30
+D(2+0)(2+0),(2+1)(2+1) = (2)*s^4*X42 - (2)*s^3*X41(2)*s^2*X40 - (2)*s^1*X33(2)*1
+D(2+0)(7+8),(2+1)(2+1) = 
+D(1+0)(7+8),(2+0)(2-1) = (4)*s^2*X46(4)*s^1*X45(4)*k
+Developed values are:
+X1 = 1
+X5 = k
+X7 = (C1 + C2)
+X21 = (((2)*C1 + C2) * R2 * C2 + ( - ((k - (2)*1) * C2 - ( - k + 1) * C1) * C1 + C2 * C2) * R1)
+X28 = ( - ((k - (2)*1) * C1 - (2)*C2) * R1 + R2 * C2) * C1 * R2 * C2
+X29 = R1 * C1 * C1 * R2 * R2 * C2 * C2
+X30 = (C1 + C2) * k
+X32 = k * C1 * R2 * C2
+X33 = (((k - (2)*1) * C1 - (2)*C2) * R1 - (2)*R2 * C2)
+X40 = ( - (((k - (4)*1) * C1 - (2)*C2) * R2 * C2 - ( - ((k - (2)*1) * C2 - ( - k + 1) * C1) * C1 + C2 * C2) * R1) * R1 + R2 * R2 * C2 * C2)
+X41 = (((k - (2)*1) * C1 - (2)*C2) * R1 - (2)*R2 * C2) * R1 * C1 * R2 * C2
+X42 = R1 * R1 * C1 * C1 * R2 * R2 * C2 * C2
+X45 = ((C1 + C2) * R1 + R2 * C2) * k
+X46 = R1 * k * C1 * R2 * C2
+
+Transfer function after simplifications:
+
+              s^(2)*4*C1 * R2 * C2 + s*4*X7
+K_ud1 = (k) * --------------------------------------------------------------------------------------------
+               s^(4)*4*R1 * C1 * C1 * R2 * R2 * C2 * C2 + s^(3)*4*X27 * C1 * R2 * C2 + s^(2)*4*X21 + s*4*X7
+
+              s^(2)*4*R1 * C1 * R2 * C2 + s*4*X44 + 4*1
+K_ud2 = (k) * -------------------------------------------------------------------------------------------------------------
+               s^(4)*2*R1 * R1 * C1 * C1 * R2 * R2 * C2 * C2 - s^(3)*2*X33 * R1 * C1 * R2 * C2 + s^(2)*2*X40 - s*2*X33 + 2*1
+
+            
+K_uc = -------------------------------------------------------------------------------------------------------------
+            s^(4)*2*R1 * R1 * C1 * C1 * R2 * R2 * C2 * C2 - s^(3)*2*X33 * R1 * C1 * R2 * C2 + s^(2)*2*X40 - s*2*X33 + 2*1
+
+
+Flat vertices report - 0.0020473 s

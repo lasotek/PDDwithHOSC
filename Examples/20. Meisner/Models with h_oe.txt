@@ -1,0 +1,167 @@
+
+Preparing of model: E:\VS\BNPDDEngine\Meissner\Release\Tr_ggnd_p1_r1_p2_r2.pddm - 0.00288422 s
+
+Preparing of main results - 0.0049473 s
+SubId: 1
+The subcircuit: Tr(0, p1, r1, p2, r2)
+Components:
+Inductance: L1(NodeA=r1, NodeB=r11) 1e-3
+Meta set of Transimpedance:  : [M^1](P=p1, R=r12, K=r22, L=r21) || [M^1](P=p2, R=r22, K=r12, L=r11) 1e-4
+Inductance: L2(NodeA=r2, NodeB=r21) 1e-3
+D Vertex: 2
+2: L1(3, 4)
+3: [M^1](5, EP4, (-1)*EP1)
+4: L2(EP0, EP1)
+5: L2(EP2, EP3)
+Ext.Par. No:0 represented by: D(r2+p2)(r2+p2)
+Ext.Par. No:1 represented by: D
+Ext.Par. No:2 represented by: D(r1+p1)(r1+p1),(r2+p2)(r2+p2)
+Ext.Par. No:3 represented by: D(r1+p1)(r1+p1)
+Ext.Par. No:4 represented by: D(r2+p2)(r1+p1) || D(r1+p1)(r2+p2)
+No of multiplication is 6(5) and no of additions is 5
+
+SubId: 0
+Main Circuit
+Components:
+Current gain: h_fe(P=C, R=E, K=E', L=E) 1e2
+Resistance: h_ix(NodeA=B, NodeB=E') 7.5e2
+Conductance: h_oe(NodeA=C, NodeB=E) 7.5e2
+Resistance: R_E(NodeA=E, NodeB=0) 1e2
+Macromodel : T(0=0, p1=C, r1=0, p2=0, r2=B) Tr
+Resistance: R_B(NodeA=B, NodeB=0) 1e3
+Capacitance: C_0(NodeA=C, NodeB=0) 1e-9
+D Vertex: 2
+2: h_fe(3, 9)
+3: h_ix(4, 5)
+4: h_oe(8, 6)
+5: h_oe(12, 7)
+6: R_E(10, 11)
+7: R_E(13, 12)
+8: R_E(14, 12)
+9: R_E(15, 12)
+10: T(1 = 16)
+11: T(0 = 16, 1 = 17, 3 = 16, 4 = (-2)*16)
+12: T(0 = 18, 1 = 19, 2 = 16, 3 = 1)
+13: T(0 = 16, 1 = 1)
+14: T(1 = 18, 3 = 16)
+15: T(4 = 16)
+16: R_B(0, 1)
+17: R_B(1, 19)
+18: R_B(0, 19)
+19: C_0(0, 1)
+No of multiplication is 26(21) and no of additions is 17
+
+Multilevel result raporting - 0.000643593 s
+
+Direct numerical cof/rem value determination - 0.00142803 s
+
+Factorization of cofactor No. 0 s power: 0 - 2.68875e-005 s
+
+Factorization of cofactor No. 0 s power: 1 - 3.54232e-005 s
+
+Factorization of cofactor No. 0 s power: 2 - 4.73732e-005 s
+
+Factorization of cofactor No. 0 s power: 3 - 4.82268e-005 s
+
+Factorisation of all - 0.001708 s
+
+FlatSimpolified determination - 0.00838336 s
+
+Approximated 1-level tree for the accurracy=2.22045e-16 , range angular frequency from 0 to 1e6.
+D = 
+s^3*(-1)*(#47)
+ + s^2*(#34)
+ + s^1*(#20)
+ + (#6)
+
+#2: R_B[#1, #0]
+#3: R_E[#2, #0]
+#4: h_oe[#3, #2]
+#5: h_ix[#4, #3]
+#6: h_fe[#3, #5]
+#7: T.L2[#2, #0]
+#8: T.L2[#1, #0]
+#9: R_E[#8, #7]
+#10: T.[M^1][#0, (-2)*#2, #7]
+#11: T.L1[#2, #10]
+#12: R_E[#11, #0]
+#13: h_oe[#12, #9]
+#14: T.L1[#2, #0]
+#15: R_E[#8, #14]
+#16: h_oe[#15, #8]
+#17: h_ix[#16, #13]
+#18: T.[M^1][#0, #2, #0]
+#19: R_E[#8, #18]
+#20: h_fe[#19, #17]
+#21: C_0[#1, #0]
+#22: R_B[#21, #0]
+#23: T.L1[#22, #0]
+#24: R_E[#23, #0]
+#25: T.[M^1][#2, #0, #0]
+#26: T.L1[(-1)*#7, #25]
+#27: T.[M^1][#1, #0, #0]
+#28: T.L1[(-1)*#8, #27]
+#29: R_E[#28, #26]
+#30: h_oe[(-1)*#29, #24]
+#31: R_E[(-1)*#23, #28]
+#32: h_oe[(-1)*#31, #23]
+#33: h_ix[#32, #30]
+#34: h_fe[#24, #33]
+#35: T.[M^1][#22, #0, #0]
+#36: T.L2[#22, #0]
+#37: T.L1[(-1)*#36, #35]
+#38: T.[M^1][#21, #0, #0]
+#39: T.L2[#21, #0]
+#40: T.L1[(-1)*#39, #38]
+#41: R_E[#40, #37]
+#42: R_E[#37, #0]
+#43: h_oe[#42, #41]
+#44: R_E[#40, #0]
+#45: h_oe[#44, #40]
+#46: h_ix[#45, #43]
+#47: h_fe[#44, #46]
+Nof of multiplications is 0(0) and additions is 0
+
+X11 = h_oe * R_E
+X12 = X11 + 1
+X13 = X12 * h_ix
+X15 = R_E * h_fe
+X16 = X15 + X13 + R_E
+X17 = X16 * R_B
+X18 = T.L2 * R_E
+X19 = T.[M^1] * R_B
+X20 = X19 + X18
+X21 = T.L1 * R_B
+X22 = X21 + X18
+X23 = X22 * h_oe
+X24 = X23 + T.L2
+X27 = T.L2 + T.L1 - (2)*T.[M^1]
+X28 = R_E + R_B
+X29 = X27 * h_oe * R_E * R_B
+X30 = X28 * T.L2
+X32 = X24 * h_ix
+X34 = X20 * h_fe
+X35 = X34 + X32 + X30 + X29
+X36 = T.L2 * T.L1
+X37 = T.[M^1] * T.[M^1]
+X38 = X37 - X36
+X39 = C_0 * T.L1 * R_E * R_B
+X40 =  - X39 + X37 - X36
+X41 = X40 * h_oe
+X42 = C_0 * T.L1 * R_B
+X43 = X42 - X41
+X44 = X38 * X28 * h_oe
+X46 = X43 * h_ix
+X48 = C_0 * T.L1 * R_E * h_fe * R_B
+X49 = X48 + X46 - X44 + X39
+X50 = h_oe * R_E * R_B
+X53 = X50 + X15 + X13 + R_E + R_B
+X54 = X53 * X38 * C_0
+D =  - s^3*X54 + s^2*X49 + s^1*X35 + X17
+Developed values are:
+X17 = (R_E * h_fe + (h_oe * R_E + 1) * h_ix + R_E) * R_B
+X35 = ((T.[M^1] * R_B + T.L2 * R_E) * h_fe + ((T.L1 * R_B + T.L2 * R_E) * h_oe + T.L2) * h_ix + (R_E + R_B) * T.L2 + (T.L2 + T.L1 - (2)*T.[M^1]) * h_oe * R_E * R_B)
+X49 = (C_0 * T.L1 * R_E * h_fe * R_B + (C_0 * T.L1 * R_B - ( - C_0 * T.L1 * R_E * R_B + T.[M^1] * T.[M^1] - T.L2 * T.L1) * h_oe) * h_ix - (T.[M^1] * T.[M^1] - T.L2 * T.L1) * (R_E + R_B) * h_oe + C_0 * T.L1 * R_E * R_B)
+X54 = (h_oe * R_E * R_B + R_E * h_fe + (h_oe * R_E + 1) * h_ix + R_E + R_B) * (T.[M^1] * T.[M^1] - T.L2 * T.L1) * C_0
+
+Flat vertices report - 0.00120695 s

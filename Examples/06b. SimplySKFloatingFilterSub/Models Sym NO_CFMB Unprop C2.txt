@@ -1,0 +1,232 @@
+
+Preparing of model: E:\VS\BNPDDEngine\SimplySKFloatingFilterSub\Release\Whole_ggnd_1_2_7_8.pddm - 0.00730277 s
+
+Preparing of main results - 0.000942347 s
+SubId: 1
+The subcircuit: Whole(0, 1, 2, 7, 8)
+Components:
+Voltage gain: k(P=8, R=7, K=5, L=6) 1e1
+Meta set of Resistance:  : R2(NodeA=3, NodeB=5) || R2(NodeA=4, NodeB=6) 1e3
+Meta set of Capacitance:  : C2(NodeA=5, NodeB=0) || C2(NodeA=6, NodeB=0) 1e-9
+Meta set of Capacitance:  : C1(NodeA=3, NodeB=7) || C1(NodeA=4, NodeB=8) 1e-9
+Meta set of Resistance:  : R1(NodeA=1, NodeB=3) || R1(NodeA=2, NodeB=4) 1e3
+D Vertex: (-1) * 2
+2: k(4, (-1)*3)
+3: R2(6, 7, 0)
+4: R2(8, 9, 5)
+5: C2(0, 0, 13)
+6: C2(12, 11, 0)
+7: C2(0, 12, 0)
+8: C2(13, (-1)*10, (-1)*14)
+9: C2(0, 2*13, (-1)*10)
+10: C1(17, 21, 2*20)
+11: C1(22, 19, (-2)*20)
+12: C1(EP10, 18, 15)
+13: C1(EP7, 16, 15)
+14: C1(23, 2*20, 0)
+15: R1(EP0, EP6, EP7)
+16: R1(EP6, 2*EP7, 0)
+17: R1(EP9, (-2)*EP7, 0)
+18: R1(EP2, EP1, 0)
+19: R1(EP11, EP12, EP7)
+20: R1(EP13, EP14, EP8)
+21: R1(EP15, EP5, (-2)*EP7)
+22: R1(EP4, EP10, 0)
+23: R1(EP3, EP9, (-1)*EP7)
+Ext.Par. No:0 represented by: -D(2+1)(2+1),(7+1)(7+1),(8+1)(8+1)
+Ext.Par. No:1 represented by: D(8+7)(7+2) || -D(8+7)(8+1)
+Ext.Par. No:2 represented by: D(7+1)(2+1),(8+1)(7+1) || D(7+2)(2+1),(8+2)(8+1)
+Ext.Par. No:3 represented by: D(1+0)(1+0),(2+0)(2+0),(8+7)(8+7)
+Ext.Par. No:4 represented by: -D(2-1)(1+0),(8+7)(2+0)
+Ext.Par. No:5 represented by: D(1+0)(1+0),(8+7)(8+7) || D(2+0)(2+0),(8+7)(8+7) || 2*D(7+0)(7+0),(8+0)(8+0) || D(7+1)(7+1),(8+1)(8+1) || D(7+2)(7+2),(8+2)(8+2)
+Ext.Par. No:6 represented by: -D(7+1)(7+1),(8+1)(8+1) || -D(7+2)(7+2),(8+2)(8+2)
+Ext.Par. No:7 represented by: -D(8+7)(8+7)
+Ext.Par. No:8 represented by: D(7+0)(7+0),(8+0)(8+0)
+Ext.Par. No:9 represented by: D(1+0)(1+0),(8+7)(8+7) || D(2+0)(2+0),(8+7)(8+7)
+Ext.Par. No:10 represented by: -D(8+7)(2+1)
+Ext.Par. No:11 represented by: D(2-1)(1+0),(7+1)(2+0),(8+1)(7+0) || D(2-1)(1+0),(7-1)(2+0),(8-1)(8+0)
+Ext.Par. No:12 represented by: -D(7+1)(1+0),(8+1)(7+0) || -D(7-1)(1+0),(8-1)(8+0) || D(7-2)(2+0),(8-2)(7+0) || D(7+2)(2+0),(8+2)(8+0)
+Ext.Par. No:13 represented by: D(1+0)(1+0),(2+0)(2+0),(7+0)(7+0),(8+0)(8+0)
+Ext.Par. No:14 represented by: D(1+0)(1+0),(7+0)(7+0),(8+0)(8+0) || D(2+0)(2+0),(7+0)(7+0),(8+0)(8+0)
+Ext.Par. No:15 represented by: D(1+0)(1+0),(7+0)(7+0),(8+0)(8+0) || D(1+0)(1+0),(7+2)(7+2),(8+2)(8+2) || D(2+0)(2+0),(7+0)(7+0),(8+0)(8+0) || D(2+0)(2+0),(7+1)(7+1),(8+1)(8+1)
+No of multiplication is 46(34) and no of additions is 31
+
+SubId: 0
+Main Circuit
+Components:
+Macromodel : M(0=0, 1=1, 2=2, 7=7, 8=8) Whole
+D(2+1)(2+1) Vertex: (2) * 2
+D(2+1)(8+7) Vertex: (4) * 5
+D(2+0)(2+0),(2+1)(2+1) Vertex: 3
+D(2+1)(2+1),(2+0)(7+8) Vertex: 0
+D(1+0)(7+8),(2+0)(2-1) Vertex: (4) * 4
+2: M(14 = 1, 15 = 2*1)
+3: M(5 = 4*1, 6 = (-2)*1, 8 = 1)
+4: M(2 = 1, 12 = 1)
+5: M(11 = 1)
+No of multiplication is 11(0) and no of additions is 4
+
+Multilevel result raporting - 0.000877049 s
+
+Direct numerical cof/rem value determination - 0.00173233 s
+
+Direct numerical cof/rem value determination - 8.96254e-006 s
+
+Direct numerical cof/rem value determination - 1.79251e-005 s
+
+Direct numerical cof/rem value determination - 4.26788e-007 s
+
+Direct numerical cof/rem value determination - 8.96254e-006 s
+
+Factorization of cofactor No. 0 s power: 0 - 4.26788e-007 s
+
+Factorization of cofactor No. 0 s power: 1 - 4.26788e-007 s
+
+Factorization of cofactor No. 0 s power: 2 - 6.40182e-006 s
+
+Factorization of cofactor No. 0 s power: 3 - 3.20091e-005 s
+
+Factorization of cofactor No. 0 s power: 4 - 6.40182e-006 s
+
+Factorization of cofactor No. 1 s power: 0 - 4.26788e-007 s
+
+Factorization of cofactor No. 1 s power: 1 - 4.26788e-007 s
+
+Factorization of cofactor No. 1 s power: 2 - 4.69467e-006 s
+
+Factorization of cofactor No. 2 s power: 0 - 0 s
+
+Factorization of cofactor No. 2 s power: 1 - 1.28036e-006 s
+
+Factorization of cofactor No. 2 s power: 2 - 1.66447e-005 s
+
+Factorization of cofactor No. 2 s power: 3 - 3.03019e-005 s
+
+Factorization of cofactor No. 2 s power: 4 - 1.36572e-005 s
+
+Factorization of cofactor No. 3 s power: 0 - 0 s
+
+Factorization of cofactor No. 4 s power: 0 - 0 s
+
+Factorization of cofactor No. 4 s power: 1 - 4.69467e-006 s
+
+Factorization of cofactor No. 4 s power: 2 - 9.38933e-006 s
+
+Factorisation of all - 0.0117764 s
+
+FlatSimpolified determination - 0.0415986 s
+
+Approximated 1-level tree for the accurracy=1e-3 , range angular frequency from 0 to 1e6.
+D(2+1)(2+1) = 
+s^4*(4)*(#13)
+ + s^3*(4)*(#11)
+ + s^2*(4)*(#3)
+(#0)
+
+D(2+1)(8+7) = 
+s^2*(4)*(#14)
+(#0)
+
+D(2+0)(2+0),(2+1)(2+1) = 
+s^4*(2)*(#27)
+ + s^3*(2)*(#25)
+ + s^2*(2)*(#17)
+ + s^1*(2)*(#2)
+(#0)
+
+D(2+1)(2+1),(2+0)(7+8) = 
+(#0)
+
+D(1+0)(7+8),(2+0)(2-1) = 
+s^2*(4)*(#31)
+ + s^1*(4)*(#28)
+(#0)
+
+#2: M.C1[#0, #1, #0]
+#3: M.C2[#0, #2, #0]
+#4: M.R1[#0, #1, #0]
+#5: M.C1[#4, #0, #0]
+#6: M.C1[#0, #4, #0]
+#7: M.C2[#6, #5, #0]
+#8: M.C2[#2, #0, #0]
+#9: M.R2[#0, #8, #7]
+#10: M.C2[#0, #5, #0]
+#11: M.k[(-1)*#10, #9]
+#12: M.C2[#5, #0, #0]
+#13: M.R2[#0, #12, #0]
+#14: M.k[#3, #0]
+#15: M.C2[#0, (2)*#6, #5]
+#16: M.R2[#0, (2)*#3, #15]
+#17: M.k[(-1)*#5, #16]
+#18: M.R1[#1, #0, #0]
+#19: M.C1[#18, #0, #0]
+#20: M.C1[#0, #18, #0]
+#21: M.C2[#20, #19, #0]
+#22: M.R2[#8, (2)*#7, #21]
+#23: M.C2[#0, #19, #0]
+#24: M.R2[#0, #10, #23]
+#25: M.k[(-1)*#24, #22]
+#26: M.C2[#19, #0, #0]
+#27: M.R2[#12, #26, #0]
+#28: M.k[#2, #0]
+#29: M.C2[#0, #6, #0]
+#30: M.R2[#0, #3, #29]
+#31: M.k[#30, #0]
+Nof of multiplications is 0(0) and additions is 0
+
+X7 = M.C2 * M.C1
+X10 = M.C2 + M.C1
+X12 = M.R2 * M.C2
+X13 = X10 * M.R1
+X15 = M.R1 * M.C1 * M.k
+X16 =  - X15 + X13 + X12
+X17 = X16 * M.C2 * M.C1
+X18 = M.R2 * M.R1 * M.C2 * M.C2 * M.C1 * M.C1
+X19 = M.C2 * M.C1 * M.k
+X20 = (2)*M.C2 + M.C1
+X21 = X20 * M.R1
+X23 = X21 - X15 + (2)*X12
+X24 = X23 * M.C1
+X26 = M.R2 + M.R1
+X27 = (2)*X13 + X12
+X28 = X27 * M.R2
+X29 = X10 * M.R1 * M.R1
+X31 = X26 * M.R1 * M.C1 * M.k
+X32 =  - X31 + X29 + X28
+X33 = X32 * M.C2 * M.C1
+X34 = X26 * M.R2 * M.R1 * M.C2 * M.C2 * M.C1 * M.C1
+X35 = M.C1 * M.k
+X36 = X26 * M.C2 * M.C1 * M.k
+D(2+1)(2+1) = (4)*s^4*X18(4)*s^3*X17(4)*s^2*X7
+D(2+1)(8+7) = (4)*s^2*X19
+D(2+0)(2+0),(2+1)(2+1) = (2)*s^4*X34(2)*s^3*X33(2)*s^2*X24(2)*s^1*M.C1
+D(2+1)(2+1),(2+0)(7+8) = 
+D(1+0)(7+8),(2+0)(2-1) = (4)*s^2*X36(4)*s^1*X35
+Developed values are:
+X3 = M.C1
+X7 = M.C2 * M.C1
+X17 = ( - M.R1 * M.C1 * M.k + (M.C2 + M.C1) * M.R1 + M.R2 * M.C2) * M.C2 * M.C1
+X18 = M.R2 * M.R1 * M.C2 * M.C2 * M.C1 * M.C1
+X19 = M.C2 * M.C1 * M.k
+X24 = (((2)*M.C2 + M.C1) * M.R1 - M.R1 * M.C1 * M.k + (2)*M.R2 * M.C2) * M.C1
+X33 = ( - (M.R2 + M.R1) * M.R1 * M.C1 * M.k + (M.C2 + M.C1) * M.R1 * M.R1 + ((2)*(M.C2 + M.C1) * M.R1 + M.R2 * M.C2) * M.R2) * M.C2 * M.C1
+X34 = (M.R2 + M.R1) * M.R2 * M.R1 * M.C2 * M.C2 * M.C1 * M.C1
+X35 = M.C1 * M.k
+X36 = (M.R2 + M.R1) * M.C2 * M.C1 * M.k
+
+Transfer function after simplifications:
+
+                s^(2)*4*1
+K_ud1 = (M.k) * -----------------------------------------------------------
+                   s^(4)*4*M.R2 * M.R1 * M.C2 * M.C1 + s^(3)*4*X16 + s^(2)*4*1
+
+                s^(2)*4*X26 * M.C2 + s*4*1
+K_ud2 = (M.k) * -----------------------------------------------------------------------------------------
+                   s^(4)*2*X26 * M.R2 * M.R1 * M.C2 * M.C2 * M.C1 + s^(3)*2*X32 * M.C2 + s^(2)*2*X23 + s*2*1
+
+       1        
+K_uc = ---- * -----------------------------------------------------------------------------------------
+       M.C1     s^(4)*2*X26 * M.R2 * M.R1 * M.C2 * M.C2 * M.C1 + s^(3)*2*X32 * M.C2 + s^(2)*2*X23 + s*2*1
+
+
+Flat vertices report - 0.00170331 s

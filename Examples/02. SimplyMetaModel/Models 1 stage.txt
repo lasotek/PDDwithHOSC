@@ -1,0 +1,140 @@
+
+Preparing of model: E:\VS\BNPDDEngine\SimplyMetaModel\Release\op-ampCell_ggnd_O_I1_I2_I3.pddm - 0.0144821 s
+
+Preparing of main results - 0.000530495 s
+SubId: 1
+The subcircuit: op-ampCell(0, O, I1, I2, I3)
+Components:
+Ideal op-amp: (O=O, Ref=0, I-=Y, I+=X)
+Resistance: R1(NodeA=I1, NodeB=X) 1e3
+Resistance: R4(NodeA=I3, NodeB=X) 1e3
+Resistance: R2(NodeA=I2, NodeB=Y) 1e3
+Resistance: R3(NodeA=O, NodeB=Y) 1e3
+D Vertex: 2
+2: R1(3, 6)
+3: R4(5, 4)
+4: R2(7, EP0)
+5: R2(8, EP3)
+6: R2(9, EP4)
+7: R3(EP1, EP2)
+8: R3(EP5, EP6)
+9: R3(EP7, EP8)
+Ext.Par. No:0 represented by: -D(O+0)(I1+O)
+Ext.Par. No:1 represented by: -D(O+0)(I1+O),(I2+0)(I2+O)
+Ext.Par. No:2 represented by: D(O+0)(I2+I1)
+Ext.Par. No:3 represented by: -D(O+0)(I1+O),(I3+I1)(I3+O)
+Ext.Par. No:4 represented by: -D(O+0)(I3+O)
+Ext.Par. No:5 represented by: -D(O+0)(I1+O),(I2+0)(I2+O),(I3+I1)(I3+O)
+Ext.Par. No:6 represented by: D(O+0)(I2+I1),(I3+I1)(I3+I1)
+Ext.Par. No:7 represented by: D(O+0)(I2+O),(I2+0)(I3+O)
+Ext.Par. No:8 represented by: -D(O+0)(I3+I2)
+No of multiplication is 8(8) and no of additions is 8
+
+SubId: 0
+Main Circuit
+Components:
+Macromodel : M(0=0, O=O, I1=I1, I2=I2, I3=0) op-ampCell
+D(I2+I1)(I2+I1) Vertex: 2
+D(I2+I1)(0+O) Vertex: 3
+D(I1+0)(I1+0),(I2+I1)(I2+I1) Vertex: 4
+D(I1+0)(O+0),(I2+I1)(I2+I1) Vertex: 5
+D(I1+0)(O+0),(I2+0)(I2-I1) Vertex: 6
+2: M(3 = 1, 7 = 1)
+3: M(1 = 1, 6 = 1)
+4: M(0 = 1, 4 = 1)
+5: M(0 = 1, 8 = (-1)*1)
+6: M(0 = 1, 2 = 2*1, 8 = 1)
+No of multiplication is 12(0) and no of additions is 6
+
+Multilevel result raporting - 0.000777604 s
+
+Direct numerical cof/rem value determination - 0.00103069 s
+
+Direct numerical cof/rem value determination - 1.06696e-005 s
+
+Direct numerical cof/rem value determination - 8.9625e-006 s
+
+Direct numerical cof/rem value determination - 1.10964e-005 s
+
+Direct numerical cof/rem value determination - 8.9625e-006 s
+
+Factorization of cofactor No. 0 s power: 0 - 1.53643e-005 s
+
+Factorization of cofactor No. 1 s power: 0 - 6.40179e-006 s
+
+Factorization of cofactor No. 2 s power: 0 - 1.45107e-005 s
+
+Factorization of cofactor No. 3 s power: 0 - 9.38929e-006 s
+
+Factorization of cofactor No. 4 s power: 0 - 9.38929e-006 s
+
+Factorisation of all - 0.0022035 s
+
+FlatSimpolified determination - 0.00850627 s
+
+Approximated 1-level tree for the accurracy=1e-3 , range angular frequency from 0 to 1e6.
+D(I2+I1)(I2+I1) = 
+(#3)
+
+D(I2+I1)(0+O) = 
+(#5)
+
+D(I1+0)(I1+0),(I2+I1)(I2+I1) = 
+(#7)
+
+D(I1+0)(O+0),(I2+I1)(I2+I1) = 
+(#8)
+
+D(I1+0)(O+0),(I2+0)(I2-I1) = 
+(#11)
+
+#2: M.R2[#1, #0]
+#3: M.R1[#1, #2]
+#4: M.R3[#1, #0]
+#5: M.R4[#1, #4]
+#6: M.R4[#2, #0]
+#7: M.R1[#2, #6]
+#8: M.R1[(-1)*#4, #6]
+#9: M.R2[#1, (2)*#4]
+#10: M.R4[#9, #0]
+#11: M.R1[#4, #10]
+Nof of multiplications is 0(0) and additions is 0
+
+X6 = M.R1 + M.R2
+X7 = M.R4 + M.R3
+X8 = M.R4 * M.R2
+X9 = M.R4 + M.R1
+X10 = X9 * M.R2
+X11 = M.R3 * M.R1
+X12 =  - X11 + X8
+X13 = (2)*M.R3 + M.R2
+X14 = X13 * M.R4
+X15 = X14 + X11
+D(I2+I1)(I2+I1) = X6
+D(I2+I1)(0+O) = X7
+D(I1+0)(I1+0),(I2+I1)(I2+I1) = X10
+D(I1+0)(O+0),(I2+I1)(I2+I1) = X12
+D(I1+0)(O+0),(I2+0)(I2-I1) = X15
+Developed values are:
+X6 = (M.R1 + M.R2)
+X7 = (M.R4 + M.R3)
+X10 = (M.R4 + M.R1) * M.R2
+X12 = ( - M.R3 * M.R1 + M.R4 * M.R2)
+X15 = (((2)*M.R3 + M.R2) * M.R4 + M.R3 * M.R1)
+
+Transfer function after simplifications:
+
+        X7
+K_u_d = --
+        X6
+
+         X15
+K_u_d2 = ---------
+         X9 * M.R2
+
+        X12
+K_u_c = ---------
+        X9 * M.R2
+
+
+Flat vertices report - 0.000998252 s
