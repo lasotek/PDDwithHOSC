@@ -7,7 +7,10 @@
 
 namespace HOSC
 {
-
+    /**
+     * @brief Basic Deletion structure
+     * 
+     */
     class SingleDel
     {
     private:

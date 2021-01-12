@@ -224,7 +224,7 @@ namespace HOSC
         }
         auto str = out.str();
         if (str[str.length() - 1] == ',')
-            str.substr(0, str.length() - 1);
+            str = str.substr(0, str.length() - 1);
         return str;
     }
 

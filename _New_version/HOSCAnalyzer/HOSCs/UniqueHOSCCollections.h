@@ -7,6 +7,11 @@
 
 namespace HOSC
 {
+    /**
+     * @brief Nasic uniqe element collection
+     * 
+     * @tparam HOSCComp 
+     */
     template <typename HOSCComp>
     class HOSCUniqueCollection
     {

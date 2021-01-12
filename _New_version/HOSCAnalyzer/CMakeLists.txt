@@ -14,7 +14,9 @@ add_executable(HOSCAnalyzer main.cpp
                             ./HOSCs/FullHOSC.cpp 
                             ./HOSCs/helpers/helpers.cpp 
                             ./HOSCs/SignedUniqueHOSCCollection.cpp
-                            ./HOSCs/MultilevelHOSC.cpp)
+                            ./HOSCs/MultilevelHOSC.cpp
+                            ./HOSCs/KIIndexCol.cpp
+                            )
 
 add_definitions(-D _DEBUG_TEST)
 

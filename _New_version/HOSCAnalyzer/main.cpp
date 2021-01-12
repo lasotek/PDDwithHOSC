@@ -18,6 +18,7 @@
 #include "HOSCs/FullHOSC.h"
 #include "HOSCs/UniqueHOSCCollections.h"
 #include "HOSCs/SignedUniqueHOSCCollection.h"
+#include "HOSCs/KIIndexCol.h"
 /**
  * @brief 
  * 
