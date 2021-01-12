@@ -108,6 +108,11 @@ namespace HOSC
         });
         return h;
     }
+    
+    bool SymetricalHOSC::operator==(const SymetricalHOSC &Other) const
+    {
+        return n_nodes_ == Other.n_nodes_ && deletions_ == Other.deletions_;
+    }
 
     SymetricalHOSC::HOSC_oper_result SymetricalHOSC::HOSC_big_dot(HOSC_oper_result h2, const nodes_to_remove &nodes)
     {

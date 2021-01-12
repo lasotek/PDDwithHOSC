@@ -45,7 +45,8 @@ namespace HOSC
         std::string String() const;
         std::size_t hash() const;
         size_t del_numbers() { return deletions_.size(); }
-
+        bool operator==(const SymetricalHOSC &Other) const;
+        inline bool operator!=(const SymetricalHOSC &Other) const { return !operator==(Other); }
         [[nodiscard]] HOSC_oper_result HOSC_big_dot(HOSC_oper_result h2, const nodes_to_remove &nodes);
     };
 

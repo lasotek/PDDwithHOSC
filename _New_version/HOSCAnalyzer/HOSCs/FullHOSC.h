@@ -42,6 +42,7 @@ namespace HOSC
         template <typename MAP>
         void copy_from_replacer(const Node_replacer_temp<MAP> &Source, del_set which_one);
         void Test();
+
     public:
         explicit HOSC(int max_nodes = 10)
             : n_nodes_{max_nodes}
@@ -60,6 +61,7 @@ namespace HOSC
 #endif
         }
         bool operator==(const HOSC &Other) const;
+        inline bool operator!=(const HOSC &Other) const { return !operator==(Other); }
         inline void multiply(int multipolier) { sgn_ *= multipolier; }
         inline bool is_valid() const { return sgn_ != 0; }
         inline bool is_complete() const { return n_nodes_ == 0 && row_deletions_.empty() && col_deletions_.empty(); }

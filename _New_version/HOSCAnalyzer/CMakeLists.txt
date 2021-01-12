@@ -17,9 +17,14 @@ add_executable(HOSCAnalyzer main.cpp
                             ./HOSCs/MultilevelHOSC.cpp
                             ./HOSCs/KIIndexCol.cpp
                             )
-
+                            
+# if (CMAKE_BUILD_TYPE EQUAL "Debug")
+# endif (CMAKE_BUILD_TYPE EQUAL "Debug")                            
+# if (CMAKE_CPP_FLAGS_DEBUG)
+# endif ((CMAKE_C_FLAGS_DEBUG)                            
+    
 add_definitions(-D _DEBUG_TEST)
-
+    
 set(CPACK_PROJECT_NAME ${PROJECT_NAME})
 set(CPACK_PROJECT_VERSION ${PROJECT_VERSION})
 include(CPack)
