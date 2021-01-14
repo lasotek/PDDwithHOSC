@@ -40,6 +40,7 @@ namespace HOSC
         {
         }
         ~KIIndexCol() {}
+        std::shared_ptr<KCounter> insert(std::shared_ptr<KCounter> &&pKICounter);
     };
 
 } // namespace HOSC
