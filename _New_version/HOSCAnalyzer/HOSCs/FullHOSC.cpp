@@ -281,7 +281,7 @@ namespace HOSC
         auto del_cleanear = [&rem_nodes](int &p, int &r, int &k, int &l) -> int /*sgn chnage*/
         {
             int lsgn = 1;
-            auto cleaner = [&lsgn, &rem_nodes](bool toSwap, int &a, int &b) {
+            auto cleaner = [&lsgn](bool toSwap, int &a, int &b) {
                 if (toSwap)
                 {
                     std::swap(a, b);
@@ -300,7 +300,7 @@ namespace HOSC
                 }
             };
             auto a_r = std::abs(r), a_l = std::abs(l);
-            bool swap_in_raw = false, swap_in_column = false, swap_r_done = false, swap_c_done = false;
+            bool swap_in_raw = false, swap_in_column = false;
             auto p_is_to_be_removed = rem_nodes.is_to_be_removed(p);
             auto r_is_to_be_removed = rem_nodes.is_to_be_removed(std::abs(r));
             auto k_is_to_be_removed = rem_nodes.is_to_be_removed(k);
@@ -388,7 +388,7 @@ namespace HOSC
                     lsgn *= del_cleanear(p1, r1, k1, l1);
                     if (lsgn == 0)
                         return {};
-                    if ((p1 == p && r1 == p) || (k1 == k && l1 == l))
+                    if ((p1 == p && r1 == r) || (k1 == k && l1 == l))
                         return {};
                     bool replace_right = which == none;
                     if (!replace_right)

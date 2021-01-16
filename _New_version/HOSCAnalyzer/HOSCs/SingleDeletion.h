@@ -19,6 +19,7 @@ namespace HOSC
 
         friend class SymetricalHOSC;
         friend class HOSC;
+        friend class SingleHOSC;
 
     public:
         SingleDel(int source, int target) noexcept : source_(source), target_(target) {}
