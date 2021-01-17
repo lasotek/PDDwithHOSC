@@ -101,8 +101,8 @@ namespace HOSC
     SingleHOSC::SingleHOSC(int source, int target, short max_nodes)
         : SingleHOSC(max_nodes)
     {
-        counter_ *= clear_cannonical_single(source, target);
-        if (counter_)
+        weight_ *= clear_cannonical_single(source, target);
+        if (weight_)
             _deletions_.emplace_back(SingleDel(source, target));
     }
 
@@ -110,7 +110,7 @@ namespace HOSC
     {
         if (initial_dels.size() > n_nodes_)
         {
-            counter_ = 0;
+            weight_ = 0;
             return;
         }
         auto replacer = Node_replacer();
@@ -118,8 +118,8 @@ namespace HOSC
         {
             auto p = replacer.get(del.source());
             auto r = replacer.get(del.target());
-            counter_ *= clear_cannonical_single(p, r);
-            if (counter_ == 0)
+            weight_ *= clear_cannonical_single(p, r);
+            if (weight_ == 0)
                 return;
             insert_del(p, r);
             replacer.set(p, r);
@@ -131,14 +131,14 @@ namespace HOSC
         std::ostringstream out;
         if (is_complete())
         {
-            out << counter_;
+            out << weight_;
         }
         else
         {
-            if (counter_ == -1)
+            if (weight_ == -1)
                 out << "-";
-            else if (counter_ != 1)
-                out << counter_ << "*";
+            else if (weight_ != 1)
+                out << weight_ << "*";
             out << "\\Delta";
             for (const auto &del : _deletions_)
             {
@@ -162,7 +162,7 @@ namespace HOSC
     std::size_t SingleHOSC::hash() const
     {
         size_t h = std::hash<short>{}(n_nodes_);
-        // HashCombine(h, std::hash<int>{}(counter_));
+        // HashCombine(h, std::hash<int>{}(weight_));
         std::for_each(_deletions_.begin(), _deletions_.end(), [&h](const SingleDel &del) {
             HashCombine(h, std::hash<SingleDel>{}(del));
         });
@@ -172,7 +172,7 @@ namespace HOSC
     std::optional<int> SingleHOSC::numeric_value() const
     {
         if (is_complete())
-            return counter_;
+            return weight_;
         return {};
     }
 
@@ -198,7 +198,7 @@ namespace HOSC
         auto hit = ext_deletions.begin();
         auto hit_e = ext_deletions.end();
         HOSC_oper_result res = std::make_shared<SingleHOSC>(n_nodes_);
-        res->counter_ = counter_ * h2->counter_;
+        res->weight_ = weight_ * h2->weight_;
         auto &out_deletion = res->_deletions_;
         while (mit != mit_e)
         {
@@ -276,7 +276,7 @@ namespace HOSC
     {
         if (_deletions_ != right._deletions_)
             throw std::invalid_argument("You can combine only the same HOSCs");
-        counter_ += right.counter_;
+        weight_ += right.weight_;
     }
 
     HOSCUniqueCollection<SingleHOSC> SingleHOSCCollection;

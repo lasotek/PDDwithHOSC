@@ -19,12 +19,14 @@
 #include "HOSCs/UniqueHOSCCollections.h"
 #include "HOSCs/SignedUniqueHOSCCollection.h"
 #include "HOSCs/KIIndexCol.h"
+#include "HOSCs/KISolver.h"
 
 #define _TEST_KIRCHHOFF_INDEX
 // #define _TEST_FULL_HOSC
 
 void KirchhoffInexTesting()
 {
+    HOSC::KISolver<long long> Solver;
     HOSC::KIIndexCol Test1(4);
     HOSC::KIIndexCol Test2(4, HOSC::KIIndexCol::sum_numerators);
 }
@@ -122,6 +124,7 @@ int main(int argc, char **argv)
 {
     try
     {
+   
 #ifdef _TEST_KIRCHHOFF_INDEX
         KirchhoffInexTesting();
 #endif

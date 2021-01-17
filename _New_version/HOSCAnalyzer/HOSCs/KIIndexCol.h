@@ -2,6 +2,10 @@
 #define __KIINDEXCOL_H__
 #include <unordered_map>
 #include <memory>
+#include <type_traits>
+#include <list>
+#include <unordered_map>
+#include <map>
 #include "UniqueHOSCCollections.h"
 // #include "SymetricHOSC.h"
 #include "SingleHOSC.h"
@@ -9,14 +13,15 @@
 namespace HOSC
 {
 
-
     class KIIndexCol
     {
     private:
         using unique_simplyHOSC_map = HOSCUniqueCollection<SingleHOSC>;
         unique_simplyHOSC_map _HOSCmap;
+
     public:
-        using func = enum{com_denomnator, sum_numerators};
+        using func = enum { com_denomnator,
+                            sum_numerators };
         KIIndexCol() = delete;
         /**
          * @brief Construct a new KIIndexCol object
@@ -26,10 +31,15 @@ namespace HOSC
          */
         KIIndexCol(int _no_nodes, func function = com_denomnator);
         ~KIIndexCol() {}
+        /**
+         * @brief Inserts  new HOSC. If already exists, the coefficients are added and new HOSC is destroyed
+         * 
+         * @param HOSC shared pointer to a new HOSC
+         * @return std::shared_ptr<SingleHOSC> If HOSC already exists, it return old HOSC. Otherwise an ew one.
+         */
         std::shared_ptr<SingleHOSC> insert(std::shared_ptr<SingleHOSC> &HOSC);
     };
 
 } // namespace HOSC
-
 
 #endif // __KIINDEXCOL_H__
