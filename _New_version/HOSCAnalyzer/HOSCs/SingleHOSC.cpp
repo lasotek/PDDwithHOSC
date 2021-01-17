@@ -272,5 +272,12 @@ namespace HOSC
         return std::move(res);
     }
 
+    void SingleHOSC::combine(const SingleHOSC &right)
+    {
+        if (_deletions_ != right._deletions_)
+            throw std::invalid_argument("You can combine only the same HOSCs");
+        counter_ += right.counter_;
+    }
+
     HOSCUniqueCollection<SingleHOSC> SingleHOSCCollection;
 }; // namespace HOSC

@@ -1,7 +1,7 @@
-#ifndef __FULLHOSC_H__
-#define __FULLHOSC_H__
+#ifndef __SINGLEHOSC_H__
+#define __SINGLEHOSC_H__
 
-// #pragma once
+
 
 #include "SingleDeletion.h"
 #include "helpers/helpers.h"
@@ -67,6 +67,14 @@ namespace HOSC
         std::optional<int> numeric_value() const;
         [[nodiscard]] HOSC_oper_result HOSC_big_dot(HOSC_oper_result h2, const nodes_to_remove &nodes) const;
         int get_n_nodes() const { return n_nodes_; }
+#ifdef _DEBUG_TEST
+        void combine(const SingleHOSC &right);
+#else
+        inline void combine(const SingleHOSC &right)
+        {
+            counter_ += right.counter_;
+        }
+#endif
     };
 
     inline SingleHOSC::HOSC_oper_result HOSC_big_dot(SingleHOSC::HOSC_oper_result h1, SingleHOSC::HOSC_oper_result h2, const nodes_to_remove &nodes)
@@ -89,4 +97,5 @@ namespace std
 
 } // namespace std
 
-#endif // __FULLHOSC_H__
+
+#endif // __SINGLEHOSC_H__

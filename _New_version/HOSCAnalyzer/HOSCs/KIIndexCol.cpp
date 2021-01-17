@@ -2,23 +2,14 @@
 #include <exception>
 namespace HOSC
 {
-#ifdef _DEBUG_TEST
-    void KCounter::combine(const KCounter &Other)
+    std::shared_ptr<SingleHOSC> KIIndexCol::insert(std::shared_ptr<SingleHOSC> &HOSC) 
     {
-        if (*_pHOSC != *(Other._pHOSC))
-            throw std::invalid_argument("Combined counter should be the same");
-        _value += Other._value;
-    }
-
-    std::shared_ptr<KCounter> KIIndexCol::insert(std::shared_ptr<KCounter> &&pKICounter)
-    {
-        auto uniqKI = _HOSCmap.insert_unique(pKICounter);
-        if(uniqKI != pKICounter)
+        auto uniqueHOSC = _HOSCmap.insert_unique(HOSC);
+        if(uniqueHOSC != HOSC)
         {
-            uniqKI->combine(*pKICounter);
+            uniqueHOSC->combine(*HOSC);
         }
-        return uniqKI;
+        return uniqueHOSC;
     }
 
-#endif
 } // namespace HOSC
