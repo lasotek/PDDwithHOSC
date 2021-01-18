@@ -26,9 +26,8 @@
 
 void KirchhoffInexTesting()
 {
-    HOSC::KISolver<long long> Solver;
-    HOSC::KIIndexCol Test1(4);
-    HOSC::KIIndexCol Test2(4, HOSC::KIIndexCol::sum_numerators);
+    HOSC::KISolver<long long> Solver({{1,2},{2,3}, {3,1}});
+    Solver.Solve();
 }
 
 void FullHOSCTests()
