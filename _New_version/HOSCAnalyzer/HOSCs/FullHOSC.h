@@ -69,6 +69,8 @@ namespace HOSC
         std::size_t hash() const;
         size_t del_numbers() const { return row_deletions_.size(); }
         inline int get_sgn() const { return sgn_; }
+        inline int weight() const { return sgn_; }
+
         [[nodiscard]] int move_sgn();
 
         std::optional<int> numeric_value() const;

@@ -200,7 +200,7 @@ namespace HOSC
         HOSC_oper_result res = std::make_shared<SingleHOSC>(n_nodes_);
         res->weight_ = weight_ * h2->weight_;
         auto &out_deletion = res->_deletions_;
-        while (mit != mit_e)
+        while (mit != mit_e || hit != hit_e)
         {
             int p, r;
             p = r = 0;

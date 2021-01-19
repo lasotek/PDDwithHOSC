@@ -1,8 +1,6 @@
 #ifndef __SINGLEHOSC_H__
 #define __SINGLEHOSC_H__
 
-
-
 #include "SingleDeletion.h"
 #include "helpers/helpers.h"
 #include "UniqueHOSCCollections.h"
@@ -15,8 +13,6 @@
 namespace HOSC
 {
 
-    template <typename T>
-    concept Arithmetic = std::is_arithmetic<T>::value;
 
     class SingleHOSC : public std::enable_shared_from_this<SingleHOSC>
     {
@@ -28,7 +24,7 @@ namespace HOSC
         using deletion_type = std::vector<SingleDel>;
         deletion_type _deletions_;
         int n_nodes_ = 0;
-        long long  weight_ = 1;
+        long long weight_ = 1;
         void insert_del(int source, int target);
         void reserve(int node);
         SingleHOSC &operator=(const SingleHOSC &Source) = default;
@@ -65,11 +61,15 @@ namespace HOSC
         std::string String() const;
         std::size_t hash() const;
         size_t del_numbers() const { return _deletions_.size(); }
-        inline long long counter() const { return weight_; }
+        inline long long weight() const { return weight_; }
 
         std::optional<int> numeric_value() const;
         [[nodiscard]] HOSC_oper_result HOSC_big_dot(HOSC_oper_result h2, const nodes_to_remove &nodes) const;
         int get_n_nodes() const { return n_nodes_; }
+        SingleHOSC& operator*=(long long mult) {
+            weight_*=mult;
+            return *this;
+        }
 #ifdef _DEBUG_TEST
         void combine(const SingleHOSC &right);
 #else
@@ -99,6 +99,5 @@ namespace std
     };
 
 } // namespace std
-
 
 #endif // __SINGLEHOSC_H__

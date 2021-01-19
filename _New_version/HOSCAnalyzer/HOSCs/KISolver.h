@@ -4,6 +4,7 @@
 #include <memory>
 #include <unordered_map>
 #include <algorithm>
+#include <optional>
 #include "KIIndexCol.h"
 
 namespace HOSC
@@ -52,12 +53,14 @@ namespace HOSC
     template <Arithmetic W>
     class KISolver
     {
-        private:
+    private:
         using edges_list_ptr = std::list<std::shared_ptr<Edge<W>>>;
         using incidence_map = std::unordered_map<int, edges_list_ptr>;
         using map_iterator = incidence_map::iterator;
         incidence_map incidences_;
         int max_nodes_ = 0;
+        std::optional<W> denom_value_ = {};
+        std::optional<W> numer_value_ = {};
         edges_list_ptr main_list_;
         std::shared_ptr<KIIndexCol> denom_;
         std::shared_ptr<KIIndexCol> numers_;
@@ -67,6 +70,13 @@ namespace HOSC
                 return T1.second.size() < T2.second.size();
             });
         }
+        void make_dirt()
+        {
+            // dirty_ = true;
+            denom_value_.reset();
+            numer_value_.reset();
+        }
+        bool dirty() const { return !(denom_value_.has_value() && numer_value_.has_value()); }
 
     public:
         KISolver() = default;
@@ -77,8 +87,15 @@ namespace HOSC
                 main_list_.emplace_back(std::make_shared<Edge<W>>(e));
             }
         }
+        void AddEdge(const Edge<W> &edge)
+        {
+            main_list_.emplace_back(std::make_shared<Edge<W>>(edge));
+            make_dirt();
+        }
         void Solve()
         {
+            if (!dirty())
+                return;
             for (auto &e : main_list_)
             {
                 // auto E = e.shared_from_this(); // std::make_shared<Edge<W>>(e);
@@ -90,11 +107,14 @@ namespace HOSC
                 max_nodes_ = std::max(max_nodes_, a);
                 max_nodes_ = std::max(max_nodes_, b);
             }
+            denom_ = std::make_shared<KIIndexCol>(max_nodes_, KIIndexCol::com_denomnator);
+            numers_ = std::make_shared<KIIndexCol>(max_nodes_, KIIndexCol::sum_numerators);
             while (!incidences_.empty())
             {
                 auto iter = min_incidence();
                 auto index = iter->first;
-                for (auto eit = iter->second.begin(); eit != iter->second.end(); eit++)
+                auto i = iter->second.size() - 1;
+                for (auto eit = iter->second.begin(); eit != iter->second.end(); eit++, i--)
                 {
                     auto edge_ptr = *eit;
                     auto &edge = *edge_ptr;
@@ -102,9 +122,18 @@ namespace HOSC
                         std::erase(incidences_[edge.node_a], edge_ptr);
                     else
                         std::erase(incidences_[edge.node_b], edge_ptr);
+                    KIIndexCol::del_pair ed = std::make_pair(edge.node_a, edge.node_b);
+                    KIIndexCol::rem_node rn;
+                    if(i==0)
+                        rn = index;
+                    numers_->add_edge_remove_node(ed,rn,edge.weight_);
+                    denom_->add_edge_remove_node(ed,rn,edge.weight_);
                 }
                 incidences_.erase(iter);
             }
+
+            denom_value_ = denom_->value();
+            numer_value_ = numers_->value();
         }
     };
 } // namespace HOSC

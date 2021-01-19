@@ -1,9 +1,11 @@
 #ifndef __UNIQUEHOSCCOLLECTIONS_H__
 #define __UNIQUEHOSCCOLLECTIONS_H__
 
+#include "helpers/helpers.h"
 #include <unordered_map>
 #include <memory>
 #include <iterator>
+#include <optional>
 
 namespace HOSC
 {
@@ -78,6 +80,18 @@ namespace HOSC
         bool empty() const { return map_.empty(); }
         HOSC_unique_iterator begin() { return HOSC_unique_iterator(map_.begin()); }
         HOSC_unique_iterator end() { return HOSC_unique_iterator(map_.end()); }
+        size_t size() const { return map_.size(); }
+        inline bool complete() const { return map_.size() == 1 && map_.begin()->second->is_complete(); }
+
+        inline void clear() { map_.clear(); }
+
+        template <Arithmetic W>
+        std::optional<W> value() const
+        {
+            if (complete())
+                return map_.begin()->second->weight();
+            return {};
+        }
     };
 } // namespace HOSC
 

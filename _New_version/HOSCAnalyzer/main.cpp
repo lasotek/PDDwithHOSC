@@ -26,7 +26,8 @@
 
 void KirchhoffInexTesting()
 {
-    HOSC::KISolver<long long> Solver({{1,2},{2,3}, {3,1}});
+    HOSC::KISolver<long long> Solver({{1,2},{2,3}});
+    Solver.AddEdge({3,1});
     Solver.Solve();
 }
 
