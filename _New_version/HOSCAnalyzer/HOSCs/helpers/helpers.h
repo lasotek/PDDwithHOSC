@@ -129,7 +129,16 @@ namespace HOSC
         Removing_single_nodes(Removing_single_nodes &&) = delete;
         auto operator=(const Removing_single_nodes &) = delete;
         auto operator=(Removing_single_nodes &&) = delete;
-        
+
+        /**
+         * @brief Checking if node is going to be removed
+         * 
+         * @param node Node
+         * @return true if node is one of the node to be removed (does not metter if it was already removef)
+         * @return false if node is not going to be removed, at all
+         */
+        inline bool is_to_be_removed(int node) const { return map_.find(node) != map_.end(); }
+
         /**
          * @brief set that node has just beeing removed
          * 
@@ -245,21 +254,41 @@ namespace HOSC
         bool operator==(const Node_linker &Other) const { return map_ == Other.map_; }
     };
 
-    // class Node_replacer_opt
-    // {
-    // private:
-    //     std::vector<std::optional<int>> map_;
-    //     void ensure_size(int index);
+    /**
+     * @brief Helper to translate any random node to consecutive 0,1...
+     * 
+     */
+    class NodeTrans
+    {
+    private:
+        int curr_node_ = 0;
+        using NtoN = std::unordered_map<int, int>;
+        NtoN extN2intN_;
+        NtoN intN2extN_;
 
-    // public:
-    //     Node_replacer_opt() = default;
-    //     Node_replacer_opt(const Node_replacer_opt &) = delete;
-    //     Node_replacer_opt(Node_replacer_opt &&) = delete;
-    //     auto operator=(const Node_replacer_opt &) = delete;
-    //     auto operator=(Node_replacer_opt &&) = delete;
-    //     void set(int source, int target);
-    //     bool replaced(int source) const;
-    //     int get(int source) const;
-    // };
+    public:
+        NodeTrans() {}
+        ~NodeTrans() {}
+        /**
+         * @brief Translate any random node number to consequotive
+         * 
+         * @param N Random node
+         * @return int Next free one, unless it was already defined
+         */
+        int extN2inN(int N);
+        /**
+         * @brief Translate consequtive node number to its original
+         * 
+         * @param N consequitive number
+         * @return int original one or -1 if it was not defined
+         */
+        int inN2extN(int N);
+        /**
+         * @brief reset translater
+         * 
+         */
+        void reset();
+    };
+
 };     // namespace HOSC
 #endif // __HELPERS_H__

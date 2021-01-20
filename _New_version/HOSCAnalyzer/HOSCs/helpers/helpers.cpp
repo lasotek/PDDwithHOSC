@@ -75,33 +75,33 @@ namespace HOSC
         return true;
     }
 
-    // Node_replacer_opt
-    // void Node_replacer_opt::ensure_size(int index)
-    // {
-    //     if (map_.size() < index)
-    //         map_.resize(index);
-    // }
+    int NodeTrans::extN2inN(int N)
+    {
+        auto oldNit = extN2intN_.find(N);
+        if (oldNit == extN2intN_.end())
+        {
+            intN2extN_[curr_node_] = N;
+            extN2intN_[N] = curr_node_;
+            return curr_node_++;
+        }
+        else
+            return oldNit->second;
+    }
 
-    // void Node_replacer_opt::set(int source, int target)
-    // {
-    //     ensure_size(source);
-    //     map_[source] = target;
-    // }
-    // bool Node_replacer_opt::replaced(int source) const
-    // {
-    //     if (source >= map_.size())
-    //         return false;
-    //     return map_[source].has_value();
-    // }
-    // int Node_replacer_opt::get(int source) const
-    // {
-    //     if (source >= map_.size())
-    //         return source;
-    //     auto v = map_[source];
-    //     if (!v.has_value())
-    //         return source;
-    //     auto sgn = HOSC::sgn(v.value());
-    //     return sgn * get(std::abs(v.value()));
-    // }
+    int NodeTrans::inN2extN(int N)
+    {
+        auto oldNit = intN2extN_.find(N);
+        if (oldNit == intN2extN_.end())
+            return -1;
+        else
+            return oldNit->second;
+    }
+    
+    void NodeTrans::reset() 
+    {
+        curr_node_=0;
+        intN2extN_.clear();
+        extN2intN_.clear();
+    }
 
 }; // namespace HOSC

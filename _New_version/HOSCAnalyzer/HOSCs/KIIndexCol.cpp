@@ -53,9 +53,12 @@ namespace HOSC
         for (auto it = Source.begin(); it != Source.end(); it++)
         {
             auto hRes = h1->HOSC_big_dot(*it, ntr);
-            if (weight != 1)
-                *hRes *= weight;
-            Dest.insert_unique(hRes);
+            if (hRes)
+            {
+                if (weight != 1)
+                    *hRes *= weight;
+                insert(hRes);
+            }
         }
         if (edge.has_value())
         {
@@ -64,7 +67,10 @@ namespace HOSC
             for (auto it = Source.begin(); it != Source.end(); it++)
             {
                 auto hRes = h0->HOSC_big_dot(*it, ntr);
-                Dest.insert_unique(hRes);
+                if (hRes)
+                {
+                    insert(hRes);
+                }
             }
         }
         switch_maps();

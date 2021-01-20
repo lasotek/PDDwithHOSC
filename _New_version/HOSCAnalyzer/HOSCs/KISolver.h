@@ -6,6 +6,7 @@
 #include <algorithm>
 #include <optional>
 #include "KIIndexCol.h"
+#include "helpers/helpers.h"
 
 namespace HOSC
 {
@@ -57,8 +58,9 @@ namespace HOSC
         using edges_list_ptr = std::list<std::shared_ptr<Edge<W>>>;
         using incidence_map = std::unordered_map<int, edges_list_ptr>;
         using map_iterator = incidence_map::iterator;
+        NodeTrans node_trans_;
         incidence_map incidences_;
-        int max_nodes_ = 0;
+        int max_nodes_ = -1;
         std::optional<W> denom_value_ = {};
         std::optional<W> numer_value_ = {};
         edges_list_ptr main_list_;
@@ -73,8 +75,10 @@ namespace HOSC
         void make_dirt()
         {
             // dirty_ = true;
+            max_nodes_ = -1;
             denom_value_.reset();
             numer_value_.reset();
+            node_trans_.reset();
         }
         bool dirty() const { return !(denom_value_.has_value() && numer_value_.has_value()); }
 
@@ -100,15 +104,16 @@ namespace HOSC
             {
                 // auto E = e.shared_from_this(); // std::make_shared<Edge<W>>(e);
                 // auto E =  std::make_shared<Edge<W>>(e);
-                auto a = e->node_a;
-                auto b = e->node_b;
-                incidences_[a].push_back(e);
-                incidences_[b].push_back(e);
+                auto a = node_trans_.extN2inN(e->node_a);
+                auto b = node_trans_.extN2inN(e->node_b);
+                auto newE = std::make_shared<Edge<W>>(a,b, e->weight_);
+                incidences_[a].push_back(newE);
+                incidences_[b].push_back(newE);
                 max_nodes_ = std::max(max_nodes_, a);
                 max_nodes_ = std::max(max_nodes_, b);
             }
-            denom_ = std::make_shared<KIIndexCol>(max_nodes_, KIIndexCol::com_denomnator);
-            numers_ = std::make_shared<KIIndexCol>(max_nodes_, KIIndexCol::sum_numerators);
+            denom_ = std::make_shared<KIIndexCol>(max_nodes_+1, KIIndexCol::com_denomnator);
+            numers_ = std::make_shared<KIIndexCol>(max_nodes_+1, KIIndexCol::sum_numerators);
             while (!incidences_.empty())
             {
                 auto iter = min_incidence();
@@ -124,10 +129,10 @@ namespace HOSC
                         std::erase(incidences_[edge.node_b], edge_ptr);
                     KIIndexCol::del_pair ed = std::make_pair(edge.node_a, edge.node_b);
                     KIIndexCol::rem_node rn;
-                    if(i==0)
+                    if (i == 0)
                         rn = index;
-                    numers_->add_edge_remove_node(ed,rn,edge.weight_);
-                    denom_->add_edge_remove_node(ed,rn,edge.weight_);
+                    numers_->add_edge_remove_node(ed, rn, edge.weight_);
+                    denom_->add_edge_remove_node(ed, rn, edge.weight_);
                 }
                 incidences_.erase(iter);
             }
