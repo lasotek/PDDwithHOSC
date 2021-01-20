@@ -180,8 +180,8 @@ namespace HOSC
     {
         if (!h2)
             throw std::invalid_argument("BigDot needs real argument!");
-        if (n_nodes_ != h2->n_nodes_)
-            throw std::logic_error("HOSC must have the same No of nodes!");
+        // if (n_nodes_ != h2->n_nodes_)
+        //     throw std::logic_error("HOSC must have the same No of nodes!");
         auto &ext_deletions = h2->_deletions_;
         if (_deletions_.size() + ext_deletions.size() > n_nodes_)
             return {};

@@ -140,6 +140,7 @@ namespace HOSC
             denom_value_ = denom_->value();
             numer_value_ = numers_->value();
         }
+        float KIIndex() { return (float) numer_value_.value()/denom_value_.value();}
     };
 } // namespace HOSC
 #endif // __KISOLVER_H__

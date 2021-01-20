@@ -57,7 +57,7 @@ namespace HOSC
         inline bool operator!=(const SingleHOSC &Other) const { return !operator==(Other); }
         inline void multiply(int multipolier) { weight_ *= multipolier; }
         inline bool is_valid() const { return weight_ != 0; }
-        inline bool is_complete() const { return n_nodes_ == 0 && _deletions_.empty(); }
+        inline bool is_complete() const { return _deletions_.empty(); }
         std::string String() const;
         std::size_t hash() const;
         size_t del_numbers() const { return _deletions_.size(); }

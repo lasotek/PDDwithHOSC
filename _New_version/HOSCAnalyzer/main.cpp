@@ -26,9 +26,13 @@
 
 void KirchhoffInexTesting()
 {
-    HOSC::KISolver<long long> Solver({{1,2},{2,3}});
-    Solver.AddEdge({3,1});
+    HOSC::KISolver<long long> Solver({{1, 2}, {2, 3}});
+    Solver.AddEdge({3, 1});
+    Solver.AddEdge({4, 1});
+    Solver.AddEdge({4, 3});
+    Solver.AddEdge({4, 2});
     Solver.Solve();
+    std::cout << "KIndecx = " << Solver.KIIndex() << std::endl;
 }
 
 void FullHOSCTests()
@@ -124,7 +128,7 @@ int main(int argc, char **argv)
 {
     try
     {
-   
+
 #ifdef _TEST_KIRCHHOFF_INDEX
         KirchhoffInexTesting();
 #endif
