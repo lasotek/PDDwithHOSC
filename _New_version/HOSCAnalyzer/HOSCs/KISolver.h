@@ -33,7 +33,7 @@ namespace HOSC
         ~Edge()
         {
 #ifdef _DEBUG_TEST
-            std::cout << "Nodes :" << node_a << " and " << node_b << ", weight " << weight_ << " is removing\n";
+            std::cout << "Edge - nodes : " << node_a << " and " << node_b << ", weight " << weight_ << " is removing\n";
 #endif
         }
     };
@@ -106,14 +106,14 @@ namespace HOSC
                 // auto E =  std::make_shared<Edge<W>>(e);
                 auto a = node_trans_.extN2inN(e->node_a);
                 auto b = node_trans_.extN2inN(e->node_b);
-                auto newE = std::make_shared<Edge<W>>(a,b, e->weight_);
+                auto newE = std::make_shared<Edge<W>>(a, b, e->weight_);
                 incidences_[a].push_back(newE);
                 incidences_[b].push_back(newE);
                 max_nodes_ = std::max(max_nodes_, a);
                 max_nodes_ = std::max(max_nodes_, b);
             }
-            denom_ = std::make_shared<KIIndexCol>(max_nodes_+1, KIIndexCol::com_denomnator);
-            numers_ = std::make_shared<KIIndexCol>(max_nodes_+1, KIIndexCol::sum_numerators);
+            denom_ = std::make_shared<KIIndexCol>(max_nodes_ + 1, KIIndexCol::com_denomnator);
+            numers_ = std::make_shared<KIIndexCol>(max_nodes_ + 1, KIIndexCol::sum_numerators);
             while (!incidences_.empty())
             {
                 auto iter = min_incidence();
@@ -134,13 +134,19 @@ namespace HOSC
                     numers_->add_edge_remove_node(ed, rn, edge.weight_);
                     denom_->add_edge_remove_node(ed, rn, edge.weight_);
                 }
+#ifdef _DEBUG_TEST
+                std::cout << "Node: " << index << " was removed.\n";
+#endif
+
                 incidences_.erase(iter);
             }
 
             denom_value_ = denom_->value();
             numer_value_ = numers_->value();
         }
-        float KIIndex() { return (float) numer_value_.value()/denom_value_.value();}
+        inline auto KIIndex() const { return (double)numer_value_.value() / denom_value_.value(); }
+        inline auto numerator() const { return numer_value_.value(); }
+        inline auto denominator() const { return denom_value_.value(); }
     };
 } // namespace HOSC
 #endif // __KISOLVER_H__

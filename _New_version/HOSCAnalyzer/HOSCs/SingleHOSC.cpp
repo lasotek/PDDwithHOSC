@@ -271,6 +271,7 @@ namespace HOSC
 
         return std::move(res);
     }
+#ifdef _DEBUG_TEST
 
     void SingleHOSC::combine(const SingleHOSC &right)
     {
@@ -278,6 +279,6 @@ namespace HOSC
             throw std::invalid_argument("You can combine only the same HOSCs");
         weight_ += right.weight_;
     }
-
+#endif
     HOSCUniqueCollection<SingleHOSC> SingleHOSCCollection;
 }; // namespace HOSC

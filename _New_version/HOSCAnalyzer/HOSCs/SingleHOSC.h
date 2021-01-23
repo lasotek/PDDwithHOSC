@@ -50,7 +50,7 @@ namespace HOSC
         ~SingleHOSC()
         {
 #ifdef _DEBUG_TEST
-            std::cout << "Nodes No: " << n_nodes_ << ", HOSC: " << String() << " is deleting\n";
+            std::cout << "HOSC: " << String() << " is deleting\n";
 #endif
         }
         bool operator==(const SingleHOSC &Other) const;
