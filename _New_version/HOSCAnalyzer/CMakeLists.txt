@@ -15,8 +15,8 @@ add_executable(HOSCAnalyzer main.cpp
                             ./HOSCs/helpers/helpers.cpp 
                             ./HOSCs/SignedUniqueHOSCCollection.cpp
                             ./HOSCs/MultilevelHOSC.cpp
-                            ./HOSCs/KIIndexCol.cpp
-                            ./HOSCs/SingleHOSC.cpp
+                            # ./HOSCs/KIIndexCol.cpp
+                            # ./HOSCs/SingleHOSC.cpp
                             )
                             
 # if (CMAKE_BUILD_TYPE EQUAL "Debug")
