@@ -16,16 +16,16 @@
 #include <chrono>
 #include <ctime>
 #include "HOSCs/SingleDeletion.h"
-#include "HOSCs/SymetricHOSC.h"
-#include "HOSCs/FullHOSC.h"
 #include "HOSCs/UniqueHOSCCollections.h"
 #include "HOSCs/SignedUniqueHOSCCollection.h"
-#include "HOSCs/KIIndexCol.h"
-#include "HOSCs/KISolver.h"
 
 // #define _TEST_KIRCHHOFF_INDEX
 #define _TEST_FULL_HOSC
 
+#ifdef _TEST_KIRCHHOFF_INDEX
+
+#include "HOSCs/KIIndexCol.h"
+#include "HOSCs/KISolver.h"
 void KirchhoffInexTesting()
 {
     auto start = std::chrono::steady_clock::now();
@@ -83,6 +83,11 @@ void KirchhoffInexTesting()
     auto i_mills = std::chrono::duration_cast<std::chrono::nanoseconds>(elapsed_time);
     std::cout << "duration time " << i_mills.count() << " nanoseconds" << std::endl;
 }
+#endif
+
+#ifdef _TEST_FULL_HOSC
+
+#include "HOSCs/FullHOSC.h"
 
 void FullHOSCTests()
 {
@@ -165,6 +170,7 @@ void FullHOSCTests()
         std::cout << "Hash is: " << uHOSC->hash() << std::endl;
     }
 }
+#endif
 
 /**
  * @brief Main entry for testing

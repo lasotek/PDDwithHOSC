@@ -10,7 +10,7 @@ enable_testing()
 
 add_executable(HOSCAnalyzer main.cpp 
                             ./HOSCs/SingleDeletion.cpp 
-                            ./HOSCs/SymetricHOSC.cpp 
+                            # ./HOSCs/SymetricHOSC.cpp 
                             ./HOSCs/FullHOSC.cpp 
                             ./HOSCs/helpers/helpers.cpp 
                             ./HOSCs/SignedUniqueHOSCCollection.cpp
@@ -24,7 +24,7 @@ add_executable(HOSCAnalyzer main.cpp
 # if (CMAKE_CPP_FLAGS_DEBUG)
 # endif ((CMAKE_C_FLAGS_DEBUG)                            
     
-add_definitions(-D _DEBUG_TEST)
+# add_definitions(-D _DEBUG_TEST)
     
 set(CPACK_PROJECT_NAME ${PROJECT_NAME})
 set(CPACK_PROJECT_VERSION ${PROJECT_VERSION})
