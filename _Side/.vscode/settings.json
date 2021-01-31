@@ -1,0 +1,40 @@
+{
+    "C_Cpp.default.configurationProvider": "ms-vscode.cmake-tools",
+    "files.associations": {
+        "exception": "cpp",
+        "iostream": "cpp",
+        "ostream": "cpp",
+        "concepts": "cpp",
+        "array": "cpp",
+        "*.tcc": "cpp",
+        "deque": "cpp",
+        "string": "cpp",
+        "unordered_map": "cpp",
+        "vector": "cpp",
+        "memory": "cpp",
+        "optional": "cpp",
+        "string_view": "cpp",
+        "istream": "cpp",
+        "sstream": "cpp",
+        "streambuf": "cpp",
+        "functional": "cpp",
+        "tuple": "cpp",
+        "type_traits": "cpp",
+        "initializer_list": "cpp",
+        "atomic": "cpp",
+        "iterator": "cpp",
+        "memory_resource": "cpp",
+        "typeinfo": "cpp",
+        "socket": "cpp",
+        "thread": "cpp",
+        "numeric": "cpp",
+        "system_error": "cpp",
+        "chrono": "cpp"
+    },
+    "spellright.language": [],
+    "spellright.documentTypes": [
+        "markdown",
+        "latex",
+        "plaintext"
+    ]
+}
