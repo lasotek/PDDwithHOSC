@@ -1,3 +1,13 @@
+/**
+ * @file SingleHOSC.cpp
+ * @author Sławomir Lasota  (lasotek@gmail.com)
+ * @brief 
+ * @version 0.1
+ * @date 2021-02-05
+ * 
+ * @copyright Copyright (c) 2021
+ * 
+ */
 #include "helpers/helpers.h"
 #include "SingleHOSC.h"
 #include "../Hash/hash_combine.h"
@@ -98,7 +108,7 @@ namespace HOSC
         return 1;
     }
 
-    SingleHOSC::SingleHOSC(int source, int target, short max_nodes)
+    SingleHOSC::SingleHOSC(int source, int target, short max_nodes) noexcept
         : SingleHOSC(max_nodes)
     {
         weight_ *= clear_cannonical_single(source, target);
@@ -106,7 +116,7 @@ namespace HOSC
             _deletions_.emplace_back(SingleDel(source, target));
     }
 
-    SingleHOSC::SingleHOSC(initial_del_set initial_dels, short max_nodes) : n_nodes_(max_nodes)
+    SingleHOSC::SingleHOSC(initial_del_set initial_dels, short max_nodes) noexcept : n_nodes_(max_nodes)
     {
         if (initial_dels.size() > n_nodes_)
         {

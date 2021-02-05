@@ -10,20 +10,19 @@ enable_testing()
 
 add_executable(KIAnalyzer main.cpp 
                             ./HOSCs/SingleDeletion.cpp 
-                            # ./HOSCs/SymetricHOSC.cpp 
-                            # ./HOSCs/FullHOSC.cpp 
                             ./HOSCs/helpers/helpers.cpp 
-                            # ./HOSCs/SignedUniqueHOSCCollection.cpp
-                            # ./HOSCs/MultilevelHOSC.cpp
                             ./HOSCs/KIIndexCol.cpp
                             ./HOSCs/SingleHOSC.cpp
                             ./HOSCs/Cluster.cpp
+                            ./Tests/KIT1.cpp
+                            ./Tests/KIT2.cpp
+                            ./Tests/KIT3.cpp
+                            ./Tests/KIT4.cpp
+                            ./Tests/KIT5.cpp
+                            ./Tests/KIT6.cpp
+                            ./Tests/KIT7.cpp
                             )
                             
-# if (CMAKE_BUILD_TYPE EQUAL "Debug")
-# endif (CMAKE_BUILD_TYPE EQUAL "Debug")                            
-# if (CMAKE_CPP_FLAGS_DEBUG)
-# endif ((CMAKE_C_FLAGS_DEBUG)                            
     
 # add_definitions(-D _DEBUG_TEST)
     

@@ -1,3 +1,13 @@
+/**
+ * @file SingleHOSC.h
+ * @author Sławomir Lasota  (lasotek@gmail.com)
+ * @brief 
+ * @version 0.1
+ * @date 2021-02-05
+ * 
+ * @copyright Copyright (c) 2021
+ * 
+ */
 #ifndef __SINGLEHOSC_H__
 #define __SINGLEHOSC_H__
 
@@ -38,13 +48,13 @@ namespace HOSC
         void Test();
 
     public:
-        explicit SingleHOSC(int max_nodes = 10)
+        explicit SingleHOSC(int max_nodes = 10) noexcept
             : n_nodes_{max_nodes}
         {
             _deletions_.reserve(n_nodes_);
         }
-        SingleHOSC(int source, int target, short max_nodes = 5);
-        SingleHOSC(initial_del_set initial_dels, short max_nodes = 5);
+        SingleHOSC(int source, int target, short max_nodes = 5) noexcept;
+        SingleHOSC(initial_del_set initial_dels, short max_nodes = 5) noexcept;
         SingleHOSC(const SingleHOSC &Source) = default;
         SingleHOSC(SingleHOSC &&Source) = default;
         ~SingleHOSC()

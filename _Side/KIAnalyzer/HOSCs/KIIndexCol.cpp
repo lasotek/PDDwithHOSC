@@ -1,9 +1,19 @@
+/**
+ * @file KIIndexCol.cpp
+ * @author Sławomir Lasota  (lasotek@gmail.com)
+ * @brief 
+ * @version 0.1
+ * @date 2021-02-05
+ * 
+ * @copyright Copyright (c) 2021
+ * 
+ */
 #include "KIIndexCol.h"
 #include <exception>
 #include <sstream>
 namespace HOSC
 {
-    KIIndexCol::KIIndexCol(int _no_nodes, func function) : max_nodes(_no_nodes)
+    KIIndexCol::KIIndexCol(int _no_nodes, func function) noexcept : max_nodes(_no_nodes)
     {
         switch (function)
         {

@@ -1,3 +1,13 @@
+/**
+ * @file helpers.cpp
+ * @author Sławomir Lasota  (lasotek@gmail.com)
+ * @brief 
+ * @version 0.1
+ * @date 2021-02-05
+ * 
+ * @copyright Copyright (c) 2021
+ * 
+ */
 #include "helpers.h"
 
 namespace HOSC
@@ -80,12 +90,34 @@ namespace HOSC
         auto oldNit = extN2intN_.find(N);
         if (oldNit == extN2intN_.end())
         {
+            while(intN2extN_.contains(curr_node_))
+                curr_node_++;
             intN2extN_[curr_node_] = N;
-            extN2intN_[N] = curr_node_;
+             extN2intN_[N] = curr_node_;
             return curr_node_++;
         }
         else
             return oldNit->second;
+    }
+
+    int NodeTrans::extN2inNcheck(int N) const 
+    {
+        auto oldNit = extN2intN_.find(N);
+        if (oldNit != extN2intN_.end())
+            return oldNit->second;
+        else
+            return -1;
+    }
+    
+    bool NodeTrans::forceNodesTranslation(int ext_node, int int_node) 
+    {
+        if(extN2intN_.contains(ext_node))
+            return false;
+        if(intN2extN_.contains(int_node))
+            return false;
+        extN2intN_[ext_node] = int_node;
+        intN2extN_[int_node] = ext_node;
+        return true;
     }
 
     int NodeTrans::inN2extN(int N) const

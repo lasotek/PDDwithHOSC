@@ -1,3 +1,13 @@
+/**
+ * @file KIIndexCol.h
+ * @author Sławomir Lasota  (lasotek@gmail.com)
+ * @brief 
+ * @version 0.1
+ * @date 2021-02-05
+ * 
+ * @copyright Copyright (c) 2021
+ * 
+ */
 #ifndef __KIINDEXCOL_H__
 #define __KIINDEXCOL_H__
 #include <unordered_map>
@@ -13,7 +23,7 @@
 
 namespace HOSC
 {
-    class KIIndexCol
+    class KIIndexCol : public std::enable_shared_from_this<KIIndexCol>
     {
     public:
         /**
@@ -70,7 +80,8 @@ namespace HOSC
          * @param _no_nodes number of nodes in graph
          * @param function type of set: com_denominator, sum_numerators
          */
-        KIIndexCol(int _no_nodes, func function = com_denomnator);
+        KIIndexCol(int _no_nodes, func function = com_denomnator) noexcept;
+        KIIndexCol(const KIIndexCol& Source) = default;
         ~KIIndexCol() {}
         /**
          * @brief Inserts  new HOSC. If already exists, the coefficients are added and new HOSC is destroyed

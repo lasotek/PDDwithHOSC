@@ -1,3 +1,13 @@
+/**
+ * @file UniqueHOSCCollections.h
+ * @author Sławomir Lasota  (lasotek@gmail.com)
+ * @brief 
+ * @version 0.1
+ * @date 2021-02-05
+ * 
+ * @copyright Copyright (c) 2021
+ * 
+ */
 #ifndef __UNIQUEHOSCCOLLECTIONS_H__
 #define __UNIQUEHOSCCOLLECTIONS_H__
 
@@ -30,7 +40,7 @@ namespace HOSC
             map_type::iterator it_;
 
         public:
-            HOSC_unique_iterator(const map_type::iterator &it) : it_(it) {}
+            HOSC_unique_iterator(const map_type::iterator &it) noexcept : it_(it)  {}
             HOSC_unique_iterator(HOSC_unique_iterator &) = default;
             using iterator_category = map_type::iterator::iterator_category;
             // using value_type = component_type;

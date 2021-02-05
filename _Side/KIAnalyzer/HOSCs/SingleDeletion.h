@@ -1,3 +1,13 @@
+/**
+ * @file SingleDeletion.h
+ * @author Sławomir Lasota  (lasotek@gmail.com)
+ * @brief 
+ * @version 0.1
+ * @date 2021-02-05
+ * 
+ * @copyright Copyright (c) 2021
+ * 
+ */
 #ifndef __SINGLEDELTION_H__
 #define __SINGLEDELTION_H__
 

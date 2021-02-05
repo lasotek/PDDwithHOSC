@@ -1,3 +1,13 @@
+/**
+ * @file helpers.h
+ * @author Sławomir Lasota  (lasotek@gmail.com)
+ * @brief 
+ * @version 0.1
+ * @date 2021-02-05
+ * 
+ * @copyright Copyright (c) 2021
+ * 
+ */
 #ifndef __HELPERS_H__
 #define __HELPERS_H__
 
@@ -295,6 +305,22 @@ namespace HOSC
          * 
          */
         void reset();
+        /**
+         * @brief only returns existing nodes
+         * 
+         * @param N node
+         * @return existing node ore -1 
+         */
+        int extN2inNcheck(int N) const;
+        /**
+         * @brief Force 2 pairs of node to translator. Use with caution. Do not ignore the rsult
+         * 
+         * @param ext_node external node
+         * @param int_node internal node
+         * @return true if none of above nodes has been previously used (reserved)
+         * @return false otherwise
+         */
+        [[nodiscard]] bool forceNodesTranslation(int ext_node, int int_node);
     };
 
 };     // namespace HOSC

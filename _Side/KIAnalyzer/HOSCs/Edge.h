@@ -1,5 +1,16 @@
+/**
+ * @file Edge.h
+ * @author Sławomir Lasota  (lasotek@gmail.com)
+ * @brief 
+ * @version 0.1
+ * @date 2021-02-05
+ * 
+ * @copyright Copyright (c) 2021
+ * 
+ */
 #ifndef __EDGE_H__
 #define __EDGE_H__
+#include <memory>
 #include "helpers/helpers.h"
 
 namespace HOSC
@@ -22,7 +33,7 @@ namespace HOSC
          * @param b Node b
          * @param weight Weight of the edge
          */
-        Edge(int a, int b, W weight = 1) : node_a(a), node_b(b), weight_(weight) {}
+        Edge(int a, int b, W weight = 1) noexcept : node_a(a), node_b(b), weight_(weight) {}
         Edge(const Edge &Source) = default;
         ~Edge()
         {

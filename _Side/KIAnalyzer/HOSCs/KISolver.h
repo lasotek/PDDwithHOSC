@@ -1,3 +1,13 @@
+/**
+ * @file KISolver.h
+ * @author Sławomir Lasota  (lasotek@gmail.com)
+ * @brief 
+ * @version 0.1
+ * @date 2021-02-05
+ * 
+ * @copyright Copyright (c) 2021
+ * 
+ */
 #ifndef __KISOLVER_H__
 #define __KISOLVER_H__
 #include <list>
@@ -18,7 +28,7 @@ namespace HOSC
      * @tparam W Type of the wieight. Arithmetic
      */
     template <Arithmetic W>
-    class KISolver
+    class KISolver : public std::enable_shared_from_this<KISolver<W>> 
     {
     private:
         using edges_list_ptr = std::list<std::shared_ptr<Edge<W>>>;
@@ -50,7 +60,7 @@ namespace HOSC
 
     public:
         KISolver() = default;
-        KISolver(const Edges<W> &edges_list)
+        KISolver(const Edges<W> &edges_list) noexcept
         {
             for (auto &e : edges_list)
             {
