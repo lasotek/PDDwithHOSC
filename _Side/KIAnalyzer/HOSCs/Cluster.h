@@ -12,9 +12,13 @@
 #define __CLUSTER_H__
 #include <set>
 #include <list>
+#include <stack>
 #include <limits>
 #include <iostream>
 #include <memory>
+#include <thread>
+#include <future>
+#include <mutex>
 #include "Edge.h"
 #include "KIIndexCol.h"
 #include <initializer_list>
@@ -55,20 +59,89 @@ namespace HOSC
 
         class int_ki_cont
         {
+            struct ext_interface
+            {
+                nodes_pins only_my_pins_;
+                std::shared_ptr<KIIndexCol> denom_;
+                std::shared_ptr<KIIndexCol> numers_;
+                std::shared_ptr<KIIndexCol> numers_ext_;
+                ext_interface() = default;
+                ext_interface(ext_interface &&Source) = delete;
+                ext_interface(const ext_interface &Source);
+            };
+            using ext_interface_ptr = std::shared_ptr<ext_interface>;
+            ext_interface_ptr interface_ptr;
+            static ext_interface_ptr big_O_dot(ext_interface_ptr pLeft, ext_interface_ptr pRight);
+
             mine_cluster_ptr clusters_p;
             NodeTrans translator;
+            // nodes_pins only_my_pins_;
+            nodes_pins &only_my_pins() { return interface_ptr->only_my_pins_; }
+            bool is_parallel_running;
+            std::future<bool> solve_future;
+            // std::mutex p_mutex;
+            //to do
+            // std::shared_ptr<KIIndexCol> denom_;
+            std::shared_ptr<KIIndexCol> &denom() { return interface_ptr->denom_; }
+            // std::shared_ptr<KIIndexCol> numers_;
+            std::shared_ptr<KIIndexCol> &numers() { return interface_ptr->numers_; }
+            // std::shared_ptr<KIIndexCol> numers_ext_;
+            std::shared_ptr<KIIndexCol> &numers_ext() { return interface_ptr->numers_ext_; }
+
             // std::unordered_map<int, int> int2ext, ext2int;
             friend class KICluster;
+            std::shared_ptr<KIIndexCol> get_translated(std::shared_ptr<KIIndexCol> Origin, NodeTrans::NtoN &map);
+            inline std::shared_ptr<KIIndexCol> get_denom_tr(NodeTrans::NtoN &map)
+            {
+                return get_translated(clusters_p->denom_, map);
+            }
+            inline std::shared_ptr<KIIndexCol> get_numers_tr(NodeTrans::NtoN &map)
+            {
+                return get_translated(clusters_p->numers_, map);
+            }
+            inline std::shared_ptr<KIIndexCol> get_numers_ext_tr(NodeTrans::NtoN &map)
+            {
+                return get_translated(clusters_p->numers_ext, map);
+            }
+            /**
+             * @brief remove nodes froma edges, leaves only private not connected nodes
+             * 
+             * @param edge_nodes Egdge's nodes
+             */
+            // void leave_only_internal_nodes(const nodes_pins& edge_nodes);
+            // void leave_only_internal_nodes(const set_of_nodes& edge_nodes);
+            template <Iterable T>
+            void leave_only_internal_nodes(const T &edge_nodes)
+            {
+                if (only_my_pins().empty())
+                    return;
+                nodes_pins diff;
+                std::set_difference(only_my_pins().begin(), only_my_pins().end(),
+                                    edge_nodes.begin(), edge_nodes.end(),
+                                    std::back_inserter(diff));
+                only_my_pins() = diff;
+            }
+            void update_n_nodes(int n_nodes);
 
         public:
+            using ext_interface_stack = std::stack<ext_interface_ptr>;
+            // int_ki_cont() = default;
             int_ki_cont(mine_cluster_ptr cluster, const bounadry_connections_list &connections);
             set_of_nodes get_cluster_ex_nodes() const;
-            // mine_cluster_ptr
+            int translate_node(int clust_int_node);
+            void get_boundary_translation(NodeTrans::NtoN &map) const;
+            void Solve();
+            void SolveParallel();
+            inline ext_interface_ptr get_interface() { return interface_ptr; }
+            inline ext_interface_ptr const_get_interface() const { return std::make_shared<ext_interface>(*interface_ptr); }
+            // const auto only_my_pins() const { return only_my_pins()}; }
+            // mine_cluster_ptr big_o_dot();
         };
 
     private:
         friend std::ostream &operator<<(std::ostream &os, KICluster &claster);
         friend class int_ki_cont;
+        using ext_interface_stack = int_ki_cont::ext_interface_stack;
         using W = long long;
         set_of_nodes bound_nodes_;
         using edges_list_ptr = std::list<std::shared_ptr<Edge<W>>>;
@@ -86,6 +159,7 @@ namespace HOSC
         using clusters_list = std::list<int_ki_cont>;
         std::unique_ptr<clusters_list> clusters_p;
         bool use_threads_ = false;
+        void get_boundary_translation(NodeTrans::NtoN &map) const;
         set_of_nodes get_bound_nodes_ext() const;
         map_iterator min_incidence()
         {
@@ -163,7 +237,7 @@ namespace HOSC
          * @brief Force a cluster to be solved
          * 
          */
-        virtual void Solve();
+        void Solve();
         /**
          * @brief Return the numerical KI as a double number. In case of cluster with boundary nodes, they are assumed to be not connected
          * 

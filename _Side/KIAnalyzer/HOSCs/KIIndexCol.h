@@ -26,6 +26,7 @@ namespace HOSC
     class KIIndexCol : public std::enable_shared_from_this<KIIndexCol>
     {
     public:
+        using KIndexCol_ptr = std::shared_ptr<KIIndexCol>;
         /**
          * @brief pair of nodes to be contracted. If empty, means no 
          * 
@@ -42,7 +43,7 @@ namespace HOSC
         unique_simplyHOSC_map _HOSCmap1, _HOSCmap2;
         bool first_main = false;
         int max_nodes;
-        bool has_virtual_node = false;
+        // bool has_virtual_node = false;
         unique_simplyHOSC_map &_HOSCmap()
         {
             if (first_main)
@@ -68,6 +69,7 @@ namespace HOSC
         {
             first_main = !first_main;
         }
+        KIIndexCol(int _no_nodes) noexcept;
 
     public:
         using func = enum { com_denomnator,
@@ -80,8 +82,9 @@ namespace HOSC
          * @param _no_nodes number of nodes in graph
          * @param function type of set: com_denominator, sum_numerators
          */
-        KIIndexCol(int _no_nodes, func function = com_denomnator) noexcept;
-        KIIndexCol(const KIIndexCol& Source) = default;
+        KIIndexCol(int _no_nodes, func function) noexcept;
+        KIIndexCol(const KIIndexCol &Source);
+        KIIndexCol(KIIndexCol &&Source) = default;
         ~KIIndexCol() {}
         /**
          * @brief Inserts  new HOSC. If already exists, the coefficients are added and new HOSC is destroyed
@@ -122,9 +125,42 @@ namespace HOSC
          * @brief reset collection
          * 
          */
+        bool big_O_dot(KIIndexCol &OtherIndexCol, nodes_to_remove &nodes);
+        /**
+         * @brief 
+         * 
+         * @param Right 
+         * @return KIIndexCol& 
+         */
+        KIIndexCol &operator+=(KIIndexCol &Right);
+        /**
+         * @brief 
+         * 
+         */
         void reset();
-        std::string String(const NodeTrans& NodeTrans);
+        /**
+         * @brief 
+         * 
+         * @param NodeTrans 
+         * @return std::string 
+         */
+        std::string String(const NodeTrans &NodeTrans);
+        /**
+         * @brief 
+         * 
+         * @param tr_map 
+         * @return std::shared_ptr<KIIndexCol> 
+         */
+        KIndexCol_ptr copy_col_with_node_translated(const NodeTrans::NtoN &tr_map);
+        /**
+         * @brief 
+         * 
+         * @param n_nodes 
+         */
+        void update_n_nodes(int n_nodes);
     };
+
+    KIIndexCol::KIndexCol_ptr big_O_dot_Col(KIIndexCol::KIndexCol_ptr L, KIIndexCol::KIndexCol_ptr R, nodes_to_remove &nodes);
 
 } // namespace HOSC
 

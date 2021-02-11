@@ -130,10 +130,55 @@ namespace HOSC
             auto r = replacer.get(del.target());
             weight_ *= clear_cannonical_single(p, r);
             if (weight_ == 0)
+            {
+                _deletions_.clear();
                 return;
+            }
             insert_del(p, r);
             replacer.set(p, r);
         }
+    }
+
+    SingleHOSC::SingleHOSC(const SingleHOSC &Source, const NodeTrans::NtoN &trans_map) : n_nodes_(Source.n_nodes_), weight_(Source.weight_)
+    {
+        for (auto del : Source._deletions_)
+        {
+            auto source = del.source();
+            if (source != virtual_node)
+            {
+                auto source_it = trans_map.find(source);
+                if (source_it == trans_map.end())
+                {
+                    std::ostringstream ss;
+                    ss << source << " is expected in the map\n";
+                    throw std::invalid_argument(ss.str());
+                }
+                source = source_it->second;
+            }
+            auto target = del.target();
+            if (target != virtual_node)
+            {
+                auto target_it = trans_map.find(target);
+                if (target_it == trans_map.end())
+                {
+                    std::ostringstream ss;
+                    ss << target << " is expected in the map\n";
+                    throw std::invalid_argument(ss.str());
+                }
+                target = target_it->second;
+            }
+            weight_ *= clear_cannonical_single(source, target);
+            if (weight_ == 0)
+            {
+                _deletions_.clear();
+                return;
+            }
+            insert_del(source, target);
+        }
+
+        // weight_ *= clear_cannonical_single(source, target);
+        // if (weight_)
+        //     _deletions_.emplace_back(SingleDel(source, target));
     }
 
     std::string SingleHOSC::String(const NodeTrans *pTranslater) const
@@ -295,5 +340,5 @@ namespace HOSC
         weight_ += right.weight_;
     }
 #endif
-    HOSCUniqueCollection<SingleHOSC> SingleHOSCCollection;
+    // HOSCUniqueCollection<SingleHOSC> SingleHOSCCollection;
 }; // namespace HOSC

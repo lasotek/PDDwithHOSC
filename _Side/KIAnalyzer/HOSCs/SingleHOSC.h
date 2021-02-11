@@ -23,7 +23,6 @@
 namespace HOSC
 {
 
-
     class SingleHOSC : public std::enable_shared_from_this<SingleHOSC>
     {
     public:
@@ -56,6 +55,7 @@ namespace HOSC
         SingleHOSC(int source, int target, short max_nodes = 5) noexcept;
         SingleHOSC(initial_del_set initial_dels, short max_nodes = 5) noexcept;
         SingleHOSC(const SingleHOSC &Source) = default;
+        SingleHOSC(const SingleHOSC &Source, const NodeTrans::NtoN &trans_map);
         SingleHOSC(SingleHOSC &&Source) = default;
         ~SingleHOSC()
         {
@@ -63,12 +63,13 @@ namespace HOSC
             std::cout << "HOSC: " << String() << " is deleting\n";
 #endif
         }
+        void update_n_nodes(int n_nodes) { n_nodes_ = n_nodes; }
         bool operator==(const SingleHOSC &Other) const;
         inline bool operator!=(const SingleHOSC &Other) const { return !operator==(Other); }
         inline void multiply(int multipolier) { weight_ *= multipolier; }
         inline bool is_valid() const { return weight_ != 0; }
         inline bool is_complete() const { return _deletions_.empty(); }
-        std::string String(const NodeTrans* pTranslater = nullptr) const;
+        std::string String(const NodeTrans *pTranslater = nullptr) const;
         std::size_t hash() const;
         size_t del_numbers() const { return _deletions_.size(); }
         inline long long weight() const { return weight_; }
@@ -76,8 +77,9 @@ namespace HOSC
         std::optional<int> numeric_value() const;
         [[nodiscard]] HOSC_oper_result HOSC_big_dot(HOSC_oper_result h2, const nodes_to_remove &nodes) const;
         int get_n_nodes() const { return n_nodes_; }
-        SingleHOSC& operator*=(long long mult) {
-            weight_*=mult;
+        SingleHOSC &operator*=(long long mult)
+        {
+            weight_ *= mult;
             return *this;
         }
 #ifdef _DEBUG_TEST
@@ -94,7 +96,7 @@ namespace HOSC
     {
         return std::move(h1->HOSC_big_dot(h2, nodes));
     }
-    extern HOSCUniqueCollection<SingleHOSC> SingleHOSCCollection;
+    // extern HOSCUniqueCollection<SingleHOSC> SingleHOSCCollection;
 }; // namespace HOSC
 
 namespace std

@@ -38,10 +38,11 @@ namespace HOSC
         SingleDel() = default;
 
         ~SingleDel() {}
-        bool operator==(const SingleDel &Other) const { return source_ == Other.source_ && target_ == Other.target_; }
-        bool invalid() const { return source_ == target_; }
-        int source() const { return source_; }
-        int target() const { return target_; }
+        inline bool operator==(const SingleDel &Other) const { return source_ == Other.source_ && target_ == Other.target_; }
+        inline bool invalid() const { return source_ == target_; }
+        inline bool valid() const { return source_ != target_; }
+        inline int source() const { return source_; }
+        inline int target() const { return target_; }
         size_t hash() const;
     };
 

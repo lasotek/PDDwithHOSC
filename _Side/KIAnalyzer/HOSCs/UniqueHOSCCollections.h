@@ -90,6 +90,8 @@ namespace HOSC
         bool empty() const { return map_.empty(); }
         HOSC_unique_iterator begin() { return HOSC_unique_iterator(map_.begin()); }
         HOSC_unique_iterator end() { return HOSC_unique_iterator(map_.end()); }
+        const HOSC_unique_iterator cbegin() { return HOSC_unique_iterator(map_.cbegin()); }
+        const HOSC_unique_iterator cend() { return HOSC_unique_iterator(map_.cend()); }
         size_t size() const { return map_.size(); }
         inline bool complete() const { return map_.size() == 1 && map_.begin()->second->is_complete(); }
 

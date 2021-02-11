@@ -33,6 +33,25 @@ namespace HOSC
     template <typename T>
     concept Arithmetic = std::is_arithmetic<T>::value;
 
+    template <typename T, typename = void>
+    struct is_iterable : std::false_type
+    {
+    };
+
+    // this gets used only when we can call std::begin() and std::end() on that type
+    template <typename T>
+    struct is_iterable<T, std::void_t<decltype(std::begin(std::declval<T>())),
+                                      decltype(std::end(std::declval<T>()))>> : std::true_type
+    {
+    };
+
+    // Here is a helper:
+    template <typename T>
+    constexpr bool is_iterable_v = is_iterable<T>::value;
+
+    template <typename T>
+    concept Iterable = is_iterable<T>::value;
+
     template <typename T>
     T sgn(T t) { return t < 0 ? -1 : 1; }
 
@@ -46,11 +65,12 @@ namespace HOSC
     template <typename T>
     requires std::is_integral_v<T> bool is_odd(const T &n) { return (n & 1) != 0; }
 
+    using nodes_pins = std::vector<int>;
     /**
      * @brief Vector of No nodes that have just been separated
      * 
      */
-    using nodes_to_remove = std::vector<int>;
+    using nodes_to_remove = nodes_pins;
 
     /**
      * @brief Helper that note if the node has alredy been removed for rows and columns simultanously
@@ -277,9 +297,11 @@ namespace HOSC
 
     class NodeTrans
     {
+    public:
+        using NtoN = std::unordered_map<int, int>;
+
     private:
         int curr_node_ = 0;
-        using NtoN = std::unordered_map<int, int>;
         NtoN extN2intN_;
         NtoN intN2extN_;
 
