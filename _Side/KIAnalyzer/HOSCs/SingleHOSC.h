@@ -54,9 +54,9 @@ namespace HOSC
         }
         SingleHOSC(int source, int target, short max_nodes = 5) noexcept;
         SingleHOSC(initial_del_set initial_dels, short max_nodes = 5) noexcept;
-        SingleHOSC(const SingleHOSC &Source) = default;
+        SingleHOSC(const SingleHOSC &Source):n_nodes_(Source.n_nodes_), weight_(Source.weight_), _deletions_(Source._deletions_) {}
         SingleHOSC(const SingleHOSC &Source, const NodeTrans::NtoN &trans_map);
-        SingleHOSC(SingleHOSC &&Source) = default;
+        SingleHOSC(SingleHOSC &&Source) = delete;
         ~SingleHOSC()
         {
 #ifdef _DEBUG_TEST

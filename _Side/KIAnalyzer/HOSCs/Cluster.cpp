@@ -250,6 +250,7 @@ namespace HOSC
                 Cluster.Solve();
                 Cluster.update_n_nodes(max_nodes_ + 1);
                 interface_stack.push(Cluster.get_interface());
+
                 // Cluster.clusters_p->Solve(); //change to thread and everything
             }
             while (interface_stack.size() > 1)

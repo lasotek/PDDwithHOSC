@@ -88,7 +88,7 @@ void KirchhoffInexTesting6()
     i_mills = std::chrono::duration_cast<std::chrono::nanoseconds>(elapsed_time);
     std::cout << "duration time " << i_mills.count() << " nanoseconds" << std::endl;
 
-    HOSC::KICluster Cluster01({13, 18, 19, 20});
+    HOSC::KICluster Cluster01({13, 18, 20});
     Cluster01.AddEdge({13, 14});
     Cluster01.AddEdge({13, 15});
     Cluster01.AddEdge({14, 15});
@@ -143,4 +143,8 @@ void KirchhoffInexTesting6()
     Cluster23.Solve();
     end = std::chrono::steady_clock::now();
     std::cout << Cluster23 << std::endl;
+
+    elapsed_time = end - start;
+    i_mills = std::chrono::duration_cast<std::chrono::nanoseconds>(elapsed_time);
+    std::cout << "duration time " << i_mills.count() << " nanoseconds" << std::endl;
 }

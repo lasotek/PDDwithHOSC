@@ -138,13 +138,15 @@ namespace HOSC
 
     KIIndexCol &KIIndexCol::operator+=(KIIndexCol &Right)
     {
-        auto &Source = _HOSCmap();
+        switch_maps();
+        // auto &Source = _HOSCmap();
         auto &OSource = Right._HOSCmap();
         for (auto it = OSource.begin(); it != OSource.end(); it++)
         {
             auto h2 = std::make_shared<SingleHOSC>(**it);
             insert(h2);
         }
+        switch_maps();
         return *this;
     }
 
