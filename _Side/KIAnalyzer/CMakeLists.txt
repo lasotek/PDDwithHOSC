@@ -21,6 +21,7 @@ add_executable(KIAnalyzer main.cpp
                             ./Tests/KIT5.cpp
                             ./Tests/KIT6.cpp
                             ./Tests/KIT7.cpp
+                            ./Tests/KIT8.cpp
                             )
                             
     

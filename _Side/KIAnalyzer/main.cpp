@@ -36,7 +36,7 @@ int main(int argc, char **argv)
     try
     {
 
-        KirchhoffInexTesting7();
+        KirchhoffInexTesting8();
         KirchhoffInexTesting();
     }
     catch (const std::exception &e)

@@ -143,7 +143,7 @@ namespace HOSC
             denom() = get_denom_tr(map);
             numers() = get_numers_tr(map);
             numers_ext() = get_numers_ext_tr(map);
-            is_parallel_running = false;
+            // is_parallel_running = false;
             return false; });
     }
 
@@ -243,15 +243,40 @@ namespace HOSC
         ext_interface_stack interface_stack;
         if (clusters_p)
         {
-            for (auto &Cluster : *clusters_p)
+            if(use_threads_ )
             {
-                Cluster.leave_only_internal_nodes(Nodes_with_edges);
-                Cluster.leave_only_internal_nodes(bound_nodes_);
-                Cluster.Solve();
-                Cluster.update_n_nodes(max_nodes_ + 1);
-                interface_stack.push(Cluster.get_interface());
-
-                // Cluster.clusters_p->Solve(); //change to thread and everything
+                //parallel
+                for (auto &Cluster : *clusters_p)
+                {
+                    Cluster.leave_only_internal_nodes(Nodes_with_edges);
+                    Cluster.leave_only_internal_nodes(bound_nodes_);
+                    Cluster.SolveParallel(); //change to thread and everything
+                }
+                while (!all_finished())
+                {
+                    for (auto &Cluster : *clusters_p)
+                    {
+                        if (Cluster.is_parallel_running && Cluster.solve_future.wait_for(std::chrono::microseconds(100)) == std::future_status::ready)
+                        {
+                            Cluster.update_n_nodes(max_nodes_ + 1);
+                            interface_stack.push(Cluster.get_interface());
+                            Cluster.is_parallel_running = false;
+                            Cluster.solve_future.get();
+                            break;
+                        }
+                    }
+                }
+            } else
+            {
+                //serial
+                for (auto &Cluster : *clusters_p)
+                {
+                    Cluster.leave_only_internal_nodes(Nodes_with_edges);
+                    Cluster.leave_only_internal_nodes(bound_nodes_);
+                    Cluster.Solve();
+                    Cluster.update_n_nodes(max_nodes_ + 1);
+                    interface_stack.push(Cluster.get_interface());
+                }
             }
             while (interface_stack.size() > 1)
             {
@@ -259,7 +284,7 @@ namespace HOSC
                 interface_stack.pop();
                 auto i2 = interface_stack.top();
                 interface_stack.pop();
-                auto ires = int_ki_cont::big_O_dot(i1,i2);
+                auto ires = int_ki_cont::big_O_dot(i1, i2);
                 interface_stack.push(ires);
             }
             auto res_top = interface_stack.top();

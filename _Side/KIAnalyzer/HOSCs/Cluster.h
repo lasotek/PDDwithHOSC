@@ -78,6 +78,11 @@ namespace HOSC
             // nodes_pins only_my_pins_;
             nodes_pins &only_my_pins() { return interface_ptr->only_my_pins_; }
             bool is_parallel_running;
+            struct par_data
+            {
+                bool done = false;
+                int_ki_cont *pki_cont = nullptr;
+            };
             std::future<bool> solve_future;
             // std::mutex p_mutex;
             //to do
@@ -159,6 +164,16 @@ namespace HOSC
         using clusters_list = std::list<int_ki_cont>;
         std::unique_ptr<clusters_list> clusters_p;
         bool use_threads_ = false;
+        inline bool all_finished()
+        {
+            if (clusters_p)
+                for (auto &ic : *clusters_p)
+                {
+                    if(ic.is_parallel_running)
+                        return false;
+                }
+            return true;
+        }
         void get_boundary_translation(NodeTrans::NtoN &map) const;
         set_of_nodes get_bound_nodes_ext() const;
         map_iterator min_incidence()

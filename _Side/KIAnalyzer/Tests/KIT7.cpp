@@ -98,6 +98,7 @@ void KirchhoffInexTesting7()
     cluster3->AddEdge({1, 4});
     cluster3->AddEdge({2, 3});
     cluster3->AddEdge({2, 4});
+    cluster3->AddEdge({2, 5});
     cluster3->AddEdge({3, 4});
     cluster3->AddEdge({3, 5});
     cluster3->AddEdge({3, 6});
@@ -131,12 +132,12 @@ void KirchhoffInexTesting7()
     main_global_cluster->AddEdge({13, 12});
     main_global_cluster->AddEdge({18, 6});
     main_global_cluster->AddEdge({18, 12});
-    // auto start = std::chrono::steady_clock::now();
+    auto start = std::chrono::steady_clock::now();
     main_global_cluster->Solve();
-    // auto end = std::chrono::steady_clock::now();
-    // std::cout << *main2_claster << std::endl;
+    auto end = std::chrono::steady_clock::now();
+    std::cout << *main_global_cluster << std::endl;
 
-    // auto elapsed_time = end - start;
-    // auto i_mills = std::chrono::duration_cast<std::chrono::nanoseconds>(elapsed_time);
-    // std::cout << "duration time " << i_mills.count() << " nanoseconds" << std::endl;
+    auto elapsed_time = end - start;
+    auto i_mills = std::chrono::duration_cast<std::chrono::nanoseconds>(elapsed_time);
+    std::cout << "duration time " << i_mills.count() << " nanoseconds" << std::endl;
 }

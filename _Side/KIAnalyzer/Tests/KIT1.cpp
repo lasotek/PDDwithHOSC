@@ -19,6 +19,7 @@ void KirchhoffInexTesting()
     Solver.AddEdge({1, 4});
     Solver.AddEdge({2, 3});
     Solver.AddEdge({2, 4});
+    Solver.AddEdge({2, 5});
     Solver.AddEdge({3, 4});
     Solver.AddEdge({3, 5});
     Solver.AddEdge({3, 6});
