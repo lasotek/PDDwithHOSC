@@ -11,6 +11,7 @@
 #include <exception>
 #include <sstream>
 #include <algorithm>
+#include <thread>
 #include "Cluster.h"
 #include "KIIndexCol.h"
 
@@ -41,8 +42,10 @@ namespace HOSC
         return res;
     }
 
-    KICluster::int_ki_cont::int_ki_cont(mine_cluster_ptr cluster, const bounadry_connections_list &connections) : clusters_p(cluster),
-                                                                                                                  is_parallel_running(false), interface_ptr(std::make_shared<ext_interface>())
+    KICluster::int_ki_cont::int_ki_cont(mine_cluster_ptr cluster, const bounadry_connections_list &connections) : 
+        clusters_p(cluster),
+        is_parallel_running(not_yet), 
+        interface_ptr(std::make_shared<ext_interface>())
     {
         for (auto c : connections)
         {
@@ -78,6 +81,7 @@ namespace HOSC
             // int2ext[in] = ex;
         }
         std::sort(only_my_pins().begin(), only_my_pins().end());
+        solve_future = promise.get_future();
     }
 
     KICluster::set_of_nodes KICluster::int_ki_cont::get_cluster_ex_nodes() const
@@ -135,16 +139,28 @@ namespace HOSC
     {
         if (is_parallel_running)
             return;
-        solve_future = std::async(std::launch::async, [this] { 
-            is_parallel_running = true;
-            clusters_p->Solve();
+        std::thread([this] {
+            this->is_parallel_running = running;
+            this->clusters_p->Solve();
             NodeTrans::NtoN map;
-            get_boundary_translation(map);
-            denom() = get_denom_tr(map);
-            numers() = get_numers_tr(map);
-            numers_ext() = get_numers_ext_tr(map);
-            // is_parallel_running = false;
-            return false; });
+            this->get_boundary_translation(map);
+            this->denom() = get_denom_tr(map);
+            this->numers() = get_numers_tr(map);
+            this->numers_ext() = get_numers_ext_tr(map);
+            this->promise.set_value(true);
+        }).detach();
+        // solve_future = std::async(std::launch::async, [this] { 
+        //     is_parallel_running = running;
+        //     clusters_p->Solve();
+        //     NodeTrans::NtoN map;
+        //     get_boundary_translation(map);
+        //     denom() = get_denom_tr(map);
+        //     numers() = get_numers_tr(map);
+        //     numers_ext() = get_numers_ext_tr(map);
+        //     // is_parallel_running = false;
+
+        //     // is_parallel_running = done;
+        //     return false; });
     }
 
     void KICluster::int_ki_cont::get_boundary_translation(NodeTrans::NtoN &map) const
@@ -243,30 +259,36 @@ namespace HOSC
         ext_interface_stack interface_stack;
         if (clusters_p)
         {
-            if(use_threads_ )
+            if (use_threads_)
             {
                 //parallel
+                for (auto &Cluster : *clusters_p)
+                {
+                    Cluster.is_parallel_running = int_ki_cont::not_yet;
+                }
                 for (auto &Cluster : *clusters_p)
                 {
                     Cluster.leave_only_internal_nodes(Nodes_with_edges);
                     Cluster.leave_only_internal_nodes(bound_nodes_);
                     Cluster.SolveParallel(); //change to thread and everything
                 }
+                auto num_of_clusters = clusters_p->size();
                 while (!all_finished())
                 {
                     for (auto &Cluster : *clusters_p)
                     {
-                        if (Cluster.is_parallel_running && Cluster.solve_future.wait_for(std::chrono::microseconds(100)) == std::future_status::ready)
+                        if (Cluster.is_parallel_running != int_ki_cont::done && Cluster.solve_future.wait_for(std::chrono::microseconds(100)) == std::future_status::ready)
                         {
                             Cluster.update_n_nodes(max_nodes_ + 1);
                             interface_stack.push(Cluster.get_interface());
-                            Cluster.is_parallel_running = false;
                             Cluster.solve_future.get();
-                            break;
+                            Cluster.is_parallel_running = int_ki_cont::done;
+                            // break;
                         }
                     }
                 }
-            } else
+            }
+            else
             {
                 //serial
                 for (auto &Cluster : *clusters_p)
@@ -339,7 +361,7 @@ namespace HOSC
         {
             node_pair.second = node_trans_.extN2inN(node_pair.second);
         }
-
+        cluster->use_threads_ = use_threads_;
         clusters_p->emplace_back(int_ki_cont(cluster, local_list));
         return &(clusters_p->back());
     }

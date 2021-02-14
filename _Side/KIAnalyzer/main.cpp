@@ -36,8 +36,11 @@ int main(int argc, char **argv)
     try
     {
 
-        KirchhoffInexTesting8();
         KirchhoffInexTesting();
+        KirchhoffInexTesting7();
+        KirchhoffInexTesting10();
+        KirchhoffInexTesting8();
+        KirchhoffInexTesting9();
     }
     catch (const std::exception &e)
     {

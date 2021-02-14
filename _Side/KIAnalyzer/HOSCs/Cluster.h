@@ -57,6 +57,7 @@ namespace HOSC
          */
         using mine_cluster_ptr = std::shared_ptr<KICluster>;
 
+        friend class int_ki_cont;
         class int_ki_cont
         {
             struct ext_interface
@@ -77,13 +78,10 @@ namespace HOSC
             NodeTrans translator;
             // nodes_pins only_my_pins_;
             nodes_pins &only_my_pins() { return interface_ptr->only_my_pins_; }
-            bool is_parallel_running;
-            struct par_data
-            {
-                bool done = false;
-                int_ki_cont *pki_cont = nullptr;
-            };
+            enum{not_yet, running, done} is_parallel_running = not_yet;
+            std::promise<bool> promise;
             std::future<bool> solve_future;
+
             // std::mutex p_mutex;
             //to do
             // std::shared_ptr<KIIndexCol> denom_;
@@ -169,7 +167,7 @@ namespace HOSC
             if (clusters_p)
                 for (auto &ic : *clusters_p)
                 {
-                    if(ic.is_parallel_running)
+                    if(ic.is_parallel_running != int_ki_cont::done )
                         return false;
                 }
             return true;
@@ -303,9 +301,9 @@ namespace HOSC
     }
 
     using cluster_ptr = std::shared_ptr<KICluster>;
-    inline cluster_ptr new_cluster(const KICluster::boundary_nodes_list &_boundary_nodes)
+    inline cluster_ptr new_cluster(const KICluster::boundary_nodes_list &_boundary_nodes, bool use_threads = false)
     {
-        return std::make_shared<KICluster>(_boundary_nodes);
+        return std::make_shared<KICluster>(_boundary_nodes, use_threads);
     }
 } // namespace HOSC
 

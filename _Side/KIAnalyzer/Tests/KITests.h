@@ -17,4 +17,8 @@ void KirchhoffInexTesting7();
 
 void KirchhoffInexTesting8();
 
+void KirchhoffInexTesting9();
+
+void KirchhoffInexTesting10();
+
 #endif // __KITESTS_H__
