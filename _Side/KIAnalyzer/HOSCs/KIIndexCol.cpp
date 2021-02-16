@@ -113,7 +113,7 @@ namespace HOSC
         return Dest.size() == 1;
     }
 
-    bool KIIndexCol::big_O_dot(KIIndexCol &OtherIndexCol, nodes_to_remove &nodes)
+    bool KIIndexCol::big_O_dot(KIIndexCol &OtherIndexCol, nodes_to_remove &nodes, int extra_nodes)
     {
         auto &Source = _HOSCmap();
         auto &Dest = dest_HOSCmap();
@@ -125,7 +125,7 @@ namespace HOSC
             for (auto oit = OSource.begin(); oit != OSource.end(); oit++)
             {
                 auto h2 = *oit;
-                auto hRes = h1->HOSC_big_dot(h2, nodes);
+                auto hRes = h1->HOSC_big_dot(h2, nodes, extra_nodes);
                 if (hRes)
                 {
                     insert(hRes);
@@ -188,6 +188,7 @@ namespace HOSC
 
     void KIIndexCol::update_n_nodes(int n_nodes)
     {
+        max_nodes = n_nodes;
         auto CurHOSCs = _HOSCmap();
         for (auto it = CurHOSCs.begin(); it != CurHOSCs.end(); it++)
         {
@@ -195,10 +196,10 @@ namespace HOSC
         }
     }
 
-    KIIndexCol::KIndexCol_ptr big_O_dot_Col(KIIndexCol::KIndexCol_ptr L, KIIndexCol::KIndexCol_ptr R, nodes_to_remove &nodes)
+    KIIndexCol::KIndexCol_ptr big_O_dot_Col(KIIndexCol::KIndexCol_ptr L, KIIndexCol::KIndexCol_ptr R, nodes_to_remove &nodes, int extra_nodes)
     {
         auto h1 = std::make_shared<KIIndexCol>(*L);
-        h1->big_O_dot(*R, nodes);
+        h1->big_O_dot(*R, nodes, extra_nodes);
         return h1;
     }
 

@@ -14,6 +14,7 @@ add_executable(KIAnalyzer main.cpp
                             ./HOSCs/KIIndexCol.cpp
                             ./HOSCs/SingleHOSC.cpp
                             ./HOSCs/Cluster.cpp
+                            ./HOSCs/Parser/Parser.cpp
                             ./Tests/KIT1.cpp
                             ./Tests/KIT2.cpp
                             ./Tests/KIT3.cpp

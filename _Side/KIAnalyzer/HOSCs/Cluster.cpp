@@ -30,22 +30,22 @@ namespace HOSC
         std::set_union(pLeft->only_my_pins_.begin(), pLeft->only_my_pins_.end(),
                        pRight->only_my_pins_.begin(), pRight->only_my_pins_.end(), std::back_inserter(nodes_to_remove));
         nodes_pins nodes_to_remove2(nodes_to_remove);
+        auto extra_nodes = nodes_to_remove.size();
         nodes_to_remove2.push_back(virtual_node);
         auto res = std::make_shared<ext_interface>();
-        res->denom_ = big_O_dot_Col(pLeft->denom_, pRight->denom_, nodes_to_remove);
-        res->numers_ = big_O_dot_Col(pLeft->numers_, pRight->denom_, nodes_to_remove);
-        *(res->numers_) += *big_O_dot_Col(pLeft->denom_, pRight->numers_, nodes_to_remove);
-        *(res->numers_) += *big_O_dot_Col(pLeft->numers_ext_, pRight->numers_ext_, nodes_to_remove2);
-        res->numers_ext_ = big_O_dot_Col(pLeft->numers_ext_, pRight->denom_, nodes_to_remove);
-        *(res->numers_ext_) += *big_O_dot_Col(pLeft->denom_, pRight->numers_ext_, nodes_to_remove);
+        res->denom_ = big_O_dot_Col(pLeft->denom_, pRight->denom_, nodes_to_remove, extra_nodes);
+        res->numers_ = big_O_dot_Col(pLeft->numers_, pRight->denom_, nodes_to_remove, extra_nodes);
+        *(res->numers_) += *big_O_dot_Col(pLeft->denom_, pRight->numers_, nodes_to_remove, extra_nodes);
+        *(res->numers_) += *big_O_dot_Col(pLeft->numers_ext_, pRight->numers_ext_, nodes_to_remove2, extra_nodes);
+        res->numers_ext_ = big_O_dot_Col(pLeft->numers_ext_, pRight->denom_, nodes_to_remove, extra_nodes);
+        *(res->numers_ext_) += *big_O_dot_Col(pLeft->denom_, pRight->numers_ext_, nodes_to_remove, extra_nodes);
         //to do
         return res;
     }
 
-    KICluster::int_ki_cont::int_ki_cont(mine_cluster_ptr cluster, const bounadry_connections_list &connections) : 
-        clusters_p(cluster),
-        is_parallel_running(not_yet), 
-        interface_ptr(std::make_shared<ext_interface>())
+    KICluster::int_ki_cont::int_ki_cont(mine_cluster_ptr cluster, const bounadry_connections_list &connections) : clusters_p(cluster),
+                                                                                                                  is_parallel_running(not_yet),
+                                                                                                                  interface_ptr(std::make_shared<ext_interface>())
     {
         for (auto c : connections)
         {
@@ -149,7 +149,7 @@ namespace HOSC
             this->numers_ext() = get_numers_ext_tr(map);
             this->promise.set_value(true);
         }).detach();
-        // solve_future = std::async(std::launch::async, [this] { 
+        // solve_future = std::async(std::launch::async, [this] {
         //     is_parallel_running = running;
         //     clusters_p->Solve();
         //     NodeTrans::NtoN map;
@@ -280,7 +280,9 @@ namespace HOSC
                         if (Cluster.is_parallel_running != int_ki_cont::done && Cluster.solve_future.wait_for(std::chrono::microseconds(100)) == std::future_status::ready)
                         {
                             Cluster.update_n_nodes(max_nodes_ + 1);
-                            interface_stack.push(Cluster.get_interface());
+                            auto p_interface = Cluster.get_interface();
+                            p_interface->p_my_ext_nodes = &bound_nodes_;
+                            interface_stack.push(p_interface);
                             Cluster.solve_future.get();
                             Cluster.is_parallel_running = int_ki_cont::done;
                             // break;
@@ -297,7 +299,9 @@ namespace HOSC
                     Cluster.leave_only_internal_nodes(bound_nodes_);
                     Cluster.Solve();
                     Cluster.update_n_nodes(max_nodes_ + 1);
-                    interface_stack.push(Cluster.get_interface());
+                    auto p_interface = Cluster.get_interface();
+                    p_interface->p_my_ext_nodes = &bound_nodes_;
+                    interface_stack.push(p_interface);
                 }
             }
             while (interface_stack.size() > 1)

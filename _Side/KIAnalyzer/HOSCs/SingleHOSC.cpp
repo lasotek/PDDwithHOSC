@@ -236,15 +236,15 @@ namespace HOSC
         return {};
     }
 
-    SingleHOSC::HOSC_oper_result SingleHOSC::HOSC_big_dot(HOSC_oper_result h2, const nodes_to_remove &nodes) const
+    SingleHOSC::HOSC_oper_result SingleHOSC::HOSC_big_dot(HOSC_oper_result h2, const nodes_to_remove &nodes, int extra_no_nodes) const
     {
         if (!h2)
             throw std::invalid_argument("BigDot needs real argument!");
         // if (n_nodes_ != h2->n_nodes_)
         //     throw std::logic_error("HOSC must have the same No of nodes!");
         auto &ext_deletions = h2->_deletions_;
-        // if (_deletions_.size() + ext_deletions.size() > n_nodes_)
-        //     return {};
+        if (_deletions_.size() + ext_deletions.size() > (n_nodes_+extra_no_nodes))
+            return {};
         auto rem_nodes = Removing_single_nodes(nodes);
         auto del_cleanear = [&rem_nodes](int &p, int &r) {
             if (!rem_nodes.is_to_be_removed(p) && (p < r || rem_nodes.is_to_be_removed(r)))
@@ -326,7 +326,7 @@ namespace HOSC
             return {};
         else
         {
-            // res->n_nodes_ -= nodes.size();
+            res->n_nodes_ -= nodes.size();
         }
 
         return std::move(res);

@@ -23,8 +23,8 @@ void KirchhoffInexTesting5()
     std::cout << Cluster << std::endl;
 
     auto elapsed_time = end - start;
-    auto i_mills = std::chrono::duration_cast<std::chrono::nanoseconds>(elapsed_time);
-    std::cout << "duration time " << i_mills.count() << " nanoseconds" << std::endl;
+    auto i_mills = std::chrono::duration_cast<std::chrono::microseconds>(elapsed_time);
+    std::cout << "duration time " << i_mills.count() << " microseconds" << std::endl;
 
     HOSC::KICluster Cluster2({1, 8});
     Cluster2.AddEdge({1, 2});
@@ -40,8 +40,8 @@ void KirchhoffInexTesting5()
     std::cout << Cluster2 << std::endl;
 
     elapsed_time = end - start;
-    i_mills = std::chrono::duration_cast<std::chrono::nanoseconds>(elapsed_time);
-    std::cout << "duration time " << i_mills.count() << " nanoseconds" << std::endl;
+    i_mills = std::chrono::duration_cast<std::chrono::microseconds>(elapsed_time);
+    std::cout << "duration time " << i_mills.count() << " microseconds" << std::endl;
 
     HOSC::KICluster Cluster3({1, 16});
     Cluster3.AddEdge({1, 2});
@@ -65,6 +65,6 @@ void KirchhoffInexTesting5()
     std::cout << Cluster3 << std::endl;
 
     elapsed_time = end - start;
-    i_mills = std::chrono::duration_cast<std::chrono::nanoseconds>(elapsed_time);
-    std::cout << "duration time " << i_mills.count() << " nanoseconds" << std::endl;
+    i_mills = std::chrono::duration_cast<std::chrono::microseconds>(elapsed_time);
+    std::cout << "duration time " << i_mills.count() << " microseconds" << std::endl;
 }

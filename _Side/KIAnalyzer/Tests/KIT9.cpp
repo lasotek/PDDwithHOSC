@@ -82,6 +82,6 @@ void KirchhoffInexTesting9()
     std::cout << *main_claster << std::endl;
 
     auto elapsed_time = end - start;
-    auto i_mills = std::chrono::duration_cast<std::chrono::nanoseconds>(elapsed_time);
-    std::cout << "duration time " << i_mills.count() << " nanoseconds" << std::endl;
+    auto i_mills = std::chrono::duration_cast<std::chrono::microseconds>(elapsed_time);
+    std::cout << "duration time " << i_mills.count() << " microseconds" << std::endl;
 }

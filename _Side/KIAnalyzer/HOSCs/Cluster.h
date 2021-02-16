@@ -63,6 +63,7 @@ namespace HOSC
             struct ext_interface
             {
                 nodes_pins only_my_pins_;
+                set_of_nodes *p_my_ext_nodes = nullptr;
                 std::shared_ptr<KIIndexCol> denom_;
                 std::shared_ptr<KIIndexCol> numers_;
                 std::shared_ptr<KIIndexCol> numers_ext_;
@@ -111,8 +112,6 @@ namespace HOSC
              * 
              * @param edge_nodes Egdge's nodes
              */
-            // void leave_only_internal_nodes(const nodes_pins& edge_nodes);
-            // void leave_only_internal_nodes(const set_of_nodes& edge_nodes);
             template <Iterable T>
             void leave_only_internal_nodes(const T &edge_nodes)
             {

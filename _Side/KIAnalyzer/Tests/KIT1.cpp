@@ -66,6 +66,7 @@ void KirchhoffInexTesting()
     // std::time_t end_time = std::chrono::system_clock::to_time_t
     if (Solver.is_ready_and_connected())
     {
+        std::cout <<"Plain Analysis\n";
         std::cout << "Numerator = " << Solver.numerator() << std::endl;
         std::cout << "Denominator = " << Solver.denominator() << std::endl;
         std::cout << "KIndex = " << Solver.KIIndex() << std::endl;
@@ -76,6 +77,6 @@ void KirchhoffInexTesting()
     }
 
     auto elapsed_time = end - start;
-    auto i_mills = std::chrono::duration_cast<std::chrono::nanoseconds>(elapsed_time);
-    std::cout << "duration time " << i_mills.count() << " nanoseconds" << std::endl;
+    auto i_mills = std::chrono::duration_cast<std::chrono::microseconds>(elapsed_time);
+    std::cout << "duration time " << i_mills.count() << " microseconds" << std::endl;
 }

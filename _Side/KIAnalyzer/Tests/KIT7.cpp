@@ -135,9 +135,10 @@ void KirchhoffInexTesting7()
     auto start = std::chrono::steady_clock::now();
     main_global_cluster->Solve();
     auto end = std::chrono::steady_clock::now();
+    std::cout << "Multi level single thread\n";
     std::cout << *main_global_cluster << std::endl;
 
     auto elapsed_time = end - start;
-    auto i_mills = std::chrono::duration_cast<std::chrono::nanoseconds>(elapsed_time);
-    std::cout << "duration time " << i_mills.count() << " nanoseconds" << std::endl;
+    auto i_mills = std::chrono::duration_cast<std::chrono::microseconds>(elapsed_time);
+    std::cout << "duration time " << i_mills.count() << " microseconds" << std::endl;
 }
