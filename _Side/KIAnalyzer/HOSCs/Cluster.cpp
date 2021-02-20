@@ -298,8 +298,8 @@ namespace HOSC
                             auto p_interface = Cluster.get_interface();
                             // p_interface->p_my_ext_nodes = &bound_nodes_;
                             interface_stack.push_back(p_interface);
-                            Cluster.solve_future.get();
                             Cluster.is_parallel_running = int_ki_cont::done;
+                            Cluster.solve_future.get();
                             // break;
                         }
                     }
