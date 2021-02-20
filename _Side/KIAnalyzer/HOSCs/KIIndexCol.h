@@ -125,7 +125,7 @@ namespace HOSC
          * @brief reset collection
          * 
          */
-        bool big_O_dot(KIIndexCol &OtherIndexCol, nodes_to_remove &nodes, int extra_nodes = 0);
+        bool big_O_dot(KIIndexCol &OtherIndexCol, nodes_to_remove &nodes);
         /**
          * @brief 
          * 
@@ -159,8 +159,16 @@ namespace HOSC
          */
         void update_n_nodes(int n_nodes);
     };
-
-    KIIndexCol::KIndexCol_ptr big_O_dot_Col(KIIndexCol::KIndexCol_ptr L, KIIndexCol::KIndexCol_ptr R, nodes_to_remove &nodes, int extra_nodes = 0);
+    /**
+     * @brief 
+     * 
+     * @param L 
+     * @param R 
+     * @param nodes 
+     * @param extra_nodes Remove it!!!
+     * @return KIIndexCol::KIndexCol_ptr 
+     */
+    KIIndexCol::KIndexCol_ptr big_O_dot_Col(KIIndexCol::KIndexCol_ptr L, KIIndexCol::KIndexCol_ptr R, nodes_to_remove &nodes);
 
 } // namespace HOSC
 

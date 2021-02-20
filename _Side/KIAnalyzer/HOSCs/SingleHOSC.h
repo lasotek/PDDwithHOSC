@@ -75,7 +75,7 @@ namespace HOSC
         inline long long weight() const { return weight_; }
 
         std::optional<int> numeric_value() const;
-        [[nodiscard]] HOSC_oper_result HOSC_big_dot(HOSC_oper_result h2, const nodes_to_remove &nodes, int extra_no_nodes = 0) const;
+        [[nodiscard]] HOSC_oper_result HOSC_big_dot(HOSC_oper_result h2, const nodes_to_remove &nodes) const;
         int get_n_nodes() const { return n_nodes_; }
         SingleHOSC &operator*=(long long mult)
         {
@@ -92,9 +92,9 @@ namespace HOSC
 #endif
     };
 
-    inline SingleHOSC::HOSC_oper_result HOSC_big_dot(SingleHOSC::HOSC_oper_result h1, SingleHOSC::HOSC_oper_result h2, const nodes_to_remove &nodes, int extra_no_nodes = 0)
+    inline SingleHOSC::HOSC_oper_result HOSC_big_dot(SingleHOSC::HOSC_oper_result h1, SingleHOSC::HOSC_oper_result h2, const nodes_to_remove &nodes)
     {
-        return std::move(h1->HOSC_big_dot(h2, nodes, extra_no_nodes));
+        return std::move(h1->HOSC_big_dot(h2, nodes));
     }
     // extern HOSCUniqueCollection<SingleHOSC> SingleHOSCCollection;
 }; // namespace HOSC

@@ -62,24 +62,49 @@ namespace HOSC
         {
             struct ext_interface
             {
+                nodes_pins ext_my_pins_;
                 nodes_pins only_my_pins_;
-                set_of_nodes *p_my_ext_nodes = nullptr;
+                // set_of_nodes *p_my_ext_nodes = nullptr;
                 std::shared_ptr<KIIndexCol> denom_;
                 std::shared_ptr<KIIndexCol> numers_;
                 std::shared_ptr<KIIndexCol> numers_ext_;
                 ext_interface() = default;
                 ext_interface(ext_interface &&Source) = delete;
                 ext_interface(const ext_interface &Source);
+                void leave_external();
+                template <Iterable T>
+                int num_of_incidents(const T &pins)
+                {
+                    nodes_pins common;
+                    std::set_intersection(ext_my_pins_.begin(), ext_my_pins_.end(),
+                                          pins.begin(), pins.end(),
+                                          std::back_inserter(common));
+                    return common.size();
+                }
+                inline void update_n_nodes(int n_nodes)
+                {
+                    denom_->update_n_nodes(n_nodes);
+                    numers_->update_n_nodes(n_nodes);
+                    numers_ext_->update_n_nodes(n_nodes+1);
+                }
             };
             using ext_interface_ptr = std::shared_ptr<ext_interface>;
             ext_interface_ptr interface_ptr;
-            static ext_interface_ptr big_O_dot(ext_interface_ptr pLeft, ext_interface_ptr pRight);
+            static ext_interface_ptr big_O_dot(ext_interface_ptr pLeft,
+                                               ext_interface_ptr pRight,
+                                               nodes_pins nodes_to_remove = {});
 
             mine_cluster_ptr clusters_p;
             NodeTrans translator;
             // nodes_pins only_my_pins_;
             nodes_pins &only_my_pins() { return interface_ptr->only_my_pins_; }
-            enum{not_yet, running, done} is_parallel_running = not_yet;
+            nodes_pins &ext_my_pins() { return interface_ptr->ext_my_pins_; }
+            enum
+            {
+                not_yet,
+                running,
+                done
+            } is_parallel_running = not_yet;
             std::promise<bool> promise;
             std::future<bool> solve_future;
 
@@ -118,15 +143,19 @@ namespace HOSC
                 if (only_my_pins().empty())
                     return;
                 nodes_pins diff;
-                std::set_difference(only_my_pins().begin(), only_my_pins().end(),
+                std::set_difference(ext_my_pins().begin(), ext_my_pins().end(),
                                     edge_nodes.begin(), edge_nodes.end(),
                                     std::back_inserter(diff));
                 only_my_pins() = diff;
             }
             void update_n_nodes(int n_nodes);
+            inline void leave_external()
+            {
+                interface_ptr->leave_external();
+            }
 
         public:
-            using ext_interface_stack = std::stack<ext_interface_ptr>;
+            using ext_interface_stack = std::list<ext_interface_ptr>;
             // int_ki_cont() = default;
             int_ki_cont(mine_cluster_ptr cluster, const bounadry_connections_list &connections);
             set_of_nodes get_cluster_ex_nodes() const;
@@ -166,7 +195,7 @@ namespace HOSC
             if (clusters_p)
                 for (auto &ic : *clusters_p)
                 {
-                    if(ic.is_parallel_running != int_ki_cont::done )
+                    if (ic.is_parallel_running != int_ki_cont::done)
                         return false;
                 }
             return true;

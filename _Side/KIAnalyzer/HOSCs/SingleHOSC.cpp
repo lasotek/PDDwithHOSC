@@ -216,12 +216,12 @@ namespace HOSC
 
     bool SingleHOSC::operator==(const SingleHOSC &Other) const
     {
-        return n_nodes_ == Other.n_nodes_ && _deletions_ == Other._deletions_;
+        return /*n_nodes_ == Other.n_nodes_ &&*/ _deletions_ == Other._deletions_;
     }
 
     std::size_t SingleHOSC::hash() const
     {
-        size_t h = std::hash<short>{}(n_nodes_);
+        size_t h = 1 ;//std::hash<short>{}(n_nodes_);
         // HashCombine(h, std::hash<int>{}(weight_));
         std::for_each(_deletions_.begin(), _deletions_.end(), [&h](const SingleDel &del) {
             HashCombine(h, std::hash<SingleDel>{}(del));
@@ -236,32 +236,45 @@ namespace HOSC
         return {};
     }
 
-    SingleHOSC::HOSC_oper_result SingleHOSC::HOSC_big_dot(HOSC_oper_result h2, const nodes_to_remove &nodes, int extra_no_nodes) const
+    SingleHOSC::HOSC_oper_result SingleHOSC::HOSC_big_dot(HOSC_oper_result h2, const nodes_to_remove &nodes) const
     {
         if (!h2)
             throw std::invalid_argument("BigDot needs real argument!");
         // if (n_nodes_ != h2->n_nodes_)
         //     throw std::logic_error("HOSC must have the same No of nodes!");
         auto &ext_deletions = h2->_deletions_;
-        if (_deletions_.size() + ext_deletions.size() > (n_nodes_+extra_no_nodes))
+        if (_deletions_.size() + ext_deletions.size() < nodes.size())
             return {};
-        auto rem_nodes = Removing_single_nodes(nodes);
+        if (_deletions_.size() + ext_deletions.size() > n_nodes_)
+            return {};
+        // if (_deletions_.size() + ext_deletions.size() > (n_nodes_+extra_no_nodes))
+        //     return {};
+        // auto rem_nodes = Removing_single_nodes(nodes);
+        std::set<int> rem_nodes(nodes.begin(),nodes.end());
         auto del_cleanear = [&rem_nodes](int &p, int &r) {
-            if (!rem_nodes.is_to_be_removed(p) && (p < r || rem_nodes.is_to_be_removed(r)))
+            if (!rem_nodes.contains(p) && (p < r || rem_nodes.contains(r)))
             {
                 std::swap(p, r);
             }
         };
+        // auto del_cleanear = [&rem_nodes](int &p, int &r) {
+        //     if (!rem_nodes.is_to_be_removed(p) && (p < r || rem_nodes.is_to_be_removed(r)))
+        //     {
+        //         std::swap(p, r);
+        //     }
+        // };
         auto replacer = Node_replacer();
         auto mit = _deletions_.begin();
         auto mit_e = _deletions_.end();
         auto hit = ext_deletions.begin();
         auto hit_e = ext_deletions.end();
         HOSC_oper_result res = std::make_shared<SingleHOSC>(n_nodes_);
-        res->weight_ = weight_ * h2->weight_;
-        auto &out_deletion = res->_deletions_;
+        auto no_del = _deletions_.size() + ext_deletions.size();
+        auto no_rem = nodes.size();
         while (mit != mit_e || hit != hit_e)
         {
+            if (no_del < no_rem)
+                return {};
             int p, r;
             p = r = 0;
             enum
@@ -279,7 +292,8 @@ namespace HOSC
                 del_cleanear(p, r);
                 which = mine;
             }
-            bool left_must_be_removed = (which != none) && rem_nodes.is_to_be_removed(p);
+            // bool left_must_be_removed = (which != none) && rem_nodes.is_to_be_removed(p);
+            bool left_must_be_removed = (which != none) && rem_nodes.contains(p);
             if (!left_must_be_removed)
             {
                 if (hit != hit_e)
@@ -306,10 +320,13 @@ namespace HOSC
             }
             if (which == none)
                 break;
-            if (!rem_nodes.touch(p))
+            // if (!rem_nodes.touch(p))
+            if (!rem_nodes.contains(p))
             {
                 res->insert_del(p, r);
             }
+            else
+                no_rem--;
             replacer.set(p, r);
             switch (which)
             {
@@ -321,15 +338,18 @@ namespace HOSC
                 break;
             case none:;
             }
+            no_del--;
         } //while
-        if (!rem_nodes.complete())
+        // if (!rem_nodes.complete())
+        if (no_rem != 0)
             return {};
         else
         {
+            res->weight_ = weight_ * h2->weight_;
             res->n_nodes_ -= nodes.size();
         }
 
-        return std::move(res);
+        return res;
     }
 #ifdef _DEBUG_TEST
 
