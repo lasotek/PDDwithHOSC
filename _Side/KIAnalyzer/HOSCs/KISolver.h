@@ -28,7 +28,7 @@ namespace HOSC
      * @tparam W Type of the wieight. Arithmetic
      */
     template <Arithmetic W>
-    class KISolver : public std::enable_shared_from_this<KISolver<W>> 
+    class KISolver : public std::enable_shared_from_this<KISolver<W>>
     {
     private:
         using edges_list_ptr = std::list<std::shared_ptr<Edge<W>>>;
@@ -99,14 +99,22 @@ namespace HOSC
                 {
                     auto edge_ptr = *eit;
                     auto &edge = *edge_ptr;
+                    nodes_to_remove rn;
                     if (index != edge.node_a)
+                    {
                         std::erase(incidences_[edge.node_a], edge_ptr);
+                        if (incidences_[edge.node_a].empty())
+                            rn.push_back(edge.node_a);
+                    }
                     else
+                    {
                         std::erase(incidences_[edge.node_b], edge_ptr);
+                        if (incidences_[edge.node_b].empty())
+                            rn.push_back(edge.node_b);
+                    }
                     KIIndexCol::del_pair ed = std::make_pair(edge.node_a, edge.node_b);
-                    KIIndexCol::rem_node rn;
                     if (i == 0)
-                        rn = index;
+                        rn.push_back(index);
                     numers_->add_edge_remove_node(ed, rn, edge.weight_);
                     denom_->add_edge_remove_node(ed, rn, edge.weight_);
                 }

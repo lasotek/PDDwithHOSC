@@ -75,21 +75,18 @@ namespace HOSC
         }
         return uniqueHOSC;
     }
-
-    bool KIIndexCol::add_edge_remove_node(const del_pair &edge, const rem_node &node, long long weight)
+    
+    bool KIIndexCol::add_edge_remove_node(const del_pair &edge, const nodes_to_remove &nodes, long long weight) 
     {
-        if (!edge.has_value() && !node.has_value())
+        if (!edge.has_value() && nodes.empty())
             return false;
         auto &Source = _HOSCmap();
         auto &Dest = dest_HOSCmap();
         Dest.clear();
-        nodes_to_remove ntr;
-        if (node.has_value())
-            ntr.push_back(node.value());
         SingleHOSC::HOSC_oper_result h1 = std::make_shared<SingleHOSC>(max_nodes);
         for (auto it = Source.begin(); it != Source.end(); it++)
         {
-            auto hRes = h1->HOSC_big_dot(*it, ntr);
+            auto hRes = h1->HOSC_big_dot(*it, nodes);
             if (hRes)
             {
                 if (weight != 1)
@@ -103,14 +100,14 @@ namespace HOSC
             SingleHOSC::HOSC_oper_result h0 = std::make_shared<SingleHOSC>(pair.first, pair.second, max_nodes);
             for (auto it = Source.begin(); it != Source.end(); it++)
             {
-                auto hRes = h0->HOSC_big_dot(*it, ntr);
+                auto hRes = h0->HOSC_big_dot(*it, nodes);
                 if (hRes)
                 {
                     insert(hRes);
                 }
             }
         }
-        max_nodes -= ntr.size();
+        max_nodes -= nodes.size();
         switch_maps();
         return Dest.size() == 1;
     }

@@ -109,11 +109,13 @@ int main(int argc, char **argv)
         auto i_mills = std::chrono::duration_cast<std::chrono::nanoseconds>(elapsed_time);
         std::cout << "duration time " << i_mills.count() << " nanoseconds" << std::endl;
 
-        KirchhoffInexTesting();
-        KirchhoffInexTesting7();
-        KirchhoffInexTesting10();
-        KirchhoffInexTesting8();
-        KirchhoffInexTesting9();
+        // KirchhoffInexTesting();
+        KirchhoffInexTesting4();
+        // KirchhoffInexTesting7();
+        // KirchhoffInexTesting10();
+        // KirchhoffInexTesting8();
+        // KirchhoffInexTesting9();
+        // KirchhoffInexTesting11();
     }
     catch (const std::exception &e)
     {

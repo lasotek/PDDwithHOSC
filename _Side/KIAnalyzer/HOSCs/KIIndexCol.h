@@ -115,12 +115,12 @@ namespace HOSC
          * @brief consider another edge in graph
          * 
          * @param edge Pair of nodes in edge. Can be empty. 
-         * @param node Node to remove, if there is no edges left
+         * @param nodes Nodes to remove, if there is no edges left
          * @param weight Weight of egde (resitance). Default is 1
          * @return true if the last but one node was removed and each edges were analyzed
          * @return false otherwise
          */
-        bool add_edge_remove_node(const del_pair &edge, const rem_node &node, long long weight = 1);
+        bool add_edge_remove_node(const del_pair &edge, const nodes_to_remove &nodes, long long weight = 1);
         /**
          * @brief reset collection
          * 
