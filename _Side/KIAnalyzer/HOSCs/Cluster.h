@@ -85,7 +85,7 @@ namespace HOSC
                 {
                     denom_->update_n_nodes(n_nodes);
                     numers_->update_n_nodes(n_nodes);
-                    numers_ext_->update_n_nodes(n_nodes+1);
+                    numers_ext_->update_n_nodes(n_nodes + 1);
                 }
             };
             using ext_interface_ptr = std::shared_ptr<ext_interface>;
@@ -162,7 +162,9 @@ namespace HOSC
             int translate_node(int clust_int_node);
             void get_boundary_translation(NodeTrans::NtoN &map) const;
             void Solve();
+            void Solve2();
             void SolveParallel();
+            void SolveParallel2();
             inline ext_interface_ptr get_interface() { return interface_ptr; }
             inline ext_interface_ptr const_get_interface() const { return std::make_shared<ext_interface>(*interface_ptr); }
             // const auto only_my_pins() const { return only_my_pins()}; }
@@ -178,6 +180,7 @@ namespace HOSC
         using edges_list_ptr = std::list<std::shared_ptr<Edge<W>>>;
         using incidence_map = std::unordered_map<int, edges_list_ptr>;
         using map_iterator = incidence_map::iterator;
+        using incidence_sets = std::unordered_map<int, std::set<int>>;
         NodeTrans node_trans_;
         incidence_map incidences_;
         int max_nodes_ = -1;
@@ -200,20 +203,11 @@ namespace HOSC
                 }
             return true;
         }
+
         void get_boundary_translation(NodeTrans::NtoN &map) const;
         set_of_nodes get_bound_nodes_ext() const;
-        map_iterator min_incidence()
-        {
-            return std::min_element(incidences_.begin(), incidences_.end(), [this](const auto &T1, const auto &T2) {
-                bool is_b_T1 = this->bound_nodes_.contains(T1.first);
-                bool is_b_T2 = this->bound_nodes_.contains(T2.first);
-                if (is_b_T1 == is_b_T2)
-                    return T1.second.size() < T2.second.size();
-                else
-                    return is_b_T2;
-            });
-        }
-        void make_dirty()
+        map_iterator min_incidence();
+        inline void make_dirty()
         {
             // dirty_ = true;
             // max_nodes_ = -1;
@@ -228,6 +222,11 @@ namespace HOSC
             if (!clusters_p)
                 clusters_p = std::make_unique<clusters_list>();
         }
+        void get_incidence_with(int node, set_of_nodes &res);
+
+        int choose_com_incidence(const set_of_nodes &set);
+
+        int prepare_next_edges(const set_of_nodes &set, edges_list_ptr &newEdges);
 
     public:
         KICluster(bool use_threads = false) noexcept;
@@ -279,6 +278,12 @@ namespace HOSC
          * 
          */
         void Solve();
+
+        /**
+         * @brief 
+         * 
+         */
+        void Solve2();
         /**
          * @brief Return the numerical KI as a double number. In case of cluster with boundary nodes, they are assumed to be not connected
          * 

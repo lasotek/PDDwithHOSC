@@ -13,6 +13,7 @@
 
 void KirchhoffInexTesting5()
 {
+    std::cout << "______________KirchhoffInexTesting5_________________\n";
     HOSC::KICluster Cluster({1, 4});
     Cluster.AddEdge({1, 2});
     Cluster.AddEdge({2, 3});

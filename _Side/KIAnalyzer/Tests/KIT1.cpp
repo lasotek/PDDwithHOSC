@@ -13,6 +13,7 @@
 
 void KirchhoffInexTesting()
 {
+    std::cout << "______________KirchhoffInexTesting_________________\n";
     HOSC::KISolver<long long> Solver;
     Solver.AddEdge({1, 2});
     Solver.AddEdge({1, 3});
@@ -61,12 +62,16 @@ void KirchhoffInexTesting()
     Solver.AddEdge({23, 24});
     Solver.AddEdge({24, 25});
     auto start = std::chrono::steady_clock::now();
+#ifdef _OLD_SOLVER_
     Solver.Solve();
+#else
+    Solver.Solve2();
+#endif
     auto end = std::chrono::steady_clock::now();
     // std::time_t end_time = std::chrono::system_clock::to_time_t
     if (Solver.is_ready_and_connected())
     {
-        std::cout <<"Plain Analysis\n";
+        std::cout << "Plain Analysis\n";
         std::cout << "Numerator = " << Solver.numerator() << std::endl;
         std::cout << "Denominator = " << Solver.denominator() << std::endl;
         std::cout << "KIndex = " << Solver.KIIndex() << std::endl;

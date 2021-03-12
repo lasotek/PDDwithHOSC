@@ -14,6 +14,7 @@
 void KirchhoffInexTesting11()
 {
     // HOSC::cluster_ptr cluster0 = std::make_shared<HOSC::KICluster>({20, 24, 25});
+    std::cout << "______________KirchhoffInexTesting11_________________\n";
 
     auto main_claster = HOSC::new_cluster({}, true);
     auto cluster0 = HOSC::new_cluster({20, 24, 25}, true);
@@ -74,10 +75,15 @@ void KirchhoffInexTesting11()
     main_claster->AddEdge({20, 6});
     main_claster->AddEdge({20, 12});
     main_claster->AddEdge({13, 12});
-    main_claster->AddEdge({12, 6});//Changed
+    // main_claster->AddEdge({12, 6});//Changed
+    main_claster->AddEdge({18, 6});
     main_claster->AddEdge({18, 12});
     auto start = std::chrono::steady_clock::now();
+#ifdef _OLD_SOLVER_
     main_claster->Solve();
+#else
+    main_claster->Solve2();
+#endif
     auto end = std::chrono::steady_clock::now();
     std::cout << *main_claster << std::endl;
 

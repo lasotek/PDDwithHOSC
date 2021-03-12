@@ -14,6 +14,7 @@
 void KirchhoffInexTesting8()
 {
     // HOSC::cluster_ptr cluster0 = std::make_shared<HOSC::KICluster>({20, 24, 25});
+    std::cout << "______________KirchhoffInexTesting8_________________\n";
 
     auto main_claster = HOSC::new_cluster({});
     auto cluster0 = HOSC::new_cluster({20, 24, 25});
@@ -78,7 +79,12 @@ void KirchhoffInexTesting8()
     main_claster->AddEdge({18, 6});
     main_claster->AddEdge({18, 12});
     auto start = std::chrono::steady_clock::now();
+    // main_claster->Solve();
+#ifdef _OLD_SOLVER_
     main_claster->Solve();
+#else
+    main_claster->Solve2();
+#endif
     auto end = std::chrono::steady_clock::now();
     std::cout <<"2-level single thread\n";
     std::cout << *main_claster << std::endl;

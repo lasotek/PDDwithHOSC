@@ -108,15 +108,16 @@ namespace HOSC
         return 1;
     }
 
-    SingleHOSC::SingleHOSC(int source, int target, short max_nodes) noexcept
-        : SingleHOSC(max_nodes)
+    SingleHOSC::SingleHOSC(int source, int target, short max_nodes, long long weight) noexcept
+        : n_nodes_(max_nodes), weight_(weight)
     {
         weight_ *= clear_cannonical_single(source, target);
         if (weight_)
             _deletions_.emplace_back(SingleDel(source, target));
     }
 
-    SingleHOSC::SingleHOSC(initial_del_set initial_dels, short max_nodes) noexcept : n_nodes_(max_nodes)
+    SingleHOSC::SingleHOSC(initial_del_set initial_dels, short max_nodes, long long weight) noexcept
+        : n_nodes_(max_nodes), weight_(weight)
     {
         if (initial_dels.size() > n_nodes_)
         {
@@ -141,8 +142,10 @@ namespace HOSC
 
     SingleHOSC::SingleHOSC(const SingleHOSC &Source, const NodeTrans::NtoN &trans_map) : n_nodes_(Source.n_nodes_), weight_(Source.weight_)
     {
+        auto replacer = Node_replacer();
         for (auto del : Source._deletions_)
         {
+            // auto source = replacer.get(del.source());
             auto source = del.source();
             if (source != virtual_node)
             {
@@ -155,6 +158,7 @@ namespace HOSC
                 }
                 source = source_it->second;
             }
+            // auto target = replacer.get(del.target());
             auto target = del.target();
             if (target != virtual_node)
             {
@@ -167,6 +171,8 @@ namespace HOSC
                 }
                 target = target_it->second;
             }
+            source = replacer.get(source);
+            target = replacer.get(target);
             weight_ *= clear_cannonical_single(source, target);
             if (weight_ == 0)
             {
@@ -174,11 +180,59 @@ namespace HOSC
                 return;
             }
             insert_del(source, target);
+            replacer.set(source, target);
         }
+    }
 
-        // weight_ *= clear_cannonical_single(source, target);
-        // if (weight_)
-        //     _deletions_.emplace_back(SingleDel(source, target));
+    SingleHOSC::SingleHOSC(const SingleHOSC &Source, int newNode) : n_nodes_(Source.n_nodes_), weight_(Source.weight_)
+    {
+        auto replacer = Node_replacer();
+        for (auto del : Source._deletions_)
+        {
+            auto source = del.source();
+            if (source == virtual_node)
+                source = newNode;
+            auto target = del.target();
+            if (target == virtual_node)
+                target = newNode;
+            source = replacer.get(source);
+            target = replacer.get(target);
+            weight_ *= clear_cannonical_single(source, target);
+            if (weight_ == 0)
+            {
+                _deletions_.clear();
+                return;
+            }
+            insert_del(source, target);
+            replacer.set(source, target);
+        }
+    }
+
+    SingleHOSC::SingleHOSC(const SingleHOSC &Source, bool renove_virtual) : n_nodes_(Source.n_nodes_), weight_(Source.weight_)
+    {
+        auto replacer = Node_replacer();
+        bool virtual_deleted = false;
+        for (auto del : Source._deletions_)
+        {
+            auto source = replacer.get(del.source());
+            auto target = replacer.get(del.target());
+            weight_ *= clear_cannonical_single(source, target);
+            if (weight_ == 0)
+            {
+                _deletions_.clear();
+                return;
+            }
+            if (source != virtual_node && target != virtual_node)
+                insert_del(source, target);
+            else
+                virtual_deleted = true;
+            replacer.set(source, target);
+        }
+        if (!virtual_deleted)
+        {
+            weight_ = 0;
+            _deletions_.clear();
+        }
     }
 
     std::string SingleHOSC::String(const NodeTrans *pTranslater) const
@@ -221,7 +275,7 @@ namespace HOSC
 
     std::size_t SingleHOSC::hash() const
     {
-        size_t h = 1 ;//std::hash<short>{}(n_nodes_);
+        size_t h = 1; //std::hash<short>{}(n_nodes_);
         // HashCombine(h, std::hash<int>{}(weight_));
         std::for_each(_deletions_.begin(), _deletions_.end(), [&h](const SingleDel &del) {
             HashCombine(h, std::hash<SingleDel>{}(del));
@@ -250,7 +304,7 @@ namespace HOSC
         // if (_deletions_.size() + ext_deletions.size() > (n_nodes_+extra_no_nodes))
         //     return {};
         // auto rem_nodes = Removing_single_nodes(nodes);
-        std::set<int> rem_nodes(nodes.begin(),nodes.end());
+        std::set<int> rem_nodes(nodes.begin(), nodes.end());
         auto del_cleanear = [&rem_nodes](int &p, int &r) {
             if (!rem_nodes.contains(p) && (p < r || rem_nodes.contains(r)))
             {

@@ -47,15 +47,32 @@ namespace HOSC
         void Test();
 
     public:
-        explicit SingleHOSC(int max_nodes = 10) noexcept
+        explicit SingleHOSC(int max_nodes, long long weight = 1) noexcept
             : n_nodes_{max_nodes}
         {
             _deletions_.reserve(n_nodes_);
         }
-        SingleHOSC(int source, int target, short max_nodes = 5) noexcept;
-        SingleHOSC(initial_del_set initial_dels, short max_nodes = 5) noexcept;
-        SingleHOSC(const SingleHOSC &Source) : n_nodes_(Source.n_nodes_), weight_(Source.weight_), _deletions_(Source._deletions_) {}
-        SingleHOSC(const SingleHOSC &Source, const NodeTrans::NtoN &trans_map);
+        explicit SingleHOSC(int source, int target, short max_nodes, long long weight = 1) noexcept;
+        explicit SingleHOSC(initial_del_set initial_dels, short max_nodes, long long weight = 1) noexcept;
+        explicit SingleHOSC(const SingleHOSC &Source) : n_nodes_(Source.n_nodes_), weight_(Source.weight_), _deletions_(Source._deletions_) {}
+        explicit SingleHOSC(const SingleHOSC &Source, const NodeTrans::NtoN &trans_map);
+
+        /**
+         * @brief Construct a new SingleHOSC object ewplacing virtual node
+         * 
+         * @param Source 
+         * @param newNode 
+         */
+        explicit SingleHOSC(const SingleHOSC &Source, int newNode);
+
+        /**
+         * @brief Construct a new Single H O S C object
+         * 
+         * @param Source 
+         * @param renove_virtual sentinel arbitrary
+         */
+        explicit SingleHOSC(const SingleHOSC &Source, bool renove_virtual);
+
         SingleHOSC(SingleHOSC &&Source) = delete;
         ~SingleHOSC()
         {

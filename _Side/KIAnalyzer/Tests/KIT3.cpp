@@ -13,6 +13,7 @@
 
 void KirchhoffInexTesting3()
 {
+    std::cout << "______________KirchhoffInexTesting3_________________\n";
     HOSC::KISolver<long long> Solver;
     Solver.AddEdge({1, 2});
     Solver.AddEdge({2, 3});

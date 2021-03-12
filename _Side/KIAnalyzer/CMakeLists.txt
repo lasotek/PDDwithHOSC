@@ -26,10 +26,13 @@ add_executable(KIAnalyzer main.cpp
                             ./Tests/KIT9.cpp
                             ./Tests/KIT10.cpp
                             ./Tests/KIT11.cpp
+                            ./Tests/KIT12.cpp
                             )
                             
     
 # add_definitions(-D _DEBUG_TEST)
+# add_definitions(-D _INSIDE_HIERARCHY_)
+# add_definitions(-D _OLD_SOLVER_)
     
 set(CPACK_PROJECT_NAME ${PROJECT_NAME})
 set(CPACK_PROJECT_VERSION ${PROJECT_VERSION})

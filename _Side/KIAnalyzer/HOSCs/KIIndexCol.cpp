@@ -18,6 +18,48 @@ namespace HOSC
         // switch_maps();
     }
 
+    KIIndexCol::KIIndexCol(Edge<W> &in_edge, int _no_nodes, func function) : max_nodes(_no_nodes)
+    {
+        switch (function)
+        {
+        case com_denomnator:
+        {
+            auto HOSC = std::make_shared<SingleHOSC>(in_edge.weight_, _no_nodes);
+            if (HOSC->is_valid())
+                insert(HOSC);
+            HOSC = std::make_shared<SingleHOSC>(in_edge.node_a, in_edge.node_b, _no_nodes);
+            if (HOSC->is_valid())
+                insert(HOSC);
+        }
+        break;
+
+        case sum_numerators:
+        {
+            auto HOSC = std::make_shared<SingleHOSC>(in_edge.node_a, in_edge.node_b, _no_nodes, in_edge.weight_);
+            if (HOSC->is_valid())
+                insert(HOSC);
+        }
+        break;
+        //Change it.
+        case extern_connections:
+        {
+            SingleHOSC::initial_del_set dels{{virtual_node, in_edge.node_a}, {in_edge.node_b, in_edge.node_a}};
+            auto HOSC = std::make_shared<SingleHOSC>(dels, _no_nodes, 2);
+            if (HOSC->is_valid())
+                insert(HOSC);
+            HOSC = std::make_shared<SingleHOSC>(virtual_node, in_edge.node_a, _no_nodes, in_edge.weight_);
+            if (HOSC->is_valid())
+                insert(HOSC);
+            HOSC = std::make_shared<SingleHOSC>(virtual_node, in_edge.node_b, _no_nodes, in_edge.weight_);
+            if (HOSC->is_valid())
+                insert(HOSC);
+            _no_nodes++;
+        }
+            // has_virtual_node = true;
+        }
+        switch_maps();
+    }
+
     KIIndexCol::KIIndexCol(int _no_nodes, func function) noexcept : max_nodes(_no_nodes)
     {
         switch (function)
@@ -59,7 +101,7 @@ namespace HOSC
         auto sHOSCmap = Source._HOSCmapConst();
         for (auto it = sHOSCmap.begin(); it != sHOSCmap.end(); it++)
         {
-            auto HOSC = **it;
+            const auto &HOSC = **it;
             auto new_shared_HOCS = std::make_shared<SingleHOSC>(HOSC);
             insert(new_shared_HOCS);
         }
@@ -75,8 +117,8 @@ namespace HOSC
         }
         return uniqueHOSC;
     }
-    
-    bool KIIndexCol::add_edge_remove_node(const del_pair &edge, const nodes_to_remove &nodes, long long weight) 
+
+    bool KIIndexCol::add_edge_remove_node(const del_pair_opt &edge, const nodes_to_remove &nodes, long long weight)
     {
         if (!edge.has_value() && nodes.empty())
             return false;
@@ -112,6 +154,43 @@ namespace HOSC
         return Dest.size() == 1;
     }
 
+    bool KIIndexCol::add_shortcut_remove_node(const del_pair &edge, const nodes_to_remove &nodes)
+    {
+        auto &Source = _HOSCmap();
+        auto &Dest = dest_HOSCmap();
+        Dest.clear();
+        SingleHOSC::HOSC_oper_result h0 = std::make_shared<SingleHOSC>(edge.first, edge.second, max_nodes);
+        for (auto it = Source.begin(); it != Source.end(); it++)
+        {
+            auto hRes = h0->HOSC_big_dot(*it, nodes);
+            if (hRes)
+            {
+                insert(hRes);
+            }
+        }
+        max_nodes -= nodes.size();
+        switch_maps();
+        return Dest.size() == 1;
+    }
+
+    void KIIndexCol::add_shortcut_remove_node(KIIndexCol &OtherIndexCol, const del_pair &edge, const nodes_to_remove &nodes)
+    {
+        switch_maps();
+        auto &Source = OtherIndexCol._HOSCmap();
+        // auto &Dest = _HOSCmap();
+        SingleHOSC::HOSC_oper_result h0 = std::make_shared<SingleHOSC>(edge.first, edge.second, max_nodes);
+        for (auto it = Source.begin(); it != Source.end(); it++)
+        {
+            auto hRes = h0->HOSC_big_dot(*it, nodes);
+            if (hRes)
+            {
+                insert(hRes);
+            }
+        }
+        switch_maps();
+        // max_nodes -= nodes.size();
+    }
+
     bool KIIndexCol::big_O_dot(KIIndexCol &OtherIndexCol, nodes_to_remove &nodes)
     {
         auto &Source = _HOSCmap();
@@ -134,6 +213,34 @@ namespace HOSC
         max_nodes -= nodes.size();
         switch_maps();
         return Dest.size() == 1;
+    }
+
+    void KIIndexCol::add_to_with_virtual_node_update(KIIndexCol &Right, int newNode)
+    {
+        switch_maps();
+        // auto &Source = _HOSCmap();
+        auto &OSource = Right._HOSCmap();
+        for (auto it = OSource.begin(); it != OSource.end(); it++)
+        {
+            auto h2 = std::make_shared<SingleHOSC>(**it, newNode);
+            if (h2->is_valid())
+                insert(h2);
+        }
+        switch_maps();
+    }
+
+    void KIIndexCol::add_to_with_virtual_node_removed(KIIndexCol &Right)
+    {
+        switch_maps();
+        // auto &Source = _HOSCmap();
+        auto &OSource = Right._HOSCmap();
+        for (auto it = OSource.begin(); it != OSource.end(); it++)
+        {
+            auto h2 = std::make_shared<SingleHOSC>(**it, true);
+            if (h2->is_valid())
+                insert(h2);
+        }
+        switch_maps();
     }
 
     KIIndexCol &KIIndexCol::operator+=(KIIndexCol &Right)
@@ -179,6 +286,21 @@ namespace HOSC
         {
             auto &HOSC = **it;
             auto newHOSC = std::make_shared<SingleHOSC>(HOSC, tr_map);
+            res->insert(newHOSC);
+        }
+        res->switch_maps();
+        // to do
+        return res;
+    }
+
+    KIIndexCol::KIndexCol_ptr KIIndexCol::copy_vitual_to_real(int real_node)
+    {
+        auto res = std::shared_ptr<KIIndexCol>(new KIIndexCol(max_nodes));
+        auto CurHOSCs = _HOSCmap();
+        for (auto it = CurHOSCs.begin(); it != CurHOSCs.end(); it++)
+        {
+            auto &HOSC = **it;
+            auto newHOSC = std::make_shared<SingleHOSC>(HOSC, real_node);
             res->insert(newHOSC);
         }
         res->switch_maps();

@@ -13,6 +13,7 @@
 
 void KirchhoffInexTesting4()
 {
+    std::cout << "______________KirchhoffInexTesting4_________________\n";
     HOSC::KICluster Cluster({24});
     Cluster.AddEdge({1, 2});
     Cluster.AddEdge({1, 3});
@@ -61,7 +62,11 @@ void KirchhoffInexTesting4()
     Cluster.AddEdge({23, 22});
     Cluster.AddEdge({24, 23});
     auto start = std::chrono::steady_clock::now();
+#ifdef _OLD_SOLVER_
     Cluster.Solve();
+#else
+    Cluster.Solve2();
+#endif
     auto end = std::chrono::steady_clock::now();
     std::cout << Cluster << std::endl;
 

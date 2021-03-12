@@ -23,4 +23,5 @@ void KirchhoffInexTesting10();
 
 void KirchhoffInexTesting11();
 
+void KirchhoffInexTesting12();
 #endif // __KITESTS_H__

@@ -149,6 +149,18 @@ namespace HOSC
         numers_ext() = get_numers_ext_tr(map);
     }
 
+    void KICluster::int_ki_cont::Solve2()
+    {
+        if (is_parallel_running)
+            return;
+        clusters_p->Solve2();
+        NodeTrans::NtoN map;
+        get_boundary_translation(map);
+        denom() = get_denom_tr(map);
+        numers() = get_numers_tr(map);
+        numers_ext() = get_numers_ext_tr(map);
+    }
+
     void KICluster::int_ki_cont::SolveParallel() //to implement
     {
         if (is_parallel_running)
@@ -163,18 +175,22 @@ namespace HOSC
             this->numers_ext() = get_numers_ext_tr(map);
             this->promise.set_value(true);
         }).detach();
-        // solve_future = std::async(std::launch::async, [this] {
-        //     is_parallel_running = running;
-        //     clusters_p->Solve();
-        //     NodeTrans::NtoN map;
-        //     get_boundary_translation(map);
-        //     denom() = get_denom_tr(map);
-        //     numers() = get_numers_tr(map);
-        //     numers_ext() = get_numers_ext_tr(map);
-        //     // is_parallel_running = false;
+    }
 
-        //     // is_parallel_running = done;
-        //     return false; });
+    void KICluster::int_ki_cont::SolveParallel2()
+    {
+        if (is_parallel_running)
+            return;
+        std::thread([this] {
+            this->is_parallel_running = running;
+            this->clusters_p->Solve2();
+            NodeTrans::NtoN map;
+            this->get_boundary_translation(map);
+            this->denom() = get_denom_tr(map);
+            this->numers() = get_numers_tr(map);
+            this->numers_ext() = get_numers_ext_tr(map);
+            this->promise.set_value(true);
+        }).detach();
     }
 
     void KICluster::int_ki_cont::get_boundary_translation(NodeTrans::NtoN &map) const
@@ -210,12 +226,79 @@ namespace HOSC
         return local_set;
     }
 
+    KICluster::map_iterator KICluster::min_incidence()
+    {
+        return std::min_element(incidences_.begin(), incidences_.end(), [this](const auto &T1, const auto &T2) {
+            bool is_b_T1 = this->bound_nodes_.contains(T1.first);
+            bool is_b_T2 = this->bound_nodes_.contains(T2.first);
+            if (is_b_T1 == is_b_T2)
+                return T1.second.size() < T2.second.size();
+            else
+                return is_b_T2;
+        });
+    }
+
     void KICluster::to_stream(std::ostream &os)
     {
         os << "The cluster results:\n";
         os << "\tDenominator = " << denom_->String(node_trans_) << std::endl;
         os << "\tInternal Numerators = " << numers_->String(node_trans_) << std::endl;
         os << "\tExternal Numerators = " << numers_ext->String(node_trans_) << std::endl;
+    }
+
+    void KICluster::get_incidence_with(int node, set_of_nodes &res)
+    {
+        auto my_edge_list = incidences_[node];
+        for (auto &e : my_edge_list)
+        {
+            res.insert(e->node_a == node ? e->node_b : e->node_a);
+        }
+    }
+
+    int KICluster::choose_com_incidence(const set_of_nodes &set)
+    {
+        if (set.empty())
+            throw std::invalid_argument("No nodes! Impossible!!!!");
+        incidence_sets sets;
+        auto it = set.begin();
+        auto prev_n = *it++;
+        get_incidence_with(prev_n, sets[prev_n]);
+        for (; it != set.end(); it++)
+        {
+            auto n = *it;
+            get_incidence_with(n, sets[n]);
+            auto prev_it = std::prev(it);
+            for (auto prev_it = std::prev(it);; prev_it--)
+            {
+                prev_n = *prev_it;
+                nodes_pins com_incidences;
+                std::set_intersection(sets[prev_n].begin(), sets[prev_n].end(),
+                                      sets[n].begin(), sets[n].end(),
+                                      std::back_inserter(com_incidences));
+                if (!com_incidences.empty())
+                    return *com_incidences.begin();
+                if (prev_it == set.begin())
+                    break;
+            }
+            // prev_n = n;
+        }
+        auto min_it = std::min_element(sets.begin(), sets.end(), [](const auto &T1, const auto &T2) {
+            return T1.second.size() < T2.second.size();
+        });
+        return *min_it->second.begin();
+    }
+
+    int KICluster::prepare_next_edges(const set_of_nodes &set, edges_list_ptr &newEdges)
+    {
+        auto newNode = choose_com_incidence(set);
+        auto &local_inc_eges = incidences_[newNode];
+        for (auto &e : local_inc_eges)
+        {
+            if (set.contains(e->node_a) || set.contains(e->node_b))
+                newEdges.push_back(e);
+            // auto &edge = e->second
+        }
+        return newNode;
     }
 
     KICluster::KICluster(bool use_threads) noexcept : use_threads_(use_threads)
@@ -244,6 +327,273 @@ namespace HOSC
             return false;
         bound_nodes_.erase(it);
         return true;
+    }
+
+    void KICluster::Solve2()
+    {
+        if (!dirty())
+            return;
+        set_of_nodes Nodes_to_be_removed_as_first;
+        set_of_nodes Nodes_with_edges;
+        for (auto &e : main_list_)
+        {
+            auto a = node_trans_.extN2inN(e->node_a);
+            auto b = node_trans_.extN2inN(e->node_b);
+            Nodes_with_edges.insert(a);
+            Nodes_with_edges.insert(b);
+            auto newE = std::make_shared<Edge<W>>(a, b, e->weight_);
+            incidences_[a].push_back(newE);
+            incidences_[b].push_back(newE);
+            if (a != virtual_node)
+                max_nodes_ = std::max(max_nodes_, a);
+            if (b != virtual_node)
+                max_nodes_ = std::max(max_nodes_, b);
+        }
+        if (clusters_p)
+        {
+            ext_interface_stack interface_stack;
+            if (use_threads_)
+            {
+                //parallel
+                for (auto &Cluster : *clusters_p)
+                {
+                    Cluster.is_parallel_running = int_ki_cont::not_yet;
+                }
+                for (auto &Cluster : *clusters_p)
+                {
+                    Cluster.leave_only_internal_nodes(Nodes_with_edges);
+                    Cluster.leave_only_internal_nodes(bound_nodes_);
+                    Cluster.leave_external();
+                    Cluster.SolveParallel(); //change to thread and everything
+                }
+                auto num_of_clusters = clusters_p->size();
+                while (!all_finished())
+                {
+                    for (auto &Cluster : *clusters_p)
+                    {
+                        if (Cluster.is_parallel_running != int_ki_cont::done && Cluster.solve_future.wait_for(std::chrono::microseconds(100)) == std::future_status::ready)
+                        {
+                            Cluster.update_n_nodes(max_nodes_ + 1);
+                            auto p_interface = Cluster.get_interface();
+                            // p_interface->p_my_ext_nodes = &bound_nodes_;
+                            interface_stack.push_back(p_interface);
+                            Cluster.is_parallel_running = int_ki_cont::done;
+                            Cluster.solve_future.get();
+                            // break;
+                        }
+                    }
+                }
+            }
+            else
+            {
+                //serial
+                for (auto &Cluster : *clusters_p)
+                {
+                    Cluster.leave_only_internal_nodes(Nodes_with_edges);
+                    Cluster.leave_only_internal_nodes(bound_nodes_);
+                    Cluster.leave_external();
+                    Cluster.Solve2();
+                    Cluster.update_n_nodes(max_nodes_ + 1);
+                    auto p_interface = Cluster.get_interface();
+                    // p_interface->p_my_ext_nodes = &bound_nodes_;
+                    interface_stack.push_back(p_interface);
+                }
+            }
+
+            // alternative way
+            while (interface_stack.size() > 1)
+            {
+                auto i1 = interface_stack.back();
+                interface_stack.pop_back();
+                auto &n_e = i1->ext_my_pins_;
+                set_of_nodes loose_dongles;
+                for (auto &n : n_e)
+                {
+                    auto iter = incidences_.find(n);
+                    if (iter != incidences_.end())
+                    {
+                        auto i = iter->second.size() - 1;
+                        for (auto eit = iter->second.begin(); eit != iter->second.end(); eit++, i--)
+                        {
+                            auto edge_ptr = *eit;
+                            auto &edge = *edge_ptr;
+                            if (n != edge.node_a)
+                            {
+                                std::erase(incidences_[edge.node_a], edge_ptr);
+                                if (incidences_[edge.node_a].size() == 0)
+                                {
+                                    if (!bound_nodes_.contains(edge.node_a))
+                                        loose_dongles.insert(edge.node_a);
+                                    incidences_.erase(edge.node_a);
+                                }
+                            }
+                            else
+                            {
+                                std::erase(incidences_[edge.node_b], edge_ptr);
+                                if (incidences_[edge.node_b].size() == 0)
+                                {
+                                    if (!bound_nodes_.contains(edge.node_b))
+                                        loose_dongles.insert(edge.node_b);
+                                    incidences_.erase(edge.node_b);
+                                }
+                            }
+                            KIIndexCol::del_pair ed = std::make_pair(edge.node_a, edge.node_b);
+                            nodes_to_remove rn;
+                            if (i == 0 && !bound_nodes_.contains(n))
+                                rn.push_back(n);
+                            i1->numers_->add_edge_remove_node(ed, rn, edge.weight_);
+                            i1->denom_->add_edge_remove_node(ed, rn, edge.weight_);
+                            i1->numers_ext_->add_edge_remove_node(ed, rn, edge.weight_);
+                        }
+                        incidences_.erase(iter);
+                    }
+                }
+#ifdef _INSIDE_HIERARCHY_
+                std::cout << "Partial result after edge adding:\n";
+                std::cout << "Denominator: "<< i1->denom_->String(node_trans_) <<std::endl;
+                std::cout << "Numerator: "<< i1->numers_->String(node_trans_) <<std::endl;
+                std::cout << "Numerator_ext: "<< i1->numers_ext_->String(node_trans_) <<std::endl;
+#endif
+                auto it2 = std::max_element(interface_stack.begin(), interface_stack.end(), [&loose_dongles](auto &v1, auto &v2) {
+                    return v1->num_of_incidents(loose_dongles) < v2->num_of_incidents(loose_dongles);
+                });
+                auto i2 = *it2;
+                interface_stack.remove(i2);
+                if (incidences_.empty() && (bound_nodes_.size() == 1) /* && !loose_dongles.empty()*/)
+                    loose_dongles.extract(loose_dongles.begin());
+                if (bound_nodes_.size() > 1)
+                {
+                    set_of_nodes aux(bound_nodes_);
+                    aux.insert(loose_dongles.begin(), loose_dongles.end());
+                    max_nodes_ = incidences_.size() + aux.size();
+                }
+                else
+                    max_nodes_ = incidences_.size() + loose_dongles.size();
+                i1->update_n_nodes(max_nodes_ + 1);
+                i2->update_n_nodes(max_nodes_ + 1);
+                auto ires = int_ki_cont::big_O_dot(i1, i2, {loose_dongles.begin(), loose_dongles.end()});
+                interface_stack.push_back(ires);
+            }
+            auto res_top = interface_stack.back();
+            denom_ = res_top->denom_;
+            numers_ = res_top->numers_;
+            numers_ext = res_top->numers_ext_;
+        }
+        else
+        {
+
+            auto iter = min_incidence();
+            auto init_edge_ptr = *iter->second.begin();
+            set_of_nodes set_n{{init_edge_ptr->node_a}, {init_edge_ptr->node_b}};
+            denom_ = std::make_shared<KIIndexCol>(*init_edge_ptr, max_nodes_ + 1, KIIndexCol::com_denomnator);
+            numers_ = std::make_shared<KIIndexCol>(*init_edge_ptr, max_nodes_ + 1, KIIndexCol::sum_numerators);
+            numers_ext = std::make_shared<KIIndexCol>(*init_edge_ptr, max_nodes_ + 1, KIIndexCol::extern_connections);
+            nodes_to_remove rn;
+            std::erase(incidences_[init_edge_ptr->node_b], init_edge_ptr);
+            if (incidences_[init_edge_ptr->node_b].empty())
+            {
+                set_n.erase(init_edge_ptr->node_b);
+                incidences_.erase(init_edge_ptr->node_b);
+                if (!bound_nodes_.contains(init_edge_ptr->node_b))
+                    rn.push_back(init_edge_ptr->node_b);
+            }
+            std::erase(incidences_[init_edge_ptr->node_a], init_edge_ptr);
+            if (incidences_[init_edge_ptr->node_a].empty())
+            {
+                set_n.erase(init_edge_ptr->node_a);
+                incidences_.erase(init_edge_ptr->node_a);
+                if (!bound_nodes_.contains(init_edge_ptr->node_a))
+                    rn.push_back(init_edge_ptr->node_a);
+            }
+            while (!incidences_.empty())
+            {
+                edges_list_ptr local_list;
+                auto newNode = prepare_next_edges(set_n, local_list);
+                set_n.insert(newNode);
+                numers_->add_to_with_virtual_node_update(*numers_ext, newNode);
+                numers_ext->add_shortcut_remove_node(*denom_, {virtual_node, newNode}, {});
+                for (auto edge_ptr : local_list)
+                {
+                    auto a = edge_ptr->node_a;
+                    auto b = edge_ptr->node_b;
+                    auto it_a = incidences_.find(a);
+                    auto it_b = incidences_.find(b);
+                    std::erase(it_a->second, edge_ptr);
+                    std::erase(it_b->second, edge_ptr);
+                    if (it_b->second.empty())
+                    {
+                        set_n.erase(b);
+                        incidences_.erase(it_b);
+                        bool do_not_remove = bound_nodes_.contains(b) || (bound_nodes_.empty() && incidences_.empty());
+                        if (!do_not_remove)
+                            rn.push_back(b);
+                    }
+                    if (it_a->second.empty())
+                    {
+                        set_n.erase(a);
+                        incidences_.erase(it_a);
+                        bool do_not_remove = bound_nodes_.contains(a) || (bound_nodes_.empty() && incidences_.empty());
+                        if (!do_not_remove)
+                            rn.push_back(a);
+                    }
+                    auto ed = std::make_pair(a, b);
+                    denom_->add_edge_remove_node(ed, rn, edge_ptr->weight_);
+                    numers_->add_edge_remove_node(ed, rn, edge_ptr->weight_);
+                    numers_ext->add_edge_remove_node(ed, rn, edge_ptr->weight_);
+                    rn.clear();
+                }
+            }
+
+            // denom_ = std::make_shared<KIIndexCol>(max_nodes_ + 1, KIIndexCol::com_denomnator);
+            // numers_ = std::make_shared<KIIndexCol>(max_nodes_ + 1, KIIndexCol::sum_numerators);
+            // numers_ext = std::make_shared<KIIndexCol>(max_nodes_ + 1, KIIndexCol::extern_connections);
+            // while (!incidences_.empty())
+            // {
+            //     auto iter = min_incidence();
+            //     auto index = iter->first;
+            //     auto i = iter->second.size() - 1;
+            //     for (auto eit = iter->second.begin(); eit != iter->second.end(); eit++, i--)
+            //     {
+            //         auto edge_ptr = *eit;
+            //         auto &edge = *edge_ptr;
+            //         nodes_to_remove rn;
+            //         if (index != edge.node_a)
+            //         {
+            //             std::erase(incidences_[edge.node_a], edge_ptr);
+            //             if (incidences_[edge.node_a].empty() && !bound_nodes_.contains(edge.node_a))
+            //                 rn.push_back(edge.node_a);
+            //         }
+            //         else
+            //         {
+            //             std::erase(incidences_[edge.node_b], edge_ptr);
+            //             if (incidences_[edge.node_b].empty() && !bound_nodes_.contains(edge.node_b))
+            //                 rn.push_back(edge.node_b);
+            //         }
+            //         KIIndexCol::del_pair ed = std::make_pair(edge.node_a, edge.node_b);
+            //         if (i == 0 && !bound_nodes_.contains(index))
+            //             rn.push_back(index);
+            //         numers_->add_edge_remove_node(ed, rn, edge.weight_);
+            //         denom_->add_edge_remove_node(ed, rn, edge.weight_);
+            //         numers_ext->add_edge_remove_node(ed, rn, edge.weight_);
+            //     }
+            // #ifdef _DEBUG_TEST
+            //                 std::cout << "Node: " << index << " was removed.\n";
+            // #endif
+
+            // incidences_.erase(iter);
+            // }
+
+            denom_value_ = denom_->value();
+            numer_value_ = numers_->value();
+        }
+#ifdef _INSIDE_HIERARCHY_
+        std::cout << "Nodes translator\n";
+        for (auto &[i, e] : node_trans_.intN2extN_)
+        {
+            std::cout << '\t' << i << " -> " << e << std::endl;
+        }
+        std::cout << *this << std::endl;
+#endif
     }
 
     void KICluster::Solve()
@@ -320,15 +670,7 @@ namespace HOSC
                     interface_stack.push_back(p_interface);
                 }
             }
-            // while (interface_stack.size() > 1)
-            // {
-            //     auto i1 = interface_stack.top();
-            //     interface_stack.pop();
-            //     auto i2 = interface_stack.top();
-            //     interface_stack.pop();
-            //     auto ires = int_ki_cont::big_O_dot(i1, i2);
-            //     interface_stack.push(ires);
-            // }
+
             // alternative way
             while (interface_stack.size() > 1)
             {
@@ -407,45 +749,52 @@ namespace HOSC
             denom_ = std::make_shared<KIIndexCol>(max_nodes_ + 1, KIIndexCol::com_denomnator);
             numers_ = std::make_shared<KIIndexCol>(max_nodes_ + 1, KIIndexCol::sum_numerators);
             numers_ext = std::make_shared<KIIndexCol>(max_nodes_ + 1, KIIndexCol::extern_connections);
-        }
-        while (!incidences_.empty())
-        {
-            auto iter = min_incidence();
-            auto index = iter->first;
-            auto i = iter->second.size() - 1;
-            for (auto eit = iter->second.begin(); eit != iter->second.end(); eit++, i--)
+            while (!incidences_.empty())
             {
-                auto edge_ptr = *eit;
-                auto &edge = *edge_ptr;
-                nodes_to_remove rn;
-                if (index != edge.node_a)
+                auto iter = min_incidence();
+                auto index = iter->first;
+                auto i = iter->second.size() - 1;
+                for (auto eit = iter->second.begin(); eit != iter->second.end(); eit++, i--)
                 {
-                    std::erase(incidences_[edge.node_a], edge_ptr);
-                    if (incidences_[edge.node_a].empty() && !bound_nodes_.contains(edge.node_a))
-                        rn.push_back(edge.node_a);
+                    auto edge_ptr = *eit;
+                    auto &edge = *edge_ptr;
+                    nodes_to_remove rn;
+                    if (index != edge.node_a)
+                    {
+                        std::erase(incidences_[edge.node_a], edge_ptr);
+                        if (incidences_[edge.node_a].empty() && !bound_nodes_.contains(edge.node_a))
+                            rn.push_back(edge.node_a);
+                    }
+                    else
+                    {
+                        std::erase(incidences_[edge.node_b], edge_ptr);
+                        if (incidences_[edge.node_b].empty() && !bound_nodes_.contains(edge.node_b))
+                            rn.push_back(edge.node_b);
+                    }
+                    KIIndexCol::del_pair ed = std::make_pair(edge.node_a, edge.node_b);
+                    if (i == 0 && !bound_nodes_.contains(index))
+                        rn.push_back(index);
+                    numers_->add_edge_remove_node(ed, rn, edge.weight_);
+                    denom_->add_edge_remove_node(ed, rn, edge.weight_);
+                    numers_ext->add_edge_remove_node(ed, rn, edge.weight_);
                 }
-                else
-                {
-                    std::erase(incidences_[edge.node_b], edge_ptr);
-                    if (incidences_[edge.node_b].empty() && !bound_nodes_.contains(edge.node_b))
-                        rn.push_back(edge.node_b);
-                }
-                KIIndexCol::del_pair ed = std::make_pair(edge.node_a, edge.node_b);
-                if (i == 0 && !bound_nodes_.contains(index))
-                    rn.push_back(index);
-                numers_->add_edge_remove_node(ed, rn, edge.weight_);
-                denom_->add_edge_remove_node(ed, rn, edge.weight_);
-                numers_ext->add_edge_remove_node(ed, rn, edge.weight_);
-            }
 #ifdef _DEBUG_TEST
-            std::cout << "Node: " << index << " was removed.\n";
+                std::cout << "Node: " << index << " was removed.\n";
 #endif
 
-            incidences_.erase(iter);
+                incidences_.erase(iter);
+            }
         }
-
         denom_value_ = denom_->value();
         numer_value_ = numers_->value();
+#ifdef _INSIDE_HIERARCHY_
+        std::cout << "Nodes translator\n";
+        for (auto &[i, e] : node_trans_.intN2extN_)
+        {
+            std::cout << '\t' << i << " -> " << e << std::endl;
+        }
+        std::cout << *this << std::endl;
+#endif
     }
 
     KICluster::int_ki_cont *KICluster::insert_cluster(const mine_cluster_ptr cluster, const init_bounadry_connections_list &connection_list)

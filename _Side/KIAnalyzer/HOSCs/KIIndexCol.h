@@ -20,18 +20,31 @@
 #include <limits>
 #include "UniqueHOSCCollections.h"
 #include "SingleHOSC.h"
+#include "Edge.h"
 
 namespace HOSC
 {
     class KIIndexCol : public std::enable_shared_from_this<KIIndexCol>
     {
     public:
-        using KIndexCol_ptr = std::shared_ptr<KIIndexCol>;
         /**
+         * @brief 
+         * 
+         */
+        using KIndexCol_ptr = std::shared_ptr<KIIndexCol>;
+
+        /**
+         * @brief 
+         * 
+         */
+        using del_pair = std::pair<int, int>;
+
+            /**
          * @brief pair of nodes to be contracted. If empty, means no 
          * 
          */
-        using del_pair = std::optional<std::pair<int, int>>;
+        using del_pair_opt = std::optional<del_pair>;
+
         /**
          * @brief node to be removed. Is oprional
          * 
@@ -72,6 +85,8 @@ namespace HOSC
         KIIndexCol(int _no_nodes) noexcept;
 
     public:
+        using W = long long;
+
         using func = enum { com_denomnator,
                             sum_numerators,
                             extern_connections };
@@ -83,9 +98,11 @@ namespace HOSC
          * @param function type of set: com_denominator, sum_numerators
          */
         KIIndexCol(int _no_nodes, func function) noexcept;
+        KIIndexCol(Edge<W> &in_edge, int _no_nodes, func function);
         KIIndexCol(const KIIndexCol &Source);
         KIIndexCol(KIIndexCol &&Source) = default;
         ~KIIndexCol() {}
+
         /**
          * @brief Inserts  new HOSC. If already exists, the coefficients are added and new HOSC is destroyed
          * 
@@ -93,6 +110,7 @@ namespace HOSC
          * @return std::shared_ptr<SingleHOSC> If HOSC already exists, it return old HOSC. Otherwise an ew one.
          */
         std::shared_ptr<SingleHOSC> insert(std::shared_ptr<SingleHOSC> &HOSC);
+
         /**
          * @brief Test if result is complete, i.e. the last but one node was removed
          * 
@@ -100,6 +118,7 @@ namespace HOSC
          * @return false otherwise
          */
         inline bool complete() { return _HOSCmap().size() == 1 && _HOSCmap().complete(); }
+
         /**
          * @brief return numercial value, prvided that the result is complate 
          * 
@@ -111,6 +130,7 @@ namespace HOSC
                 return _HOSCmap().value<long long>();
             return {};
         }
+
         /**
          * @brief consider another edge in graph
          * 
@@ -120,12 +140,33 @@ namespace HOSC
          * @return true if the last but one node was removed and each edges were analyzed
          * @return false otherwise
          */
-        bool add_edge_remove_node(const del_pair &edge, const nodes_to_remove &nodes, long long weight = 1);
+        bool add_edge_remove_node(const del_pair_opt &edge, const nodes_to_remove &nodes, long long weight = 1);
+
+        /**
+         * @brief 
+         * 
+         * @param edge 
+         * @param nodes 
+         * @return true 
+         * @return false 
+         */
+        bool add_shortcut_remove_node(const del_pair &edge, const nodes_to_remove &nodes);
+
+        /**
+         * @brief 
+         * 
+         * @param OtherIndexCol 
+         * @param edge 
+         * @param nodes 
+         */
+        void add_shortcut_remove_node(KIIndexCol &OtherIndexCol, const del_pair &edge, const nodes_to_remove &nodes);
+
         /**
          * @brief reset collection
          * 
          */
         bool big_O_dot(KIIndexCol &OtherIndexCol, nodes_to_remove &nodes);
+
         /**
          * @brief 
          * 
@@ -133,11 +174,28 @@ namespace HOSC
          * @return KIIndexCol& 
          */
         KIIndexCol &operator+=(KIIndexCol &Right);
+
+        /**
+         * @brief 
+         * 
+         * @param Right 
+         * @param newNode 
+         */
+        void add_to_with_virtual_node_update(KIIndexCol &Right, int newNode);
+        
+        /**
+         * @brief 
+         * 
+         * @param Right 
+         */
+        void add_to_with_virtual_node_removed(KIIndexCol &Right);
+
         /**
          * @brief 
          * 
          */
         void reset();
+        
         /**
          * @brief 
          * 
@@ -145,6 +203,7 @@ namespace HOSC
          * @return std::string 
          */
         std::string String(const NodeTrans &NodeTrans);
+        
         /**
          * @brief 
          * 
@@ -152,6 +211,15 @@ namespace HOSC
          * @return std::shared_ptr<KIIndexCol> 
          */
         KIndexCol_ptr copy_col_with_node_translated(const NodeTrans::NtoN &tr_map);
+
+        /**
+         * @brief 
+         * 
+         * @param real_node real node to replace
+         * @return KIndexCol_ptr new HOSC sum 
+         */
+        KIndexCol_ptr copy_vitual_to_real(int real_node);
+        
         /**
          * @brief 
          * 

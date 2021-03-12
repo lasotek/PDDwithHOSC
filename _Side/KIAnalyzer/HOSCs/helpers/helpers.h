@@ -304,7 +304,9 @@ namespace HOSC
         int curr_node_ = 0;
         NtoN extN2intN_;
         NtoN intN2extN_;
-
+#ifdef _INSIDE_HIERARCHY_
+        friend class KICluster;
+#endif
     public:
         NodeTrans() {}
         ~NodeTrans() {}
