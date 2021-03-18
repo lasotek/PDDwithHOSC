@@ -57,6 +57,12 @@ namespace HOSC
          */
         using mine_cluster_ptr = std::shared_ptr<KICluster>;
 
+        /**
+         * @brief first - out nodes, second.first - in nodes, second.second - counter
+         * 
+         */
+        using set_of_nodes_that_reduce = std::unordered_map<int, std::unordered_map<int, int>>;
+
         friend class int_ki_cont;
         class int_ki_cont
         {
@@ -227,6 +233,12 @@ namespace HOSC
         int choose_com_incidence(const set_of_nodes &set);
 
         int prepare_next_edges(const set_of_nodes &set, edges_list_ptr &newEdges);
+
+        void prepare_all_possible_incidence_nodes(const set_of_nodes &set, set_of_nodes &res) const;
+
+        void prepare_set_of_nodes_that_reduce(const set_of_nodes &set, set_of_nodes_that_reduce &res) const;
+
+        int choose_com_incidence2(const set_of_nodes &set) const;
 
     public:
         KICluster(bool use_threads = false) noexcept;

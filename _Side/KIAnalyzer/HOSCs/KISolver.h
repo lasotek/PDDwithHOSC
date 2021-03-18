@@ -16,6 +16,7 @@
 #include <algorithm>
 #include <optional>
 #include <set>
+#include <limits>
 #include "KIIndexCol.h"
 #include "helpers/helpers.h"
 #include "Edge.h"
@@ -38,6 +39,11 @@ namespace HOSC
         using map_iterator = incidence_map::iterator;
         using incidence_sets = std::unordered_map<int, std::set<int>>;
         using set_of_nodes = std::set<int>;
+        /**
+         * @brief first - out nodes, second.first - in nodes, second.second - counter
+         * 
+         */
+        using set_of_nodes_that_reduce = std::unordered_map<int, std::unordered_map<int, int>>;
         NodeTrans node_trans_;
         incidence_map incidences_;
         // incidence_sets incidences_set_;
@@ -101,7 +107,80 @@ namespace HOSC
             });
             return *min_it->second.begin();
         }
-
+        void prepare_all_possible_incidence_nodes(const set_of_nodes &set, set_of_nodes &res) const
+        {
+            res.clear();
+            for (auto n : set)
+            {
+                const auto edges_it = incidences_.find(n);
+                if (edges_it == incidences_.end())
+                    throw std::invalid_argument("No edges! Impossible!!!!");
+                const auto &edges_list = edges_it->second;
+                for (auto edge_ptr : edges_list)
+                {
+                    auto a = edge_ptr->node_a;
+                    auto b = edge_ptr->node_b;
+                    res.insert(a == n ? b : a);
+                }
+            }
+        }
+        void prepare_set_of_nodes_that_reduce(const set_of_nodes &set, set_of_nodes_that_reduce &res) const
+        {
+            set_of_nodes all_pos_incidences;
+            prepare_all_possible_incidence_nodes(set, all_pos_incidences);
+            for (auto n : all_pos_incidences)
+            {
+                auto &entry = res[n];
+                auto n_incidences_edges_it = incidences_.find(n);
+                if (n_incidences_edges_it == incidences_.end())
+                    throw std::invalid_argument("No edges! Oooops!!!!");
+                auto &n_incidences_edges = n_incidences_edges_it->second;
+                for (auto &edg_ptr : n_incidences_edges)
+                {
+                    auto a = edg_ptr->node_a;
+                    auto b = edg_ptr->node_b;
+                    auto other_n = a == n ? b : a;
+                    if (set.contains(other_n))
+                        entry[other_n]++;
+                }
+            }
+        }
+        int choose_com_incidence2(const set_of_nodes &set) const
+        {
+            int best_node = -1;
+            int best_incidence_edges_left = std::numeric_limits<int>::max();
+            int number_of_nodes_removal = 0;
+            set_of_nodes_that_reduce all_nodes_that_reduces;
+            prepare_set_of_nodes_that_reduce(set, all_nodes_that_reduces);
+            for (auto &[m_node, ord_map] : all_nodes_that_reduces)
+            {
+                int local_numeber_of_nodes_removal = 0;
+                int local_best_incidence_edges_left = best_incidence_edges_left;
+                for (auto &[other_node, node_rem] : ord_map)
+                {
+                    auto left_incidence = incidences_.find(other_node)->second.size() - node_rem;
+                    if (left_incidence < local_best_incidence_edges_left)
+                    {
+                        local_best_incidence_edges_left = left_incidence;
+                    }
+                    if (left_incidence == 0)
+                    {
+                        local_best_incidence_edges_left = 0;
+                        local_numeber_of_nodes_removal++;
+                    }
+                }
+                bool is_better = (local_best_incidence_edges_left < best_incidence_edges_left) ||
+                                 (local_best_incidence_edges_left == 0 &&
+                                  local_numeber_of_nodes_removal > number_of_nodes_removal);
+                if (is_better)
+                {
+                    best_incidence_edges_left = local_best_incidence_edges_left;
+                    number_of_nodes_removal = local_numeber_of_nodes_removal;
+                    best_node = m_node;
+                }
+            }
+            return best_node;
+        }
         /**
          * @brief 
          * 
@@ -111,7 +190,7 @@ namespace HOSC
          */
         int prepare_next_edges(const set_of_nodes &set, edges_list_ptr &newEdges)
         {
-            auto newNode = choose_com_incidence(set);
+            auto newNode = choose_com_incidence2(set);
             auto &local_inc_eges = incidences_[newNode];
             for (auto &e : local_inc_eges)
             {
@@ -175,6 +254,13 @@ namespace HOSC
             denom_ = std::make_shared<KIIndexCol>(*init_edge_ptr, max_nodes_ + 1, KIIndexCol::com_denomnator);
             numers_ = std::make_shared<KIIndexCol>(*init_edge_ptr, max_nodes_ + 1, KIIndexCol::sum_numerators);
             numers_j = std::make_shared<KIIndexCol>(*init_edge_ptr, max_nodes_ + 1, KIIndexCol::extern_connections);
+#ifdef _STEP_BY_STEP_SHOW_
+            std::cout << "First edge is: " << node_trans_.inN2extN(init_edge_ptr->node_a) << ", " << node_trans_.inN2extN(init_edge_ptr->node_b) << ", w = " << init_edge_ptr->weight_ << std::endl;
+            std::cout << "Initial collections are:\n";
+            std::cout << "\t denom: " << denom_->String(node_trans_) << std::endl;
+            std::cout << "\t numers: " << numers_->String(node_trans_) << std::endl;
+            std::cout << "\t numers_ext: " << numers_j->String(node_trans_) << std::endl;
+#endif
             nodes_to_remove rn;
             std::erase(incidences_[init_edge_ptr->node_b], init_edge_ptr);
             if (incidences_[init_edge_ptr->node_b].empty())
@@ -194,9 +280,17 @@ namespace HOSC
             {
                 edges_list_ptr local_list;
                 auto newNode = prepare_next_edges(set_n, local_list);
+#ifdef _STEP_BY_STEP_SHOW_
+                std::cout << "New nodes chosen: " << node_trans_.inN2extN(newNode) << std::endl;
+#endif
                 set_n.insert(newNode);
                 numers_->add_to_with_virtual_node_update(*numers_j, newNode);
                 numers_j->add_shortcut_remove_node(*denom_, {virtual_node, newNode}, {});
+#ifdef _STEP_BY_STEP_SHOW_
+                std::cout << "After modyfication:\n";
+                std::cout << "\t numers: " << numers_->String(node_trans_) << std::endl;
+                std::cout << "\t numers_ext: " << numers_j->String(node_trans_) << std::endl;
+#endif
                 for (auto edge_ptr : local_list)
                 {
                     auto a = edge_ptr->node_a;
@@ -223,6 +317,21 @@ namespace HOSC
                     denom_->add_edge_remove_node(ed, rn, edge_ptr->weight_);
                     numers_->add_edge_remove_node(ed, rn, edge_ptr->weight_);
                     numers_j->add_edge_remove_node(ed, rn, edge_ptr->weight_);
+#ifdef _STEP_BY_STEP_SHOW_
+                    std::cout << "After edge consideration: " << node_trans_.inN2extN(edge_ptr->node_a) << ", " << node_trans_.inN2extN(edge_ptr->node_b) << ", w = " << edge_ptr->weight_ << std::endl;
+                    if (!rn.empty())
+                    {
+                        std::cout << "\t and removing nodes: ";
+                        for (auto n : rn)
+                        {
+                            std::cout << node_trans_.inN2extN(n) << ' ';
+                        }
+                        std::cout << std::endl;
+                    }
+                    std::cout << "\t denom: " << denom_->String(node_trans_) << std::endl;
+                    std::cout << "\t numers: " << numers_->String(node_trans_) << std::endl;
+                    std::cout << "\t numers_ext: " << numers_j->String(node_trans_) << std::endl;
+#endif
                     rn.clear();
                 }
             }

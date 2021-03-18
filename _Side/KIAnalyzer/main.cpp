@@ -117,7 +117,7 @@ int main(int argc, char **argv)
         KirchhoffInexTesting8();
         KirchhoffInexTesting9();
         KirchhoffInexTesting11();
-        // KirchhoffInexTesting6();
+        KirchhoffInexTesting6();
     }
     catch (const std::exception &e)
     {

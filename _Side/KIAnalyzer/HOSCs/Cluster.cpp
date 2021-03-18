@@ -290,7 +290,8 @@ namespace HOSC
 
     int KICluster::prepare_next_edges(const set_of_nodes &set, edges_list_ptr &newEdges)
     {
-        auto newNode = choose_com_incidence(set);
+        // auto newNode = choose_com_incidence(set);
+        auto newNode = choose_com_incidence2(set);
         auto &local_inc_eges = incidences_[newNode];
         for (auto &e : local_inc_eges)
         {
@@ -299,6 +300,83 @@ namespace HOSC
             // auto &edge = e->second
         }
         return newNode;
+    }
+
+    void KICluster::prepare_all_possible_incidence_nodes(const set_of_nodes &set, set_of_nodes &res) const
+    {
+        res.clear();
+        for (auto n : set)
+        {
+            const auto edges_it = incidences_.find(n);
+            if (edges_it == incidences_.end())
+                throw std::invalid_argument("No edges! Impossible!!!!");
+            const auto &edges_list = edges_it->second;
+            for (auto edge_ptr : edges_list)
+            {
+                auto a = edge_ptr->node_a;
+                auto b = edge_ptr->node_b;
+                res.insert(a == n ? b : a);
+            }
+        }
+    }
+
+    void KICluster::prepare_set_of_nodes_that_reduce(const set_of_nodes &set, set_of_nodes_that_reduce &res) const
+    {
+        set_of_nodes all_pos_incidences;
+        prepare_all_possible_incidence_nodes(set, all_pos_incidences);
+        for (auto n : all_pos_incidences)
+        {
+            auto &entry = res[n];
+            auto n_incidences_edges_it = incidences_.find(n);
+            if (n_incidences_edges_it == incidences_.end())
+                throw std::invalid_argument("No edges! Oooops!!!!");
+            auto &n_incidences_edges = n_incidences_edges_it->second;
+            for (auto &edg_ptr : n_incidences_edges)
+            {
+                auto a = edg_ptr->node_a;
+                auto b = edg_ptr->node_b;
+                auto other_n = a == n ? b : a;
+                if (set.contains(other_n))
+                    entry[other_n]++;
+            }
+        }
+    }
+
+    int KICluster::choose_com_incidence2(const set_of_nodes &set) const
+    {
+        int best_node = -1;
+        int best_incidence_edges_left = std::numeric_limits<int>::max();
+        int number_of_nodes_removal = 0;
+        set_of_nodes_that_reduce all_nodes_that_reduces;
+        prepare_set_of_nodes_that_reduce(set, all_nodes_that_reduces);
+        for (auto &[m_node, ord_map] : all_nodes_that_reduces)
+        {
+            int local_numeber_of_nodes_removal = 0;
+            int local_best_incidence_edges_left = best_incidence_edges_left;
+            for (auto &[other_node, node_rem] : ord_map)
+            {
+                auto left_incidence = incidences_.find(other_node)->second.size() - node_rem;
+                if (left_incidence < local_best_incidence_edges_left)
+                {
+                    local_best_incidence_edges_left = left_incidence;
+                }
+                if (left_incidence == 0)
+                {
+                    local_best_incidence_edges_left = 0;
+                    local_numeber_of_nodes_removal++;
+                }
+            }
+            bool is_better = (local_best_incidence_edges_left < best_incidence_edges_left) ||
+                             (local_best_incidence_edges_left == 0 &&
+                              local_numeber_of_nodes_removal > number_of_nodes_removal);
+            if (is_better)
+            {
+                best_incidence_edges_left = local_best_incidence_edges_left;
+                number_of_nodes_removal = local_numeber_of_nodes_removal;
+                best_node = m_node;
+            }
+        }
+        return best_node;
     }
 
     KICluster::KICluster(bool use_threads) noexcept : use_threads_(use_threads)

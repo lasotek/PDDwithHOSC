@@ -11,6 +11,7 @@
 #ifndef __EDGE_H__
 #define __EDGE_H__
 #include <memory>
+#include <iostream>
 #include "helpers/helpers.h"
 
 namespace HOSC
@@ -41,6 +42,8 @@ namespace HOSC
             std::cout << "Edge - nodes : " << node_a << " and " << node_b << ", weight " << weight_ << " is removing\n";
 #endif
         }
+        // template <Arithmetic W>
+        // friend std::ostream &operator<<(std::ostream &os, Edge<W> &edge);
     };
 
     /**
@@ -52,6 +55,5 @@ namespace HOSC
     using Edges = std::initializer_list<Edge<W>>;
 
 } // namespace HOSC
-
 
 #endif // __EDGE_H__

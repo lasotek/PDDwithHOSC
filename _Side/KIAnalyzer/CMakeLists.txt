@@ -33,6 +33,7 @@ add_executable(KIAnalyzer main.cpp
 # add_definitions(-D _DEBUG_TEST)
 # add_definitions(-D _INSIDE_HIERARCHY_)
 # add_definitions(-D _OLD_SOLVER_)
+# add_definitions(-D _STEP_BY_STEP_SHOW_)
     
 set(CPACK_PROJECT_NAME ${PROJECT_NAME})
 set(CPACK_PROJECT_VERSION ${PROJECT_VERSION})
