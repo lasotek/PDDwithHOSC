@@ -1,0 +1,56 @@
+// The comments are defined from // to the end of line
+// Before we use HOSC we need to declare nodes. Nodes can be any literal without punctuation marks.
+// It force the order of nodes. See definition of the canonical HOSC.
+// Each statement must be finished by semicolon (;).
+nodes(0,1,2,3,4,5,6,7,8,9,10);
+
+// The definition of HOSC. (-1) is a multiplier and must be in brackets. 
+// However instead of multiplier (-1) we can use just - sign, e.g.,
+// H1 = -D(4+1)(3+2),(7+6)(4+1),(9+3)(5+1),(10+1)(6+0); 
+// D is the key that starts definitions of deletions. They have form (a+b)(c+d). 
+// a,b,c,d are nodes that must be declared in advance in nodes statement. 
+// (a+d) is deletion in rows. (c+d) is deletion in columns.
+
+H1 = (-1) * D(4+1)(3+2),(7+6)(4+1),(9+3)(5+1),(10+1)(6+0); 
+
+// The statement to put to out file HOSC H1. There is no possibility to see result without
+// print statement.
+print H1;
+
+
+H2 = D(7+0)(7+0),(8+0)(8+0),(9+0)(9+0),(10+0)(10+0);
+print H2;
+
+// Definition of HOSC by BigO operation. H1 and H2 are HOSCs that must be already defined.
+// {6,7,8,9,10} are set of nodes to be removed.
+H3 = H1 * H2 {6,7,8,9,10};
+
+print H3;
+H12 =(-1)*D(3+2)(3+2),(5+4)(4+1),(6+0)(5+1),(8+2)(6+0);
+print H12;
+H122 = H12 * H2 {6,7,8,9,10};
+print H122;
+
+// Reusing "nodes' statement reset nodes. The previous defined nodes become invalid.
+// You cannot use previously defined HOSC in arithmetic, but they can be printed.
+nodes(0,1,2,3,4,5,6,7);
+
+HF1 = D(7+0)(6+7);
+print HF1;
+
+// The example of HOSC with the negative deletions.
+HF2 = D(1-0)(2-1), (3-2)(4-3),(5-4)(6-5);
+print HF2;
+HF12 = HF1 * HF2 {7};
+print HF12;
+HF3 = D(2+0)(2+0),(5+4)(5+4),(6+4)(6+4);
+print HF3;
+
+// For HF12 node 7 was removed. Thus, HF3 is not allowed to use node 7. I wouldn't valid results
+HF123 = HF12 * HF3 {1,2,3,4,5,6};
+
+// The above presented operations can be done in one operation
+// HF123 = HF1 * HF2 {7} * HF3 {1,2,3,4,5,6};
+// The rule is that any expression on the right of set of nodes to be removed (e.g., {7}) 
+// can contain removed nodes .
+print HF123;

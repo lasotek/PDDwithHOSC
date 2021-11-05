@@ -1,0 +1,7 @@
+HOSC definition
+
+H1 = (-1) (x1+2)(2+1),...
+
+Operators
+
+H3 = H1 * H2 {1,2,3} // nodes to be out 

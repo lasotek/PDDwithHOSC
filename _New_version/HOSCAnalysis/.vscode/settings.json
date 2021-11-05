@@ -1,0 +1,37 @@
+{
+    "C_Cpp.default.configurationProvider": "ms-vscode.cmake-tools",
+    "cmake.debugConfig": {
+        "args": [
+            "-i",
+            "input.txt",
+            "-o",
+            "output.txt"
+        ]
+    },
+    "cSpell.words": [
+        "cmit",
+        "csource",
+        "ctarget",
+        "dels",
+        "FULLHOSC",
+        "HOSC",
+        "HOSCCONTAINER",
+        "lsgn",
+        "rhit",
+        "rmit",
+        "rsgn",
+        "rsource",
+        "rtarget",
+        "stoi"
+    ],
+    "files.associations": {
+        "*.html": "html",
+        "stdexcept": "cpp",
+        "*.tcc": "cpp",
+        "iomanip": "cpp",
+        "istream": "cpp",
+        "ostream": "cpp",
+        "sstream": "cpp",
+        "regex": "cpp"
+    },
+}
