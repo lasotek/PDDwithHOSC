@@ -125,7 +125,7 @@ int main(int argc, char **argv)
         if (argc != 5)
         {
             std::cout << description;
-            FullHOSCTests();
+            // FullHOSCTests();
             return -1;
         }
         std::span arglist(argv + 1, argc - 1);
