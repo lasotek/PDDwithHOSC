@@ -5,7 +5,7 @@
 #include <complex>
 #include <math.h>
 #include <map>
-//#include <limits>
+#include <limits>
 #include "AbstractResTables.h"
 #include "AbstractOperationDataContainer.h"
 #include "binary_filer.h"
@@ -16,9 +16,9 @@ bool IsEqual(long double Left, long double Right);
 class norm_float
 {
 public:
-	norm_float(long double ld=0.0, long Mantise=0);
+	constexpr norm_float(long double ld=0.0, long Mantise=0);
 	norm_float(const norm_float& Source):m_Base(Source.m_Base),m_Mantise(Source.m_Mantise) {}
-	~norm_float(void);
+	//~norm_float(void);
 	bool operator==(const norm_float& Right) const {return m_Base==Right.m_Base && 
 		IsEqual(m_Mantise,Right.m_Mantise);}
 	bool operator!=(const norm_float& Right) const {return !operator==(Right);}
@@ -32,10 +32,10 @@ public:
 	norm_float& operator-=(const norm_float& Right) {Subtract(Right);return *this;}
 	norm_float& operator*=(const norm_float& Right) {Multiply(Right);return *this;}
 	norm_float& operator/=(const norm_float& Right) {Divide(Right);return *this;}
-	norm_float operator-() const {return norm_float(-m_Base,m_Mantise);}
+	constexpr norm_float operator-() const {return norm_float(-m_Base,m_Mantise);}
 	norm_float operator+() const {return *this;}
 	norm_float operator+(const norm_float& R) const;
-	norm_float operator-(const norm_float& R) const;
+	constexpr norm_float operator-(const norm_float& R) const;
 	norm_float operator*(const norm_float& R) const;
 	norm_float operator/(const norm_float& R) const;
 	string ToString() const;
@@ -64,13 +64,14 @@ public:
 		return 0;
 	}
 	long CommonMantise(const norm_float& Other, bool Sqrtable) const;
+	//static norm_float epsilon() { return norm_float(1.0, numeric_limits<long>::min()); }
 protected:
 	short Comp(const norm_float& Right) const;
 	void Add(const norm_float& Right);
 	void Subtract(const norm_float& Right);
 	void Multiply(const norm_float& Right);
 	void Divide(const norm_float& Right);
-	norm_float& normalize();
+	constexpr norm_float& normalize();
 	norm_float& de_normalize(long DesiredMantise);
 	long double m_Base;
 	long m_Mantise;
@@ -1077,6 +1078,63 @@ extern const _CSubModelNumericPattern LDescFilterPattern;
 //NormFloatComplex operator/(const NormFloatComplex& _Left, const NormFloatComplex& _Right);
 
 
+// CLASS numeric_limits<long double>
+template <>
+class numeric_limits<norm_float> : public _Num_float_base {
+public:
+	_NODISCARD static constexpr norm_float(min)() noexcept {
+		//return norm_float(numeric_limits<long double>::min(), numeric_limits<long>::min());
+		return norm_float(1.0L, numeric_limits<long>::min());
+		//return LDBL_MIN;
+	}
+
+	_NODISCARD static constexpr norm_float(max)() noexcept {
+		//return norm_float(numeric_limits<long double>::max(), numeric_limits<long>::max());
+		return norm_float(1.0L, numeric_limits<long>::max());
+		//return LDBL_MAX;
+	}
+
+	_NODISCARD static constexpr norm_float lowest() noexcept {
+		return -(max)();
+	}
+
+	_NODISCARD static constexpr norm_float epsilon() noexcept {
+		return LDBL_EPSILON;
+	}
+
+	_NODISCARD static constexpr norm_float round_error() noexcept {
+		return 0.5L;
+	}
+
+	_NODISCARD static constexpr norm_float denorm_min() noexcept {
+		return norm_float(numeric_limits<long double>::epsilon(),numeric_limits<long>::min());
+		//return LDBL_TRUE_MIN;
+	}
+
+	_NODISCARD static constexpr norm_float infinity() noexcept {
+		return norm_float(__builtin_huge_val(), numeric_limits<long>::min());
+	}
+
+	_NODISCARD static constexpr norm_float quiet_NaN() noexcept {
+		return norm_float(__builtin_nan("0"),0);
+	}
+
+	_NODISCARD static constexpr norm_float signaling_NaN() noexcept {
+		return norm_float(__builtin_nans("1"),0);
+	}
+
+	static constexpr int digits = LDBL_MANT_DIG;
+	static constexpr int digits10 = LDBL_DIG;
+	static constexpr int max_digits10 = 17;
+	static constexpr int max_exponent = LDBL_MAX_EXP;
+	static constexpr int max_exponent10 = LDBL_MAX_10_EXP;
+	static constexpr int min_exponent = LDBL_MIN_EXP;
+	static constexpr int min_exponent10 = LDBL_MIN_10_EXP;
+};
+
+
+
+
 template<> class  _Ctraits<norm_float>
 	{	// complex traits for long double
 public:
@@ -1092,27 +1150,29 @@ public:
 	//	return (::_LExp(_Pleft, _Right, _Exponent));
 	//	}
 
-	static _Ty  _Infv(_Ty)
-		{	// return infinity
-			return norm_float(::_LInf._Long_double,LONG_MAX);
-		}
+	//static _Ty  _Infv(_Ty)
+	//static _Ty  _Infv()
+	//	{	// return infinity
+	//		return norm_float(::_LInf._Long_double,LONG_MAX);
+	//	}
 
-	static bool  _Isinf(_Ty _Left)
-		{	// test for infinity
-			long double Base=_Left.GetBase();
-			return (_Left.GetMantise() == LONG_MAX && ::_LDtest(&Base) == _INFCODE);
-		}
+	//static bool  _Isinf(_Ty _Left)
+	//	{	// test for infinity
+	//		long double Base=_Left.GetBase();
+	//		return (_Left.GetMantise() == LONG_MAX && ::_LDtest(&Base) == _INFCODE);
+	//	}
 
-	static bool  _Isnan(_Ty _Left)
-		{	// test for NaN
-			long double Base=_Left.GetBase();
-			return (_Left.GetMantise() == LONG_MIN && ::_LDtest(&Base) == _NANCODE);
-		}
+	//static bool  _Isnan(_Ty _Left)
+	//	{	// test for NaN
+	//		long double Base=_Left.GetBase();
+	//		return (_Left.GetMantise() == LONG_MIN && ::_LDtest(&Base) == _NANCODE);
+	//	}
 
-	static _Ty  _Nanv(_Ty)
-		{	// return NaN
-			return norm_float(::_LNan._Long_double,LONG_MIN);
-		}
+	////static _Ty  _Nanv(_Ty)
+	//static _Ty  _Nanv()
+	//	{	// return NaN
+	//		return norm_float(::_LNan._Long_double,LONG_MIN);
+	//	}
 
 	//static _Ty __CLRCALL_OR_CDECL _Sinh(_Ty _Left, _Ty _Right)
 	//	{	// return sinh(_Left) * _Right
@@ -1161,8 +1221,165 @@ public:
 			return (::sqrt(_Left));
 		}
 
+	static _Ty _Abs(_Ty _Left) {
+		// testing _Left < 0 would be incorrect when _Left is -0.0
+		return (abs(_Left));
+	}
+
+	static _Ty _Copysign(_Ty _Magnitude, _Ty _Sign) {
+		// testing _Sign < 0 would be incorrect when _Sign is -0.0
+		return abs(_Magnitude)* sgn(_Sign);
+	}
+	static constexpr _Ty _Flt_eps() { // get epsilon
+	//static _Ty _Flt_eps() { // get epsilon
+		return _Ty(1.0, numeric_limits<long>::min());
+	}
+	static constexpr _Ty _Flt_norm_min() {
+		return _Ty(1.0, numeric_limits<long>::min());
+	}
 	//static _Ty __CLRCALL_OR_CDECL tan(_Ty _Left)
 	//	{	// return tan(_Left)
 	//	return (::tanl(_Left));
 	//	}
 	};
+
+	/*
+	// CLASS _Ctraits<double>
+template <>
+class _Ctraits<double> {
+public:
+    using _Ty = double;
+
+    static constexpr _Ty _Flt_eps() { // get epsilon
+        return numeric_limits<double>::epsilon();
+    }
+
+    static constexpr _Ty _Flt_max() {
+        return (numeric_limits<double>::max)();
+    }
+
+    static constexpr _Ty _Flt_norm_min() {
+        return (numeric_limits<double>::min)();
+    }
+
+    static _Ty _Abs(_Ty _Left) {
+        // testing _Left < 0 would be incorrect when _Left is -0.0
+        return _CSTD fabs(_Left);
+    }
+
+    static _Ty _Cosh(_Ty _Left, _Ty _Right) { // return cosh(_Left) * _Right
+        return _CSTD _Cosh(_Left, _Right);
+    }
+
+    static _Ty _Copysign(_Ty _Magnitude, _Ty _Sign) {
+        // testing _Sign < 0 would be incorrect when _Sign is -0.0
+        return _CSTD copysign(_Magnitude, _Sign);
+    }
+
+    static short _Exp(_Ty* _Pleft, _Ty _Right, short _Exponent) { // compute exp(*_Pleft) * _Right * 2 ^ _Exponent
+        return _CSTD _Exp(_Pleft, _Right, _Exponent);
+    }
+
+    static constexpr _Ty _Infv() { // return infinity
+        return numeric_limits<double>::infinity();
+    }
+
+    static bool _Isinf(_Ty _Left) { // test for infinity
+        const auto _Uint = _Bit_cast<uint64_t>(_Left);
+        return (_Uint & 0x7fffffffffffffffU) == 0x7ff0000000000000U;
+    }
+
+    static _CONSTEXPR20 bool _Isnan(_Ty _Left) {
+        const auto _Uint = _Bit_cast<uint64_t>(_Left);
+        return (_Uint & 0x7fffffffffffffffU) > 0x7ff0000000000000U;
+    }
+
+    static constexpr _Ty _Nanv() { // return NaN
+        return numeric_limits<double>::quiet_NaN();
+    }
+
+    static bool _Signbit(_Ty _Left) {
+        // testing _Left < 0 would be incorrect when _Left is -0.0
+        return (_STD signbit)(_Left);
+    }
+
+    static _Ty _Sinh(_Ty _Left, _Ty _Right) { // return sinh(_Left) * _Right
+        return _CSTD _Sinh(_Left, _Right);
+    }
+
+    static _Ty asinh(_Ty _Left) {
+        if (_Isnan(_Left) || _Isinf(_Left) || _Left == 0) {
+            return _Left;
+        } else { // _Left finite nonzero
+            const _Ty _Old_left = _Left;
+            _Ty _Ans;
+
+            _Left = _Abs(_Left);
+
+            if (_Left < 2 / _Flt_eps()) {
+                _Ans = log1p(_Left + _Left * _Left / (1 + sqrt(_Left * _Left + 1)));
+            } else {
+                _Ans = log(_Left) // _Left big, compute log(_Left+_Left)
+                     + static_cast<_Ty>(0.69314718055994530941723212145817658L);
+            }
+
+            return _Copysign(_Ans, _Old_left);
+        }
+    }
+
+    static _Ty atan2(_Ty _Yval, _Ty _Xval) { // return atan(_Yval / _Xval)
+        return _CSTD atan2(_Yval, _Xval);
+    }
+
+    static _Ty cos(_Ty _Left) {
+        return _CSTD cos(_Left);
+    }
+
+    static _Ty exp(_Ty _Left) {
+        return _CSTD exp(_Left);
+    }
+
+    static _Ty ldexp(_Ty _Left, int _Exponent) { // return _Left * 2 ^ _Exponent
+        return _CSTD ldexp(_Left, _Exponent);
+    }
+
+    static _Ty log(_Ty _Left) {
+        return _CSTD log(_Left);
+    }
+
+    static _Ty log1p(_Ty _Left) { // return log(1 + _Left)
+        if (_Isnan(_Left) || _Left == 0 || (_Isinf(_Left) && 0 < _Left)) {
+            return _Left;
+        } else if (_Left < -1) {
+            return _Nanv();
+        } else if (_Left == -1) {
+            return -_Infv();
+        } else if (_Left == 0) {
+            return _Left;
+        } else { // compute log(1 + _Left) with fixup for small _Left
+            _Ty _Leftp1 = 1 + _Left;
+            return log(_Leftp1) - ((_Leftp1 - 1) - _Left) / _Leftp1;
+        }
+    }
+
+    static _Ty pow(_Ty _Left, _Ty _Right) {
+        return _CSTD pow(_Left, _Right);
+    }
+
+    static _Ty sin(_Ty _Left) {
+        return _CSTD sin(_Left);
+    }
+
+    static _Ty sqrt(_Ty _Left) {
+        return _CSTD sqrt(_Left);
+    }
+
+    static _Ty tan(_Ty _Left) {
+        return _CSTD tan(_Left);
+    }
+
+    static _Ty hypot(_Ty _Left, _Ty _Right) {
+        return _CSTD hypot(_Left, _Right);
+    }
+};
+*/

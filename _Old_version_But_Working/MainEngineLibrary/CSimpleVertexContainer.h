@@ -10,7 +10,7 @@
 #include "MVID.h"
 #include "norm_float.h"
 
-#include <hash_map>
+#include <unordered_map>
 //#include "Vertex.h"
 //#include "InUseCheckpoint.h"
 class _CSubCircuitSocket;
@@ -453,8 +453,8 @@ public:
 	//	//	return false;
 	//	//}
 	//protected:
-	//	typedef hash_map<long long, _CExactOutContainer> EXACT_MAP;
-	//	typedef hash_map<long long, _CPostOutContainer> POST_MAP;
+	//	typedef unordered_map<long long, _CExactOutContainer> EXACT_MAP;
+	//	typedef unordered_map<long long, _CPostOutContainer> POST_MAP;
 	//	EXACT_MAP m_ExactMap;
 	//	POST_MAP m_PostMap;
 	//	unsigned m_PostIdFree;
@@ -656,8 +656,8 @@ public:
 		//	return EXACT_EQUAL;
 		//}
 	protected:
-		//typedef hash_map<long long, _CAuxBasePlatorm> MAP;
-		typedef hash_map<long long, _CNResContainer> MAP2;
+		//typedef unordered_map<long long, _CAuxBasePlatorm> MAP;
+		typedef unordered_map<long long, _CNResContainer> MAP2;
 		//_CAuxBasePlatorm* GetBasePlatform(_CBaseContainer& BaseContainer,bool ForceIfNotExist)
 		//{
 		//	long long BaseHash=BaseContainer.GetBaseHash();
@@ -1648,22 +1648,22 @@ public:
 	//lVertex==-2 IsEmpty
 	//lVertex==-3 IsLocalTerminal
 	//lVertex==-4 IsInputConnector
-	typedef enum {Empty=0, Local,LocalTerminal, InputConnector};
+	enum class VertType{Empty=0, Local,LocalTerminal, InputConnector};
 	//_CSimpleVertexContainer::_CSimpleVertexContainer(long long lVertex, short Multiplier, const _CSubCircuitSocket* pSocket,const _CSimpleVertexMap* pToSubcircuitInput):
 	//	m_lVertex(lVertex), m_pSocket(pSocket), 
 	//		m_Multiplier(Multiplier), m_pConnectionVector(pToSubcircuitInput){}
 	_CSimpleVertexContainer():
-		m_lVertex(0),m_pConnectionVector(NULL),m_pSocket(NULL),m_VertexType(Empty),m_Multiplier(0),
+		m_lVertex(0),m_pConnectionVector(NULL),m_pSocket(NULL),m_VertexType(VertType::Empty),m_Multiplier(0),
 			m_MVId(0)
 		{
 		}
 	_CSimpleVertexContainer(unsigned long long LocalTerminalIndex):
 		m_lVertex(LocalTerminalIndex),m_pConnectionVector(NULL),m_pSocket(NULL),m_Multiplier(1), 
-			m_VertexType(LocalTerminal), m_MVId(0)
+			m_VertexType(VertType::LocalTerminal), m_MVId(0)
 	{
 	}
 	_CSimpleVertexContainer(long long lVertex, short Multiplier):
-		m_lVertex(lVertex), m_pConnectionVector(NULL),m_pSocket(NULL),m_VertexType(Local),
+		m_lVertex(lVertex), m_pConnectionVector(NULL),m_pSocket(NULL),m_VertexType(VertType::Local),
 			m_Multiplier(Multiplier), m_MVId(0) 
 	{
 	}
@@ -1678,29 +1678,29 @@ public:
 		_CSimpleVertexContainer(const _CSimpleVertexContainer& Source, 
 			const _CSubCircuitSocket* pSocket,_CSubCircuitVerticesMap* pToSubcircuitInput,
 			long long MVId):
-		m_lVertex(Source.m_lVertex),m_Multiplier(Source.m_Multiplier),m_VertexType(InputConnector),
+		m_lVertex(Source.m_lVertex),m_Multiplier(Source.m_Multiplier),m_VertexType(VertType::InputConnector),
 			m_pConnectionVector(pToSubcircuitInput),m_pSocket(pSocket), m_MVId(MVId) 
 	{
 	}
 	//_CSimpleVertexContainer(long long lVertex, const _CSubCircuitSocket* pSocket, _CSimpleVerticesMaps* pToSubcircuitLeves):
 		_CSimpleVertexContainer(long long lVertex, const _CSubCircuitSocket* pSocket, 
 			_CSubCircuitVerticesMap* pToSubcircuitLeves, long long MVId):
-		m_lVertex(lVertex),m_Multiplier(1), m_VertexType(LocalTerminal),m_pSocket(pSocket), 
+		m_lVertex(lVertex),m_Multiplier(1), m_VertexType(VertType::LocalTerminal),m_pSocket(pSocket), 
 			m_pConnectionVector(pToSubcircuitLeves), m_MVId(MVId)
 	{
 	}
 	_CSimpleVertexContainer(long long Index):
-		m_lVertex(Index),m_Multiplier(1), m_VertexType(LocalTerminal),m_pSocket(NULL), 
+		m_lVertex(Index),m_Multiplier(1), m_VertexType(VertType::LocalTerminal),m_pSocket(NULL), 
 			m_pConnectionVector(NULL), m_MVId(0)
 	{
 	}
 	//_CSimpleVertexContainer(size_t EntryId, size_t PosId, const _CSubCircuitSocket* pSocket, _CSimpleVerticesMaps* pToSubcircuitLeves);
 	_CSimpleVertexContainer(size_t EntryId, size_t PosId, const _CSubCircuitSocket* pSocket, 
 		_CSubCircuitVerticesMap* pToSubcircuitLeves,long long MVId);
-	bool IsEmpty() const {return m_VertexType==Empty;}
-	bool IsLocal() const {return m_VertexType==Local;}
-	bool IsLocalTerminal() const {return m_VertexType==LocalTerminal;}
-	bool IsInputConnector() const {return m_VertexType==InputConnector && m_pConnectionVector!=NULL && m_pSocket!=NULL;}
+	bool IsEmpty() const {return m_VertexType==VertType::Empty;}
+	bool IsLocal() const {return m_VertexType==VertType::Local;}
+	bool IsLocalTerminal() const {return m_VertexType==VertType::LocalTerminal;}
+	bool IsInputConnector() const {return m_VertexType==VertType::InputConnector && m_pConnectionVector!=NULL && m_pSocket!=NULL;}
 	bool Is0() const {return IsLocal() && m_lVertex*m_Multiplier==0;}
 	bool Is1() const {return IsLocal() && m_lVertex*m_Multiplier==1;}
 	bool IsM1() const {return IsLocal() && m_lVertex*m_Multiplier==-1;}
@@ -1743,13 +1743,15 @@ public:
 		typename OutputType Res;		
    		if(IsInputConnector())
 		{
-			size_t EntryId,PosId;
+			//size_t EntryId,PosId;
+			unsigned int EntryId,PosId;
 			DecomposeInputIdx(EntryId, PosId);
 			_CCircuit* pModel=m_pSocket->GetModelCircuit();
 			const string* pTopContext=&Operator.GetBaseContext();
 			const string* pNewContext=pTopContext;
 			long SPowerShift=0;
-			size_t SPower=(size_t)Operator.GetCurrentSPower();
+			//size_t SPower=(size_t)Operator.GetCurrentSPower();
+			unsigned short SPower=(unsigned short)Operator.GetCurrentSPower();
 			_CSimpleVertexContainer& NextVertex=pModel->GetSVertexForCofactor/*WithInheritance*/(EntryId,/*PosId*/SPower,*pTopContext,&pNewContext,&SPowerShift);
 			if(pTopContext!=pNewContext)
 				Operator.ChangeBaseOperationContext(*pNewContext);
@@ -1822,7 +1824,7 @@ public:
 	{
 		unsigned long long Res=HASH_CORE;
 		Res*=HASH_FACTOR;
-		Res^=m_VertexType;
+		Res^=(unsigned long long)m_VertexType;
 		Res*=HASH_FACTOR;
 		Res^=m_Multiplier;
 		Res*=HASH_FACTOR;
@@ -1835,18 +1837,18 @@ public:
 	long long ConsiderInHash(long long& Seed) const;
 	short GetSPowerShift() 
 	{
-		VERIFYPDD(m_VertexType==LocalTerminal);
+		VERIFYPDD(m_VertexType==VertType::LocalTerminal);
 		return (short)m_MVId;
 	}
 	void SetSPowerShift(short sPower) 
 	{
-		VERIFYPDD(m_VertexType==LocalTerminal);
+		VERIFYPDD(m_VertexType==VertType::LocalTerminal);
 		m_MVId=(long long)sPower;
 	}
 protected:
 	long long m_lVertex;
 	short m_Multiplier;
-	short m_VertexType;
+	VertType m_VertexType;
 	//union tagPar2
 	//{
 	//	short m_Multiplier;
@@ -1927,7 +1929,7 @@ public:
 	_CSExpandedVertices* GetUnique(_CSExpandedVertices& Source);
 	void clear() {m_Set.clear();}
 protected:
-	typedef hash_multimap<long long,_CSExpandedVertices> SET;
+	typedef unordered_multimap<long long,_CSExpandedVertices> SET;
 	typedef SET::iterator iterator;
 	typedef pair<iterator,iterator> RANGE;
 	typedef SET::value_type value_type;
@@ -1976,15 +1978,15 @@ public:
 //protected:
 //
 //	_CCircuit* m_pBaseCircuit;
-//	class BASIC_MAP : public hash_map<long long, const _CSimpleVertexContainer>
+//	class BASIC_MAP : public unordered_map<long long, const _CSimpleVertexContainer>
 //	{
 //	};
-//	//typedef hash_map<long long, const _CSimpleVertexContainer> BASIC_MAP;
-//	//typedef hash_map<string, BASIC_MAP> ALL_MAPS;
-//	class ALL_MAPS : public hash_map<const string*, BASIC_MAP>
+//	//typedef unordered_map<long long, const _CSimpleVertexContainer> BASIC_MAP;
+//	//typedef unordered_map<string, BASIC_MAP> ALL_MAPS;
+//	class ALL_MAPS : public unordered_map<const string*, BASIC_MAP>
 //	{
 //	};
-//	//typedef hash_map<const string*, BASIC_MAP> ALL_MAPS;
+//	//typedef unordered_map<const string*, BASIC_MAP> ALL_MAPS;
 //	ALL_MAPS m_Maps;
 //	typedef ALL_MAPS::size_type size_type;
 //	size_type m_NoOfDescandence;
@@ -2088,7 +2090,7 @@ protected:
 		const size_t m_sPower;
 		const _CSimpleVertexContainer m_VC;
 	};
-	typedef hash_multimap<long long,__Container> MAP;
+	typedef unordered_multimap<long long,__Container> MAP;
 	long long SCHash(long long& Core, const _CSimpleVertexContainer& VC) const 
 	{
 		return VC.ConsiderInHash(Core);
@@ -2116,13 +2118,13 @@ protected:
 	//	size_t SCHash(const _CSimpleVertexContainer& VC) const {return VC.ConsiderInHash(HASH_CORE,HASH_FACTOR);}
 	//	MAP m_Map;
 	//};
-	_CCircuit* m_pBaseCircuit;
-	long long m_MyHash;
-	bool m_ValidHash;
+	_CCircuit* m_pBaseCircuit = nullptr;
+	long long m_MyHash = 0;
+	bool m_ValidHash = false;
 	//_CVerticesMapCache& m_Cache;
 };
 
-class _CSubCircuitVerticesMapBuffer : hash_multimap<long long,pair<_CSubCircuitVerticesMap*,size_t>>
+class _CSubCircuitVerticesMapBuffer : unordered_multimap<long long,pair<_CSubCircuitVerticesMap*,size_t>>
 {
 public:
 	_CSubCircuitVerticesMapBuffer():m_Counter(1) {}
@@ -2138,7 +2140,7 @@ protected:
 	iterator __Find(_CSubCircuitVerticesMap* pMap);
 	size_t m_Counter;
 	AUX_VECTOR m_Vector;
-	_CCircuit* m_pBaseCircuit;
+	_CCircuit* m_pBaseCircuit = nullptr;
 };
 
 
@@ -2155,9 +2157,9 @@ public:
 	size_t size() const {return m_Index2Vector.size();}
 	void WriteToStream(iostream& stream);
 protected:
-	//typedef hash_map<const _CSimpleVerticesMaps*, size_t> CONT_2_INDEX;
+	//typedef unordered_map<const _CSimpleVerticesMaps*, size_t> CONT_2_INDEX;
 	//typedef vector<const _CSimpleVerticesMaps*> INDEX_2_VECTOR;
-	typedef hash_map<const _CSubCircuitVerticesMap*, size_t> CONT_2_INDEX;
+	typedef unordered_map<const _CSubCircuitVerticesMap*, size_t> CONT_2_INDEX;
 	typedef vector<const _CSubCircuitVerticesMap*> INDEX_2_VECTOR;
 	CONT_2_INDEX m_Cont2Index;
 	INDEX_2_VECTOR m_Index2Vector;

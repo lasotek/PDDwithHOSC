@@ -177,7 +177,7 @@ protected:
 	typedef map<size_t/*Current Power*/,_CPreFlatVertexContainer> MAP;
 	MAP m_Map;//do likwidacji
 	//typedef map<TOP_COORDINATERS,_CPreFlatVertexContainer> MAP2;
-	//typedef hash_map<unsigned long long,_CPreFlatVertexContainer> MAP2;
+	//typedef unordered_map<unsigned long long,_CPreFlatVertexContainer> MAP2;
 	//typedef map<unsigned long long,_CPreFlatVertexContainer> MAP2;
 	//MAP2 m_Map2;
 
@@ -240,7 +240,7 @@ public:
 	}
 	void clear() {m_Map.clear();}
 protected:
-	typedef hash_multimap<ULONGLONG,StoredData> MAP;
+	typedef unordered_multimap<ULONGLONG,StoredData> MAP;
 	MAP m_Map;
 };
 
@@ -317,7 +317,7 @@ public:
 	bool Register(_CPreFlatVertexContainer* PreFV,_CFlatVertex* FV,short FVSgn);
 	OUT_PAIR GetExisted(_CPreFlatVertexContainer* PreFV);
 protected:
-	typedef hash_map<_CPreFlatVertexContainer*,OUT_PAIR> MAP;
+	typedef unordered_map<_CPreFlatVertexContainer*,OUT_PAIR> MAP;
 	MAP m_Map;
 };
 
@@ -451,7 +451,7 @@ protected:
 	_CFlatVertexCache& GetFlatVertexCache();
 	_CMainCircuit* m_pMainCircuit;
 	size_t m_MaxPower;
-	typedef hash_multimap<_CPreFlatVertexContainer*,_CPreFlatVertexContainer*> PARENT_MAP;
+	typedef unordered_multimap<_CPreFlatVertexContainer*,_CPreFlatVertexContainer*> PARENT_MAP;
 	PARENT_MAP m_ParentMap;
 	BACK_STATUS m_BackStatus;
 	bool m_GreadyPentration;
@@ -466,7 +466,7 @@ protected:
 	friend class _CMetaComponent;
 	_CContextSExpFlatVertices& OutContextSExpFlatVertices;
 	_CSimplificationOrdinateur::COORDINATES m_TopCoordinates;
-	typedef hash_map<unsigned long long, _CPreFlatMap> PRE_FLAT_MAP;
+	typedef unordered_map<unsigned long long, _CPreFlatMap> PRE_FLAT_MAP;
 	PRE_FLAT_MAP m_PreFlatMap;
 	_CNewSimplifierData& SetCordinates(const _CSimplificationOrdinateur::COORDINATES& Cordinates);
 	_CPreFlatMap* m_pPreFlatMap;

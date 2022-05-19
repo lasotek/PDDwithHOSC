@@ -175,19 +175,19 @@ protected:
 	typedef _CSubCircuit::BOUNDARY_NODES_IT BOUNDARY_NODES_IT;
 	typedef _CSubCircuit::BOUNDARY_NODES_TYPE BOUNDARY_NODES_TYPE;
 	_CSubCircuit* m_pModel;
-	//typedef hash_map<const string*,_CSubCircuit*> CONTEXT_MODEL;
+	//typedef unordered_map<const string*,_CSubCircuit*> CONTEXT_MODEL;
 	//CONTEXT_MODEL m_Models;
 	_CIntNodes m_ConnectedNodes;
 	string m_InstanceName;
 	_CBounderyParametersCache m_RealParameters;
 	PARAM_CONNECTIONS m_AllParamConnections;
 	friend class _CCircuit;
-	//class REDEF_PARAMETERS_VALUE: public hash_map<const _CComponent*,long double> 
+	//class REDEF_PARAMETERS_VALUE: public unordered_map<const _CComponent*,long double> 
 	//{
 	//public:
 	//	long long GetHush(long long Core) const;
 	//};
-	//typedef hash_map<const _CComponent*,long double> REDEF_PARAMETERS_VALUE;
+	//typedef unordered_map<const _CComponent*,long double> REDEF_PARAMETERS_VALUE;
 	//typedef REDEF_PARAMETERS_VALUE::value_type REDEF_VALUE_TYPE;
 	//typedef REDEF_PARAMETERS_VALUE::iterator REDEF_ITERATOR;
 	//typedef REDEF_PARAMETERS_VALUE::const_iterator REDEF_CONST_ITERATOR;
@@ -202,10 +202,10 @@ protected:
 	//_CSubModelNumericPattern m_ModelNumericPatern;
 	//_CVerticesMapCache m_VerMapCache;
 	_CDirectNumCache m_DirNumCache;
-	//typedef hash_map<const string*,_CSubModelNumericPattern> TContextSubModelNumericPattern;
-	typedef hash_map<const _CCompRedefEntry*, const _CSubModelNumericPattern*> REDEF_SUBMODEL_PATTERN;
-	typedef hash_map<const string*, REDEF_SUBMODEL_PATTERN> TContextSubModelNumericPattern;
-	//typedef hash_map<const string*, const _CSubModelNumericPattern*> TContextSubModelNumericPattern;
+	//typedef unordered_map<const string*,_CSubModelNumericPattern> TContextSubModelNumericPattern;
+	typedef unordered_map<const _CCompRedefEntry*, const _CSubModelNumericPattern*> REDEF_SUBMODEL_PATTERN;
+	typedef unordered_map<const string*, REDEF_SUBMODEL_PATTERN> TContextSubModelNumericPattern;
+	//typedef unordered_map<const string*, const _CSubModelNumericPattern*> TContextSubModelNumericPattern;
 	typedef TContextSubModelNumericPattern::iterator iContextSubModelNumericPatter;
 	TContextSubModelNumericPattern m_LocalResPolynomials;
 	//_CSubCircuitSocket* m_IAmNumericCopyOf;//ci¹æ

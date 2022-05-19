@@ -163,7 +163,7 @@ protected:
 class _CValtageFollower : public _CIdealFollowers
 {
 public:
-	//using _CIdealFollowers::_CIdealFollowers;
+	using _CIdealFollowers::_CIdealFollowers;
 	_CValtageFollower(_CCircuit* pOwner = nullptr) :_CIdealFollowers(pOwner) {}
 	_CValtageFollower(const _CIdealFollowers& Source) : _CIdealFollowers(Source) {}
 	_CValtageFollower(_CCircuit* pOwner, int INp, int INn, int OUTp, int OUTn) :_CIdealFollowers(pOwner, INp, INn, OUTp, OUTn) 
@@ -238,7 +238,8 @@ protected:
 class _CCCIp : public _CCCIIp
 {
 public:
-	using _CConveyors::_CConveyors;
+	using _CCCIIp::_CCCIIp;
+	//using _CConveyors::_CConveyors;
 protected:
 	virtual void WriteType(iostream& stream) override { stream << "CCI+ : "; }
 	virtual void PrepareDeletions() override;
@@ -249,7 +250,8 @@ protected:
 class _CCCIIIp : public _CCCIIp
 {
 public:
-	using _CConveyors::_CConveyors;
+	//using _CConveyors::_CConveyors;
+	using _CCCIIp::_CCCIIp;
 protected:
 	virtual void WriteType(iostream& stream) override { stream << "CCIII+ : "; }
 	virtual void PrepareDeletions() override;
@@ -271,7 +273,8 @@ protected:
 class _CCCIm : public _CCCIIm
 {
 public:
-	using _CConveyors::_CConveyors;
+	//using _CConveyors::_CConveyors;
+	using _CCCIIm::_CCCIIm;
 protected:
 	virtual void WriteType(iostream& stream) override { stream << "CCI- : "; }
 	virtual void PrepareDeletions() override;
@@ -282,7 +285,8 @@ protected:
 class _CCCIIIm : public _CCCIIm
 {
 public:
-	using _CConveyors::_CConveyors;
+	//using _CConveyors::_CConveyors;
+	using _CCCIIm::_CCCIIm;
 protected:
 	virtual void WriteType(iostream& stream) override { stream << "CCIII- : "; }
 	virtual void PrepareDeletions() override;
@@ -304,7 +308,8 @@ protected:
 class _ICCCIp : public _ICCCIIp
 {
 public:
-	using _CConveyors::_CConveyors;
+	//using _CConveyors::_CConveyors;
+	using _ICCCIIp::_ICCCIIp;
 protected:
 	virtual void WriteType(iostream& stream) override { stream << "ICCI+ : "; }
 	virtual void PrepareDeletions() override;
@@ -315,7 +320,8 @@ protected:
 class _ICCCIIIp : public _ICCCIIp
 {
 public:
-	using _CConveyors::_CConveyors;
+	//using _CConveyors::_CConveyors;
+	using _ICCCIIp::_ICCCIIp;
 protected:
 	virtual void WriteType(iostream& stream) override { stream << "ICCIII+ : "; }
 	virtual void PrepareDeletions() override;
@@ -337,7 +343,8 @@ protected:
 class _ICCCIm : public _ICCCIIm
 {
 public:
-	using _CConveyors::_CConveyors;
+	//using _CConveyors::_CConveyors;
+	using _ICCCIIm::_ICCCIIm;
 protected:
 	virtual void WriteType(iostream& stream) override { stream << "ICCI- : "; }
 	virtual void PrepareDeletions() override;
@@ -348,7 +355,8 @@ protected:
 class _ICCCIIIm : public _ICCCIIm
 {
 public:
-	using _CConveyors::_CConveyors;
+	//using _CConveyors::_CConveyors;
+	using _ICCCIIm::_ICCCIIm;
 protected:
 	virtual void WriteType(iostream& stream) override { stream << "ICCIII- : "; }
 	virtual void PrepareDeletions() override;

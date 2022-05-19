@@ -1,6 +1,6 @@
 #pragma once
 #include "stdafx.h"
-#include <hash_map>
+#include <unordered_map>
 #include <list>
 #include "PrjException.h"
 #include "binary_filer.h"
@@ -17,16 +17,16 @@ class /*NOVTTABLE*/ _CCacheTmpl
 {
 protected:
 	typedef pair<long long, StoredObject*> OBJECT;
-	typedef hash_multimap<long,OBJECT> HASH2OBJECT_MAP;
+	typedef unordered_multimap<long,OBJECT> HASH2OBJECT_MAP;
 	typedef typename HASH2OBJECT_MAP::size_type size_type;
 	typedef typename HASH2OBJECT_MAP::iterator  HASH2OBJECT_MAP_ITERATOR;
 	typedef typename HASH2OBJECT_MAP::const_iterator  HASH2OBJECT_MAP_C_ITERATOR;
 	typedef pair<typename HASH2OBJECT_MAP_C_ITERATOR, typename HASH2OBJECT_MAP_C_ITERATOR> HASH2OBJECT_MAP_BOUNDS;
 	HASH2OBJECT_MAP m_Hash2ObjectMap;
-	typedef hash_map<long long,StoredObject*> INDEX2OBJECT_MAP;
+	typedef unordered_map<long long,StoredObject*> INDEX2OBJECT_MAP;
 	typedef typename INDEX2OBJECT_MAP::iterator INDEX2OBJECT_MAP_ITERATOR;
 	typedef typename INDEX2OBJECT_MAP::const_iterator INDEX2OBJECT_MAP_C_ITERATOR;
-	typedef typename INDEX2OBJECT_MAP::reverse_iterator INDEX2OBJECT_MAP_R_ITERATOR;
+	//typedef typename INDEX2OBJECT_MAP::reverse_iterator INDEX2OBJECT_MAP_R_ITERATOR;
 	INDEX2OBJECT_MAP m_Index2ObjectMap;
 	long long m_Id;
 public:
@@ -96,9 +96,10 @@ public:
 		if(x2t_mit==m_Index2ObjectMap.end())
 			return false;
 		long HashValue=GetHash(*x2t_mit->second);
-		HASH2OBJECT_MAP_ITERATOR lh2o_it=m_Hash2ObjectMap.lower_bound(HashValue),
-			uh2o_it=m_Hash2ObjectMap.upper_bound(HashValue);
-		for(HASH2OBJECT_MAP_ITERATOR h2o_it=lh2o_it;h2o_it!=uh2o_it;h2o_it++)
+		auto range = m_Hash2ObjectMap.equal_range(HashValue);
+		//HASH2OBJECT_MAP_ITERATOR lh2o_it=m_Hash2ObjectMap.lower_bound(HashValue),
+		//	uh2o_it=m_Hash2ObjectMap.upper_bound(HashValue);
+		for(HASH2OBJECT_MAP_ITERATOR h2o_it=range.first;h2o_it!=range.second;h2o_it++)
 			if(h2o_it->second.first==Index)
 			{
 				if(Delete)
@@ -113,9 +114,10 @@ public:
 	long long GetIndexOf(StoredObject* pObject, bool ByContents)
 	{
 		long HashValue=GetHash(*pObject);
-		HASH2OBJECT_MAP_ITERATOR lh2o_it=m_Hash2ObjectMap.lower_bound(HashValue),
-			uh2o_it=m_Hash2ObjectMap.upper_bound(HashValue);
-		for(HASH2OBJECT_MAP_ITERATOR h2o_it=lh2o_it;h2o_it!=uh2o_it;h2o_it++)
+		//HASH2OBJECT_MAP_ITERATOR lh2o_it=m_Hash2ObjectMap.lower_bound(HashValue),
+		//	uh2o_it=m_Hash2ObjectMap.upper_bound(HashValue);
+		auto range = m_Hash2ObjectMap.equal_range(HashValue);
+		for(auto h2o_it=range.first;h2o_it!=range.second;h2o_it++)
 		{
 			if(ByContents)
 			{
@@ -202,8 +204,8 @@ public:
 	void Clear(bool FreeObjects=true)
 	{
 		if(FreeObjects)
-			for(INDEX2OBJECT_MAP_R_ITERATOR rit=m_Index2ObjectMap.rbegin();rit!=m_Index2ObjectMap.rend();rit++)
-				delete (StoredObject*)rit->second;
+			for(auto it=m_Index2ObjectMap.begin();it!=m_Index2ObjectMap.end();it++)
+				delete (StoredObject*)it->second;
 		m_Index2ObjectMap.clear();
 		m_Hash2ObjectMap.clear();
 		m_Id=0;

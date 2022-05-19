@@ -1,11 +1,11 @@
 #pragma once
 #include "Components.h"
-#include <hash_map>
+#include <unordered_map>
 #include "norm_float.h"
 #include "binary_filer.h"
 #include "CompRedefiner.h"
 class _CSubCircuit;
-//class _CRedefParamValues: public hash_map<const _CComponent*,NumericType> 
+//class _CRedefParamValues: public unordered_map<const _CComponent*,NumericType> 
 //{
 //public:
 //	long long GetHush(long long Core,_CSubCircuit* pOwner) const;
@@ -15,7 +15,7 @@ class _CSubCircuit;
 //	//friend _binary_filer& operator<<(_binary_filer& filer, const _CRedefParamValues& Value);
 //	//friend _binary_filer& operator>>(_binary_filer& filer, const _CRedefParamValues& Value);
 //};
-class _CPathRedefParamValues : public hash_map<string, NumericType>
+class _CPathRedefParamValues : public unordered_map<string, NumericType>
 {
 public:
 	long long GetHush(long long Core, _CSubCircuit* pOwner) const;
@@ -26,7 +26,7 @@ public:
 	//friend _binary_filer& operator>>(_binary_filer& filer, const _CRedefParamValues& Value);
 };
 
-typedef hash_map<string, _CSubModelNumericPattern> PATH_2_NUM_PAT;
+typedef unordered_map<string, _CSubModelNumericPattern> PATH_2_NUM_PAT;
 
 class _CSparsePolynomialCache
 {
@@ -97,7 +97,7 @@ protected:
 	//typedef hash_multimap<long long, MAIN_DATA> MAP;
 	//typedef hash_multimap<long long, DATA> MAP;
 	//MAP m_Map;
-	typedef hash_multimap<long long, DATA2> MAP2;
+	typedef unordered_multimap<long long, DATA2> MAP2;
 	MAP2 m_Map2;
 	_CSubCircuit* m_pOwner;
 	//MAP::iterator GetDATA(const string* Context, const _CRedefParamValues& RedefParams);

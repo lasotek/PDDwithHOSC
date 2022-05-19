@@ -172,7 +172,7 @@ public:
 	//	m_pMainModelVertex->Skip0SupressedAndDuplicated(Catcher);
 	//}
 	void MultSgn(short Mult) {m_GlobalMultiplier*=Mult;} 
-	unsigned short GetMaxSPower();
+	size_t GetMaxSPower();
 	void WriteCofactorDescription(iostream& stream) {m_Deletions.WriteToTextStream(stream);}
 	inline short GetGlobalMultiplier() const {return m_GlobalMultiplier;}
 	size_t GetRank() {return m_Deletions.size();}
@@ -189,7 +189,7 @@ public:
 	void GetDeletions(_CMultiBasicSetOfDeletions& MultSetOfDels);
 	//const _CDeletions& GetDeletions() const { return m_Deletions; }
 protected:
-	typedef hash_map<const string*,_CModelVertex*> CONTEXT_MAIN_MODEL_VERTEX;
+	typedef unordered_map<const string*,_CModelVertex*> CONTEXT_MAIN_MODEL_VERTEX;
 	typedef CONTEXT_MAIN_MODEL_VERTEX::iterator CONTEXT_iterator;
 	typedef CONTEXT_MAIN_MODEL_VERTEX::value_type CONTEXT_value_type;
 	virtual void CreateStrIdentyfier(string& StrId) {StrId="D"+(string)m_Deletions;}

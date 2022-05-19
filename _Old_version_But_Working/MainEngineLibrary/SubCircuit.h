@@ -195,7 +195,7 @@ protected:
 	virtual void PlugComponents(_CIntegrityTable& IntegrityTable);
 	_CCircuit* m_Owner;
 	_CStrNodes m_BoundaryNodes;
-	typedef hash_map<string,int> BOUNDARY_NODES_MAP;
+	typedef unordered_map<string,int> BOUNDARY_NODES_MAP;
 	typedef BOUNDARY_NODES_MAP::value_type BOUNDARY_NODES_TYPE;
 	typedef BOUNDARY_NODES_MAP::iterator BOUNDARY_NODES_IT;
 //	int m_NoOfBoundaryNodes;
@@ -203,9 +203,9 @@ protected:
 	_CBounderyParametersCache m_BoundaryParameters;
 	bool m_IsReady;
 //	_CCofactorsVector m_BoundaryCofactors;
-	typedef hash_map<_CModelVertex*,_CMultiDeletions*>  MVERTEX_2_DELS;
-	typedef hash_multimap<_CMultiDeletions*,_CModelVertex*> DELS_2_MVERTEX;
-	//class _CMTerminalVertex2STerminalVertex : public hash_map<_CModelVertex*,_CSimpleVertexContainer>
+	typedef unordered_map<_CModelVertex*,_CMultiDeletions*>  MVERTEX_2_DELS;
+	typedef unordered_multimap<_CMultiDeletions*,_CModelVertex*> DELS_2_MVERTEX;
+	//class _CMTerminalVertex2STerminalVertex : public unordered_map<_CModelVertex*,_CSimpleVertexContainer>
 	//{
 	//};
 	DELS_2_MVERTEX m_Dels2VertexMap;
@@ -227,7 +227,7 @@ protected:
 	int m_HollowOutput;
 	bool m_IsHollowDetermined;
 	_CSparsePolynomialCache m_NumResultsCache;
-	typedef hash_map<_CModelVertex*,unsigned long> TERMINALS_COUNTER;
+	typedef unordered_map<_CModelVertex*,unsigned long> TERMINALS_COUNTER;
 	TERMINALS_COUNTER m_TerminalsCounter;
 	//SIZE_T_SET m_DeletionAdmissible;
 	SIZE_T_RANGE m_DeletionAdmissible;

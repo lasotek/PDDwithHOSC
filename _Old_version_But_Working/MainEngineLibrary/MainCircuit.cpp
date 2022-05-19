@@ -41,7 +41,7 @@ m_SubcircuitCounter(1),m_pEngine(MyEngine),m_FlatResultFactorizer(m_CompPathStor
 
 _CMainCircuit::~_CMainCircuit(void)
 {
-	for(SUBCIRCUIT_RITERATOR it=m_SubcircuitMap.rbegin();it!=m_SubcircuitMap.rend();it++)
+	for(auto it=m_SubcircuitMap.begin();it!=m_SubcircuitMap.end();it++)
 		delete (*it).second.second;
 	//for(SUBCIRCUIT_ITERATOR it=m_SubcircuitMap.begin();it!=m_SubcircuitMap.end();it++)
 	//	delete (*it).second.second;

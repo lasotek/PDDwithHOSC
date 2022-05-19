@@ -561,7 +561,7 @@ protected:
 	protected:
 		STATE_TYPE m_StateType;
 		//pair<_CStateVar*,long double> COUPLED_IND;
-		//typedef hash_map<_CStateVar*,long double> COUPLED;
+		//typedef unordered_map<_CStateVar*,long double> COUPLED;
 		//COUPLED *m_pCoupled;
 		typedef map<MOMENT_ORDER/*Order*/,_CMoment> MOMENTS;
 		MOMENTS m_Moments;
@@ -641,8 +641,8 @@ protected:
 	//	//m_NodeA InNode
 	//	//m_NodeB MdNode
 	//};
-	//typedef hash_map<string,_CRLCDSection> SECTION_MAP;
-	typedef hash_map<string,_CRLCDSectionMin> SECTION_MAP;
+	//typedef unordered_map<string,_CRLCDSection> SECTION_MAP;
+	typedef unordered_map<string,_CRLCDSectionMin> SECTION_MAP;
 	SECTION_MAP m_SMap;
 	string Translate(const _CInput& Input) const;
 	string Translate(const _CStateVar& State,bool Input) const;

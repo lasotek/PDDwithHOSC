@@ -5,7 +5,7 @@
 #include "stdafx.h"
 #include <atlconv.h>
 #include <atlbase.h>
-#include <hash_map>
+#include <unordered_map>
 #include <limits>
 
 string EmptyString;

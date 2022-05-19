@@ -22,8 +22,8 @@ typedef list<const _CModelVertex*> MVerticesList;
 //protected:
 //	void RegisterMe();
 //	static size_t m_Counter;
-//	typedef hash_map<size_t, _CCompEntryOrdinator*> ID2ENTRY;
-//	typedef hash_map<const _CCompEntryOrdinator*, size_t> ENTRY2ID;
+//	typedef unordered_map<size_t, _CCompEntryOrdinator*> ID2ENTRY;
+//	typedef unordered_map<const _CCompEntryOrdinator*, size_t> ENTRY2ID;
 //	static ID2ENTRY m_Id2Entry;
 //	static ENTRY2ID m_Entry2Id;
 //};
@@ -70,7 +70,7 @@ protected:
 	PNumericPattarn m_pNumericPatern;
 	//typedef unique_ptr<NumericType> PNumericType;
 	//PNumericType m_pNumeric;
-	typedef hash_map<const _CComponent*, _CCompRedefEntryShrdPtr> SUB_MAP;
+	typedef unordered_map<const _CComponent*, _CCompRedefEntryShrdPtr> SUB_MAP;
 	typedef unique_ptr<SUB_MAP> PSubMap;
 	PSubMap m_pSubMap;
 	void AddRedefValue(LIST2COMPONENT& CompPath, NumericType Value);
@@ -91,6 +91,6 @@ public:
 	const _CCompRedefEntry* GetUniq(_CCompRedefEntry* pOrgRedefEntry);
 protected:
 	//typedef hash_multimap<long long, _CCompRedefEntryShrdPtr> UNQ_MAP;
-	typedef hash_multimap<long long, _CCompRedefEntry*> UNQ_MAP;
+	typedef unordered_multimap<long long, _CCompRedefEntry*> UNQ_MAP;
 	UNQ_MAP m_Map;
 };

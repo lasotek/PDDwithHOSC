@@ -1186,10 +1186,10 @@ void _CCircuit::PrepareCofactors()
 }
 
 template<typename Item>
-void List2InvertedPHashdMap(const list<Item>& List,hash_map<const Item*,size_t>& Map,size_t FirstIndex=0)
+void List2InvertedPHashdMap(const list<Item>& List,unordered_map<const Item*,size_t>& Map,size_t FirstIndex=0)
 {
 	for(list<Item>::const_iterator it=List.begin(),_e=List.end();it!=_e;it++,FirstIndex++)
-		Map.insert(hash_map<const Item*,size_t>::value_type(&*it,FirstIndex));
+		Map.insert(unordered_map<const Item*,size_t>::value_type(&*it,FirstIndex));
 }
 
 

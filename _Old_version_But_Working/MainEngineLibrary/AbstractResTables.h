@@ -1,7 +1,7 @@
 #pragma once
 #include "stdafx.h"
 //#include <vector>
-//#include <hash_map>
+//#include <unordered_map>
 
 using namespace std;
 using namespace stdext;
@@ -47,7 +47,7 @@ protected:
 	};
 	//_CSCoffTab>
 	//<_CContextMap
-	class _CContextMap : public hash_map<const string*,_CSCoffTab>
+	class _CContextMap : public unordered_map<const string*,_CSCoffTab>
 	{
 	public:
 		const _CSCoffTab* smart_at(const string* pContext) const

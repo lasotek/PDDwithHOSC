@@ -5,7 +5,7 @@
 #include "Vertex.h"
 //#include "SubCircuit.h"
 //#include "SubCircuitSocket.h
-#include <hash_map>
+#include <unordered_map>
 #include "ComponentPath.h"
 #include "CSimpleVertexContainer.h"
 #include "NumericalResTables.h"
@@ -45,7 +45,7 @@ public:
 	}
 
 protected:
-	typedef hash_map<string,ComponentPath> STORE;
+	typedef unordered_map<string,ComponentPath> STORE;
 	typedef typename STORE::iterator iterator;
 	typedef typename STORE::value_type value_type;
 	STORE m_Store;
@@ -67,10 +67,10 @@ typedef _CAbstractComplementStore<_CComponentPath> _CComplementStore;
 //	void SetBaseCircuit(_CMainCircuit* pBaseCircuit) {m_pBaseCircuit=pBaseCircuit;}
 //	_CConstComponentPath& GetConstantPath(const string& strPath=EmptyString);
 //protected:
-//	typedef hash_map<string,_CConstComponentPath> STORE;
+//	typedef unordered_map<string,_CConstComponentPath> STORE;
 //	typedef STORE::iterator iterator;
 //	typedef STORE::value_type value_type;
-//	hash_map<string,_CConstComponentPath> m_Store;
+//	unordered_map<string,_CConstComponentPath> m_Store;
 //	_CMainCircuit* m_pBaseCircuit;
 //};
 class _CRepeatContainer
@@ -159,7 +159,7 @@ protected:
 		string m_1Str;
 		string m_M1Str;
 	};
-	class _CRepeatCache : hash_multimap<unsigned long long,_CRepeatContainer>
+	class _CRepeatCache : unordered_multimap<unsigned long long,_CRepeatContainer>
 	{
 	public:
 		_CRepeatCache(const _CUniqPaths& InitPaths):m_0Desc(InitPaths.Get0Str()),
@@ -261,7 +261,7 @@ public:
 	~_CSuplementStorage();
 	const _CCofactorReminderSuplement& GetCofRemSuplement(_CConstComponentPath& SourcePath, bool IsCofactor,const string& BaseContext);
 protected:
-	typedef hash_map<string, _CSuplementParameters*> SUPLEMENTS_MAP;
+	typedef unordered_map<string, _CSuplementParameters*> SUPLEMENTS_MAP;
 	typedef SUPLEMENTS_MAP::value_type value_type;
 	typedef SUPLEMENTS_MAP::iterator iterator;
 	SUPLEMENTS_MAP m_Map;

@@ -268,7 +268,7 @@ void _CFlatVertexWalker::ProcessNextVertex(const _CFlatVertex* pNextVertex,short
 		ProcessNextVertex(pNextVertex->m_Descendants[0], pNextVertex->m_Multipliers[0]);
 		for (size_t i = 1; i < pNextVertex->m_Descendants.size(); i++)
 		{
-			m_List.push_back(ENTRY(pNextVertex,i));
+			m_List.push_back(ENTRY(pNextVertex,(short)i));
 			ProcessNextVertex(pNextVertex->m_Descendants[i], pNextVertex->m_Multipliers[i]);
 			m_List.pop_back();
 		}
@@ -717,7 +717,7 @@ _CFlatVerticesResCache::_CFlatVerticesResCache()
 _CFlatVerticesResContainer* _CFlatVerticesResCache::FindOrRegisterResult(_CFlatVerticesResContainer* pContainer)
 {
 	if(!m_tmp_file.IsOpen())
-		m_tmp_file.open(_binary_filer::o_temporary,m_PathTempFile);
+		m_tmp_file.open(_binary_filer::OPEN_MODE::o_temporary,m_PathTempFile);
 	pContainer->m_p_tmp_file=&m_tmp_file;
 	//_CFlatVerticesResContainer* pRes= dynamic_cast<_CFlatVerticesResContainer*> (_CAbstractOperationCache<_CMultLevelSExpFlatVertices>::FindOrRegisterResult(pContainer));
 	_CFlatVerticesResContainer* pRes= dynamic_cast<_CFlatVerticesResContainer*> (_CAbstractOperationCache<_CSExpFlatVertices>::FindOrRegisterResult(pContainer));
@@ -728,7 +728,7 @@ _CFlatVerticesResContainer* _CFlatVerticesResCache::FindOrRegisterResult(_CFlatV
 void _CFlatVerticesResCache::RegisterResult(_CFlatVerticesResContainer* pContainer)
 {
 	if(!m_tmp_file.IsOpen())
-		m_tmp_file.open(_binary_filer::o_temporary,m_PathTempFile);
+		m_tmp_file.open(_binary_filer::OPEN_MODE::o_temporary,m_PathTempFile);
 	pContainer->m_p_tmp_file=&m_tmp_file;
 	//_CAbstractOperationCache<_CMultLevelSExpFlatVertices>::RegisterResult(pContainer);
 	_CAbstractOperationCache<_CSExpFlatVertices>::RegisterResult(pContainer);
@@ -808,7 +808,7 @@ void _CSPowerLimiter::InitGlobal(const _CSparsePolynomial* pNumResult, const _CA
 	if(pAppCriterion->IsExact())
 	{
 		for(size_t i=0;i<=FullSize;i++)
-			SetAllowed(i);
+			SetAllowed((unsigned short)i);
 		return;
 	}
 	//_CSparsePolynomial::EnergyDistribution DistL,DistH;
@@ -831,7 +831,7 @@ void _CSPowerLimiter::InitGlobal(const _CSparsePolynomial* pNumResult, const _CA
 			abs(MagH[i].real())<Accuracy && 
 			abs(MagH[i].imag())<Accuracy)
 			continue;
-		SetAllowed(i);
+		SetAllowed((unsigned short)i);
 	}
 }
 
@@ -848,7 +848,7 @@ _CFlatVerticesSPowerLimiter::_CFlatVerticesSPowerLimiter(const _CSparsePolynomia
 	{
 		if(DistL[i]<Accuracy && DistH[i]<Accuracy)
 			continue;
-		m_Map[0].SetAllowed(i);
+		m_Map[0].SetAllowed((unsigned short)i);
 	}
 }
 
@@ -875,12 +875,12 @@ void _CFlatVerticesSPowerLimiter::WorkOutNew(const _CFlatVerticesSPowerLimiter& 
 				size_t cp_power=cp_it->first;
 				const NumericType& cp_value=cp_it->second;
 				size_t res_power=cp_power+dp_power;
-				if(!TopLimiter.IsSPowerAllowed(Level,res_power))
+				if(!TopLimiter.IsSPowerAllowed(Level,(unsigned short)res_power))
 					continue;
 				const NumericType& res_value=TopPattern.get2(Level,res_power);
 				if(abs(dp_value*cp_value/res_value)<Accuracy)
 					continue;
-				SetSPowerAllowed(Level,dp_power);
+				SetSPowerAllowed(Level,(unsigned short)dp_power);
 			}
 		}
 	}
@@ -933,12 +933,12 @@ void _CSPowerLimiter::WorkOutNew(const _CSPowerLimiter& TopLimiter,
 				size_t cp_power=cp_it->first;
 				const NumericType& cp_value=cp_it->second;
 				size_t res_power=cp_power+dp_power;
-				if(!TopLimiter.IsAllowed(res_power))
+				if(!TopLimiter.IsAllowed((unsigned short)res_power))
 					continue;
 				const NumericType& res_value=TopPattern.get(res_power);
 				if(abs(dp_value*cp_value/res_value)<Accuracy)
 					continue;
-				SetAllowed(dp_power);
+				SetAllowed((unsigned short)dp_power);
 			}
 	}
 }
@@ -1642,7 +1642,8 @@ void _CFlatVertexCache::ProcessIndex(long long Index, _CFlatVertex* pVertex)
 		if(pVertex->IsOnlyOneDescendant(Index))
 			if (Index!=0)
 			{
-				m_CPSet.insert(SIGNED_COMPONENT_PATH(pVertex->GetPath(),pVertex->GetMult(Index),Index));
+				//m_CPSet.insert(SIGNED_COMPONENT_PATH(pVertex->GetPath(),pVertex->GetMult(Index),Index));
+				m_CPSet.insert(SIGNED_COMPONENT_PATH(pVertex->GetPath(),pVertex->GetMult(Index),(short)Index));
 				m_SCPMap.Include(_CSignedComponentPath(pVertex));
 			}
 		//RegisterNoZero(pVertex);
@@ -2745,7 +2746,7 @@ m_Next(nullptr,0,1)
 		{
 			get<0>(m_Current) = pVertex->GetPath();
 			get<1>(m_Current) = pVertex->GetMult(OnlyNonZeroDesc);
-			get<2>(m_Current) = OnlyNonZeroDesc;
+			get<2>(m_Current) = (unsigned short)OnlyNonZeroDesc;
 			const _CFlatVertex* pNextVertex = pVertex->GetDescendant(OnlyNonZeroDesc);
 			size_t OnlyNonZeroDescNext = 0;
 			if (pNextVertex->IsOnlyOneDescendant(OnlyNonZeroDescNext))
@@ -2753,7 +2754,7 @@ m_Next(nullptr,0,1)
 				{
 					get<0>(m_Next) = pNextVertex->GetPath();
 					get<1>(m_Next) = pNextVertex->GetMult(OnlyNonZeroDescNext);
-					get<2>(m_Next) = OnlyNonZeroDescNext;
+					get<2>(m_Next) = (unsigned short)OnlyNonZeroDescNext;
 				}
 		}
 	//ASSERTPDD(pVertex->NoZero());
@@ -2935,13 +2936,18 @@ bool _CContextSExpFlatVertices::IsContextDetermined(const string* Context)
 	return it!=m_Map.end();
 }
 
-void _CCompPathStorage::PathSt2PathOrdr(COMP_PATH_ORDER& PO) const
+void _CCompPathStorage::PathSt2PathOrdr(COMP_PATH_ORDER& PO) 
 {
 	PO.clear();
 	size_t Counter=0;
-	COMP_STG::const_iterator it=m_Stg.begin(),_e=m_Stg.end();
-	for(;it!=_e;it++,Counter++)
-		PO.insert(COMP_PATH_ORDER::value_type(&*it,Counter));
+	//COMP_STG::const_iterator it=m_Stg.begin(),_e=m_Stg.end();
+	auto it=m_Stg.begin(),_e=m_Stg.end();
+	for (; it != _e; it++, Counter++)
+	{
+		auto& v = *it;
+		//PO.insert(COMP_PATH_ORDER::value_type(&*it,Counter));
+		PO.insert(COMP_PATH_ORDER::value_type((COMPONENTS_PATH* const)&v,Counter));
+	}
 }
 
 string _CCompPathStorage::ToString() const

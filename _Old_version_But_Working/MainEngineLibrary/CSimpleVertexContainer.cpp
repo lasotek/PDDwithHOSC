@@ -23,7 +23,7 @@ long long GetTypedHash(long long& Core, const _CSimpleVertexContainer& Vertex)
 _CSimpleVertexContainer::_CSimpleVertexContainer(size_t EntryId, size_t PosId, const _CSubCircuitSocket* pSocket, 
 												 _CSubCircuitVerticesMap* pToSubcircuitLeves,
 												 long long MVId):
-m_Multiplier(1), m_VertexType(InputConnector),m_pSocket(pSocket),
+m_Multiplier(1), m_VertexType(VertType::InputConnector),m_pSocket(pSocket),
 m_pConnectionVector(pToSubcircuitLeves), m_MVId(MVId)
 {
 	TGlobal_Vertex_Id Id;
@@ -757,7 +757,7 @@ void _CSubCircuitVerticesMap::TranslateLocalTerminals(_CSExpandedDescendends& De
 			{
 				if(!Cache.check_if_exists(renn,rsn,Cont))
 				{
-					__Int_Type& A=force_at(Context,renn,rsn);
+					__Int_Type& A=force_at(Context,renn,(unsigned short)rsn);
 					if(!A.IsEmpty())
 					{
 						int a=5;
@@ -828,7 +828,7 @@ const _CSimpleVertexContainer& _CSubCircuitVerticesMap::get(size_t EntryNo, size
 
 const _CSimpleVertexContainer* _CSubCircuitVerticesMap::smart_get(size_t EntryNo, size_t SPower,const string*& pContext) const
 {
-	const __Int_Type* pIT=smart_at(*pContext,EntryNo,SPower);
+	const __Int_Type* pIT=smart_at(*pContext,EntryNo,(unsigned short)SPower);
 	if(pIT==NULL || pIT->first.IsEmpty())
 		return NULL;
 	pContext=pIT->second;
@@ -855,7 +855,7 @@ _CSubCircuitVerticesMap::put(size_t Entry, size_t sPower,const string& Context, 
 		const string& PostTerminalContext, const string& BaseContext)
 {
 	T_INDEX Index=_l2ll(Entry,sPower);
-	__Int_Type* pNewPlace=&force_at(Context,Entry,sPower);
+	__Int_Type* pNewPlace=&force_at(Context,Entry,(unsigned short)sPower);
 	if(!pNewPlace->first.IsEmpty())
 	{
 		if(pNewPlace->first==Value && pNewPlace->second==&PostTerminalContext)
@@ -874,8 +874,8 @@ _CSubCircuitVerticesMap::put(size_t Entry, size_t sPower,const string& Context, 
 			}
 		}
 		size_t NewEntry=m_Map[&BaseContext].size();
-		pNewPlace=&force_at(Context,NewEntry,sPower);
-		Index=_l2ll(NewEntry,sPower);
+		pNewPlace=&force_at(Context,NewEntry,(unsigned short)sPower);
+		Index=_l2ll(NewEntry,(unsigned short)sPower);
 	}
 	pNewPlace->first=Value;
 	pNewPlace->second=&PostTerminalContext;
@@ -890,7 +890,7 @@ _CSubCircuitVerticesMap::put(T_INDEX Index,const string& Context, _CSimpleVertex
 {
 	size_t Entry=_Hi(Index),
 		sPower=_Lo(Index);
-	__Int_Type* pNewPlace=&force_at(Context,Entry,sPower);
+	__Int_Type* pNewPlace=&force_at(Context,Entry,(unsigned short)sPower);
 	if(!pNewPlace->first.IsEmpty())
 	{
 		if(pNewPlace->first==Value && pNewPlace->second==&PostTerminalContext)
@@ -909,7 +909,7 @@ _CSubCircuitVerticesMap::put(T_INDEX Index,const string& Context, _CSimpleVertex
 			}
 		}
 		size_t NewEntry=m_Map[&BaseContext].size();
-		pNewPlace=&force_at(Context,NewEntry,sPower);
+		pNewPlace=&force_at(Context,NewEntry,(unsigned short)sPower);
 		Index=_l2ll(NewEntry,sPower);
 	}
 	pNewPlace->first=Value;

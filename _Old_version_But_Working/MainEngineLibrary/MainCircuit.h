@@ -172,10 +172,18 @@ public:
 	//{
 	//	m_FlatVericesResCache.RegisterResult(pContainer);
 	//}
-	const COMPONENTS_PATH& GetUnique(const COMPONENTS_PATH& Source)
+	//const COMPONENTS_PATH& GetUnique(const COMPONENTS_PATH& Source)
+	//{
+	//	return m_CompPathStorage.GetUnique(Source);
+	//}
+	const COMPONENTS_PATH& GetUnique(COMPONENTS_PATH& Source)
 	{
 		return m_CompPathStorage.GetUnique(Source);
 	}
+
+
+
+
 	//void NotifySkipped(const COMPONENTS_PATH* pPath)
 	//{
 	//	m_FlatVertexCache.NotifySkipped(pPath);
@@ -220,15 +228,15 @@ protected:
 	//long DeterminPathWeights(unsigned long CofId, unsigned short sPower, const string& Context, long double& NumericalResult,_CLSPath& Path);
 	long FindSubId(const string& Name);
 	typedef pair<long,_CSubCircuit*> SUBCIRCUIT_DATA;
-	typedef hash_map<string, SUBCIRCUIT_DATA> SUBCIRCUIT_MAP;
+	typedef unordered_map<string, SUBCIRCUIT_DATA> SUBCIRCUIT_MAP;
 	typedef SUBCIRCUIT_MAP::iterator SUBCIRCUIT_ITERATOR;
-	typedef SUBCIRCUIT_MAP::reverse_iterator SUBCIRCUIT_RITERATOR;
+	//typedef SUBCIRCUIT_MAP::reverse_iterator SUBCIRCUIT_RITERATOR;
 	typedef SUBCIRCUIT_MAP::value_type SUBCIRCUIT_VALUE_TYPE;
 	SUBCIRCUIT_MAP m_SubcircuitMap;
 	long m_SubcircuitCounter;
-	typedef hash_map<long,string> INDECES_MAP;
+	typedef unordered_map<long,string> INDECES_MAP;
 	typedef INDECES_MAP::iterator INDECES_ITERATOR;
-	typedef INDECES_MAP::reverse_iterator INDECES_RITERATOR;
+	//typedef INDECES_MAP::reverse_iterator INDECES_RITERATOR;
 	typedef INDECES_MAP::value_type INDECES_VALUE_TYPE;
 	INDECES_MAP m_IndecesMap;
 	_CPDDEngine* m_pEngine;
@@ -248,8 +256,8 @@ protected:
 	typedef _CNumResTable<NumericType> DOUBLE_RES_TABLE;
 	DOUBLE_RES_TABLE m_NumResults;
 	_CSExpandedUniqeSet m_SExpandedUniqueSet;
-	//typedef hash_map<_CModelVertex*,_CSPolynomial> NUMERIC_POLYNOMIAL;
-	//typedef hash_map<_CModelVertex*,_CSparsePolynomial> NUMERIC_POLYNOMIAL;
+	//typedef unordered_map<_CModelVertex*,_CSPolynomial> NUMERIC_POLYNOMIAL;
+	//typedef unordered_map<_CModelVertex*,_CSparsePolynomial> NUMERIC_POLYNOMIAL;
 	//class NUM_POLY_ITEM_ID : public pair<const string*,_CModelVertex*>
 	//{
 	//public:
@@ -260,7 +268,7 @@ protected:
 	typedef pair<const string*,_CModelVertex*> NUM_POLY_ITEM_ID;
 	typedef map<NUM_POLY_ITEM_ID,_CSparsePolynomial> NUMERIC_POLYNOMIAL;
 	NUMERIC_POLYNOMIAL m_NumericPolynomials;
-	typedef hash_map<long,_CPathTraitor> PATH_TRAITORS;
+	typedef unordered_map<long,_CPathTraitor> PATH_TRAITORS;
 	PATH_TRAITORS m_PathTraitors;
 	//_CPathTraitor::FOLLOWER m_TestFollower;
 	//_CDirectNumCache m_DirNumCache;

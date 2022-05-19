@@ -14,10 +14,10 @@ _pCreateObj _streamable::ManageClasses(S_OPER Oper,string name,_pCreateObj func)
 	static _CStreamRegistry CRegistry;
 	switch(Oper)
 	{
-	case o_Register:
+	case S_OPER::o_Register:
 		CRegistry.insert(_CStreamRegistry::value_type(name,func));
 		return NULL;
-	case o_FindAllocator:
+	case S_OPER::o_FindAllocator:
 		{
 			_CStreamRegistry::iterator it=CRegistry.find(name);
 			if(it==CRegistry.end())
@@ -38,7 +38,7 @@ _CModelHeader::_CModelHeader(bool ToWrite)
 {
 	if(!ToWrite)
 		return;
-	memset(this,0,sizeof(*this));
+	//memset(this,0,sizeof(*this));
 	Head[0]='P';Head[1]='D';Head[2]='D';Head[3]='M';
 }
 bool _CModelHeader::WrongHeader()
@@ -46,18 +46,14 @@ bool _CModelHeader::WrongHeader()
 	return Head[0]!='P' || Head[1]!='D' || Head[2]!='D' || Head[3]!='M';
 }
 
-_binary_filer::_binary_filer(void):m_stream(NULL),m_State(f_close)
+_binary_filer::_binary_filer(OPEN_MODE mode, const mstr& FileName, bool short_mode) : m_ShortMode(short_mode)
 {
+	open(mode, FileName);
 }
 
-_binary_filer::_binary_filer(OPEN_MODE mode, const mstr& FileName,bool short_mode):
-m_stream(NULL),m_State(f_close),m_ShortMode(short_mode)
-{
-	open(mode,FileName);
-}
 #ifdef _UNICODE
 _binary_filer::_binary_filer(OPEN_MODE mode, const string& FileName,bool short_mode):
-m_stream(NULL),m_State(f_close),m_ShortMode(short_mode)
+m_stream(NULL),m_State(STATE::f_close),m_ShortMode(short_mode)
 {
 	USES_CONVERSION;
 	wstring wFileName(CA2T(FileName.c_str()));
@@ -81,11 +77,11 @@ void _binary_filer::open(OPEN_MODE mode, const mstr& FileName)
 	mstr str_mode;
 	switch(mode)
 	{
-	case o_write:str_mode=_T("wb"); break;
-	case o_read:str_mode=_T("rb"); break;
-	case o_append:str_mode=_T("ab");break;
-	case o_random:str_mode=_T("r+bR");break;
-	case o_temporary:str_mode=_T("w+bRD");break;
+	case OPEN_MODE::o_write:str_mode=_T("wb"); break;
+	case OPEN_MODE::o_read:str_mode=_T("rb"); break;
+	case OPEN_MODE::o_append:str_mode=_T("ab");break;
+	case OPEN_MODE::o_random:str_mode=_T("r+bR");break;
+	case OPEN_MODE::o_temporary:str_mode=_T("w+bRD");break;
 	}
 	errno_t t;
 #ifdef _UNICODE
@@ -93,7 +89,7 @@ void _binary_filer::open(OPEN_MODE mode, const mstr& FileName)
 #else
 	t=fopen_s(&m_stream,m_FileName.c_str(),str_mode.c_str());
 #endif
-	if(t!=0 && mode==o_append)
+	if(t!=0 && mode==OPEN_MODE::o_append)
 #ifdef _UNICODE
 		t=_wfopen_s(&m_stream,m_FileName.c_str(),_T("wb"));
 #else
@@ -101,7 +97,7 @@ void _binary_filer::open(OPEN_MODE mode, const mstr& FileName)
 #endif
 	if(t!=0)
 		RISEPDD(eFilerProblem,"Cannot open the file");
-	m_State=mode==o_read?f_open_read:f_open_write;
+	m_State=mode==OPEN_MODE::o_read?STATE::f_open_read:STATE::f_open_write;
 }
 
 void _binary_filer::close()
@@ -110,7 +106,7 @@ void _binary_filer::close()
 	{
 		fflush(m_stream);
 		fclose(m_stream);
-		m_State=f_close;
+		m_State=STATE::f_close;
 	}
 }
 
@@ -386,6 +382,7 @@ void _streamable::_Load(_binary_filer& Filer)
 }
 IMPLEMENT_DYNAMIC_CREATION(_streamable);
 
+
 void _binary_filer::StoreDynamicClass(_streamable* pClass)
 {
 	(*this)<<(*pClass);
@@ -395,7 +392,7 @@ _streamable* _binary_filer::RetriveDynamicClass(_co_streamable* pExtraOperator)
 {
 	string strId;
 	(*this)>>strId;
-	_streamable* pRes=_streamable::ManageClasses(_streamable::o_FindAllocator,strId,NULL)();
+	_streamable* pRes=_streamable::ManageClasses(_streamable::S_OPER::o_FindAllocator,strId,NULL)();
 	if(pRes==NULL)
 		RISEPDD(eFilerProblem,UEF);
 	if(pExtraOperator!=NULL)

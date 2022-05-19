@@ -328,10 +328,10 @@ protected:
 	void Store(_binary_filer& Filer);
 	void Load(_binary_filer& Filer);
 	void DoSomeExtras(_streamable* pstrObj);
-	typedef hash_map<const _CComponent*,unsigned long> COMP_TO_INDEX_MAP;
+	typedef unordered_map<const _CComponent*,unsigned long> COMP_TO_INDEX_MAP;
 	typedef COMP_TO_INDEX_MAP::value_type COMP_TO_INDEX_TYPE;
 	typedef COMP_TO_INDEX_MAP::iterator COMP_TO_INDEX_ITERATOR;
-	typedef hash_map<long,const _CComponent*> INDEX_TO_COMP_MAP;
+	typedef unordered_map<long,const _CComponent*> INDEX_TO_COMP_MAP;
 	//typedef INDEX_TO_COMP_MAP::value_type INDEX_TO_COMP_TYPE;
 	//typedef INDEX_TO_COMP_MAP::iterator INDEX_TO_COMP_ITERATOR;
 	COMP_TO_INDEX_MAP* m_pComp2Index;

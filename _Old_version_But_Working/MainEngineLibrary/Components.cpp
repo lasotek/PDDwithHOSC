@@ -621,7 +621,7 @@ bool /*NewPath*/ _CTreeForkComponent::PerformSimplyFlatVertexTravers(
 		vector<NumericType> CurrDescValues(MaxCompPower+1,0.0);
 		const NumericType& ParValue = pResultVertex->m_ParamValue;
 		NumericType CurrParValue(1.0);
-		short CurrSPower = SPower;
+		auto CurrSPower = SPower;
 #ifdef _DEBUG
 		NumericType TopRes(0.0);
 #endif
@@ -1029,7 +1029,7 @@ void _CSimplyComponent::_GetSimplyFlatVertex(_CModelVerticesPath& VerticesPath,
 	size_t MP1=pDesc1==NULL?0:pDesc1->size();
 	size_t MP0=pDesc0==NULL?0:pDesc0->size();
 	size_t MaxPower=max(MP1+S,MP0);
-	for(size_t n=0;n<=MaxPower;n++)
+	for(unsigned short n=0;n<=(unsigned short)MaxPower;n++)
 	{
 		if(!TopLimiter.IsAllowed(n))
 			continue;

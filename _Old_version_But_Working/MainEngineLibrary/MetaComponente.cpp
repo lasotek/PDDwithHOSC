@@ -212,7 +212,7 @@ long _CMetaComponent::GetHash(long Core) const
 unsigned short _CMetaComponent::sPower() const
 {
 	ASSERTPDD(!m_CompList.empty());
-	return m_CompList.size()*m_CompList.front()->sPower();
+	return (unsigned short)m_CompList.size()*m_CompList.front()->sPower();
 }
 
 void _CMetaComponent::ModifyValue(long double NewValue)

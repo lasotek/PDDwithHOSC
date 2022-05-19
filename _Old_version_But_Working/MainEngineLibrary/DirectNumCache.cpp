@@ -59,7 +59,7 @@ void _CDirectNumCache::ReportHitTest()
 _CDirectNumContainer* _CDirectNumCache::FindOrRegisterResult(_CDirectNumContainer* pContainer)
 {
 	if(!m_tmp_file.IsOpen())
-		m_tmp_file.open(_binary_filer::o_temporary,m_PathTempFile);
+		m_tmp_file.open(_binary_filer::OPEN_MODE::o_temporary,m_PathTempFile);
 	pContainer->m_p_tmp_file=&m_tmp_file;
 	_CDirectNumContainer* pRes= dynamic_cast<_CDirectNumContainer*> (_CAbstractOperationCache<_CSubModelNumericPattern>::FindOrRegisterResult(pContainer));
 	if(pRes==pContainer && pContainer->m_UsageCounter==0)
@@ -70,7 +70,7 @@ _CDirectNumContainer* _CDirectNumCache::FindOrRegisterResult(_CDirectNumContaine
 void _CDirectNumCache::RegisterResult(_CDirectNumContainer* pContainer)
 {
 	if(!m_tmp_file.IsOpen())
-		m_tmp_file.open(_binary_filer::o_temporary,m_PathTempFile);
+		m_tmp_file.open(_binary_filer::OPEN_MODE::o_temporary,m_PathTempFile);
 	pContainer->m_p_tmp_file=&m_tmp_file;
 	_CAbstractOperationCache<_CSubModelNumericPattern>::RegisterResult(pContainer);
 	if(pContainer->m_UsageCounter==0)

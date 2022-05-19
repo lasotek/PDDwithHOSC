@@ -85,18 +85,18 @@ protected:
 	_CGraphStateCache m_LocalStateCache;
 	size_t m_MinInternal;
 	size_t m_MaxInternal;
-	class DESC_STATE : public hash_map<size_t/*Desc Index*/,const _CGraphState* /*Expected state modification*/>
+	class DESC_STATE : public unordered_map<size_t/*Desc Index*/,const _CGraphState* /*Expected state modification*/>
 	{
 	};
-	//typedef hash_map<size_t/*Desc Index*/,_CGraphState* /*Expected state modification*/> DESC_STATE;
-	class MVERTEX_STATE : public hash_map<_CModelVertex* /*Ancestor*/,DESC_STATE>
+	//typedef unordered_map<size_t/*Desc Index*/,_CGraphState* /*Expected state modification*/> DESC_STATE;
+	class MVERTEX_STATE : public unordered_map<_CModelVertex* /*Ancestor*/,DESC_STATE>
 	{
 	};
-	//typedef hash_map<_CModelVertex* /*Ancestor*/,DESC_STATE> MVERTEX_STATE;
-	class COMP_REL_MAP : public hash_map<_CComponent*,MVERTEX_STATE>
+	//typedef unordered_map<_CModelVertex* /*Ancestor*/,DESC_STATE> MVERTEX_STATE;
+	class COMP_REL_MAP : public unordered_map<_CComponent*,MVERTEX_STATE>
 	{
 	};
-	//typedef hash_map<_CComponent*,MVERTEX_STATE> COMP_REL_MAP;
+	//typedef unordered_map<_CComponent*,MVERTEX_STATE> COMP_REL_MAP;
 	COMP_REL_MAP m_CompStateMap;
 	bool m_Multileaves;
 	_CComponent* m_LastSelectedComponent;

@@ -5429,9 +5429,9 @@ void _CCircuitAnalyzer::SimplifyToBeCanonic()
 	VERTICES_IT_LIST MyList,Vertices2Remove;
 	PrepareVertItList(MyList);
 	typedef pair<_CTempVertex*,short> EQUIV;
-	typedef hash_map<_CTempVertex*,EQUIV> EQUIV_MAP;
+	typedef unordered_map<_CTempVertex*,EQUIV> EQUIV_MAP;
 	EQUIV_MAP EquivMap;
-	typedef hash_multimap<unsigned long long,_CTempVertex*> LOCAL_CACHE;
+	typedef unordered_multimap<unsigned long long,_CTempVertex*> LOCAL_CACHE;
 	LOCAL_CACHE LocalCache;
 	for(VERTICES_IT_LIST::iterator rit=MyList.begin(),_re=MyList.end();rit!=_re;rit++)
 	{

@@ -10,6 +10,7 @@
 //#include <set>
 //#include <limits.h>
 //#include <float.h>
+#include <functional>
 //#include "MainCircuit.h"
 #include <ostream>
 
@@ -102,17 +103,22 @@ protected:
 	public:
 		_AbstractTreeElement():m_Operation(0) 
 		{
-			m_Descendants.comp.m_ParentTreeElement=this;
+			//m_Descendants.key_comp().m_ParentTreeElement=this;
 		}
 		_AbstractTreeElement(const _AbstractTreeElement& Source):m_Operation(Source.m_Operation),
 			m_Descendants(Source.m_Descendants)
 		{
-			m_Descendants.comp.m_ParentTreeElement=this;
+			//m_Descendants.comp.m_ParentTreeElement=this;
 		}
 		virtual _CCircuit* GetParentCircuit()=0;
 	protected:
-		typedef set<_CTreeElement,_AbstractPredicator> SET;
-		SET m_Descendants;
+		function<bool(const _CTreeElement& Left, const _CTreeElement& Right)>
+			m_comp = [this](const _CTreeElement& Left, const _CTreeElement& Right)->bool {
+			return this->GetParentCircuit()->CompLocalComponents(Left.GetRootComponent(), Right.GetRootComponent()) < 0;
+		};
+		//typedef set<_CTreeElement,_AbstractPredicator> SET;
+		typedef set<_CTreeElement, decltype(m_comp)> SET;
+		SET m_Descendants{m_comp};
 		short m_Operation;
 		friend class _CPathTraitor;
 	public:

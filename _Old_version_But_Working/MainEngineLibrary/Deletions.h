@@ -1,5 +1,8 @@
 #pragma once
 
+#include <list>
+#include <map>
+
 class _CDeletion;
 class _CDeletions;
 class _CCofactor;
@@ -12,14 +15,13 @@ public:
 	int m_p, m_r, m_k, m_l;
 };
 
-//typedef list<const _CBasicPairOfDeletion> _CBasicSetOfDeletions;
-class _CBasicSetOfDeletions : public list<const _CBasicPairOfDeletion>
+class _CBasicSetOfDeletions : public list<_CBasicPairOfDeletion>
 {
 public:
-	_CBasicSetOfDeletions() :list<const _CBasicPairOfDeletion>(), m_Sgn(1) {}
-	_CBasicSetOfDeletions(const _CBasicPairOfDeletion& Set,short Sgn = 1) :list<const _CBasicPairOfDeletion>(1,Set), m_Sgn(Sgn) {}
+	_CBasicSetOfDeletions() :list<_CBasicPairOfDeletion>(), m_Sgn(1) {}
+	_CBasicSetOfDeletions(const _CBasicPairOfDeletion& Set,short Sgn = 1) :list<_CBasicPairOfDeletion>(1,Set), m_Sgn(Sgn) {}
 	_CBasicSetOfDeletions(const _CBasicSetOfDeletions& Source) :
-		list<const _CBasicPairOfDeletion>(Source),m_Sgn(Source.m_Sgn) {}
+		list<_CBasicPairOfDeletion>(Source),m_Sgn(Source.m_Sgn) {}
 	_CBasicSetOfDeletions(const _CDeletions& Dels);
 	_CBasicSetOfDeletions(const _CBasicSetOfDeletions& Source1, const _CBasicSetOfDeletions& Source2);
 	short Sgn() const { return m_Sgn; }

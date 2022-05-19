@@ -5,7 +5,7 @@
 #include "Cofactor.h"
 #include "Components.h"
 #include "binary_filer.h"
-#include <hash_map>
+#include <unordered_map>
 #include <memory>
 
 inline unsigned iAbs(int i) {return (unsigned)(i<0?-i:i);}
@@ -306,7 +306,7 @@ public:
 protected:
 	_CCircuitAnalyzer* m_pAnalyser;
 	//CONTRACTION_LIST m_AuxTestList;
-	class _CConnectedNodes : public hash_multimap<int,int> 
+	class _CConnectedNodes : public unordered_multimap<int,int> 
 	{
 	public:
 		_CConnectedNodes(const CONTRACTION_LIST& Source,int CurrZero);
@@ -872,9 +872,9 @@ protected:
 	DECLARE_DYNAMIC_CREATION(_CBounadryStatesVector);
 	virtual void Store(_binary_filer& Filer) override;
 	virtual void Load(_binary_filer& Filer) override;
-	typedef hash_multimap<unsigned long long,_CBoundaryState> UNIQ_MAP; 
+	typedef unordered_multimap<unsigned long long,_CBoundaryState> UNIQ_MAP; 
 	UNIQ_MAP m_UniqMap;
-	typedef hash_multimap<const _CBoundaryState*,size_t> STATE2INDEX;
+	typedef unordered_multimap<const _CBoundaryState*,size_t> STATE2INDEX;
 	STATE2INDEX m_State2Index;
 	typedef map<size_t,_CBoundaryState*> INDEX2STATE;
 	INDEX2STATE m_Index2State;
@@ -937,7 +937,7 @@ public:
 	void DetachCache();
 protected:
 	typedef _CCacheTmpl<_CStateCofactor> LOCAL_CACHE;
-	typedef hash_map<size_t,  LOCAL_CACHE> MAP;
+	typedef unordered_map<size_t,  LOCAL_CACHE> MAP;
 	MAP m_Map;
 	size_t m_PrevOrder;
 	size_t m_CurrOrder;
@@ -1278,11 +1278,11 @@ public:
 	typedef _CTempVertex::DESC_DATA VERTEX_ROOT;
 	typedef vector<VERTEX_ROOT> TEMP_VERTEX_VECTOR;
 	const TEMP_VERTEX_VECTOR& GetCofVerticesVector() {return m_TopTempVertexVector;}
-	typedef hash_multimap<const _CTempVertex*,_CModelVertex**> COL_MAP;
+	typedef unordered_multimap<const _CTempVertex*,_CModelVertex**> COL_MAP;
 	COL_MAP& GetColMap() {return m_ColMap;}
 	typedef const _CTempVertex* CONST_P_TEMP_VERTEX;
 	void RegisterTempVertex2ModelVertex(_CTempVertex* const * ppTempVertex,_CModelVertex** ppModelVertex);
-	typedef hash_multimap<_CStateCofactor*, _CModelVertex**> BOUNDARIES_MAP;
+	typedef unordered_multimap<_CStateCofactor*, _CModelVertex**> BOUNDARIES_MAP;
 	const BOUNDARIES_MAP& GetBoundariesMap();
 	size_t GetNoOfSubciruitDongles() const;
 	//void PrepareDongle(size_t DongleNo, _CDeletions& Deletions, _CModelVertex& ModelVertex, unsigned long& Counter);
@@ -1378,10 +1378,10 @@ protected:
 		const DESC_COFACTORS_V m_DescDesc;
 	};
 	short CommMultiplierExtract(DESC_COFACTORS_V& Desc) const;
-	typedef hash_map<unsigned long long,_CUniqueCacheContainer> AUX_TEMP_VERTEX_MAP;
+	typedef unordered_map<unsigned long long,_CUniqueCacheContainer> AUX_TEMP_VERTEX_MAP;
 	AUX_TEMP_VERTEX_MAP m_AuxTempVertexMap;
 	const COMPONENT_PINS_LIST* m_pSeparateNodes2Test;
-	typedef hash_multimap<_CStateCofactor*,VERTEX_ROOT*> TEMP_VERTS_2_REDEFINE;
+	typedef unordered_multimap<_CStateCofactor*,VERTEX_ROOT*> TEMP_VERTS_2_REDEFINE;
 	TEMP_VERTS_2_REDEFINE m_TempVerts2Redefine1;
 	TEMP_VERTS_2_REDEFINE m_TempVerts2Redefine2;
 	TEMP_VERTS_2_REDEFINE* m_pCurrentTempVerts2Redefine;
@@ -1413,7 +1413,7 @@ protected:
 		{
 			return m_OriginalDescStates[Index];
 		}
-		size_t NoOfDescendants() {m_OriginalDescStates.size();}
+		size_t NoOfDescendants() {return m_OriginalDescStates.size();}
 		void RegisterTempVertex2ModelVertex(_CTempVertex* const * ppTempVertex,_CModelVertex** ppModelVertex);
 		const BOUNDARIES_MAP& GetBoundariesMap() { return m_BoundariesMap; }
 		size_t GetNoOfSubciruitDongles() const {return m_OriginalDescStates.size();}
@@ -1426,7 +1426,7 @@ protected:
 		_CCircuitAnalyzer& m_Analyzer;
 		//typedef vector<_CStateCofactor> ORIGINAL_DESC_STATES;
 		ORIGINAL_DESC_STATES m_OriginalDescStates;
-		typedef hash_map<const _CTempVertex**,size_t>  VERTEX_2_ORIGINAL_DESC_INDEX;
+		typedef unordered_map<const _CTempVertex**,size_t>  VERTEX_2_ORIGINAL_DESC_INDEX;
 		VERTEX_2_ORIGINAL_DESC_INDEX m_Vertex2OriginalDescIndex;
 		typedef map<size_t/*Index*/,size_t/*Counter*/> COUNTER;
 		COUNTER m_Counter;

@@ -1,5 +1,5 @@
 #pragma once
-#include <hash_map>
+#include <unordered_map>
 #include <string>
 #include <vector>
 #include <tuple>
@@ -108,7 +108,7 @@ protected:
 	DECLARE_DYNAMIC_CREATION(_CNodesManager);
 	void Store(_binary_filer& Filer);
 	void Load(_binary_filer& Filer);
-	typedef hash_map<string,int> TNodesSet;
+	typedef unordered_map<string,int> TNodesSet;
 	typedef TNodesSet::iterator TNodesIterator;
 	typedef TNodesSet::value_type TValueType;
 		class CIndexFinder
@@ -120,7 +120,7 @@ protected:
 			unsigned m_Index;
 		};
 	TNodesSet m_Nodes;
-	int m_CurrentNoNode;
+	int m_CurrentNoNode{};
 //	bool m_IsLocal;
 //	bool m_IsGlobalZero;
 };

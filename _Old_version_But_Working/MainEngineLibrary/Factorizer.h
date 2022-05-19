@@ -3,8 +3,8 @@
 
 class _CAbstractFlatValueCont;
 
-//typedef hash_set<ULONGLONG> TOUCH_VECTOR;
-typedef hash_set<const _CAbstractFlatValueCont*> TOUCH_VECTOR;
+//typedef unordered_set<ULONGLONG> TOUCH_VECTOR;
+typedef unordered_set<const _CAbstractFlatValueCont*> TOUCH_VECTOR;
 
 class _CFlatValueUniqueList;
 
@@ -58,7 +58,7 @@ public:
 	bool Register(const _CFlatVertex* pVertex, short Sgn,const _CFlatProductCont& Product);
 	void Clear() {m_Map.clear();}
 protected:
-	typedef hash_map<const _CFlatVertex*, SIGNED_TERM> MAP;
+	typedef unordered_map<const _CFlatVertex*, SIGNED_TERM> MAP;
 	MAP m_Map;
 	_CFlatValueUniqueList& m_FlatValueUniqueList;
 };
@@ -80,12 +80,12 @@ protected:
 	//typedef list<_CAbstractFlatValueCont*> PTR_LIST;
 	//PTR_LIST m_List;
 	_CAbstractFlatValueCont* GetUnique(_CAbstractFlatValueCont** ppNewSource);
-	typedef hash_multimap<ULONGLONG,_CAbstractFlatValueCont*> MAP;
+	typedef unordered_multimap<ULONGLONG,_CAbstractFlatValueCont*> MAP;
 	MAP m_Map;
-	typedef hash_map<const _CAbstractFlatValueCont*,ULONGLONG> ORDER_MAP;
+	typedef unordered_map<const _CAbstractFlatValueCont*,ULONGLONG> ORDER_MAP;
 	ULONGLONG m_Counter;
 	ORDER_MAP m_OrderMap;
-	typedef hash_map<ULONGLONG,_CAbstractFlatValueCont*> ORDER_MAP2;
+	typedef unordered_map<ULONGLONG,_CAbstractFlatValueCont*> ORDER_MAP2;
 	ORDER_MAP2 m_OrderMap2;
 	friend class _CTraitor;
 	friend class _CFlatSumCont;
@@ -228,7 +228,7 @@ class _CFlatResultFactorizer
 {
 public:
 	typedef pair<short,ULONGLONG> SIGNED_ID;
-	_CFlatResultFactorizer(const _CCompPathStorage& PathStorage,const _CFlatVertexCache& FlatVertexCache):m_PathStorage(PathStorage),
+	_CFlatResultFactorizer(_CCompPathStorage& PathStorage,const _CFlatVertexCache& FlatVertexCache):m_PathStorage(PathStorage),
 		m_FlatVertexCache(FlatVertexCache),m_ResMap(m_ValueUniqueList),
 		/*m_MaxCofId(0),m_MaxSPower(0),*/m_MultTraitor(m_ValueUniqueList), 
 		m_SumTraitor(m_ValueUniqueList),m_ResDevCache(m_ValueUniqueList),
@@ -236,6 +236,14 @@ public:
 	{
 		//PathStorage.PathSt2PathOrdr(m_PathOrder);
 	}
+	//_CFlatResultFactorizer(const _CCompPathStorage& PathStorage,const _CFlatVertexCache& FlatVertexCache):m_PathStorage(PathStorage),
+	//	m_FlatVertexCache(FlatVertexCache),m_ResMap(m_ValueUniqueList),
+	//	/*m_MaxCofId(0),m_MaxSPower(0),*/m_MultTraitor(m_ValueUniqueList), 
+	//	m_SumTraitor(m_ValueUniqueList),m_ResDevCache(m_ValueUniqueList),
+	//	m_Manager(m_ValueUniqueList,m_ResMap)
+	//{
+	//	//PathStorage.PathSt2PathOrdr(m_PathOrder);
+	//}
 	void Init();
 	bool NotifyFactorizedValue(size_t CofId,size_t sPower, const _CFlatVertex* pVertex, short GlobalSgn);
 	void ClearGarbage();
@@ -316,7 +324,8 @@ protected:
 	};
 	_CResMap m_ResMap;
 	friend class _CFlatSumCont;
-	const _CCompPathStorage& m_PathStorage;
+	//const _CCompPathStorage& m_PathStorage;
+	_CCompPathStorage& m_PathStorage;
 	void PrepareAuxList(AUX_LIST& AuxList) const 
 	{
 		m_ResMap.PrepareAuxList(AuxList);
@@ -429,7 +438,7 @@ protected:
 		bool TranslateTrans2DenAndNum(size_t FunctionNo, size_t& Num, size_t& Den);
 		const string& Name(size_t FunctionNo) const;
 	protected:
-		typedef hash_map<size_t,_CTransferFunctPair> FUNCTION_PAIRS;
+		typedef unordered_map<size_t,_CTransferFunctPair> FUNCTION_PAIRS;
 		FUNCTION_PAIRS m_FunctionPairs;
 		size_t m_Counter;
 		_CFlatValueUniqueList& m_FlatValueUniqueList;

@@ -47,12 +47,12 @@ protected:
 	friend class _CCircuit;
 	size_t PushUniqueVertex(size_t EntryId, size_t PosId, _CSimpleVertexContainer& NewVertex, 
 		const string& Context, const string& PostContext);
-	typedef hash_map<string,_CSExpandedCofactorValues> VMAP;
+	typedef unordered_map<string,_CSExpandedCofactorValues> VMAP;
 	typedef VMAP::iterator iterator;
 	typedef VMAP::value_type value_type;
 	typedef _CSExpandedCofactorValues::size_type size_type;
 	template<typename OutType, typename OutType EmptyValue>
-	class _CPos2Out : public hash_map<unsigned long long, typename OutType>
+	class _CPos2Out : public unordered_map<unsigned long long, typename OutType>
 	{
 	public:
 		void put(unsigned long long ID, typename OutType OutValue)
@@ -69,7 +69,7 @@ protected:
 	};
 
 	template<typename OutType, typename OutType EmptyValue>
-	class _COutMap : public hash_map<const string*,_CPos2Out<typename OutType,EmptyValue> > 
+	class _COutMap : public unordered_map<const string*,_CPos2Out<typename OutType,EmptyValue> > 
 	{
 	protected:
 	unsigned long long Compose(size_t EntryId, size_t PosId)
@@ -425,7 +425,7 @@ protected:
 	//_CSExpandedCofactorValues m_SimpleMainVertices;
 	//_CLocalSimpleVertexStore m_LocalInputVertexStore;
 	_CContextSExpandedCofactorValues m_CSSimpleMainVertices;
-	typedef set<const string> UQSet;
+	typedef set<string> UQSet;
 	UQSet m_UniqeNamesSet;
 	size_t m_LargestDescs; 
 	_CCircuitAnalyzer* m_pNewAnalyxer;

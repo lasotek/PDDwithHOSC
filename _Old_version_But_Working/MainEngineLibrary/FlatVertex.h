@@ -58,7 +58,7 @@ protected:
 	friend class COMPONENTS_PATH;
 	_CMainCircuit* m_pBaseCircuit;
 	LIST m_List;
-	//typedef hash_map<const _CModelVertex*,_CSubModelNumericPattern*> NUM_PATT_MAP;
+	//typedef unordered_map<const _CModelVertex*,_CSubModelNumericPattern*> NUM_PATT_MAP;
 	//NUM_PATT_MAP m_Map;
 	typedef list<const _CSubModelNumericPattern*> NUM_PATT_LIST;
 	NUM_PATT_LIST m_NumPatList;
@@ -108,7 +108,7 @@ class COMPONENTS_PATH_KeyCompare
 {
 public:
 	COMPONENTS_PATH_KeyCompare(_CMainCircuit*& pMainCircuit):m_pMainCircuit(pMainCircuit) {}
-	bool operator() (const COMPONENTS_PATH& Left, const COMPONENTS_PATH& Right)
+	bool operator() (const COMPONENTS_PATH& Left, const COMPONENTS_PATH& Right) const
 	{
 		return ::PCompare(Left,Right,m_pMainCircuit)<0;
 	}
@@ -116,19 +116,23 @@ protected:
 	_CMainCircuit*& m_pMainCircuit;
 };
 
-typedef hash_map<const COMPONENTS_PATH*,size_t> COMP_PATH_ORDER;
+//typedef unordered_map<const COMPONENTS_PATH*,size_t> COMP_PATH_ORDER;
+typedef unordered_map<COMPONENTS_PATH*,size_t> COMP_PATH_ORDER;
 class _CCompPathStorage
 {
 public:
 	_CCompPathStorage():m_pMainCircuit(NULL),m_KeyComp(m_pMainCircuit),m_Stg(m_KeyComp) {}
-	const COMPONENTS_PATH& GetUnique(const COMPONENTS_PATH& Source) {return *(m_Stg.insert(Source).first);}
-	void PathSt2PathOrdr(COMP_PATH_ORDER& PO) const;
+	//const COMPONENTS_PATH& GetUnique(const COMPONENTS_PATH& Source) {return *(m_Stg.insert(Source).first);}
+	const COMPONENTS_PATH& GetUnique(COMPONENTS_PATH& Source) {return *(m_Stg.insert(Source).first);}
+	//void PathSt2PathOrdr(COMP_PATH_ORDER& PO) const;
+	void PathSt2PathOrdr(COMP_PATH_ORDER& PO);
 	string ToString() const;
 protected:
 	friend class _CMainCircuit;
 	_CMainCircuit* m_pMainCircuit;
 	COMPONENTS_PATH_KeyCompare m_KeyComp;
-	typedef set<const COMPONENTS_PATH,COMPONENTS_PATH_KeyCompare> COMP_STG;
+	//typedef set<const COMPONENTS_PATH,COMPONENTS_PATH_KeyCompare> COMP_STG;
+	typedef set<COMPONENTS_PATH,COMPONENTS_PATH_KeyCompare> COMP_STG;
 	COMP_STG m_Stg;
 };
 
@@ -138,7 +142,7 @@ protected:
 //	_CSubModelNumericPattern* GetPatrernIfExist(const _CModelVerticesPath& Path);
 //	bool ForcePattern(const _CModelVerticesPath& Path, _CSubModelNumericPattern*& pOutPattern);
 //protected:
-//	typedef hash_map<const COMPONENTS_PATH*,_CSubModelNumericPattern> MAP;
+//	typedef unordered_map<const COMPONENTS_PATH*,_CSubModelNumericPattern> MAP;
 //	MAP m_Map;
 //};
 
@@ -153,8 +157,8 @@ bool HasCommonDescSgn(const MULTIPLIERS& Mults, short& CommonMult);
 short ExtractCommonFactor(MULTIPLIERS& Mults, bool HighestPositive);
 MULTIPLIERS& operator/=(MULTIPLIERS& Mults, short Divider);
 
-template<typename Descs>
-bool IsOnlyOneDescendant(const vector<Descs*>& Descs, size_t& NonZeroDesc)
+template<typename Desc>
+bool IsOnlyOneDescendant(const vector<Desc*>& Descs, size_t& NonZeroDesc)
 {
 	size_t Index = 0;
 	for (; Index < Descs.size(); Index++)
@@ -174,8 +178,8 @@ bool IsOnlyOneDescendant(const vector<Descs*>& Descs, size_t& NonZeroDesc)
 	return true;
 }
 
-template<typename Descs>
-bool IsHollow(const vector<Descs*>& Descs)
+template<typename Desc>
+bool IsHollow(const vector<Desc*>& Descs)
 {
 	size_t Pos = 0;
 	bool OnlyOne = IsOnlyOneDescendant(Descs, Pos);
@@ -254,7 +258,7 @@ protected:
 
 //typedef pair<const COMPONENTS_PATH*, short> SIGNED_COMPONENT_PATH;
 typedef tuple<const COMPONENTS_PATH*, /*Sgn*/ short, /*Power*/ short> SIGNED_COMPONENT_PATH;
-typedef list<const SIGNED_COMPONENT_PATH> SIGNED_COMPONENT_PATH_LIST;
+typedef list<SIGNED_COMPONENT_PATH> SIGNED_COMPONENT_PATH_LIST;
 typedef list<SIGNED_COMPONENT_PATH_LIST> SIGNED_COMPONENT_PATH_MULTILIST;
 //typedef pair<const _CFlatVertex*,short> SIGNED_FLAT_VERTEX;
 typedef list<const _CFlatVertex*> FLAT_VERT_LIST;
@@ -306,7 +310,7 @@ protected:
 //		}
 //	};
 //	//typedef set<FLAT_PRED,_Comp> SET;
-//	//typedef hash_map<const _CFlatVertex*,SET> MAP;
+//	//typedef unordered_map<const _CFlatVertex*,SET> MAP;
 //	//MAP m_Map;
 //	typedef vector<const _CFlatVertex*> FLAT_VERT_VECTOR;
 //	//typedef vector<const _CFlatVertex*> FLAT_VERT_LIST;
@@ -593,7 +597,7 @@ protected:
 		}
 		void Clear() {m_Map.clear();}
 	protected:
-		typedef hash_multimap<ULONGLONG,ContainerType> MAP;
+		typedef unordered_multimap<ULONGLONG,ContainerType> MAP;
 		MAP m_Map;
 	};
 
@@ -621,10 +625,10 @@ protected:
 		friend class _CFlatVertexCache;
 	};
 	void RemoveByReference(const _CFlatVertex* pFlatVertex);
-	typedef hash_map<const _CFlatVertex*, long long> ID_MAP;
-	typedef hash_map<const _CFlatVertex*, _CExtraData> EXTRA_DATA_MAP;
+	typedef unordered_map<const _CFlatVertex*, long long> ID_MAP;
+	typedef unordered_map<const _CFlatVertex*, _CExtraData> EXTRA_DATA_MAP;
 	//typedef pair<const COMPONENTS_PATH*,bool> ZERO_DESC_ELEM;
-	//typedef hash_map<const COMPONENTS_PATH*,bool> ZERO_DESC_MAP;
+	//typedef unordered_map<const COMPONENTS_PATH*,bool> ZERO_DESC_MAP;
 	//typedef self_exp_vector<ZERO_DESC_MAP> ZERO_DESC_MAPS;
 	ID_MAP m_IdMap;
 	EXTRA_DATA_MAP m_ExtraDataMap;
@@ -643,7 +647,7 @@ protected:
 	{
 	public:
 		_CCP_Comp(_CMainCircuit*& pMainCircuit):m_pMainCircuit(pMainCircuit) {}
-		bool operator()(const SIGNED_COMPONENT_PATH& Left,const SIGNED_COMPONENT_PATH& Right)
+		bool operator()(const SIGNED_COMPONENT_PATH& Left,const SIGNED_COMPONENT_PATH& Right) const
 		{
 			//short comp = PCompare(*Left.first, *Right.first, m_pMainCircuit);
 			short comp = PCompare(*get<0>(Left), *get<0>(Right), m_pMainCircuit);
@@ -1062,7 +1066,7 @@ protected:
 	typedef self_exp_vector<_CSExpFlatVerticesFactorized> VECTOR;
 	//typedef self_exp_vector<_CExpFlatVertices> VECTOR;
 	//typedef self_exp_vector<_CMultLevelSExpFlatVertices> VECTOR;
-	typedef hash_map<const string*, VECTOR> MAP;
+	typedef unordered_map<const string*, VECTOR> MAP;
 	MAP m_Map;
 	friend class _CMainCircuit;
 	_CMainCircuit* m_pMainCircuit;

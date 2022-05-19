@@ -270,7 +270,7 @@ protected:
 	bool DescDescription(iostream& stream, _CDescendantContainer& Desc);
 };
 
-typedef hash_map<_CModelVertex*, short> MVERTEX_2_SIGN;
+typedef unordered_map<_CModelVertex*, short> MVERTEX_2_SIGN;
 
 _CModelVertex* GetGlobal0Vertex();
 _CModelVertex* GetGlobal1Vertex();
@@ -335,7 +335,7 @@ template<class ClassToCheck,class MY_TYPE>
 class _CDuplicationCatcher
 {
 protected:
-	typedef typename hash_multimap<unsigned long long,ClassToCheck*> MAP;
+	typedef typename unordered_multimap<unsigned long long,ClassToCheck*> MAP;
 	typedef typename MAP::value_type TYPE;
 	typedef typename MAP::iterator ITERATOR;
 	typedef typename pair<ITERATOR,ITERATOR> RANGE;
@@ -396,7 +396,7 @@ protected:
 	unsigned long long GetHashKey(const _CModelVertex* pVertex) {return pVertex->GetHashDsc();}
 	bool IsOutOf(_CModelVertex* pVertex) {return pVertex->IsTerminal() || pVertex->IsLeaf();}
 	typedef pair<_CModelVertex*, short> DUP_RESULT;
-	typedef hash_map<_CModelVertex*, DUP_RESULT> DUP_MAP;
+	typedef unordered_map<_CModelVertex*, DUP_RESULT> DUP_MAP;
 	DUP_MAP m_DupMap;
 	MVERTEX_2_SIGN* m_pMVertex2Sgn;
 	bool m_IgnoreSgnPropagation;

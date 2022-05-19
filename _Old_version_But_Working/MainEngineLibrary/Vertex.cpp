@@ -677,7 +677,7 @@ void _CModelVertex::ClearDescendants()
 
 _CModelVerticesCache::~_CModelVerticesCache()
 {
-	for(INDEX2OBJECT_MAP_R_ITERATOR rit=m_Index2ObjectMap.rbegin();rit!=m_Index2ObjectMap.rend();rit++)
+	for(auto rit=m_Index2ObjectMap.begin();rit!=m_Index2ObjectMap.end();rit++)
 		rit->second->ClearDescendants();
 
 }

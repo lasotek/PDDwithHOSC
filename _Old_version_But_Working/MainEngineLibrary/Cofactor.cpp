@@ -724,7 +724,7 @@ void _CCofactor::WriteToTextStream(iostream& stream,_CSimpleVerticesMapsSet& Set
 	stream<<"\n"; 
 }
 
-unsigned short _CCofactor::GetMaxSPower()
+size_t _CCofactor::GetMaxSPower()
 {
 	try
 	{

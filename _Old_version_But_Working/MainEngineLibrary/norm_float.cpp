@@ -26,25 +26,25 @@ const _CSparsePolynomial& GetConstZero(/*const _CSparsePolynomial& Dummy*/)
 	return ZeroSparsePolynomial;
 }
 
-norm_float::norm_float(long double ld,long Mantise) : m_Base(ld),m_Mantise(Mantise)
+constexpr norm_float::norm_float(long double ld,long Mantise) : m_Base(ld),m_Mantise(Mantise)
 {
 	normalize();
 }
 
-norm_float::~norm_float(void)
-{
-}
+//norm_float::~norm_float(void)
+//{
+//}
 
-norm_float& norm_float::normalize()
+constexpr norm_float& norm_float::normalize()
 {
 	if(m_Base!=0.0)
 	{
-		while(abs(m_Base)>=10.0)
+		while(m_Base<=-10 || m_Base>=10.0)
 		{
 			m_Base/=10.0;
 			m_Mantise++;
 		}
-		while(abs(m_Base)<1.0)
+		while(m_Base>-1.0 && m_Base<1.0)
 		{
 			m_Base*=10;
 			m_Mantise--;

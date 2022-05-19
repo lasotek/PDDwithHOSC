@@ -7,13 +7,13 @@ public:
 	~_CHashable() 
 	{
 	}
-	_CHashable():m_HashKey(0),m_IsRegistered(false),m_HashDetermined(UNDEFINED) {}
+	_CHashable() {}
 	operator long()
 	{
 		if(!HashIsDetermined())
 		{
 			m_HashKey=DetermineHashKey();
-			m_HashDetermined=DETERMINED;
+			m_HashDetermined = DETERM_STATE::DETERMINED;
 		}
 //		if(m_HashKey==0) ++m_HashKey;
 		return m_HashKey;
@@ -26,19 +26,19 @@ public:
 	//		delete this;
 	//}
 	bool IsRegistered() const {return m_IsRegistered;}
-	bool HashIsDetermined() {return m_HashDetermined==DETERMINED || m_HashDetermined==FIXED;}
-	bool HashIsFixed() {return m_HashDetermined==FIXED;}
+	bool HashIsDetermined() { return m_HashDetermined == DETERM_STATE::DETERMINED || m_HashDetermined == DETERM_STATE::FIXED; }
+	bool HashIsFixed() { return m_HashDetermined == DETERM_STATE::FIXED; }
 	void InvalidateHash() 
 	{
-		if(m_HashDetermined!=FIXED)
-			m_HashDetermined=UNDEFINED;
+		if(m_HashDetermined!=DETERM_STATE::FIXED)
+			m_HashDetermined=DETERM_STATE::UNDEFINED;
 	}
 	//bool IsRegistered() const {return m_IsRegistered;}
 	//bool HashIsDetermined() {return m_HashDetermined;}
 	//void InvalidateHash() {m_HashDetermined=false;}
 	void ForceHash(long Hash_key)
 	{
-		m_HashDetermined=FIXED;
+		m_HashDetermined = DETERM_STATE::FIXED;
 		m_HashKey=Hash_key;
 	}
 protected:
@@ -58,10 +58,10 @@ protected:
 		Filer>>m_HashKey;
 	}
 	virtual long DetermineHashKey(long Core=HASH_CORE)=0;
-	long m_HashKey;
-	bool m_IsRegistered;
-	typedef enum{UNDEFINED=0,DETERMINED,FIXED} DETERM_STATE;
-	DETERM_STATE m_HashDetermined;
+	long m_HashKey = 0;
+	bool m_IsRegistered = false;
+	enum class DETERM_STATE{UNDEFINED=0,DETERMINED,FIXED};
+	DETERM_STATE m_HashDetermined = DETERM_STATE::UNDEFINED;
 	friend class _CCircuit;
 	friend class _CPredictionResult;
 };

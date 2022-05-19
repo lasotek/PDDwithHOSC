@@ -1,7 +1,7 @@
 #pragma once
 #include <stdio.h>
 #include <string>
-#include <hash_map>
+#include <unordered_map>
 #include <TCHAR.H>
 #include "PrjException.h"
 #ifdef _UNICODE
@@ -31,22 +31,22 @@ unsigned long stream_key(const char* Name);
 //	return typeid(this).raw_name();\
 //}
 
-#define MAX_STREAMABLE 30
+constexpr auto MAX_STREAMABLE = 30;
 
 #define INIT_STREAMABLE(ClassName) _streamable(#ClassName)
 
 #define DECLARE_DYNAMIC_CREATION(ClassName) \
 	static _streamable* GetObject##ClassName();\
 	DECLARE_CLASS_NAME(ClassName);\
-	static class RR##ClassName\
+	class RR##ClassName\
 	{\
 	public:\
 		RR##ClassName()\
 		{\
-			_streamable::ManageClasses(o_Register,#ClassName,ClassName::GetObject##ClassName);\
+			_streamable::ManageClasses(S_OPER::o_Register,#ClassName,ClassName::GetObject##ClassName);\
 		}\
 	};\
-	static RR##ClassName m_RR##ClassName;\
+	static RR##ClassName m_RR##ClassName;
 
 #define IMPLEMENT_DYNAMIC_CREATION(ClassName) \
 	_streamable* ClassName::GetObject##ClassName()\
@@ -58,7 +58,7 @@ class _streamable;
 typedef _streamable* (*_pCreateObj)();
 typedef struct aREG_ITEM{const char* name;_pCreateObj funct;} REG_ITEM;
 //typedef pair<string,_pCreateObj> REG_ITEM2;
-class _CStreamRegistry : public hash_map<string,_pCreateObj>
+class _CStreamRegistry : public unordered_map<string,_pCreateObj>
 {
 public:
 	_CStreamRegistry()
@@ -69,19 +69,19 @@ public:
 	}
 };
 
-typedef hash_map<const char*,_pCreateObj> REGISTRY;
+typedef unordered_map<const char*,_pCreateObj> REGISTRY;
 
 class _binary_filer;
 
 class _streamable
 {
 public:
-	_streamable():m_Stored(false) {}
+	_streamable() {}
 	~_streamable() {}
 	bool IsStored() {return m_Stored;}
 //	_streamable(const char* sId) {m_KeyId=GetHash(sId);}
 protected:
-	typedef enum aS_OPER{o_Register, o_FindAllocator} S_OPER;
+	enum class S_OPER{o_Register, o_FindAllocator};
 	virtual void Store(_binary_filer& Filer) 
 	{
 		m_Stored=true;
@@ -93,11 +93,11 @@ protected:
 	friend class _binary_filer;
 	void _Store(_binary_filer& Filer);
 	void _Load(_binary_filer& Filer);
-	unsigned long m_KeyId;
+	unsigned long m_KeyId=0;
 //	static _CStreamRegistry m_CRegistry;
 	static _pCreateObj ManageClasses(S_OPER Oper,string name,_pCreateObj func);
 	DECLARE_DYNAMIC_CREATION(_streamable);
-	bool m_Stored;
+	bool m_Stored = false;
 };
 
 class _co_streamable
@@ -114,10 +114,10 @@ public:
 	}
 	_CModelHeader(bool ToWrite);
 	bool WrongHeader();
-	char Head[4];
-	long long InterfaceOff;
-	long long NumericOff;
-	long long Res1,Res2,Res3,Res4;
+	char Head[4] = {};
+	long long InterfaceOff = 0;
+	long long NumericOff = 0;
+	long long Res1 = 0, Res2 = 0, Res3 = 0, Res4 = 0;
 };
 
 class _CNumericHeader
@@ -138,8 +138,8 @@ public:
 class _binary_filer
 {
 public:
-	typedef enum{o_read,o_write,o_append,o_random,o_temporary} OPEN_MODE;
-	_binary_filer(void);
+	enum class OPEN_MODE{ o_read = 0, o_write, o_append, o_random, o_temporary };
+	_binary_filer() {}
 	_binary_filer(OPEN_MODE mode, const mstr& FileName,bool short_mode);
 #ifdef _UNICODE
 	_binary_filer(OPEN_MODE mode, const string& FileName,bool short_mode);
@@ -217,14 +217,14 @@ public:
 	void StoreDynamicClass(_streamable* pClass);
 	_streamable* RetriveDynamicClass(_co_streamable* pExtraOperator=NULL);
 	bool IsShortMode() {return m_ShortMode;}
-	inline bool IsOpen() {return m_State!=f_close;}
+	inline bool IsOpen() {return m_State!=STATE::f_close;}
 	string Name() {return _PLAIN_STR(m_FileName);}
 protected:
-	typedef enum{f_close,f_open_read,f_open_write} STATE;
-	FILE* m_stream;
-	STATE m_State;
-	mstr m_FileName;
-	bool m_ShortMode;
+	enum class STATE {f_close = 0,f_open_read,f_open_write} ;
+	FILE* m_stream{};
+	STATE m_State = STATE::f_close;
+	mstr m_FileName{};
+	bool m_ShortMode{};
 };
 
 class _CTempCacheFiler : public _binary_filer

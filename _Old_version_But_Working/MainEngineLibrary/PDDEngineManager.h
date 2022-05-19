@@ -271,7 +271,7 @@ protected:
 	long hCircuit2SubCircuit(long long hCircuit, const string& SubName,_CSubCircuit*& pSubCircuit);
 	long hCircuit2SubCircuit(long long hCircuit, long SubID,_CSubCircuit*& pSubCircuit);
 	typedef pair<long long/*hCircuit*/,long/*Local hCofactor*/> GLOBAL_COFACTORS;
-	typedef hash_map<long long,GLOBAL_COFACTORS> COFACTORS_MAP; 
+	typedef unordered_map<long long,GLOBAL_COFACTORS> COFACTORS_MAP; 
 	COFACTORS_MAP m_Cofactors;
 	typedef COFACTORS_MAP::iterator COF_MAP_ITERATOR;
 	typedef COFACTORS_MAP::value_type COF_MAP_VALUE_TYPE;

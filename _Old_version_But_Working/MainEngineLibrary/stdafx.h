@@ -18,21 +18,21 @@
 
 #include <vector>
 #include <map>
-#include <hash_map>
+#include <unordered_map>
 #include <stdexcept>
 #include <string>
 #include <xstring>
 #include <deque>
 #include <list>
 #include <set>
-#include <hash_set>
+#include <unordered_set>
 #include <utility>
 #include <float.h>
 #include <fstream>
 #include <time.h>
 #include <sys/types.h>
 #include <sys/timeb.h>
-#include <typeinfo.h>
+#include <typeinfo>
 #include <algorithm>
 #include <limits>
 #include <functional>
@@ -152,7 +152,7 @@ bool IsIn(const	set<_Kty,_Pr,_Alloc>& SET, const _Kty Key)
 }
 
 template<class _Kty, class _Pr, class _Alloc >
-bool IsIn(const	hash_set<_Kty,_Pr,_Alloc>& SET, const _Kty Key)
+bool IsIn(const	unordered_set<_Kty,_Pr,_Alloc>& SET, const _Kty Key)
 {
 	return SET.find(Key)!=SET.end();
 }
@@ -191,24 +191,28 @@ class self_exp_vector : public vector<Type>
 public:
 	~self_exp_vector() {}
 	self_exp_vector():vector<Type> () {}
-	self_exp_vector(size_type _Count):vector<Type> (_Count) {}
-	self_exp_vector(size_type _Count, const Type& _Val):vector<Type> (_Count, _Val) {}
+	self_exp_vector(size_t _Count):vector<Type> (_Count) {}
+	self_exp_vector(size_t _Count, const Type& _Val):vector<Type> (_Count, _Val) {}
 	Type& force_at(size_t Index)
 	{
-		if(Index>=size())
+		if(Index>= this->size())
 			resize(Index+1,Type());
-		return at(Index);
+		return this->at(Index);
 	}
 	const Type* smart_at(size_t Index) const
 	{
-		if(Index>=size())
+		if(Index>=this->size())
 			return NULL;
-		return &at(Index);
+		return &(this->at(Index));
 	}
 	void ClearAll()
 	{
-		for(iterator it=begin();it!=end();it++)
-			(*it).ClearAll();
+		for (auto& v : *this)
+		{
+			v.ClearAll();
+		}
+		//for(iterator it=begin();it!=end();it++)
+		//	(*it).ClearAll();
 	}
 };
 
@@ -248,10 +252,10 @@ bool IsInList(const list<ElementType>& List, const ElementType& Element)
 typedef set<int> INT_SET;
 
 template<typename Item>
-void Vector2InvertedHashdMap(vector<Item>& Vector,hash_map<Item,size_t>& Map,size_t FirstIndex=0)
+void Vector2InvertedHashdMap(vector<Item>& Vector,unordered_map<Item,size_t>& Map,size_t FirstIndex=0)
 {
 	for(size_t i=0;i<Vector.size();i++)
-		Map.insert(hash_map<Item,size_t>::value_type(Vector[i],FirstIndex+i));
+		Map.insert(unordered_map<Item,size_t>::value_type(Vector[i],FirstIndex+i));
 }
 
 typedef list<int> INT_LIST;
@@ -262,7 +266,8 @@ void list_intersec(const list<TYPE>& List1, const list<TYPE>& List2, list<TYPE>&
 {
 	vector<TYPE> AuxVector;
 	AuxVector.resize(min(List1.size(),List2.size()));
-	vector<TYPE>::iterator _ResIt=set_intersection(List1.begin(),List1.end(),List2.begin(),List2.end(),AuxVector.begin());
+	//vector<TYPE>::iterator _ResIt=set_intersection(List1.begin(),List1.end(),List2.begin(),List2.end(),AuxVector.begin());
+	auto _ResIt=set_intersection(List1.begin(),List1.end(),List2.begin(),List2.end(),AuxVector.begin());
 	Res.assign(AuxVector.begin(),_ResIt);
 }
 
@@ -271,15 +276,18 @@ void list_intersec(list<TYPE>& List1Res, const list<TYPE>& List2)
 {
 	vector<TYPE> AuxVector;
 	AuxVector.resize(min(List1Res.size(),List2.size()));
-	vector<TYPE>::iterator _ResIt=set_intersection(List1Res.begin(),List1Res.end(),List2.begin(),List2.end(),AuxVector.begin());
+	//vector<TYPE>::iterator _ResIt=set_intersection(List1Res.begin(),List1Res.end(),List2.begin(),List2.end(),AuxVector.begin());
+	auto _ResIt=set_intersection(List1Res.begin(),List1Res.end(),List2.begin(),List2.end(),AuxVector.begin());
 	List1Res.assign(AuxVector.begin(),_ResIt);
 }
 
 template<typename TYPE>
 bool has_intersec(const list<TYPE>& List1, const list<TYPE>& List2)
 {
-	list<TYPE>::const_iterator it1=List1.begin(),_e1=List1.end();
-	list<TYPE>::const_iterator it2=List2.begin(),_e2=List2.end();
+	//list<TYPE>::const_iterator it1=List1.begin(),_e1=List1.end();
+	auto it1=List1.begin(),_e1=List1.end();
+	//list<TYPE>::const_iterator it2=List2.begin(),_e2=List2.end();
+	auto it2=List2.begin(),_e2=List2.end();
 	while(it1!=_e1 && it2!=_e2)
 	{
 		if(*it1<*it2)
@@ -301,7 +309,7 @@ void list_union(const list<TYPE>& List1, const list<TYPE>& List2, list<TYPE>& Re
 {
 	vector<TYPE> AuxVector;
 	AuxVector.resize(List1.size()+List2.size());
-	vector<TYPE>::iterator _ResIt=set_union(List1.begin(),List1.end(),List2.begin(),List2.end(),AuxVector.begin());
+	auto _ResIt=set_union(List1.begin(),List1.end(),List2.begin(),List2.end(),AuxVector.begin());
 	Res.assign(AuxVector.begin(),_ResIt);
 }
 
@@ -310,7 +318,7 @@ void list_union(list<TYPE>& List1Res, const list<TYPE>& List2)
 {
 	vector<TYPE> AuxVector;
 	AuxVector.resize(List1Res.size()+List2.size());
-	vector<TYPE>::iterator _ResIt=set_union(List1Res.begin(),List1Res.end(),List2.begin(),List2.end(),AuxVector.begin());
+	auto _ResIt=set_union(List1Res.begin(),List1Res.end(),List2.begin(),List2.end(),AuxVector.begin());
 	List1Res.assign(AuxVector.begin(),_ResIt);
 }
 
@@ -319,7 +327,7 @@ void list_differ(const list<TYPE>& List1, const list<TYPE>& List2, list<TYPE>& R
 {
 	vector<TYPE> AuxVector;
 	AuxVector.resize(max(List1.size(),List2.size()));
-	vector<TYPE>::iterator _ResIt=set_difference(List1.begin(),List1.end(),List2.begin(),List2.end(),AuxVector.begin());
+	auto _ResIt=set_difference(List1.begin(),List1.end(),List2.begin(),List2.end(),AuxVector.begin());
 	Res.assign(AuxVector.begin(),_ResIt);
 }
 
@@ -328,14 +336,14 @@ void list_differ(list<TYPE>& List1Res, const list<TYPE>& List2)
 {
 	vector<TYPE> AuxVector;
 	AuxVector.resize(max(List1Res.size(),List2.size()));
-	vector<TYPE>::iterator _ResIt=set_difference(List1Res.begin(),List1Res.end(),List2.begin(),List2.end(),AuxVector.begin());
+	auto _ResIt=set_difference(List1Res.begin(),List1Res.end(),List2.begin(),List2.end(),AuxVector.begin());
 	List1Res.assign(AuxVector.begin(),_ResIt);
 }
 
 template<typename ORD_TYPE>
 bool ord_list_remove(list<ORD_TYPE>& List, ORD_TYPE Item)
 {
-	list<ORD_TYPE>::iterator it=List.begin(),_e=List.end();
+	auto it=List.begin(),_e=List.end();
 	while(it!=_e && *it<Item) it++;
 	if(it==_e || *it>Item) return false;
 	List.erase(it);
@@ -383,8 +391,8 @@ IntType NWD(list<IntType>& List, bool LowestPositive = true)
 
 
 //template<typename Item>
-//void List2InvertedHashdMap(const list<Item>& List,hash_map<Item,size_t>& Map,size_t FirstIndex=0)
+//void List2InvertedHashdMap(const list<Item>& List,unordered_map<Item,size_t>& Map,size_t FirstIndex=0)
 //{
 //	for(list<Item>::const_iterator it=List.begin(),_e=List.end();it!=_e;it++,FirstIndex++)
-//		Map.insert(hash_map<Item,size_t>::value_type(*it,FirstIndex));
+//		Map.insert(unordered_map<Item,size_t>::value_type(*it,FirstIndex));
 //}
