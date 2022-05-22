@@ -11,33 +11,33 @@
 #include "binary_filer.h"
 #include "roots_poly.h"
 
-bool IsEqual(long double Left, long double Right);
+constexpr bool IsEqual(long double Left, long double Right);
 
 class norm_float
 {
 public:
 	constexpr norm_float(long double ld=0.0, long Mantise=0);
-	norm_float(const norm_float& Source):m_Base(Source.m_Base),m_Mantise(Source.m_Mantise) {}
+	constexpr norm_float(const norm_float& Source):m_Base(Source.m_Base),m_Mantise(Source.m_Mantise) {}
 	//~norm_float(void);
-	bool operator==(const norm_float& Right) const {return m_Base==Right.m_Base && 
+	constexpr bool operator==(const norm_float& Right) const {return m_Base==Right.m_Base && 
 		IsEqual(m_Mantise,Right.m_Mantise);}
-	bool operator!=(const norm_float& Right) const {return !operator==(Right);}
-	bool operator<(const norm_float& Right) const {return Comp(Right)<0;}
-	bool operator<=(const norm_float& Right) const {return Comp(Right)<=0;}
-	bool operator>(const norm_float& Right) const {return Comp(Right)>0;}
-	bool operator>=(const norm_float& Right) const {return Comp(Right)>=0;}
+	constexpr bool operator!=(const norm_float& Right) const {return !operator==(Right);}
+	constexpr bool operator<(const norm_float& Right) const {return Comp(Right)<0;}
+	constexpr bool operator<=(const norm_float& Right) const {return Comp(Right)<=0;}
+	constexpr bool operator>(const norm_float& Right) const {return Comp(Right)>0;}
+	constexpr bool operator>=(const norm_float& Right) const {return Comp(Right)>=0;}
 	norm_float& operator=(const norm_float& Source);
 	norm_float& operator=(long double Value);
-	norm_float& operator+=(const norm_float& Right) {Add(Right);return *this;}
-	norm_float& operator-=(const norm_float& Right) {Subtract(Right);return *this;}
-	norm_float& operator*=(const norm_float& Right) {Multiply(Right);return *this;}
-	norm_float& operator/=(const norm_float& Right) {Divide(Right);return *this;}
+	constexpr norm_float& operator+=(const norm_float& Right) {Add(Right);return *this;}
+	constexpr norm_float& operator-=(const norm_float& Right) {Subtract(Right);return *this;}
+	constexpr norm_float& operator*=(const norm_float& Right) {Multiply(Right);return *this;}
+	constexpr norm_float& operator/=(const norm_float& Right) {Divide(Right);return *this;}
 	constexpr norm_float operator-() const {return norm_float(-m_Base,m_Mantise);}
-	norm_float operator+() const {return *this;}
-	norm_float operator+(const norm_float& R) const;
+	constexpr norm_float operator+() const {return *this;}
+	constexpr norm_float operator+(const norm_float& R) const;
 	constexpr norm_float operator-(const norm_float& R) const;
-	norm_float operator*(const norm_float& R) const;
-	norm_float operator/(const norm_float& R) const;
+	constexpr norm_float operator*(const norm_float& R) const;
+	constexpr norm_float operator/(const norm_float& R) const;
 	string ToString() const;
 	bool IsOne() const {return m_Mantise==0 && IsEqual(m_Base,1.0);}
 	long double ToLD(long Shift=0) const;
@@ -66,75 +66,67 @@ public:
 	long CommonMantise(const norm_float& Other, bool Sqrtable) const;
 	//static norm_float epsilon() { return norm_float(1.0, numeric_limits<long>::min()); }
 protected:
-	short Comp(const norm_float& Right) const;
-	void Add(const norm_float& Right);
-	void Subtract(const norm_float& Right);
-	void Multiply(const norm_float& Right);
-	void Divide(const norm_float& Right);
+	constexpr short Comp(const norm_float& Right) const;
+	constexpr void Add(const norm_float& Right);
+	constexpr void Subtract(const norm_float& Right);
+	constexpr void Multiply(const norm_float& Right);
+	constexpr void Divide(const norm_float& Right);
 	constexpr norm_float& normalize();
-	norm_float& de_normalize(long DesiredMantise);
+	constexpr norm_float& de_normalize(long DesiredMantise);
 	long double m_Base;
 	long m_Mantise;
 };
 
-inline
-norm_float operator*(const long double& Left, const norm_float& Right)
+constexpr norm_float operator*(const long double& Left, const norm_float& Right)
 {
 	norm_float RR(Right);
 	return RR*=Left;
 }
 
-inline
-norm_float operator+(const long double& Left, const norm_float& Right)
+constexpr norm_float operator+(const long double& Left, const norm_float& Right)
 {
 	norm_float RR(Right);
 	return RR+=Left;
 }
 
-inline
-norm_float operator-(const long double& Left, const norm_float& Right)
+constexpr norm_float operator-(const long double& Left, const norm_float& Right)
 {
 	norm_float LL(Left);
 	return LL-=Right;
 }
 
-inline
-norm_float operator/(const long double& Left, const norm_float& Right)
+constexpr norm_float operator/(const long double& Left, const norm_float& Right)
 {
 	norm_float LL(Left);
 	return LL/=Right;
 }
 
-inline
-bool operator==(const long double& Left, const norm_float& Right)
+constexpr bool operator==(const long double& Left, const norm_float& Right)
 {
 	norm_float LL(Left);
 	return LL==Right;
 }
 
-inline
-bool operator>(const long double& Left, const norm_float& Right)
+constexpr bool operator>(const long double& Left, const norm_float& Right)
 {
 	norm_float LL(Left);
 	return LL>Right;
 }
 
-inline
-bool operator>=(const long double& Left, const norm_float& Right)
+constexpr bool operator>=(const long double& Left, const norm_float& Right)
 {
 	norm_float LL(Left);
 	return LL>=Right;
 }
 
-inline
-bool operator<(const long double& Left, const norm_float& Right)
+
+constexpr bool operator<(const long double& Left, const norm_float& Right)
 {
 	norm_float LL(Left);
 	return LL<Right;
 }
 
-inline
-bool operator<=(const long double& Left, const norm_float& Right)
+constexpr bool operator<=(const long double& Left, const norm_float& Right)
 {
 	norm_float LL(Left);
 	return LL<=Right;
@@ -1151,28 +1143,32 @@ public:
 	//	}
 
 	//static _Ty  _Infv(_Ty)
-	//static _Ty  _Infv()
-	//	{	// return infinity
-	//		return norm_float(::_LInf._Long_double,LONG_MAX);
-	//	}
+	static _Ty  _Infv()
+		{	// return infinity
+			//return norm_float(::_LInf._Long_double,LONG_MAX);
+			return numeric_limits<_Ty>::infinity();
+		}
 
-	//static bool  _Isinf(_Ty _Left)
-	//	{	// test for infinity
-	//		long double Base=_Left.GetBase();
-	//		return (_Left.GetMantise() == LONG_MAX && ::_LDtest(&Base) == _INFCODE);
-	//	}
+	static bool  _Isinf(_Ty _Left)
+		{	// test for infinity
+			long double Base=_Left.GetBase();
+			//return (_Left.GetMantise() == LONG_MAX && ::_LDtest(&Base) == _INFCODE);
+			return (::_LDtest(&Base) == _INFCODE);
+		}
 
-	//static bool  _Isnan(_Ty _Left)
-	//	{	// test for NaN
-	//		long double Base=_Left.GetBase();
-	//		return (_Left.GetMantise() == LONG_MIN && ::_LDtest(&Base) == _NANCODE);
-	//	}
+	static bool  _Isnan(_Ty _Left)
+		{	// test for NaN
+			long double Base=_Left.GetBase();
+			//return (_Left.GetMantise() == LONG_MIN && ::_LDtest(&Base) == _NANCODE);
+			return (::_LDtest(&Base) == _NANCODE);
+		}
 
-	////static _Ty  _Nanv(_Ty)
-	//static _Ty  _Nanv()
-	//	{	// return NaN
-	//		return norm_float(::_LNan._Long_double,LONG_MIN);
-	//	}
+	//static _Ty  _Nanv(_Ty)
+	static _Ty  _Nanv()
+		{	// return NaN
+			//return norm_float(::_LNan._Long_double,LONG_MIN);
+			return numeric_limits<_Ty>::quiet_NaN();
+		}
 
 	//static _Ty __CLRCALL_OR_CDECL _Sinh(_Ty _Left, _Ty _Right)
 	//	{	// return sinh(_Left) * _Right
@@ -1241,6 +1237,11 @@ public:
 	//	{	// return tan(_Left)
 	//	return (::tanl(_Left));
 	//	}
+	static bool _Signbit(_Ty _Left) {
+		// testing _Left < 0 would be incorrect when _Left is -0.0
+		return (_STD signbit)(_Left.GetBase());
+	}
+
 	};
 
 	/*

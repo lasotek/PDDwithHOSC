@@ -43,7 +43,7 @@ public:
 protected:
 	virtual bool IsEqualTo(const _CAbstractDirectNumContainer& Right);
 	virtual long DetermineHashKey(long Core = HASH_CORE);
-	shared_ptr<_CSubModelNumericPattern> m_pRes;
+	shared_ptr<_CSubModelNumericPattern> m_pRes = {};
 	//_CSubModelNumericPattern m_Res;
 	_CModelVertex* m_pVertex;
 	const string* m_Context;
@@ -52,7 +52,7 @@ protected:
 	long long m_PosInFile;
 	//unsigned m_UsageCounter;
 	//short m_TopSgn;
-	_CTempCacheFiler* m_p_tmp_file;
+	_CTempCacheFiler* m_p_tmp_file = nullptr;
 	friend class _CDirectNumCache;
 };
 

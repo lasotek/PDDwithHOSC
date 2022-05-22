@@ -100,7 +100,7 @@ template<class NumericType>
 void zroots(VectComplex<NumericType> &a, VectComplex<NumericType> &roots, bool polish)
 {
 	const NumericType EPS=1.0e-14; 
-	int i,its;
+	int i = 0, its = 0;
 	std::complex<NumericType> x,b,c;
 	int m=a.size()-1;
 	VectComplex<NumericType> ad(a);

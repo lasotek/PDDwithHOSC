@@ -27,9 +27,9 @@ public:
 	virtual long GetHash(long Core=HASH_CORE) const;
 	virtual void PlugInComponent(_CIntegrityTable& IntegrityTable);
 	virtual short sPower(int ParamId) {return 0;}
-	bool IsReadyToPlug() {return m_pModel->IsReady();}
+	bool IsReadyToPlug() {return m_pModel && m_pModel->IsReady();}
 	bool IsMacroDependant() const {return true;}
-	void RequestModelAnalysis() {m_pModel->RequestModelAnalysis();}
+	void RequestModelAnalysis() { if(m_pModel) m_pModel->RequestModelAnalysis();}
 	virtual void GetSimplyVertex(_CModelVertex* pBaseVertex,_CSExpandedVertices& Vertices,_CSExpandedDescendends& Descendents,
 		short& TopSgn, const _CDescSigns& BottomSgn, bool Approximated, const NumericType& Accuracy);
 	//_CSimpleVertexContainer GetSimplyVertex(_CSimpleVertexVector& Descendents);
@@ -174,7 +174,7 @@ protected:
 	typedef _CSubCircuit::BOUNDARY_NODES_MAP BOUNDARY_NODES_MAP;
 	typedef _CSubCircuit::BOUNDARY_NODES_IT BOUNDARY_NODES_IT;
 	typedef _CSubCircuit::BOUNDARY_NODES_TYPE BOUNDARY_NODES_TYPE;
-	_CSubCircuit* m_pModel;
+	_CSubCircuit* m_pModel = nullptr;
 	//typedef unordered_map<const string*,_CSubCircuit*> CONTEXT_MODEL;
 	//CONTEXT_MODEL m_Models;
 	_CIntNodes m_ConnectedNodes;
@@ -217,7 +217,7 @@ protected:
 	typedef vector<_CMultiBasicSetOfDeletions*> GREEDY_DELETIONS;
 	GREEDY_DELETIONS m_GreedyDeletions;
 	void PrepareSetOfDeletions();
-	long m_hInternalCofactor;
+	long m_hInternalCofactor = -1;
 };
 
 class _string_list : public list<string>

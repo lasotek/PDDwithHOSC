@@ -60,7 +60,7 @@ protected:
 	_CSExpandedVertices* m_pResSimpleVertex;
 	short m_ResTopSgn;
 	string m_SocketName;
-	const string* m_pContext; 
+	const string* m_pContext = nullptr; 
 };
 
 typedef _CAbstractOperationCache<_CSExpandedVertices> _COperationCache;

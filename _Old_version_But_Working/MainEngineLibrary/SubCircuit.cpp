@@ -295,7 +295,7 @@ void _CSubCircuit::TermLeave2Param(_CModelVertex* pVertex,MVERTEX_2_SIGN& MVerte
 void _CSubCircuit::LoadModel() 
 {
 	_CModelHeader Header(false);
-	_binary_filer Filer(_binary_filer::o_read,GetSubcircuitModelPath(),true);
+	_binary_filer Filer(_binary_filer::OPEN_MODE::o_read,GetSubcircuitModelPath(),true);
 	Filer>>Header;
 	if(Header.WrongHeader())
 		RISEPDD(eFilerProblem,"Wrong Header");
@@ -307,7 +307,7 @@ void _CSubCircuit::LoadModel()
 void _CSubCircuit::StoreModel()
 {
 	_CModelHeader Header(true);
-	_binary_filer Filer(_binary_filer::o_write,GetSubcircuitModelPath(),true);
+	_binary_filer Filer(_binary_filer::OPEN_MODE::o_write,GetSubcircuitModelPath(),true);
  	Filer.set(sizeof(Header));
 	_Store(Filer);
 	Header.InterfaceOff=m_InterfaceOffset;//Tu dopisaæ

@@ -198,7 +198,7 @@ bool _CSubCircuitSocket::PrepareInterface2Model()
 	path_str FilePath;
 	if(!GetModelInterfaceSpace(FilePath))
 		return false;
-	_binary_filer Filer(_binary_filer::o_read,FilePath,true);
+	_binary_filer Filer(_binary_filer::OPEN_MODE::o_read,FilePath,true);
 	_CModelHeader Header(false);
 	Filer>>Header;
 	if(Header.WrongHeader())
@@ -539,7 +539,7 @@ bool _CSubCircuitSocket::GetModelInterfaceSpace(path_str& FilePath)
 
 unsigned short _CSubCircuitSocket::sPower() const
 {
-	return m_pModel->MaxPower();
+	return (unsigned short)m_pModel->MaxPower();
 }
 
 void _CSubCircuitSocket::WritePos(iostream& stream)

@@ -1496,7 +1496,7 @@ protected:
 	_CConstComponentPath m_CurrentPath;
 	_CResCache* m_pCache;
 	//_CNCache* m_pNCache;
-	typename OutputType m_Result;
+	typename OutputType m_Result = {};
 	//unsigned m_CurrAuxId;
 	//unsigned m_Succ1AuxId;
 	//unsigned m_Succ0AuxId;
@@ -1772,9 +1772,9 @@ public:
 		}
 		if(IsLocalTerminal())
 		{
-			_CSubCircuitVerticesMap* pTempVector;
-			const _CSubCircuitSocket* pTempSocket;
-			long long TempMVId;
+			_CSubCircuitVerticesMap* pTempVector = nullptr;
+			const _CSubCircuitSocket* pTempSocket = nullptr;
+			long long TempMVId = -1;
 			Operator.PopState(pTempVector,pTempSocket, TempMVId);
 
 			ASSERTPDD(pTempVector!=NULL);

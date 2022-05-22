@@ -274,7 +274,7 @@ protected:
 	CONTRACTION_LIST::iterator m_RemIt;
 	typedef list<CONTRACTION_LIST::iterator> TO_MODIFY;
 	TO_MODIFY m_ModifyList;
-	int m_Pos2Rem;
+	int m_Pos2Rem = -1;
 	bool m_HasNegativeDels;
 	friend class _CStateCofactor;
 	friend class _CBoundaryState;

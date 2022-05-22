@@ -131,7 +131,7 @@ void _CSparsePolynomialCache::NotifyReadyNew(const string* Context, const _CComp
 	InitLibrary();
 	MAP2::iterator it = GetDATA(Context, pRedefParams);
 	ASSERTPDD(it != m_Map2.end());
-	_binary_filer Filer(_binary_filer::o_random, *m_pFilePath, true);
+	_binary_filer Filer(_binary_filer::OPEN_MODE::o_random, *m_pFilePath, true);
 	Filer.end();
 	RegisterPresInFile(Filer, it);
 	m_EOFPos = Filer.pos();

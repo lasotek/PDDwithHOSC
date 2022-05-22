@@ -1219,7 +1219,7 @@ void _CModelVertex::GetSimpleVertex(_CSExpandedVertices*& pSEVertices,unsigned C
 	if(pRealContainer==NULL)
 	{
 		_CSExpandedDescendends LocalTerminals(NoOfDescendants());
-		_CDescSigns AuxSigns(NoOfDescendants());
+		_CDescSigns AuxSigns((short)NoOfDescendants());
 		for(unsigned i=0;i<NoOfDescendants();i++)
 		{
 			_CDescendantContainer& Desc=m_Descendants[i];

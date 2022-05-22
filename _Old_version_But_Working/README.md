@@ -16,3 +16,5 @@ Each project should has this library to be added and contains includes:
 `#include "..\PDDErrorsAndConst.h"`
 
 
+The previous version was not compatible with C++14 and higher. The 2022.05.19 version is compatible with newer standards for Win32 code. The x64 version is still in development. 
+

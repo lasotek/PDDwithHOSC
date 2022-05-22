@@ -823,7 +823,7 @@ protected:
 	friend class _CSimplyComponent;
 	friend class _CSubCircuitSocket;
 	friend class _CContextSExpFlatVertices;
-	_CMainCircuit* m_pMainCircuit;
+	_CMainCircuit* m_pMainCircuit = nullptr;
 };
 class _CSExpFlatVerticesFilter
 {

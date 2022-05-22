@@ -7,9 +7,11 @@
 
 NumericType EmptyFloat=0.0;
 
-bool IsEqual(long double Left, long double Right)
+constexpr bool IsEqual(long double Left, long double Right)
 {
-	return abs(Left-Right)<=numeric_limits<long double>::epsilon();
+	auto d = Left - Right;
+	if (d < 0.0) d = -d;
+	return d<=numeric_limits<long double>::epsilon();
 }
 
 template<>
@@ -54,7 +56,7 @@ constexpr norm_float& norm_float::normalize()
 		m_Mantise=0;
 	return *this;
 }
-norm_float& norm_float::de_normalize(long DesiredMantise)
+constexpr norm_float& norm_float::de_normalize(long DesiredMantise)
 {
 	if(m_Base!=0.0)
 	{
@@ -88,7 +90,7 @@ norm_float& norm_float::operator=(long double Value)
 	return *this;
 }
 
-void norm_float::Add(const norm_float& Right)
+constexpr void norm_float::Add(const norm_float& Right)
 {
 	if(IsEqual(m_Base,0.0))
 	{
@@ -112,7 +114,7 @@ void norm_float::Add(const norm_float& Right)
 	}
 }
 
-void norm_float::Subtract(const norm_float& Right)
+constexpr void norm_float::Subtract(const norm_float& Right)
 {
 	if(IsEqual(m_Base,0.0))
 	{
@@ -136,14 +138,14 @@ void norm_float::Subtract(const norm_float& Right)
 	}
 }
 
-void norm_float::Multiply(const norm_float& Right)
+constexpr void norm_float::Multiply(const norm_float& Right)
 {
 	m_Base*=Right.m_Base;
 	m_Mantise+=Right.m_Mantise;
 	normalize();
 }
 
-void norm_float::Divide(const norm_float& Right)
+constexpr void norm_float::Divide(const norm_float& Right)
 {
 	if(IsEqual(Right.m_Base,0.0))
 		RISEPDD(eIllegalOperation,"Division by 0");
@@ -152,28 +154,28 @@ void norm_float::Divide(const norm_float& Right)
 	normalize();
 }
 
-norm_float norm_float::operator+(const norm_float& R) const
+constexpr norm_float norm_float::operator+(const norm_float& R) const
 {
 	norm_float L(*this);
 	L+=R;
 	return L;
 }
 
-norm_float norm_float::operator-(const norm_float& R) const
+constexpr norm_float norm_float::operator-(const norm_float& R) const
 {
 	norm_float L(*this);
 	L-=R;
 	return L;
 }
 
-norm_float norm_float::operator*(const norm_float& R) const
+constexpr norm_float norm_float::operator*(const norm_float& R) const
 {
 	norm_float L(*this);
 	L*=R;
 	return L;
 }
 
-norm_float norm_float::operator/(const norm_float& R) const
+constexpr norm_float norm_float::operator/(const norm_float& R) const
 {
 	norm_float L(*this);
 	L/=R;
@@ -254,7 +256,7 @@ string ToString(const norm_float& Value)
 	return Value.ToString();
 }
 
-short norm_float::Comp(const norm_float& Right) const
+constexpr short norm_float::Comp(const norm_float& Right) const
 {
 	if(IsEqual(m_Base,0.0) && IsEqual(Right.m_Base,0.0))
 		return 0;
@@ -589,6 +591,7 @@ norm_float arg(const NormFloatComplex& Value)
 //	return at(Index);
 //}
 //
+template<>
 bool IsZero(const NumericType& Value) {return Value==0.0;}
 
 //IMPLEMENT_DYNAMIC_CREATION(_CSubModelNumericPatternStreamContainer);
@@ -735,3 +738,4 @@ void DetermineFreqsValues(NormVectComplex& Results, _CSparsePolynomial& Polynomi
 	}
 	ASSERTPDD(Results.size() == FreqVector.size());
 }
+
