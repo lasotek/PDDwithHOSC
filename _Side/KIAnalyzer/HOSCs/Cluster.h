@@ -1,12 +1,12 @@
 /**
  * @file Cluster.h
  * @author Sławomir Lasota  (lasotek@gmail.com)
- * @brief 
+ * @brief
  * @version 0.1
  * @date 2021-02-05
- * 
+ *
  * @copyright Copyright (c) 2021
- * 
+ *
  */
 #ifndef __CLUSTER_H__
 #define __CLUSTER_H__
@@ -30,36 +30,36 @@ namespace HOSC
     public:
         /**
          * @brief any set of nodes
-         * 
+         *
          */
         using set_of_nodes = std::set<int>;
         /**
          * @brief external nodes
-         * 
+         *
          */
         using boundary_nodes_list = std::initializer_list<int>;
 
         /**
          * @brief connection list: first - internal No node, second - external No node
-         * 
+         *
          */
-        using init_bounadry_connections_list = std::initializer_list<std::pair<int, int>>;
+        using init_boundary_connections_list = std::initializer_list<std::pair<int, int>>;
 
         /**
          * @brief connection list: first - internal No node, second - external No node
-         * 
+         *
          */
-        using bounadry_connections_list = std::list<std::pair<int, int>>;
+        using boundary_connections_list = std::list<std::pair<int, int>>;
 
         /**
-         * @brief internal cluster 
-         * 
+         * @brief internal cluster
+         *
          */
-        using mine_cluster_ptr = std::shared_ptr<KICluster>;
+        using main_cluster_ptr = std::shared_ptr<KICluster>;
 
         /**
          * @brief first - out nodes, second.first - in nodes, second.second - counter
-         * 
+         *
          */
         using set_of_nodes_that_reduce = std::unordered_map<int, std::unordered_map<int, int>>;
 
@@ -100,22 +100,23 @@ namespace HOSC
                                                ext_interface_ptr pRight,
                                                nodes_pins nodes_to_remove = {});
 
-            mine_cluster_ptr clusters_p;
+            main_cluster_ptr clusters_p;
             NodeTrans translator;
             // nodes_pins only_my_pins_;
             nodes_pins &only_my_pins() { return interface_ptr->only_my_pins_; }
             nodes_pins &ext_my_pins() { return interface_ptr->ext_my_pins_; }
-            enum
+            enum class Parallel_running
             {
                 not_yet,
                 running,
                 done
-            } is_parallel_running = not_yet;
+            };
+            Parallel_running is_parallel_running = Parallel_running::not_yet;
             std::promise<bool> promise;
             std::future<bool> solve_future;
 
             // std::mutex p_mutex;
-            //to do
+            // to do
             // std::shared_ptr<KIIndexCol> denom_;
             std::shared_ptr<KIIndexCol> &denom() { return interface_ptr->denom_; }
             // std::shared_ptr<KIIndexCol> numers_;
@@ -139,9 +140,9 @@ namespace HOSC
                 return get_translated(clusters_p->numers_ext, map);
             }
             /**
-             * @brief remove nodes froma edges, leaves only private not connected nodes
-             * 
-             * @param edge_nodes Egdge's nodes
+             * @brief remove nodes from edges, leaves only private not connected nodes
+             *
+             * @param edge_nodes edge's nodes
              */
             template <Iterable T>
             void leave_only_internal_nodes(const T &edge_nodes)
@@ -163,7 +164,7 @@ namespace HOSC
         public:
             using ext_interface_stack = std::list<ext_interface_ptr>;
             // int_ki_cont() = default;
-            int_ki_cont(mine_cluster_ptr cluster, const bounadry_connections_list &connections);
+            int_ki_cont(main_cluster_ptr cluster, const boundary_connections_list &connections);
             set_of_nodes get_cluster_ex_nodes() const;
             int translate_node(int clust_int_node);
             void get_boundary_translation(NodeTrans::NtoN &map) const;
@@ -174,11 +175,12 @@ namespace HOSC
             inline ext_interface_ptr get_interface() { return interface_ptr; }
             inline ext_interface_ptr const_get_interface() const { return std::make_shared<ext_interface>(*interface_ptr); }
             // const auto only_my_pins() const { return only_my_pins()}; }
-            // mine_cluster_ptr big_o_dot();
+            // main_cluster_ptr big_o_dot();
+            bool dirty() { return clusters_p->dirty(); }
         };
 
     private:
-        friend std::ostream &operator<<(std::ostream &os, KICluster &claster);
+        friend std::ostream &operator<<(std::ostream &os, KICluster &cluster);
         friend class int_ki_cont;
         using ext_interface_stack = int_ki_cont::ext_interface_stack;
         using W = long long;
@@ -204,14 +206,13 @@ namespace HOSC
             if (clusters_p)
                 for (auto &ic : *clusters_p)
                 {
-                    if (ic.is_parallel_running != int_ki_cont::done)
+                    if (ic.is_parallel_running != int_ki_cont::Parallel_running::done)
                         return false;
                 }
             return true;
         }
 
         void get_boundary_translation(NodeTrans::NtoN &map) const;
-        set_of_nodes get_bound_nodes_ext() const;
         map_iterator min_incidence();
         inline void make_dirty()
         {
@@ -220,8 +221,11 @@ namespace HOSC
             denom_value_.reset();
             numer_value_.reset();
             // node_trans_.reset();
+            denom_.reset();
+            numers_.reset();
+            numers_ext.reset();
         }
-        bool dirty() const { return !(denom_value_.has_value() && numer_value_.has_value()); }
+        bool dirty();
         void to_stream(std::ostream &os);
         void init_clusters_list()
         {
@@ -243,21 +247,39 @@ namespace HOSC
     public:
         KICluster(bool use_threads = false) noexcept;
         KICluster(const boundary_nodes_list &_boundary_nodes, bool use_threads = false) noexcept;
+        template <Iterable T>
+        KICluster(const T &_boundary_nodes, bool use_threads = false) noexcept
+        {
+            bound_nodes_.insert(virtual_node);
+            for (auto n : _boundary_nodes)
+            {
+                n = node_trans_.extN2inN(n);
+                bound_nodes_.insert(n);
+            }
+        }
+
         ~KICluster();
         /**
-         * @brief Add another boundaty node
-         * 
+         * @brief Add another boundary node
+         *
          * @param node New nodes
          * @return true The node is new
          * @return false The not has been already declared
          */
-        inline bool add_bundary_node(int node)
+        inline bool add_boundary_node(int node)
         {
             return bound_nodes_.insert(node_trans_.extN2inN(node)).second;
         }
+
+        /**
+         * @brief Get the bound nodes ext object
+         *
+         * @return set_of_nodes Set of boundary nodes as an integer
+         */
+        set_of_nodes get_bound_nodes_ext() const;
         /**
          * @brief Remove boundary node if it exists
-         * 
+         *
          * @param node Boundary node
          * @return true If node has been defined and was removed
          * @return false If node has not been defined at all
@@ -265,7 +287,7 @@ namespace HOSC
         bool remove_boundary_node(int node);
         /**
          * @brief Construct a new KICluster object
-         * 
+         *
          * @param edges_list Initial list of edges
          */
         KICluster(const Edges<W> &edges_list)
@@ -277,8 +299,8 @@ namespace HOSC
         }
         /**
          * @brief Add a single edge to cluster. It reset previous calculations
-         * 
-         * @param edge 
+         *
+         * @param edge
          */
         void AddEdge(const Edge<W> &edge)
         {
@@ -286,46 +308,99 @@ namespace HOSC
             make_dirty();
         }
         /**
+         * @brief Remove each edge named "name" from cluster. It reset previous calculations
+         *
+         * @param name name of edge.
+         */
+        void DeleteEdge(const std::string &name)
+        {
+            main_list_.remove_if([&name](auto &e)
+                                 { return e->get_name() == name; });
+            make_dirty();
+        }
+
+        bool IsEdge(const std::string &name) const
+        {
+            return std::any_of(main_list_.begin(), main_list_.end(),
+                               [&name](auto &e)
+                               { return e->get_name() == name; });
+        }
+
+        bool IsEdgeUnique(const std::string &name) const
+        {
+            auto pred =[&name](auto &e)
+                { return e->get_name() == name; };
+            auto it = std::find_if(main_list_.begin(), main_list_.end(), pred);
+            if (it == main_list_.end())
+                return false;
+            return std::find_if(std::next(it,1), main_list_.end(), pred) == main_list_.end();
+            
+        }
+
+        template <Arithmetic W>
+        void Modify(const std::string &name, int a, int b, W value)
+        {
+            auto pred = [&name](auto &e)
+                { return e->get_name() == name; };
+            auto it = std::find_if(main_list_.begin(), main_list_.end(), pred);
+            if (it == main_list_.end())
+                throw std::runtime_error("Edge with name " + name + " not found");
+            if (std::find_if(std::next(it), main_list_.end(), pred) != main_list_.end())
+                throw std::runtime_error("Name:" + name + " is not unique. Only unique edges can be modified");
+            (*it)->modify(a, b, value);
+        }
+
+        /**
          * @brief Force a cluster to be solved
-         * 
+         *
          */
         void Solve();
 
         /**
-         * @brief 
-         * 
+         * @brief
+         *
          */
         void Solve2();
         /**
          * @brief Return the numerical KI as a double number. In case of cluster with boundary nodes, they are assumed to be not connected
-         * 
-         * @return double KI 
+         *
+         * @return double KI
          */
         inline auto KIIndex() const { return (double)numer_value_.value() / denom_value_.value(); }
         /**
-         * @brief 
-         * 
-         * @return auto 
+         * @brief
+         *
+         * @return auto
          */
         inline auto numerator() const { return numer_value_.value(); }
         /**
-         * @brief 
-         * 
-         * @return auto 
+         * @brief
+         *
+         * @return auto
          */
         inline auto denominator() const { return denom_value_.value(); }
+
         /**
-         * @brief 
-         * 
-         * @param cluster 
-         * @param connection_list 
-         * @return mine_cluster_ptr 
+         * @brief
+         *
+         * @param cluster
+         * @param connection_list
+         * @return int_ki_cont*
          */
-        int_ki_cont *insert_cluster(const mine_cluster_ptr cluster, const init_bounadry_connections_list &connection_list);
+        int_ki_cont *insert_cluster(const main_cluster_ptr cluster, const boundary_connections_list &connection_list);
+
+        /**
+         * @brief
+         *
+         * @param cluster
+         * @param connection_list
+         * @return main_cluster_ptr
+         */
+        int_ki_cont *insert_cluster(const main_cluster_ptr cluster, const init_boundary_connections_list &connection_list);
         /**
          * @brief checking if node is defined as boundary
-         * 
-         * @param node 
+         *
+         * @param node
          * @return true yes
          * @return false no
          */
@@ -333,10 +408,10 @@ namespace HOSC
     };
 
     /**
-     * @brief overloaded writting to stream operator
-     * 
+     * @brief overloaded writing to stream operator
+     *
      * @param os stream
-     * @param cluster claster to describe into strea, 
+     * @param cluster cluster to describe into stream,
      * @return std::ostream& stream
      */
     inline std::ostream &operator<<(std::ostream &os, KICluster &cluster)

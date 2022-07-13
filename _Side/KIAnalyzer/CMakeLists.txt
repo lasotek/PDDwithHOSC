@@ -15,6 +15,7 @@ add_executable(KIAnalyzer main.cpp
                             ./HOSCs/SingleHOSC.cpp
                             ./HOSCs/Cluster.cpp
                             ./HOSCs/Parser/Parser.cpp
+                            ./HOSCs/Parser/Interpreter.cpp
                             ./Tests/KIT1.cpp
                             ./Tests/KIT2.cpp
                             ./Tests/KIT3.cpp

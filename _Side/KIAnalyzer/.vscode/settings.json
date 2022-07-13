@@ -30,12 +30,59 @@
         "numeric": "cpp",
         "system_error": "cpp",
         "chrono": "cpp",
-        "list": "cpp"
+        "list": "cpp",
+        "any": "cpp",
+        "barrier": "cpp",
+        "bit": "cpp",
+        "bitset": "cpp",
+        "charconv": "cpp",
+        "cmath": "cpp",
+        "compare": "cpp",
+        "complex": "cpp",
+        "condition_variable": "cpp",
+        "coroutine": "cpp",
+        "cstddef": "cpp",
+        "forward_list": "cpp",
+        "unordered_set": "cpp",
+        "algorithm": "cpp",
+        "random": "cpp",
+        "fstream": "cpp",
+        "future": "cpp",
+        "iomanip": "cpp",
+        "iosfwd": "cpp",
+        "limits": "cpp",
+        "mutex": "cpp",
+        "new": "cpp",
+        "ranges": "cpp",
+        "ratio": "cpp",
+        "scoped_allocator": "cpp",
+        "shared_mutex": "cpp",
+        "span": "cpp",
+        "stdexcept": "cpp",
+        "stop_token": "cpp",
+        "syncstream": "cpp",
+        "regex": "cpp",
+        "utility": "cpp",
+        "valarray": "cpp",
+        "variant": "cpp",
+        "version": "cpp"
+    },
+    "cmake.debugConfig": {
+        "args": [
+            "-i",
+            "input.txt",
+            "-o",
+            "output.txt"
+        ]
     },
     "spellright.language": [],
     "spellright.documentTypes": [
         "markdown",
         "latex",
         "plaintext"
+    ],
+    "cSpell.words": [
+        "KIINDEXCOL",
+        "tparam"
     ]
 }

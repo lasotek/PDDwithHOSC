@@ -97,7 +97,7 @@ namespace HOSC
      * @param target 
      * @return int 
      */
-    inline int clear_cannonical_single(int &source, int &target)
+    inline int clear_canonical_single(int &source, int &target)
     {
         if (source == target)
             return 0;
@@ -111,7 +111,7 @@ namespace HOSC
     SingleHOSC::SingleHOSC(int source, int target, short max_nodes, long long weight) noexcept
         : n_nodes_(max_nodes), weight_(weight)
     {
-        weight_ *= clear_cannonical_single(source, target);
+        weight_ *= clear_canonical_single(source, target);
         if (weight_)
             _deletions_.emplace_back(SingleDel(source, target));
     }
@@ -129,7 +129,7 @@ namespace HOSC
         {
             auto p = replacer.get(del.source());
             auto r = replacer.get(del.target());
-            weight_ *= clear_cannonical_single(p, r);
+            weight_ *= clear_canonical_single(p, r);
             if (weight_ == 0)
             {
                 _deletions_.clear();
@@ -173,7 +173,7 @@ namespace HOSC
             }
             source = replacer.get(source);
             target = replacer.get(target);
-            weight_ *= clear_cannonical_single(source, target);
+            weight_ *= clear_canonical_single(source, target);
             if (weight_ == 0)
             {
                 _deletions_.clear();
@@ -197,7 +197,7 @@ namespace HOSC
                 target = newNode;
             source = replacer.get(source);
             target = replacer.get(target);
-            weight_ *= clear_cannonical_single(source, target);
+            weight_ *= clear_canonical_single(source, target);
             if (weight_ == 0)
             {
                 _deletions_.clear();
@@ -216,7 +216,7 @@ namespace HOSC
         {
             auto source = replacer.get(del.source());
             auto target = replacer.get(del.target());
-            weight_ *= clear_cannonical_single(source, target);
+            weight_ *= clear_canonical_single(source, target);
             if (weight_ == 0)
             {
                 _deletions_.clear();

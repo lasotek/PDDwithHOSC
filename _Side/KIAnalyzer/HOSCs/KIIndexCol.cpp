@@ -22,12 +22,12 @@ namespace HOSC
     {
         switch (function)
         {
-        case com_denomnator:
+        case com_denominator:
         {
-            auto HOSC = std::make_shared<SingleHOSC>(in_edge.weight_, _no_nodes);
+            auto HOSC = std::make_shared<SingleHOSC>(in_edge.get_weight(), _no_nodes);
             if (HOSC->is_valid())
                 insert(HOSC);
-            HOSC = std::make_shared<SingleHOSC>(in_edge.node_a, in_edge.node_b, _no_nodes);
+            HOSC = std::make_shared<SingleHOSC>(in_edge.get_node_a(), in_edge.get_node_b(), _no_nodes);
             if (HOSC->is_valid())
                 insert(HOSC);
         }
@@ -35,7 +35,7 @@ namespace HOSC
 
         case sum_numerators:
         {
-            auto HOSC = std::make_shared<SingleHOSC>(in_edge.node_a, in_edge.node_b, _no_nodes, in_edge.weight_);
+            auto HOSC = std::make_shared<SingleHOSC>(in_edge.get_node_a(), in_edge.get_node_b(), _no_nodes, in_edge.get_weight());
             if (HOSC->is_valid())
                 insert(HOSC);
         }
@@ -43,14 +43,14 @@ namespace HOSC
         //Change it.
         case extern_connections:
         {
-            SingleHOSC::initial_del_set dels{{virtual_node, in_edge.node_a}, {in_edge.node_b, in_edge.node_a}};
+            SingleHOSC::initial_del_set dels{{virtual_node, in_edge.get_node_a()}, {in_edge.get_node_b(), in_edge.get_node_a()}};
             auto HOSC = std::make_shared<SingleHOSC>(dels, _no_nodes, 2);
             if (HOSC->is_valid())
                 insert(HOSC);
-            HOSC = std::make_shared<SingleHOSC>(virtual_node, in_edge.node_a, _no_nodes, in_edge.weight_);
+            HOSC = std::make_shared<SingleHOSC>(virtual_node, in_edge.get_node_a(), _no_nodes, in_edge.get_weight());
             if (HOSC->is_valid())
                 insert(HOSC);
-            HOSC = std::make_shared<SingleHOSC>(virtual_node, in_edge.node_b, _no_nodes, in_edge.weight_);
+            HOSC = std::make_shared<SingleHOSC>(virtual_node, in_edge.get_node_b(), _no_nodes, in_edge.get_weight());
             if (HOSC->is_valid())
                 insert(HOSC);
             _no_nodes++;
@@ -64,7 +64,7 @@ namespace HOSC
     {
         switch (function)
         {
-        case com_denomnator:
+        case com_denominator:
         {
             auto HOSC = std::make_shared<SingleHOSC>(_no_nodes);
             if (HOSC->is_valid())
@@ -295,7 +295,8 @@ namespace HOSC
 
     KIIndexCol::KIndexCol_ptr KIIndexCol::copy_vitual_to_real(int real_node)
     {
-        auto res = std::shared_ptr<KIIndexCol>(new KIIndexCol(max_nodes));
+        // auto res = std::shared_ptr<KIIndexCol>(new KIIndexCol(max_nodes));
+        auto res = std::make_shared<KIIndexCol>(max_nodes);
         auto CurHOSCs = _HOSCmap();
         for (auto it = CurHOSCs.begin(); it != CurHOSCs.end(); it++)
         {

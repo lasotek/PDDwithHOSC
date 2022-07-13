@@ -118,8 +118,8 @@ namespace HOSC
                 const auto &edges_list = edges_it->second;
                 for (auto edge_ptr : edges_list)
                 {
-                    auto a = edge_ptr->node_a;
-                    auto b = edge_ptr->node_b;
+                    auto a = edge_ptr->get_node_a();
+                    auto b = edge_ptr->get_node_b();
                     res.insert(a == n ? b : a);
                 }
             }
@@ -137,8 +137,8 @@ namespace HOSC
                 auto &n_incidences_edges = n_incidences_edges_it->second;
                 for (auto &edg_ptr : n_incidences_edges)
                 {
-                    auto a = edg_ptr->node_a;
-                    auto b = edg_ptr->node_b;
+                    auto a = edg_ptr->get_node_a();
+                    auto b = edg_ptr->get_node_b();
                     auto other_n = a == n ? b : a;
                     if (set.contains(other_n))
                         entry[other_n]++;
@@ -194,7 +194,7 @@ namespace HOSC
             auto &local_inc_eges = incidences_[newNode];
             for (auto &e : local_inc_eges)
             {
-                if (set.contains(e->node_a) || set.contains(e->node_b))
+                if (set.contains(e->get_node_a()) || set.contains(e->get_node_b()))
                     newEdges.push_back(e);
                 // auto &edge = e->second
             }
@@ -220,7 +220,7 @@ namespace HOSC
                 main_list_.emplace_back(std::make_shared<Edge<W>>(e));
             }
         }
-        void AddEdge(const Edge<W> &edge)
+        void AddEdge(const Edge<W> &edge, std::string name="")
         {
             main_list_.emplace_back(std::make_shared<Edge<W>>(edge));
             make_dirty();
@@ -238,9 +238,9 @@ namespace HOSC
             {
                 // auto E = e.shared_from_this(); // std::make_shared<Edge<W>>(e);
                 // auto E =  std::make_shared<Edge<W>>(e);
-                auto a = node_trans_.extN2inN(e->node_a);
-                auto b = node_trans_.extN2inN(e->node_b);
-                auto newE = std::make_shared<Edge<W>>(a, b, e->weight_);
+                auto a = node_trans_.extN2inN(e->get_node_a());
+                auto b = node_trans_.extN2inN(e->get_node_b());
+                auto newE = std::make_shared<Edge<W>>(a, b, e->get_weight());
                 incidences_[a].push_back(newE);
                 incidences_[b].push_back(newE);
                 max_nodes_ = std::max(max_nodes_, a);
@@ -250,8 +250,8 @@ namespace HOSC
             }
             auto iter = min_incidence();
             auto init_edge_ptr = *iter->second.begin();
-            set_of_nodes set_n{{init_edge_ptr->node_a}, {init_edge_ptr->node_b}};
-            denom_ = std::make_shared<KIIndexCol>(*init_edge_ptr, max_nodes_ + 1, KIIndexCol::com_denomnator);
+            set_of_nodes set_n{{init_edge_ptr->get_node_a()}, {init_edge_ptr->get_node_b()}};
+            denom_ = std::make_shared<KIIndexCol>(*init_edge_ptr, max_nodes_ + 1, KIIndexCol::com_denominator);
             numers_ = std::make_shared<KIIndexCol>(*init_edge_ptr, max_nodes_ + 1, KIIndexCol::sum_numerators);
             numers_j = std::make_shared<KIIndexCol>(*init_edge_ptr, max_nodes_ + 1, KIIndexCol::extern_connections);
 #ifdef _STEP_BY_STEP_SHOW_
@@ -262,19 +262,19 @@ namespace HOSC
             std::cout << "\t numers_ext: " << numers_j->String(node_trans_) << std::endl;
 #endif
             nodes_to_remove rn;
-            std::erase(incidences_[init_edge_ptr->node_b], init_edge_ptr);
-            if (incidences_[init_edge_ptr->node_b].empty())
+            std::erase(incidences_[init_edge_ptr->get_node_b()], init_edge_ptr);
+            if (incidences_[init_edge_ptr->get_node_b()].empty())
             {
-                rn.push_back(init_edge_ptr->node_b);
-                set_n.erase(init_edge_ptr->node_b);
-                incidences_.erase(init_edge_ptr->node_b);
+                rn.push_back(init_edge_ptr->get_node_b());
+                set_n.erase(init_edge_ptr->get_node_b());
+                incidences_.erase(init_edge_ptr->get_node_b());
             }
-            std::erase(incidences_[init_edge_ptr->node_a], init_edge_ptr);
-            if (incidences_[init_edge_ptr->node_a].empty())
+            std::erase(incidences_[init_edge_ptr->get_node_a()], init_edge_ptr);
+            if (incidences_[init_edge_ptr->get_node_a()].empty())
             {
-                rn.push_back(init_edge_ptr->node_a);
-                set_n.erase(init_edge_ptr->node_a);
-                incidences_.erase(init_edge_ptr->node_a);
+                rn.push_back(init_edge_ptr->get_node_a());
+                set_n.erase(init_edge_ptr->get_node_a());
+                incidences_.erase(init_edge_ptr->get_node_a());
             }
             while (!incidences_.empty())
             {
@@ -293,8 +293,8 @@ namespace HOSC
 #endif
                 for (auto edge_ptr : local_list)
                 {
-                    auto a = edge_ptr->node_a;
-                    auto b = edge_ptr->node_b;
+                    auto a = edge_ptr->get_node_a();
+                    auto b = edge_ptr->get_node_b();
                     auto it_a = incidences_.find(a);
                     auto it_b = incidences_.find(b);
                     std::erase(it_a->second, edge_ptr);
@@ -314,9 +314,9 @@ namespace HOSC
                             rn.push_back(a);
                     }
                     auto ed = std::make_pair(a, b);
-                    denom_->add_edge_remove_node(ed, rn, edge_ptr->weight_);
-                    numers_->add_edge_remove_node(ed, rn, edge_ptr->weight_);
-                    numers_j->add_edge_remove_node(ed, rn, edge_ptr->weight_);
+                    denom_->add_edge_remove_node(ed, rn, edge_ptr->get_weight());
+                    numers_->add_edge_remove_node(ed, rn, edge_ptr->get_weight());
+                    numers_j->add_edge_remove_node(ed, rn, edge_ptr->get_weight());
 #ifdef _STEP_BY_STEP_SHOW_
                     std::cout << "After edge consideration: " << node_trans_.inN2extN(edge_ptr->node_a) << ", " << node_trans_.inN2extN(edge_ptr->node_b) << ", w = " << edge_ptr->weight_ << std::endl;
                     if (!rn.empty())
@@ -351,15 +351,15 @@ namespace HOSC
             {
                 // auto E = e.shared_from_this(); // std::make_shared<Edge<W>>(e);
                 // auto E =  std::make_shared<Edge<W>>(e);
-                auto a = node_trans_.extN2inN(e->node_a);
-                auto b = node_trans_.extN2inN(e->node_b);
-                auto newE = std::make_shared<Edge<W>>(a, b, e->weight_);
+                auto a = node_trans_.extN2inN(e->get_node_a());
+                auto b = node_trans_.extN2inN(e->get_node_b());
+                auto newE = std::make_shared<Edge<W>>(a, b, e->get_weight());
                 incidences_[a].push_back(newE);
                 incidences_[b].push_back(newE);
                 max_nodes_ = std::max(max_nodes_, a);
                 max_nodes_ = std::max(max_nodes_, b);
             }
-            denom_ = std::make_shared<KIIndexCol>(max_nodes_ + 1, KIIndexCol::com_denomnator);
+            denom_ = std::make_shared<KIIndexCol>(max_nodes_ + 1, KIIndexCol::com_denominator);
             numers_ = std::make_shared<KIIndexCol>(max_nodes_ + 1, KIIndexCol::sum_numerators);
             while (!incidences_.empty())
             {
@@ -371,23 +371,23 @@ namespace HOSC
                     auto edge_ptr = *eit;
                     auto &edge = *edge_ptr;
                     nodes_to_remove rn;
-                    if (index != edge.node_a)
+                    if (index != edge.get_node_a())
                     {
-                        std::erase(incidences_[edge.node_a], edge_ptr);
-                        if (incidences_[edge.node_a].empty())
-                            rn.push_back(edge.node_a);
+                        std::erase(incidences_[edge.get_node_a()], edge_ptr);
+                        if (incidences_[edge.get_node_a()].empty())
+                            rn.push_back(edge.get_node_a());
                     }
                     else
                     {
-                        std::erase(incidences_[edge.node_b], edge_ptr);
-                        if (incidences_[edge.node_b].empty())
-                            rn.push_back(edge.node_b);
+                        std::erase(incidences_[edge.get_node_b()], edge_ptr);
+                        if (incidences_[edge.get_node_b()].empty())
+                            rn.push_back(edge.get_node_b());
                     }
-                    KIIndexCol::del_pair ed = std::make_pair(edge.node_a, edge.node_b);
+                    KIIndexCol::del_pair ed = std::make_pair(edge.get_node_a(), edge.get_node_b());
                     if (i == 0 && incidences_.size() > 2)
                         rn.push_back(index);
-                    numers_->add_edge_remove_node(ed, rn, edge.weight_);
-                    denom_->add_edge_remove_node(ed, rn, edge.weight_);
+                    numers_->add_edge_remove_node(ed, rn, edge.get_weight());
+                    denom_->add_edge_remove_node(ed, rn, edge.get_weight());
                 }
 #ifdef _DEBUG_TEST
                 std::cout << "Node: " << index << " was removed.\n";

@@ -46,7 +46,7 @@ namespace HOSC
         using del_pair_opt = std::optional<del_pair>;
 
         /**
-         * @brief node to be removed. Is oprional
+         * @brief node to be removed. Is optional
          * 
          */
         using rem_node = std::optional<int>;
@@ -82,12 +82,11 @@ namespace HOSC
         {
             first_main = !first_main;
         }
-        KIIndexCol(int _no_nodes) noexcept;
 
     public:
         using W = long long;
 
-        using func = enum { com_denomnator,
+        using func = enum { com_denominator,
                             sum_numerators,
                             extern_connections };
         KIIndexCol() = delete;
@@ -98,6 +97,7 @@ namespace HOSC
          * @param function type of set: com_denominator, sum_numerators
          */
         KIIndexCol(int _no_nodes, func function) noexcept;
+        KIIndexCol(int _no_nodes) noexcept;
         KIIndexCol(Edge<W> &in_edge, int _no_nodes, func function);
         KIIndexCol(const KIIndexCol &Source);
         KIIndexCol(KIIndexCol &&Source) = default;
@@ -120,7 +120,7 @@ namespace HOSC
         inline bool complete() { return _HOSCmap().size() == 1 && _HOSCmap().complete(); }
 
         /**
-         * @brief return numercial value, prvided that the result is complate 
+         * @brief return numerical value, provided that the result is complete 
          * 
          * @return std::optional<long long> value if is complete, or empty o
          */
@@ -136,7 +136,7 @@ namespace HOSC
          * 
          * @param edge Pair of nodes in edge. Can be empty. 
          * @param nodes Nodes to remove, if there is no edges left
-         * @param weight Weight of egde (resitance). Default is 1
+         * @param weight Weight of edge (resistance). Default is 1
          * @return true if the last but one node was removed and each edges were analyzed
          * @return false otherwise
          */
@@ -162,8 +162,12 @@ namespace HOSC
         void add_shortcut_remove_node(KIIndexCol &OtherIndexCol, const del_pair &edge, const nodes_to_remove &nodes);
 
         /**
-         * @brief reset collection
+         * @brief 
          * 
+         * @param OtherIndexCol 
+         * @param nodes 
+         * @return true 
+         * @return false 
          */
         bool big_O_dot(KIIndexCol &OtherIndexCol, nodes_to_remove &nodes);
 
@@ -191,7 +195,7 @@ namespace HOSC
         void add_to_with_virtual_node_removed(KIIndexCol &Right);
 
         /**
-         * @brief 
+         * @brief reset collection
          * 
          */
         void reset();

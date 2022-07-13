@@ -1,12 +1,12 @@
 /**
  * @file main.cpp
  * @author Sławomir Lasota  (lasotek@gmail.com)
- * @brief 
+ * @brief
  * @version 0.1
  * @date 2020-10-16
- * 
+ *
  * @copyright Copyright (c) 2020
- * 
+ *
  */
 
 #include <iostream>
@@ -30,56 +30,13 @@
 #include "Tests/KITests.h"
 #include "HOSCs/Parser/Parser.h"
 
-void info()
-{
-    std::ostringstream ss;
-    ss << "The calling form is:\n";
-    ss << "\t KIAnalyzer -i <input_text_file> {-o <output_text_file>}\n";
-    ss << "In case of lack of output file, results are put to default stream";
-    ss << "Input file must exists, and have legal form ";
-    throw std::invalid_argument(ss.str());
-}
+const std::string description =
+    "Calling of program is:\n"
+    "HOSCAnalyzer -i <input_file> -o <output_file>\n";
 
-std::pair<std::optional<std::string>, std::optional<std::string>> det_inp_and_out_file_name(int argc, char **argv)
-{
-    if (argc == 3)
-    {
-        std::string par(argv[1]);
-        if (strcmp(argv[2], "-i") != 0)
-            info();
-        std::string in_file_name(argv[3]);
-        if (!std::filesystem::exists(in_file_name))
-            info();
-        return std::make_pair<std::optional<std::string>, std::optional<std::string>>(in_file_name, {});
-    }
-    else if (argc == 5)
-    {
-        if (strcmp(argv[1], "-i") == 0 && strcmp(argv[3], "-o") == 0)
-        {
-            std::string in_file_name(argv[2]);
-            if (!std::filesystem::exists(in_file_name))
-                info();
-            std::string out_file_name(argv[4]);
-            return std::make_pair<std::optional<std::string>, std::optional<std::string>>(in_file_name, out_file_name);
-        }
-        else if (strcmp(argv[1], "-o") == 0 && strcmp(argv[3], "-i") == 0)
-        {
-            std::string in_file_name(argv[4]);
-            if (!std::filesystem::exists(in_file_name))
-                info();
-            std::string out_file_name(argv[2]);
-            return std::make_pair<std::optional<std::string>, std::optional<std::string>>(in_file_name, out_file_name);
-        }
-        else
-            info();
-    }
-    else
-        info();
-    return std::make_pair<std::optional<std::string>, std::optional<std::string>>({}, {});
-}
 /**
  * @brief Main entry for testing
- * 
+ *
  * @param argc the number of arguments
  * @param argv arguments
  * @return int error return
@@ -88,6 +45,44 @@ int main(int argc, char **argv)
 {
     try
     {
+        // KirchhoffIndexTesting10();
+        // return 0;
+        std::string InputFileName, OutputFileName;
+        if (argc != 5)
+        {
+            std::cout << description;
+            return -1;
+        }
+        std::span arg_list(argv + 1, argc - 1);
+        for (auto it = arg_list.begin(); it != arg_list.end(); it++)
+        {
+            if (strcmp(*it, "-i") == 0)
+                InputFileName = *(++it);
+            else if (strcmp(*it, "-o") == 0)
+                OutputFileName = *(++it);
+            else
+            {
+                std::cout << description;
+                return -1;
+            }
+        }
+        if (!std::filesystem::exists(InputFileName))
+        {
+            std::cout << "Input file " << InputFileName << " does not exist" << std::endl;
+            return -1;
+        }
+        if ((std::filesystem::exists(OutputFileName)) && (!std::filesystem::is_empty(OutputFileName)))
+        {
+            std::cout << "Output file " << OutputFileName << " already exists" << std::endl;
+            std::cout << "Do you want to overwrite it? (y/n)" << std::endl;
+            char c;
+            std::cin >> c;
+            if (toupper(c) != 'Y')
+                return -1;
+        }
+        prs::Parser parser(InputFileName, OutputFileName);
+        parser.run();
+        // std::ostream &os = parser;
 
         // auto [in_file_name, out_file_name] = det_inp_and_out_file_name(argc, argv);
         // std::ofstream out_f;
@@ -100,24 +95,24 @@ int main(int argc, char **argv)
         // prs::DescParser parser(in_file_name.value());
         // std::ostream out_st (std::cout);
         // if(in_file_name)
-            // out_st = ofstream.
+        // out_st = ofstream.
         auto start = std::chrono::steady_clock::now();
         auto end = std::chrono::steady_clock::now();
         // std::time_t end_time = std::chrono::system_clock::to_time_t
 
         auto elapsed_time = end - start;
         auto i_mills = std::chrono::duration_cast<std::chrono::nanoseconds>(elapsed_time);
-        std::cout << "duration time " << i_mills.count() << " nanoseconds" << std::endl;
+        std::cout << "# duration time of nothing is " << i_mills.count() << " nanoseconds" << std::endl;
 
-        KirchhoffInexTesting();
-        KirchhoffInexTesting4();
-        KirchhoffInexTesting7();
-        KirchhoffInexTesting12();
-        KirchhoffInexTesting10();
-        KirchhoffInexTesting8();
-        KirchhoffInexTesting9();
-        KirchhoffInexTesting11();
-        KirchhoffInexTesting6();
+        // KirchhoffIndexTesting();
+        // KirchhoffIndexTesting4();
+        // KirchhoffIndexTesting7();
+        // KirchhoffIndexTesting12();
+        // KirchhoffIndexTesting10();
+        // KirchhoffIndexTesting8();
+        // KirchhoffIndexTesting9();
+        // KirchhoffIndexTesting11();
+        // KirchhoffIndexTesting6();
     }
     catch (const std::exception &e)
     {
