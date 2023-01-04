@@ -70,7 +70,7 @@ public:
 	bool operator>=(const _CDeletions& Oper) const {return Comp(Oper)>=0;}
 	bool operator<=(const _CDeletions& Oper) const {return Comp(Oper)<=0;}
 //	operator long() {return GetHash();}
-	long DetermineHashKey(long Core=HASH_CORE);
+	virtual size_t DetermineHashKey(size_t Core=HASH_CORE) override;
 	bool ChangeSign();
 	void Clear();
 	void SetOwner(_CCircuit* pOwner);
@@ -87,7 +87,7 @@ public:
 		int HotInput, int ColdInput, int HotOutput, int ColdOutput);
 	void CopyTranspose(bool OppositeSgn,_CDeletions& Source);
 	bool IsSymetric() const;
-	size_t GetRank() const {return size();}
+	unsigned GetRank() const {return (unsigned)size();}
 	short Sgn() const {return m_Multiplier;}
 protected:
 	void DestroyIfUnregistered()
@@ -114,9 +114,9 @@ public:
 	}
 	void WriteToTextStream(iostream& stream);
 	explicit operator string() const;
-	long DetermineHashKey(long Core = HASH_CORE);
+	virtual size_t DetermineHashKey(size_t Core = HASH_CORE) override;
 	void SetOwner(_CCircuit* pOwner);
-	size_t GetRank() const;
+	unsigned GetRank() const;
 	_CCircuit* GetOwner() { return m_pOwner; }
 	_CDeletions::iterator push_in_order(_CDeletion* pDel, size_t Level = 0);
 	bool IsSymetric() const;
@@ -175,7 +175,7 @@ public:
 	size_t GetMaxSPower();
 	void WriteCofactorDescription(iostream& stream) {m_Deletions.WriteToTextStream(stream);}
 	inline short GetGlobalMultiplier() const {return m_GlobalMultiplier;}
-	size_t GetRank() {return m_Deletions.size();}
+	unsigned long GetRank() {return (unsigned long)m_Deletions.size();}
 	bool IsZero() const 
 	{
 		return (m_pMainModelVertex!=NULL && m_pMainModelVertex->Is0());

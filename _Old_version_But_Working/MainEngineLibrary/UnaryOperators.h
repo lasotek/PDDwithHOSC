@@ -245,7 +245,8 @@ public:
 		Res*=HASH_FACTOR;
 		Res^=(size_t)m_Cofactor;
 		Res*=HASH_FACTOR;
-		Res^=hash_value(m_BaseContext);
+		//Res^=hash_value(m_BaseContext);
+		Res^=hash<string>()(m_BaseContext);
 		return Res;
 	}
 	const _CConstComponentPath& GetPath() const {return m_CurrentPath;}
@@ -343,7 +344,7 @@ public:
 	_CResVertexOperator(const _CResVertexOperator& Source):
 	  _CUnaryAbstractOperator<_CSimpleVertexContainer,&EmptyVertex>(Source),
 		  m_pResContextString(Source.m_pResContextString),m_Stage(Source.m_Stage) {}
-	virtual void PostOperateSubCircuitResult(size_t EntryId, size_t PosId, _CSimpleVertexContainer& NewRes);
+	virtual void PostOperateSubCircuitResult(unsigned long EntryId, unsigned long PosId, _CSimpleVertexContainer& NewRes);
 	virtual void PostOperateTerminals(long long VertId, _CSimpleVertexContainer& NewRes);
 	virtual _CSimpleVertexContainer DoTheOperation(const _CVertex& Vertex, 
 		const _CSimpleVertexContainer& SVertex, const _CSimpleVertexContainer& Res1, 

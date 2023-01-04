@@ -284,7 +284,8 @@ public:
 	}
 	size_t GetHash()
 	{
-		return hash_value(GetPathDescr())*HASH_FACTOR^(size_t)m_HasComponent;
+		//return hash_value(GetPathDescr())*HASH_FACTOR^(size_t)m_HasComponent;
+		return hash<string>()(GetPathDescr())*HASH_FACTOR^(size_t)m_HasComponent;
 	}
 	long long GetHash(long long& Core)
 	{

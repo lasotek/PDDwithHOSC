@@ -53,7 +53,7 @@ void _CIntNodes::SeparateDongles(SIGNED_PINS_COLOCATIONS& PinsCollocation,COMPON
 {
 	PinsCollocation.clear();
 	Dongles.clear();
-	for(size_t i=0;i<size();i++)
+	for(unsigned long i=0;i<size();i++)
 	{
 		int Value=at(i);
 		if(Value<0)

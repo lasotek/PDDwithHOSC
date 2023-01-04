@@ -208,21 +208,21 @@ bool _CFlatVertex::operator==(const _CFlatVertex& Right) const
 		m_pComponentsPath == Right.m_pComponentsPath;
 }
 
-long _CFlatVertex::DetermineHashKey(long Core)
+size_t _CFlatVertex::DetermineHashKey(size_t Core)
 {
 	if(m_pComponentsPath!=NULL)
 		Core=(long)m_pComponentsPath->GetHash(Core);
 	for (auto pDesc : m_Descendants)
 	{
 		Core *= HASH_FACTOR;
-		Core ^= (long)pDesc;
+		Core ^= (size_t)pDesc;
 	}
 	for (auto Mult : m_Multipliers)
 	{
 		Core *= HASH_FACTOR;
 		Core ^= Mult;
 	}
-	return (long)Core;
+	return Core;
 }
 
 _CFlatVertex OneFlatVertex/*(NULL)*/;
@@ -346,7 +346,7 @@ _CSExpFlatVertices MinusOneFlatVertices(_CSExpFlatVertices::MINUS_ONE);
 
 
 //_CMultLevelSExpFlatVertices& _CContextSExpFlatVertices::GetSExpFlatResVertices(size_t CofId,const string* Context)
-_CSExpFlatVerticesFactorized& _CContextSExpFlatVertices::GetSExpFlatResVertices(size_t CofId,const string* Context)
+_CSExpFlatVerticesFactorized& _CContextSExpFlatVertices::GetSExpFlatResVertices(unsigned long CofId,const string* Context)
 {
 	VECTOR& Vector=m_Map[Context];
 	_CSExpFlatVerticesFactorized& Res=Vector.force_at(CofId);
@@ -561,13 +561,13 @@ void _CModelVerticesPath::Return2MetaVertex(LIST& StoredHeep)
 //	return !(back()->IsMacroDependent());
 //}
 //
-long long _CModelVerticesPath::GetHash(long long Core) const
+size_t _CModelVerticesPath::GetHash(size_t Core) const
 {
-	long long Res=Core;
+	size_t Res=Core;
 	for(LIST::const_iterator it=m_List.begin();it!=m_List.end();it++)
 	{
 		Res*=HASH_FACTOR;
-		Res^=(long long)(*it);
+		Res^=(size_t)(*it);
 	}
 	return Res;
 }
@@ -616,7 +616,7 @@ string COMPONENTS_PATH::ToString() const
 	return Res;
 }
 
-long long  COMPONENTS_PATH::GetHash(long long Core) const
+size_t  COMPONENTS_PATH::GetHash(size_t Core) const
 {
 	//long long Core=HASH_CORE;
 	return Hash_value(Core,ToString());
@@ -676,13 +676,13 @@ bool _CFlatVerticesResContainer2::IsEqualTo(const _CAbstractOperationDataContain
 	return RRight.m_Context==m_Context && RRight.m_Path==m_Path && RRight.m_Power==m_Power && m_Inaccuracy<=RRight.m_Inaccuracy;
 }
 
-long _CFlatVerticesResContainer2::DetermineHashKey(long Core)
+size_t _CFlatVerticesResContainer2::DetermineHashKey(size_t Core)
 {
-	long long HC=Core;
+	size_t HC=Core;
 	Hash_value(HC,*m_Context);
 	HC*=HASH_FACTOR;
 	HC^=m_Power;
-	return (long)m_Path.GetHash(HC);
+	return m_Path.GetHash(HC);
 }
 
 bool _CFlatVerticesResContainer::IsEqualTo(const _CAbstractOperationDataContainer<_CSExpFlatVertices>& Right)
@@ -693,7 +693,7 @@ bool _CFlatVerticesResContainer::IsEqualTo(const _CAbstractOperationDataContaine
 
 long _CFlatVerticesResContainer::DetermineHashKey(long Core)
 {
-	long long HC=Core;
+	size_t HC=Core;
 	//HC*=HASH_FACTOR;
 	//HC^=m_Level;
 	return (long)m_Path.GetHash(m_Limiter.GetHash(Hash_value(HC,*m_Context)));
@@ -802,7 +802,7 @@ void _CFlatVerticesSPowerLimiter::CancelAllowedRange(size_t EntryNo, unsigned sh
 		m_Map.erase(it);
 }
 
-void _CSPowerLimiter::InitGlobal(const _CSparsePolynomial* pNumResult, const _CApproxCriterion* pAppCriterion,size_t FullSize)
+void _CSPowerLimiter::InitGlobal(const _CSparsePolynomial* pNumResult, const _CApproxCriterion* pAppCriterion,unsigned long FullSize)
 {
 	m_Set.clear();
 	if(pAppCriterion->IsExact())
@@ -896,16 +896,16 @@ const _CSPowerLimiter& _CFlatVerticesSPowerLimiter::GetSmartEntryLimiter(size_t 
 	return it->second;
 }
 
-bool _CSPowerLimiter::IsAllowed(unsigned short sPower) const
+bool _CSPowerLimiter::IsAllowed(unsigned sPower) const
 {
 	//pair<SET::const_iterator,SET::const_iterator> Range=m_Set.equal_range(sPower);
 	return (m_Set.find(sPower)!=m_Set.end());
 	//return (*m_Set.equal_range(sPower).first)==sPower;
 }
-long long _CSPowerLimiter::GetHash(long long Core) const
+size_t _CSPowerLimiter::GetHash(size_t Core) const
 {
 	long long Res=Core;
-	for(SHORT_SET::const_iterator it=m_Set.begin();it!=m_Set.end();it++)
+	for(auto it=m_Set.begin();it!=m_Set.end();it++)
 	{
 		Res*=HASH_FACTOR;
 		Res^=*it;
@@ -1798,7 +1798,7 @@ void _CFlatVertexCache::PrepareFeasDivList()
 void _CFlatVertexCache::ClearReleased()
 {	
 	//m_FeasDivList.clear();
-	for(long long i=m_Id-1;i>1;i--)
+	for(auto i=m_Id-1;i>1;i--)
 	{
 		INDEX2OBJECT_MAP_ITERATOR oit=m_Index2ObjectMap.find(i);
 		if(oit==m_Index2ObjectMap.end())

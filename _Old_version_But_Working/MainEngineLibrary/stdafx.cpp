@@ -17,23 +17,25 @@ string InvalidString("_I_");
 
 // TODO: reference any additional headers you need in STDAFX.H
 // and not in this file
-unsigned long GetStrHash(const char* Str)
+size_t GetStrHash(const char* Str)
 {
-	return hash_value(Str);
+	//return hash_value(Str);
+	return hash<string>()(Str);
 }
 
-unsigned long GetStrHash(const string& Str)
+size_t GetStrHash(const string& Str)
 {
-	return hash_value(Str);
+	//return hash_value(Str);
+	return hash<string>()(Str);
 	//return GetStrHash(Str.c_str());
 }
 
-long long GetTypedHash(long long& Core,const string& Str)
+size_t GetTypedHash(size_t& Core,const string& Str)
 {
 	return Hash_value(Core,Str);
 }
 
-long long GetTypedHash(long long& Core, const long double& ldValue)
+size_t GetTypedHash(size_t& Core, const long double& ldValue)
 {
 	union LD{long double ld;long long ll;} lD;
 	memset(&lD,0,sizeof(lD));
@@ -125,11 +127,11 @@ string Mult2Str(short Multiplier)
 }
 
 
-long long Hash_value(long long& Core, const string& Str)
+size_t Hash_value(size_t& Core, const string& Str)
 {	// hash range of elements
 	string::const_iterator _Begin=Str.begin(), _End=Str.end();
 	while(_Begin != _End)
-		Core = HASH_FACTOR * Core ^ (long long)*_Begin++;
+		Core = HASH_FACTOR * Core ^ (size_t)*_Begin++;
 	return (Core);
 }
 
@@ -168,12 +170,12 @@ void FillStream(txt_stream& stream, size_t Counter, char C)
 		stream<<C;
 }
 
-unsigned long long Coordinates2ULL(pair<size_t,size_t> COORDINATES)
+unsigned long long Coordinates2ULL(pair<unsigned long,unsigned long> COORDINATES)
 {
 	if(numeric_limits<size_t>::digits*2<numeric_limits<unsigned long long>::digits)
 		return (unsigned long long)(-1);
 	unsigned long long Res=0;
-	Res|=((unsigned long long)COORDINATES.second<<numeric_limits<size_t>::digits);
+	Res|=((unsigned long long)COORDINATES.second<<numeric_limits<unsigned long>::digits);
 	Res|=COORDINATES.first;
 	return Res;
 }

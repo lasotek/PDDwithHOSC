@@ -56,7 +56,7 @@ void laguer(VectComplex<NumericType> &a, std::complex<NumericType> &x, int &its)
 	const NumericType EPS=std::numeric_limits<long double>::epsilon();
 	static const NumericType frac[MR+1]={0.0,0.5,0.25,0.75,0.13,0.38,0.62,0.88,1.0};
 	std::complex<NumericType> dx,x1,b,d,f,g,h,sq,gp,gm,g2;
-	int m=a.size()-1;
+	unsigned long m=(unsigned long)a.size()-1;
 	for(int iter=1;iter<=MAXIT;iter++) 
 	{ 
 		its=iter;
@@ -102,9 +102,9 @@ void zroots(VectComplex<NumericType> &a, VectComplex<NumericType> &roots, bool p
 	const NumericType EPS=1.0e-14; 
 	int i = 0, its = 0;
 	std::complex<NumericType> x,b,c;
-	int m=a.size()-1;
+	auto m=a.size()-1;
 	VectComplex<NumericType> ad(a);
-	for (int j=m-1;j>=0;j--) 
+	for (long long j=m-1;j>=0;j--) 
 	{
 		x=0.0; 
 		VectComplex<NumericType> ad_v(j+2); 
@@ -117,7 +117,7 @@ void zroots(VectComplex<NumericType> &a, VectComplex<NumericType> &roots, bool p
 			x=std::complex<NumericType>(0.0,imag(x));
 		roots[j]=x;
 		b=ad[j+1]; 
-		for(int jj=j;jj>=0;jj--) 
+		for(long long jj=j;jj>=0;jj--) 
 		{
 			c=ad[jj];
 			ad[jj]=b;

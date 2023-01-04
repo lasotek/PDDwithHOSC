@@ -11,7 +11,7 @@ public:
 	_CMetaComponent(_CComponent* p1stComponent, _CComponent* p2ndComponent); 
 	void AddAnotherSimilarComponent(_CComponent *pComponent);
 
-	virtual int GetNoOfPorts() const override;
+	virtual unsigned GetNoOfPorts() const override;
 	virtual bool HasParameterValue() const override { return true; }
 	virtual unsigned NoOfDescendants() const override;
 	virtual unsigned NoOfEffevtiveDescendants() override;
@@ -19,9 +19,9 @@ public:
 	virtual void GetDescendantDeletions(unsigned Descendant, const _CMultiBasicSetOfDeletions*& pDeletions) override;
 	virtual const string& GetParameterName() const override { return m_CommonParamName; }
 	virtual const NumericType& GetParameterValue() const override;
-	virtual size_t MaxDescRank() override;
+	virtual unsigned MaxDescRank() override;
 	virtual void PrepareInnerStructure(_CPathTraitor& Traitor) {}
-	virtual long GetHash(long Core = HASH_CORE) const override;
+	virtual size_t GetHash(size_t Core = HASH_CORE) const override;
 	//virtual int GetNextParamID() const override { return -1; }
 	virtual bool IsMacroDependant() const override { return false; }
 	virtual void RaportConnections(COMPONENT_PINS& Pins) const override;
@@ -39,7 +39,7 @@ public:
 	virtual void GetSimplyFlatVertex2(const _CModelVertex* pCallerVertex,
 		_CModelVerticesPath& VerticesPath,
 		_CPathTraitor& PathTraitor,
-		size_t SPower,
+		unsigned long SPower,
 		NumericType& CurrentAllowedInaccuracy,
 		const _CFlatVertex*& pResultVertex,
 		short& TopSgn,
@@ -123,7 +123,7 @@ class _CMataPathologicComponent : public _CIdealComponent
 {
 public:
 	_CMataPathologicComponent(_CCircuit* pOwner = nullptr) :_CIdealComponent(pOwner) {}
-	virtual size_t MaxDescRank() override { return 1; }
+	virtual unsigned MaxDescRank() override { return 1; }
 	virtual void ProcessModel(_CModelVertex& ParentVertex, _CGraphState* pNewState, unsigned ReduceToNoNodes) override
 	{
 		RISEPDD(eIllegalOperation, "Obsolate function");
@@ -144,8 +144,8 @@ public:
 	_CIdealFollowers(_CCircuit* pOwner = nullptr);
 	_CIdealFollowers(_CCircuit* pOwner, int OUTp, int OUTn, int INp, int INn);
 	_CIdealFollowers(const _CIdealFollowers& Source);
-	virtual int GetNoOfPorts() const override { return 4; };
-	virtual long GetHash(long Core = HASH_CORE) const override;
+	virtual unsigned GetNoOfPorts() const override { return 4; };
+	virtual size_t GetHash(size_t Core = HASH_CORE) const override;
 	virtual void ExchangeNumbers(const _CExchangMapWraper& Numbers2Exchange) override;
 	virtual void RaportConnections(COMPONENT_PINS& Pins) const override;
 	bool operator==(const _CIdealFollowers& Other) const
@@ -205,8 +205,8 @@ public:
 	_CConveyors(_CCircuit* pOwner, int X, int Y, vector<int> Zs, int gnd = 0) :_CMataPathologicComponent(pOwner), m_x(X), m_y(Y), m_gnd(gnd), m_Z(Zs)
 	{
 	}
-	virtual int GetNoOfPorts() const override { return m_Z.size() + 3; };
-	virtual long GetHash(long Core = HASH_CORE) const override;
+	virtual unsigned GetNoOfPorts() const override { return (unsigned)m_Z.size() + 3; };
+	virtual size_t GetHash(size_t Core = HASH_CORE) const override;
 	virtual void ExchangeNumbers(const _CExchangMapWraper& Numbers2Exchange) override;
 	virtual void RaportConnections(COMPONENT_PINS& Pins) const override;
 	bool operator==(const _CConveyors& Other) const 
@@ -443,8 +443,8 @@ public:
 		m_Vyp(Vyp), m_Vyn(Vyn), m_Ixp(Ixp), m_Ixn(Ixn), m_Izp(Izp), m_Izn(Izn), m_Vwp(Vwp), m_Vwn(Vwn)
 	{
 	}
-	virtual int GetNoOfPorts() const override { return 8; };
-	virtual long GetHash(long Core = HASH_CORE) const override;
+	virtual unsigned GetNoOfPorts() const override { return 8; };
+	virtual size_t GetHash(size_t Core = HASH_CORE) const override;
 	virtual void ExchangeNumbers(const _CExchangMapWraper& Numbers2Exchange) override;
 	virtual void RaportConnections(COMPONENT_PINS& Pins) const override;
 	bool operator==(const _CFDCFOA_RM_INF& Other) const
@@ -484,8 +484,8 @@ public:
 		m_V1(V1), m_V2(V2), m_V3(V3), m_V4(V4), m_Von(Von), m_Vop(Vop), m_gnd(gnd)
 	{
 	}
-	virtual int GetNoOfPorts() const override { return 7; };
-	virtual long GetHash(long Core = HASH_CORE) const override;
+	virtual unsigned GetNoOfPorts() const override { return 7; };
+	virtual size_t GetHash(size_t Core = HASH_CORE) const override;
 	virtual void ExchangeNumbers(const _CExchangMapWraper& Numbers2Exchange) override;
 	virtual void RaportConnections(COMPONENT_PINS& Pins) const override;
 	bool operator==(const _CDDOMA& Other) const
@@ -523,8 +523,8 @@ public:
 		m_V1(V1), m_V2(V2), m_V3(V3), m_V4(V4), m_Ion(Ion), m_Iop(Iop), m_gnd(gnd)
 	{
 	}
-	virtual int GetNoOfPorts() const override { return 7; };
-	virtual long GetHash(long Core = HASH_CORE) const override;
+	virtual unsigned GetNoOfPorts() const override { return 7; };
+	virtual size_t GetHash(size_t Core = HASH_CORE) const override;
 	virtual void ExchangeNumbers(const _CExchangMapWraper& Numbers2Exchange) override;
 	virtual void RaportConnections(COMPONENT_PINS& Pins) const override;
 	bool operator==(const _CFBDDA& Other) const
@@ -562,8 +562,8 @@ public://m_Vx, m_Vyp, m_Vyn, m_Iz, m_Vw, m_gnd
 		m_Vx(Vx), m_Vyp(Vyp), m_Vyn(Vyn), m_Iz(Iz), m_Vw(Vw), m_gnd(gnd)
 	{
 	}
-	virtual int GetNoOfPorts() const override { return 6; };
-	virtual long GetHash(long Core = HASH_CORE) const override;
+	virtual unsigned GetNoOfPorts() const override { return 6; };
+	virtual size_t GetHash(size_t Core = HASH_CORE) const override;
 	virtual void ExchangeNumbers(const _CExchangMapWraper& Numbers2Exchange) override;
 	virtual void RaportConnections(COMPONENT_PINS& Pins) const override;
 	bool operator==(const _CDVCFOA& Other) const
@@ -601,8 +601,8 @@ public://m_Vx, m_Vy1, m_Vy2, m_Vy3, m_Iz1,m_Iz2, m_Vw1, m_Vw2, m_gnd
 		m_Vx(Vx), m_Vy1(Vy1), m_Vy2(Vy2), m_Vy3(Vy3), m_Iz1(Iz1), m_Iz2(Iz2), m_Vw1(Vw1), m_Vw2(Vw2), m_gnd(gnd)
 	{
 	}
-	virtual int GetNoOfPorts() const override { return 9; };
-	virtual long GetHash(long Core = HASH_CORE) const override;
+	virtual unsigned GetNoOfPorts() const override { return 9; };
+	virtual size_t GetHash(size_t Core = HASH_CORE) const override;
 	virtual void ExchangeNumbers(const _CExchangMapWraper& Numbers2Exchange) override;
 	virtual void RaportConnections(COMPONENT_PINS& Pins) const override;
 	bool operator==(const _CDDCCFOA& Other) const
@@ -642,8 +642,8 @@ public://m_Vx, m_Vy1, m_Vy2, m_Vy3, m_Iz1,m_Iz2, m_Vw1, m_Vw2, m_gnd
 		m_Vx(Vx), m_Vy1(Vy1), m_Vy2(Vy2), m_Vy3(Vy3), m_Iz1(Iz1), m_Iz2(Iz2), m_gnd(gnd)
 	{
 	}
-	virtual int GetNoOfPorts() const override { return 7; };
-	virtual long GetHash(long Core = HASH_CORE) const override;
+	virtual unsigned GetNoOfPorts() const override { return 7; };
+	virtual size_t GetHash(size_t Core = HASH_CORE) const override;
 	virtual void ExchangeNumbers(const _CExchangMapWraper& Numbers2Exchange) override;
 	virtual void RaportConnections(COMPONENT_PINS& Pins) const override;
 	bool operator==(const _CDDCCpm& Other) const
@@ -682,8 +682,8 @@ public:
 		m_Vx1(Vx1), m_Vx2(Vx2), m_Vy(Vy), m_Iz1(Iz1), m_Iz2(Iz2), m_gnd(gnd)
 	{
 	}
-	virtual int GetNoOfPorts() const override { return 6; };
-	virtual long GetHash(long Core = HASH_CORE) const override;
+	virtual unsigned GetNoOfPorts() const override { return 6; };
+	virtual size_t GetHash(size_t Core = HASH_CORE) const override;
 	virtual void ExchangeNumbers(const _CExchangMapWraper& Numbers2Exchange) override;
 	virtual void RaportConnections(COMPONENT_PINS& Pins) const override;
 	bool operator==(const _CDXCCII& Other) const
@@ -720,8 +720,8 @@ public: //	int m_Vx1, m_Vx2, m_Vy1, m_V_y2, m_Iz1, m_Iz2, m_gnd;
 		m_Vx1(Vx1), m_Vx2(Vx2), m_Vy1(Vy1), m_Vy2(Vy2), m_Iz1(Iz1), m_Iz2(Iz2), m_gnd(gnd)
 	{
 	}
-	virtual int GetNoOfPorts() const override { return 7; };
-	virtual long GetHash(long Core = HASH_CORE) const override;
+	virtual unsigned GetNoOfPorts() const override { return 7; };
+	virtual size_t GetHash(size_t Core = HASH_CORE) const override;
 	virtual void ExchangeNumbers(const _CExchangMapWraper& Numbers2Exchange) override;
 	virtual void RaportConnections(COMPONENT_PINS& Pins) const override;
 	bool operator==(const _CFDVDCCIIpm& Other) const
@@ -774,8 +774,8 @@ public:
 	_CDVCCII(_CCircuit* pOwner = nullptr) :_CMataPathologicComponent(pOwner) {}
 	_CDVCCII(_CCircuit* pOwner, int x, int y1, int y2, int z1, int z2, int gnd = 0);
 	_CDVCCII(const _CDVCCII& Source);
-	virtual int GetNoOfPorts() const override { return 6; };
-	virtual long GetHash(long Core = HASH_CORE) const override;
+	virtual unsigned GetNoOfPorts() const override { return 6; };
+	virtual size_t GetHash(size_t Core = HASH_CORE) const override;
 	virtual void ExchangeNumbers(const _CExchangMapWraper& Numbers2Exchange) override;
 	virtual void RaportConnections(COMPONENT_PINS& Pins) const override;
 protected:
@@ -786,7 +786,7 @@ protected:
 	DECLARE_DYNAMIC_CREATION(_CDVCCII);
 	virtual void Store(_binary_filer& Filer) override;
 	virtual void Load(_binary_filer& Filer) override;
-	int m_x, m_y1, m_y2, m_z1, m_z2, m_gnd;
+	int m_x{0}, m_y1{0}, m_y2{0}, m_z1{0}, m_z2{0}, m_gnd{0};
 };
 
 class _CFDCCII : public _CMataPathologicComponent
@@ -795,8 +795,8 @@ public:
 	_CFDCCII(_CCircuit* pOwner = nullptr) :_CMataPathologicComponent(pOwner) {}
 	_CFDCCII(_CCircuit* pOwner, int x1, int x2, int y1, int y2, int y3, int y4, int z1, int z2, int gnd = 0);
 	_CFDCCII(const _CFDCCII& Source);
-	virtual int GetNoOfPorts() const override { return 9; };
-	virtual long GetHash(long Core = HASH_CORE) const override;
+	virtual unsigned GetNoOfPorts() const override { return 9; };
+	virtual size_t GetHash(size_t Core = HASH_CORE) const override;
 	virtual void ExchangeNumbers(const _CExchangMapWraper& Numbers2Exchange) override;
 	virtual void RaportConnections(COMPONENT_PINS& Pins) const override;
 protected:
@@ -807,7 +807,15 @@ protected:
 	DECLARE_DYNAMIC_CREATION(_CFDCCII);
 	virtual void Store(_binary_filer& Filer) override;
 	virtual void Load(_binary_filer& Filer) override;
-	int m_x1, m_x2, m_y1, m_y2, m_y3, m_y4, m_z1, m_z2, m_gnd;
+	int m_x1 = 0;
+	int m_x2 = 0;
+	int m_y1 = 0;
+	int m_y2 = 0;
+	int m_y3 = 0;
+	int m_y4 = 0;
+	int m_z1 = 0;
+	int m_z2 = 0;
+	int m_gnd = 0;
 };
 
 
@@ -816,8 +824,8 @@ class _CMultiPortOneParam : public _CSimplyComponent
 public:
 	_CMultiPortOneParam(_CCircuit* pOwnerCircuit = nullptr) :_CSimplyComponent(pOwnerCircuit)  {}
 	_CMultiPortOneParam(_CCircuit* pOwnerCircuit, string Name, const vector<int>& Ports, long double Value = 0.0);
-	virtual int GetNoOfPorts() const { return m_Ports.size(); }
-	virtual long GetHash(long Core = HASH_CORE) const;
+	virtual unsigned GetNoOfPorts() const { return (unsigned)m_Ports.size(); }
+	virtual size_t GetHash(size_t Core = HASH_CORE) const;
 	virtual void PlugInComponent(_CIntegrityTable& IntegrityTable)
 	{
 		RISEPDD(eIllegalOperation, "Obsolate");
@@ -874,12 +882,12 @@ public:
 	_CCustomOneParameterIdealizedComponent(_CCircuit* pOwner = nullptr);
 	_CCustomOneParameterIdealizedComponent(_CCircuit* pOwner, string parName, const DELETIONS& multDels, const DELETIONS& remDels, long double Value = 0.0);
 	_CCustomOneParameterIdealizedComponent(const _CCustomOneParameterIdealizedComponent& Source);
-	virtual int GetNoOfPorts() const override;
-	virtual long GetHash(long Core = HASH_CORE) const override;
+	virtual unsigned GetNoOfPorts() const override;
+	virtual size_t GetHash(size_t Core = HASH_CORE) const override;
 	virtual void ExchangeNumbers(const _CExchangMapWraper& Numbers2Exchange) override;
 	virtual void RaportConnections(COMPONENT_PINS& Pins) const override;
 	virtual bool IsEqualIfSameType(const _CComponent& RightComp) override;
-	virtual size_t MaxDescRank() override { return 4; }
+	virtual unsigned MaxDescRank() override { return 4; }
 	virtual unsigned short sPower() const override { return 0; }
 protected:
 	virtual void WriteType(iostream& stream) override { stream << "Generic Custom_One_Parameter_Idealized_Component : "; }
@@ -901,7 +909,7 @@ protected:
 	virtual void WritePos(iostream& stream) override;
 	virtual void WriteType(iostream& stream) override;
 	virtual bool IsEqualIfSameType(const _CComponent& RightComp) override;
-	virtual size_t MaxDescRank() override { return 4; }
+	virtual unsigned MaxDescRank() override { return 4; }
 	inline int& Vyp() { return m_Ports[0]; }
 	inline int& Vyn() { return m_Ports[1]; }
 	inline int& Ixp() { return m_Ports[2]; }
@@ -924,7 +932,7 @@ protected:
 	virtual void WritePos(iostream& stream) override;
 	virtual void WriteType(iostream& stream) override;
 	virtual bool IsEqualIfSameType(const _CComponent& RightComp) override;
-	virtual size_t MaxDescRank() override { return 4; }
+	virtual unsigned MaxDescRank() override { return 4; }
 	inline int& gnd() { return m_Ports[0]; }
 	inline int& Ip() { return m_Ports[1]; }
 	inline int& In() { return m_Ports[2]; }
@@ -948,7 +956,7 @@ protected:
 	virtual void WritePos(iostream& stream) override;
 	virtual void WriteType(iostream& stream) override;
 	virtual bool IsEqualIfSameType(const _CComponent& RightComp) override;
-	virtual size_t MaxDescRank() override { return 3; }
+	virtual unsigned MaxDescRank() override { return 3; }
 	inline int& gnd() { return m_Ports[0]; }
 	inline int& Ip() { return m_Ports[1]; }
 	inline int& In() { return m_Ports[2]; }

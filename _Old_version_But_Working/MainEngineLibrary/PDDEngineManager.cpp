@@ -31,14 +31,15 @@ void _CErrorQue::ResetDepth(unsigned MaxDepth)
 string _CErrorQue::ReportAll()
 {
 	string Res;
-	unsigned NoOfMessages=m_MainList.size()-1;
+	unsigned NoOfMessages=(unsigned)m_MainList.size()-1;
 	char buffer[len1];
 	sprintf_s(buffer,len1,"%d",NoOfMessages);
-	int max_len=strlen(buffer), lc=NoOfMessages;
+	auto max_len = strlen(buffer);
+	auto lc = NoOfMessages;
 	T_REV_ITERATOR rit=m_MainList.rbegin();
 	for(;rit!=m_MainList.rend();lc--,rit++)
 	{
-		sprintf_s(buffer,len1,"%0*d - ",max_len,lc);
+		sprintf_s(buffer,len1,"%0*d - ",(unsigned int)max_len,lc);
 		string aux(buffer);
 		aux+=(*rit);
 		aux+="\n";
@@ -107,10 +108,10 @@ long CPDDEngineManager::GetPDDEngine(ULONG hAppInstance,bool sExpanded, bool Com
 		if(itest!=m_Engines.end())
 		{
 			(*itest)=pInstance;
-			return itest-m_Engines.begin()+1;
+			return (long)(itest-m_Engines.begin()+1);
 		}
 		m_Engines.push_back(pInstance);
-		return m_Engines.size();
+		return (long)m_Engines.size();
 	}
 	catch(bad_alloc& e)
 	{
@@ -133,7 +134,7 @@ int CPDDEngineManager::ReleasePDDEngine(long hInstanceEngine)
 			LastErrorInfo=invalid_circuit_msg+"CPDDEngineManager::ReleasePDDEngine";
 			return INVALID_CIRCUIT_HANDLER;
 		}
-		_CPDDEngineInstance*& pInstance=m_Engines.at(hInstanceEngine-1);
+		_CPDDEngineInstance*& pInstance=m_Engines.at((size_t)hInstanceEngine-1);
 		if(pInstance==NULL)
 			return EMPTY_VALUE;
 		delete pInstance->second;
@@ -178,7 +179,7 @@ long long CPDDEngineManager::GetNewCircuit(long hEngineInstance)
 			LastErrorInfo=invalid_engine_msg+"CPDDEngineManager::GetNewCircuit";
 			return MakeCircuitId(INVALID_ENGINE_HANDLER,0);
 		}
-		_CPDDEngineInstance* pInst=m_Engines[hEngineInstance-1];
+		_CPDDEngineInstance* pInst=m_Engines[(size_t)hEngineInstance-1];
 		if(pInst==NULL)
 		{
 			LastErrorInfo=invalid_engine_msg+"CPDDEngineManager::GetNewCircuit";
@@ -238,7 +239,7 @@ long CPDDEngineManager::hCircuit2Circuit(long long hCircuit, _CMainCircuit*& pCi
 			LastErrorInfo=invalid_circuit_msg+"CPDDEngineManager::hCircuit2Circuit";
 			return INVALID_CIRCUIT_HANDLER;
 		}
-		_CPDDEngineInstance* pInstance=m_Engines[hEngine-1];
+		_CPDDEngineInstance* pInstance=m_Engines[(size_t)hEngine-1];
 		if(pInstance==NULL)
 		{
 			LastErrorInfo=invalid_circuit_msg+"CPDDEngineManager::hCircuit2Circuit";
@@ -385,7 +386,7 @@ long CPDDEngineManager::RaportTransferFunctionValuesLog(long long hCircuit, long
 	FINISH_SUBCIRCUIT;
 }
 
-long CPDDEngineManager::RaportTransferFunctionValuesLin(long long hCircuit, long long hTransfer, const string& Context, long double LowestAngFreq, long double HighestAngFreq, size_t NoOfGlobalPoints, bool Transfer2MagPhase)
+long CPDDEngineManager::RaportTransferFunctionValuesLin(long long hCircuit, long long hTransfer, const string& Context, long double LowestAngFreq, long double HighestAngFreq, unsigned long NoOfGlobalPoints, bool Transfer2MagPhase)
 {
 	USES_CIRCUIT;
 	return pCircuit->RaportTransferFunctionValuesLin(hTransfer,Context,LowestAngFreq,HighestAngFreq,NoOfGlobalPoints,Transfer2MagPhase);
@@ -1589,13 +1590,13 @@ void CPDDEngineManager::CInstanceRemover::operator() (_CPDDEngineInstance*& pEng
 _CNetDynamicAnalyser* CPDDEngineManager::GetTestAnalyser(string NetName, bool BySubcircuit,string ReferenceNode)
 {
 	long hEngine=GetPDDEngine(0,true,false,true);
-	_CPDDEngine& Engine=*m_Engines[hEngine-1]->second;
+	_CPDDEngine& Engine=*m_Engines[(size_t)hEngine-1]->second;
 	return Engine.GetNetAnalyser(Engine.CreateNewNetAnalyser(NetName,BySubcircuit,ReferenceNode));
 }
 
 _CUnlineraBlackBoxEngine* CPDDEngineManager::GetNewUnlinearBlackBox()
 {
 	long hEngine = GetPDDEngine(0, true, false, true);
-	_CPDDEngine& Engine = *m_Engines[hEngine - 1]->second;
+	_CPDDEngine& Engine = *m_Engines[(size_t)hEngine - 1]->second;
 	return &Engine.BlackBoxEngine();
 }

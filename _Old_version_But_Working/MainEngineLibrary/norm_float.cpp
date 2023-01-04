@@ -309,7 +309,7 @@ _binary_filer& operator>>(_binary_filer& filer, norm_float& Value)
 }
 
 
-long long GetTypedHash(long long& Core, const norm_float& Value)
+size_t GetTypedHash(size_t& Core, const norm_float& Value)
 {
 	Core*=HASH_FACTOR;
 	Core=GetTypedHash(Core,Value.m_Base);
@@ -672,7 +672,7 @@ long DetermineRedPower(const _CSparsePolynomial& InPoly)
 
 void SpPoly2Roots(const _CSparsePolynomial& InPoly,NormVectComplex& Roots)
 {
-	size_t Size=InPoly.get_order()+1;
+	unsigned long Size=InPoly.get_order()+1;
 	VectComplex<norm_float> ComplexInPoly(Size);
 	Roots.resize(Size);
 //#ifdef WITH_NORM_FLOAT
@@ -700,10 +700,10 @@ void SpPoly2Roots(const _CSparsePolynomial& InPoly,NormVectComplex& Roots)
 //	return NumPattern.GetHash(Core);
 //}
 
-void PrepareLinAngFreqSpace(NumericVector& Space, NumericType FFrom, NumericType FTo, size_t NoIntrervals)
+void PrepareLinAngFreqSpace(NumericVector& Space, NumericType FFrom, NumericType FTo, unsigned long NoIntrervals)
 {
 	Space.clear();
-	NumericType D = (FTo - FFrom) / NoIntrervals;
+	NumericType D = (FTo - FFrom) / (NumericType)NoIntrervals;
 	for (NumericType CV = FFrom; CV < FTo; CV += D)
 		Space.push_back(CV);
 
@@ -724,7 +724,7 @@ void PrepareLogAngFreqSpace(NumericVector& Space, int MinDec, int MaxDec, size_t
 void DetermineFreqsValues(NormVectComplex& Results, _CSparsePolynomial& PolynomialS, const NumericVector& FreqVector)
 {
 	Results.clear();
-	int PolyOrder = PolynomialS.get_order();
+	auto PolyOrder = PolynomialS.get_order();
 	for (auto& FreqValue : FreqVector)
 	{
 		NumericComplex ComplexFreq(0.0L, FreqValue);

@@ -62,9 +62,9 @@ _CVertex::~_CVertex()
 		m_pOwnerCircuit->UnTouchVertex(m_0Succ.GetLocalVertex());
 }
 
-long _CVertex::DetermineHashKey(long Core)
+size_t _CVertex::DetermineHashKey(size_t Core)
 {
-	register long long Res=m_pParameter->GetHash(Core);
+	register size_t Res=m_pParameter->GetHash(Core);
 	Res=m_1Succ.GetHash(Res);
 	Res=m_0Succ.GetHash(Res);
 	Res*=HASH_FACTOR;
@@ -414,7 +414,7 @@ void _CModelVertex::ClearStateIfPossible()
 //
 //}
 
-long _CModelVertex::DetermineHashKey(long Core)
+size_t _CModelVertex::DetermineHashKey(size_t Core)
 {
 	if(IsTerminal())
 		return GetTerminalValue();
@@ -510,7 +510,7 @@ void _CModelVertex::Load(_binary_filer& Filer)
 		Filer>>sIndex;
 		m_pInputState=m_OwnerCircuit->GetStateTableFromIndex(sIndex);
 	}
-	size_t tNoOfDescendants;
+	unsigned tNoOfDescendants;
 	Filer >> tNoOfDescendants;
 	ResizeDescendants(tNoOfDescendants);
 	for (int i = (int)tNoOfDescendants - 1; i >= 0; i--)
@@ -1032,7 +1032,7 @@ void Sort(DESC_VECTOR& List2Sort)
 void _CModelVertex::GetSimpleVertexApprox2(const _CFlatVertex*& pResultVertex,
 								short& ResultSgn,
 								//const _CSparsePolynomial& TopNumValue,
-								size_t Power,
+								unsigned long Power,
 								NumericType& AbsolutInaccuracyAllowed,  
 								//const _CSubModelNumericPattern& Scaler,
 								_CPathTraitor& MainTraitor,
@@ -1136,7 +1136,7 @@ void _CModelVertex::DetermineNumericDescendants(_CDescModelNumericPattern& DescP
 }
 
 bool/*NewAdded*/ _CModelVertex::PerformNewSimplyfyApprox(_CPreFlatVertexContainer*& pResultVertex,
-	short& ResultSgn, size_t Power, _CNewSimplifierData& Data,_CCompRedefEntry& RedefEntry)
+	short& ResultSgn, unsigned long Power, _CNewSimplifierData& Data,_CCompRedefEntry& RedefEntry)
 {
 	if(this==GetGlobal0Vertex())
 	{

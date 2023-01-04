@@ -43,9 +43,9 @@ public:
 	_CNullor(_CCircuit* pOwner,int p, int r, int k, int l);
 //	virtual void PlugInComponent(_CIntegrityTable& IntegrityTable);
 //	virtual void PrepareLState(_CGraphState& LState, int ParamId) const;
-	virtual int GetNoOfPorts() const override {return 4;};
-	virtual long GetHash(long Core=HASH_CORE) const override;
-	virtual size_t MaxDescRank() override {return 1;}
+	virtual unsigned GetNoOfPorts() const override {return 4;};
+	virtual size_t GetHash(size_t Core=HASH_CORE) const override;
+	virtual unsigned MaxDescRank() override {return 1;}
 	virtual void ExchangeNumbers(const _CExchangMapWraper& Numbers2Exchange) override;
 	virtual void RaportConnections(COMPONENT_PINS& Pins) const override;
 protected:
@@ -71,7 +71,7 @@ public:
 	}
 	_COpAmp(_CCircuit* pOwner=NULL):_CNullor(pOwner) {}
 	_COpAmp(_CCircuit* pOwner, int II, int NI, int Out);
-	virtual int GetNoOfPorts() const {return 3;}
+	virtual unsigned GetNoOfPorts() const {return 3;}
 protected:
 	void WriteType(iostream& stream) {stream<<"Ideal op-amp: ";}
 	void WritePos(iostream& stream);
@@ -94,9 +94,9 @@ public:
 		AddDeletions();
 	}
 //	virtual void PrepareLState(_CGraphState& LState, int ParamId) const;
-	virtual int GetNoOfPorts() const {return 3;}
-	long GetHash(long Core=HASH_CORE) const;
-	virtual size_t MaxDescRank() override {return 1;}
+	virtual unsigned GetNoOfPorts() const override{return 3;}
+	virtual size_t GetHash(size_t Core=HASH_CORE) const override;
+	virtual unsigned MaxDescRank() override {return 1;}
 	virtual void ExchangeNumbers(const _CExchangMapWraper& Numbers2Exchange) override;
 	virtual void RaportConnections(COMPONENT_PINS& Pins) const override;
 protected:

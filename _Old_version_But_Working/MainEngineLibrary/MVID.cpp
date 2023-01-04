@@ -6,7 +6,7 @@ MVIDS::~MVIDS(void)
 {
 }
 
-long long MVIDS::GetHash(long long& Core) const
+size_t MVIDS::GetHash(size_t& Core) const
 {
 	for(const_iterator it=begin();it!=end();it++)
 	{
@@ -16,7 +16,7 @@ long long MVIDS::GetHash(long long& Core) const
 	return Core;
 }
 
-long long MVIDS::GetHashLess(long long& Core) const
+size_t MVIDS::GetHashLess(size_t& Core) const
 {
 	size_t _size=size();
 	if(_size>0) --_size;
@@ -27,7 +27,7 @@ long long MVIDS::GetHashLess(long long& Core) const
 	}
 	return Core;
 }
-long long MVIDS::GetHashRev(long long& Core) const
+size_t MVIDS::GetHashRev(size_t& Core) const
 {
 	size_t _size=size();
 	Core*=HASH_FACTOR;

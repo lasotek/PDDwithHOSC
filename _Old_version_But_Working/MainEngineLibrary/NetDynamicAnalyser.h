@@ -677,7 +677,7 @@ protected:
 	typedef pair<_CStateVar*,_CStateVar*> A_STATE_COORDINATES;
 	unsigned int m_iCommonDenCof;
 	_CCofactor* m_pCommonDenCof;
-	typedef map<A_STATE_COORDINATES,size_t> AI_COFACTOR_TABLE;
+	typedef map<A_STATE_COORDINATES,unsigned long> AI_COFACTOR_TABLE;
 	AI_COFACTOR_TABLE m_AICofactors;
 	//typedef map<A_STATE_COORDINATES,long> TRANS_DEF_TABLE;
 	typedef AI_COFACTOR_TABLE TRANS_DEF_TABLE;
@@ -687,7 +687,7 @@ protected:
 	typedef pair<_CCofactor*,short> COF_OF_A_RES;
 	COF_OF_A_RES Cof_of_A(_CStateVar* Row,_CStateVar* Col);
 	typedef pair<const _CInput*,const _CStateVar*> B_STATE_COORDINATES;
-	typedef map<B_STATE_COORDINATES,size_t> BI_COFACTOR_TABLE;
+	typedef map<B_STATE_COORDINATES,unsigned long> BI_COFACTOR_TABLE;
 	BI_COFACTOR_TABLE m_BICofactors;
 	typedef BI_COFACTOR_TABLE TRANS_BASE_DEF_TABLE;
 	TRANS_BASE_DEF_TABLE m_TransBaseDefs;

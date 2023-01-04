@@ -81,16 +81,16 @@ protected:
 	unsigned m_MaxDepth;
 };
 
-long long GetTypedHash(long long& Core,const string& Str);
-long long GetTypedHash(long long& Core,const long double& ldValue);
-unsigned long GetStrHash(const string& Str);
-unsigned long GetStrHash(const char* Str);
+size_t GetTypedHash(size_t& Core,const string& Str);
+size_t GetTypedHash(size_t& Core,const long double& ldValue);
+size_t GetStrHash(const string& Str);
+size_t GetStrHash(const char* Str);
 extern _CErrorQue LastErrorInfo;
 extern const string range_error_msg;
 extern const string invalid_engine_msg;
 extern const string invalid_circuit_msg;
 
-long long Hash_value(long long& Core, const string& Str);
+size_t Hash_value(size_t& Core, const string& Str);
 
 #ifdef _UNICODE
 #define	 path_str wstring
@@ -179,11 +179,13 @@ public:
 
 typedef set<unsigned short> SHORT_SET;
 
+typedef set<unsigned> UNSIGNED_SET;
+
 short CommonDivider(short& Left, short& Right);
 
 void FillStream(txt_stream& stream, size_t Counter, char C);
 
-unsigned long long Coordinates2ULL(pair<size_t,size_t> COORDINATES);
+unsigned long long Coordinates2ULL(pair<unsigned long,unsigned long> COORDINATES);
 
 template<class Type>
 class self_exp_vector : public vector<Type>

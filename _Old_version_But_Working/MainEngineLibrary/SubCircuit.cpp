@@ -149,7 +149,7 @@ _CSubCircuit* _CSubCircuit::GetSubcircuit(const string& name)
 	return m_Owner->GetSubcircuit(name);
 }
 
-_CSubCircuit* _CSubCircuit::GetSubcircuit(long Id)
+_CSubCircuit* _CSubCircuit::GetSubcircuit(unsigned long Id)
 {
 	return m_Owner->GetSubcircuit(Id);
 }
@@ -246,8 +246,8 @@ bool _CSubCircuit::IsDeletionAdmissible(const _CMultiDeletions* pDeletions)//Wa¿
 void _CSubCircuit::NewFinalizeLeaves(MVERTEX_2_SIGN& MVertex2Sgn)
 {
 	//const _CCircuitAnalyzer::BOUNDARIES_MAP& BoundariesMap=m_pNewAnalyxer->GetBoundariesMap();
-	size_t NoOfDongles=m_pNewAnalyxer->GetNoOfSubciruitDongles();
-	for(size_t i=0;i<NoOfDongles;i++)
+	unsigned long NoOfDongles=m_pNewAnalyxer->GetNoOfSubciruitDongles();
+	for(unsigned long i=0;i<NoOfDongles;i++)
 	{
 		_CModelVertex* pNewModelVertex=new _CModelVertex();
 		try
@@ -535,7 +535,7 @@ bool _CSubCircuit::IsModelInFile()
 
 unsigned _CSubCircuit::NoOfBoundaryNodes()
 {
-	return m_BoundaryNodes.size()+(m_IsGlobal0Node?1:0);
+	return (unsigned)(m_BoundaryNodes.size()+(m_IsGlobal0Node?1:0));
 }
 
 _CMultiDeletions* _CSubCircuit::PushIntoCache(_CMultiDeletions* pObject)
@@ -633,7 +633,7 @@ bool _CSubCircuit::IsSuppresedLeaf(_CModelVertex* pLeaf)
 
 size_t _CSubCircuit::FirstInternalNode() 
 {
-	return ConvertBoundaryNode(m_BoundaryNodes.back())+1;
+	return (size_t)ConvertBoundaryNode(m_BoundaryNodes.back())+1;
 }
 
 void _CSubCircuit::DevelopeRealTree(const string& SocketName,_CSExpandedVertices*& pTreeVertices, _CSExpandedDescendends& ExternalVertices,
@@ -736,7 +736,7 @@ void _CSubCircuit::FindDuplicateLeaf(_CModelVertex* pOriginalVertex, _CModelVert
 void _CSubCircuit::GetSimpleVertexApprox2(const _CFlatVertex*& pResultVertex,
 										  short& ResultSgn,
 										  //const _CSparsePolynomial& TopNumValue,
-										  size_t Power,
+										  unsigned long Power,
 										  NumericType& AbsolutInaccuracyAllowed,  
 										  //const _CSubModelNumericPattern& Scaler,
 										  _CPathTraitor& MainTraitor,
@@ -754,7 +754,7 @@ void _CSubCircuit::GetSimpleVertexApprox2(const _CFlatVertex*& pResultVertex,
 
 bool/*NewAdded*/ _CSubCircuit::PerformNewSimplyfyApprox(_CPreFlatVertexContainer*& pResultVertex,
 								  short& ResultSgn,
-								  size_t Power,
+								  unsigned long Power,
 								  _CNewSimplifierData& Data, _CCompRedefEntry& RedefEntry)
 {
 	_CCofactor* pCof=m_Cofactors[0];

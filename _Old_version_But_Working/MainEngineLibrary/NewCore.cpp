@@ -15,8 +15,8 @@ void _CGlobalIncidenceTable::AddPins(const COMPONENT_PINS_SET& Pins,bool TouchOn
 		unsigned Pin=*it;
 		if(Pin>=m_MainVector.size())
 		{
-			m_MainVector.resize(Pin+1,0);
-			m_TestVector.resize(Pin+1,0);
+			m_MainVector.resize((size_t)Pin+1,0);
+			m_TestVector.resize((size_t)Pin+1,0);
 		}
 		if(!TouchOnly)
 			m_MainVector[Pin]++;
@@ -29,8 +29,8 @@ void _CGlobalIncidenceTable::AddPins(const COMPONENT_PINS& Pins,bool TouchOnly)
 		unsigned Pin=*it;
 		if(Pin>=m_MainVector.size())
 		{
-			m_MainVector.resize(Pin+1,0);
-			m_TestVector.resize(Pin+1,0);
+			m_MainVector.resize((size_t)Pin+1,0);
+			m_TestVector.resize((size_t)Pin+1,0);
 		}
 		if(!TouchOnly)
 			m_MainVector[Pin]++;
@@ -68,7 +68,7 @@ void _CGlobalIncidenceTable::RaportAllSeparateNodes(const COMPONENT_PINS_LIST*& 
 	pNewSeparateNodes=pNewSeparateNodes1;
 	COMPONENT_PINS* pCompPins=CurrentCompPins();
 	pNewSeparateNodes1->clear();
-	for(size_t i=0;i<pCompPins->size();i++)
+	for(unsigned long i=0;i<pCompPins->size();i++)
 		if(pCompPins->at(i)==0)
 			pNewSeparateNodes1->push_back(i);
 }
@@ -1305,7 +1305,7 @@ _CSubNodeContractionsSimpl::COMP_RESULT _CSubNodeContractionsSimpl::Compare2Comp
 			OthFounAnalyzed[Pos] = true;
 			continue;
 		}
-		auto next_oit = oit;
+		auto& next_oit = oit;
 		bool MyIsOdd = !MyFounAnalyzed[Pos];
 		size_t LocalPos = Pos;
 		while (MyIsOdd && ++next_oit != _oe)
@@ -1326,7 +1326,7 @@ _CSubNodeContractionsSimpl::COMP_RESULT _CSubNodeContractionsSimpl::Compare2Comp
 			MyRes.second = mit;
 		}
 
-		auto next_mit = mit;
+		auto& next_mit = mit;
 		bool OthIsOdd = !OthFounAnalyzed[Pos];
 		LocalPos = Pos;
 		while (OthIsOdd && ++next_mit != _me)
@@ -1404,7 +1404,7 @@ m_pMineDif(nullptr), m_pTheirDif(nullptr) {
 }
 
 void _CSubNodeContractionsSimpl::ContrCompartator::UpdateModyfication() {
-	for (auto entry : m_ExchangePairList) {
+	for (auto& entry : m_ExchangePairList) {
 		entry.first->second = entry.second;
 	}
 }
@@ -1927,7 +1927,7 @@ bool _CSubNodeContractions::IsEnough() const
 	return true;
 }
 
-bool _CSubNodeContractions::IsBoundaryNode(size_t Node) 
+bool _CSubNodeContractions::IsBoundaryNode(unsigned long Node) 
 { 
 	return m_pAnalyser->IsBoundary(Node); 
 }
@@ -2506,9 +2506,7 @@ void _CContractionListImpl::Compress()
 			{
 				if (fit == _e)
 					break;
-				auto sit = fit;
-				sit++;
-				for (; sit != _e;)
+				for (auto sit=std::next(fit); sit != _e;)
 				{
 					if (fit->Try2Compress2(*sit))
 					{
@@ -2856,9 +2854,7 @@ void _CContractionList::Compress()
 			{
 				if (fit == _e)
 					break;
-				auto sit = fit;
-				sit++;
-				for (; sit != _e;)
+				for (auto sit=std::next(fit); sit != _e;)
 				{
 					if (fit->Try2Compress2(*sit))
 					{
@@ -3587,7 +3583,7 @@ bool _CDeletionsCompresor::Try2CompressWith(const _CDeletionsCompresor& OtherCon
 	auto My_rit = My_ListR.begin(), _my_re = My_ListR.end();
 	auto Oth_cit = Other_ListC.begin(), _Oth_ce = Other_ListC.end();
 	auto Oth_rit = Other_ListC.begin(), _Oth_re = Other_ListC.end();
-	auto R2Chg = _my_re, C2Chg = _my_ce,RSrc=_Oth_re,CSrc=_Oth_ce;
+	auto &R2Chg = _my_re, &C2Chg = _my_ce, &RSrc=_Oth_re, &CSrc=_Oth_ce;
 	bool RowFound = false, ColFound = false;
 	for (; My_cit != _my_ce && My_rit != _my_re && Oth_cit != _Oth_ce && Oth_rit != _Oth_re; 
 		My_cit++, My_rit++, Oth_cit++, Oth_rit++,RowCount++,ColCount++)
@@ -3598,8 +3594,8 @@ bool _CDeletionsCompresor::Try2CompressWith(const _CDeletionsCompresor& OtherCon
 			else
 			{
 				if (ColFound) return false;
-				auto next_My_rit = My_rit;
-				auto next_Oth_rit = Oth_rit;
+				auto &next_My_rit = My_rit;
+				auto &next_Oth_rit = Oth_rit;
 				next_My_rit++;
 				next_Oth_rit++;
 				if (*next_My_rit == *Oth_rit)
@@ -3702,9 +3698,7 @@ bool _ComplexDeletionCompressor::Simplify()
 			{
 				if (fit == _e)
 					break;
-				auto sit = fit;
-				sit++;
-				for (; sit != _e;)
+				for (auto sit=std::next(fit); sit != _e;)
 				{
 					Counter++;
 					if (fit->Try2Compress2(*sit))
@@ -3869,7 +3863,7 @@ void _CCommonStateCofactor::Translate(int p, int r, int k, int l, MULTI_BASIC_PA
 	m_Contractions.Translate(p, r, k, l, Results);
 }
 
-unsigned long long _CCommonStateCofactor::GetHash(unsigned long long Core) 
+size_t _CCommonStateCofactor::GetHash(size_t Core) 
 {
 	//unsigned long long Res=m_R.GetHash(m_C.GetHash(Core));
 	return  m_Contractions.GetHash(Core);
@@ -3880,9 +3874,9 @@ unsigned long long _CCommonStateCofactor::GetHash(unsigned long long Core)
 	//return Core;
 }
 
-long _CCommonStateCofactor::DetermineHashKey(long Core)
+size_t _CCommonStateCofactor::DetermineHashKey(size_t Core)
 {
-	return (long)GetHash(Core);
+	return GetHash(Core);
 }
 
 //bool _CCommonStateCofactor::IsEqualIgnoreSgn(_CCommonStateCofactor& Other)
@@ -4258,10 +4252,10 @@ void _CMultiStateCofactor::CompressCofactors()
 
 	for (auto it1 = m_List.begin(), _e = m_List.end(); it1 != _e; it1++)
 	{
-		auto MianState = *it1;
-		auto it2 = it1;
-		it2++;
-		for (; it2 != _e; it2++)
+		//auto MianState = *it1;
+		//auto it2 = it1;
+		//it2++;
+		for (auto& it2=std::next(it1); it2 != _e; it2++)
 		{
 
 		}
@@ -5009,9 +5003,9 @@ void _CCircuitAnalyzer::AddAnotherComponent(_CComponent& NextComponent, bool Try
 	//ASSERTPDD(m_pPreveStateCache!=NULL && m_pPrevS2VMap!=NULL && m_pPrevV2SMap!=NULL);
 	m_IncidentTable.RemoveCompPins(NextComponent,m_pSeparateNodes2Test);
 	typedef vector<const _CMultiBasicSetOfDeletions*> DESC_SETS_OFDELETIONS;
-	size_t NoOfDescendants=NextComponent.NoOfEffevtiveDescendants();
+	auto NoOfDescendants=NextComponent.NoOfEffevtiveDescendants();
 	DESC_SETS_OFDELETIONS DescSetsOfDeletions(NextComponent.NoOfEffevtiveDescendants());
-	for(size_t i=0;i<NoOfDescendants;i++)
+	for(unsigned i=0;i<NoOfDescendants;i++)
 	{
 		NextComponent.GetDescendantDeletions(i,DescSetsOfDeletions[i]);
 	}
@@ -5179,7 +5173,7 @@ inline unsigned _CCircuitAnalyzer::NoOfNodes() const
 inline unsigned _CCircuitAnalyzer::HighestNoOfNodes(bool Row) const
 {
 	ASSERTPDD(m_pBaseCircuit!=NULL);
-	return m_pBaseCircuit->HighestNoOfNode()-(Row?0:m_IgnoredPins.size());
+	return m_pBaseCircuit->HighestNoOfNode()-(Row?0:(unsigned)m_IgnoredPins.size());
 }
 
 void _CCircuitAnalyzer::SwitchTempVert2Redef()
@@ -5368,13 +5362,13 @@ const _CCircuitAnalyzer::BOUNDARIES_MAP& _CCircuitAnalyzer::GetBoundariesMap()
 	return m_pSubcircuitOutData->GetBoundariesMap();
 }
 
-size_t _CCircuitAnalyzer::GetNoOfSubciruitDongles() const
+unsigned long _CCircuitAnalyzer::GetNoOfSubciruitDongles() const
 {
 	ASSERTPDD(m_pSubcircuitOutData!=NULL);
-	return m_pSubcircuitOutData->GetNoOfSubciruitDongles();
+	return (unsigned long)m_pSubcircuitOutData->GetNoOfSubciruitDongles();
 }
 
-void _CCircuitAnalyzer::PrepareDongle(size_t DongleNo, _CMultiDeletions& Deletions, _CModelVertex& ModelVertex, unsigned long& Counter)
+void _CCircuitAnalyzer::PrepareDongle(unsigned long DongleNo, _CMultiDeletions& Deletions, _CModelVertex& ModelVertex, unsigned long& Counter)
 {
 	ASSERTPDD(m_pSubcircuitOutData!=NULL);
 	m_pSubcircuitOutData->PrepareDongle(DongleNo,Deletions,ModelVertex,Counter);
@@ -5524,7 +5518,7 @@ void _CCircuitAnalyzer::ClearGarbage()
 	m_IgnoredPins.clear();
 }
 
-void _CCircuitAnalyzer::ReportMinIncidences(_CComponent& Component,unsigned& MinValue, unsigned& MinNumber)
+void _CCircuitAnalyzer::ReportMinIncidences(_CComponent& Component,unsigned long& MinValue, unsigned long& MinNumber)
 {
 	COMPONENT_PINS Pins;
 	Component.RaportConnections(Pins);
@@ -5569,7 +5563,7 @@ void _CCircuitAnalyzer::FIndNotConnected(const PINS_COLOCATIONS& PinsColocations
 		DisconnectedPins.assign(AuxSet.begin(),AuxSet.end());
 }
 
-bool _CCircuitAnalyzer::IsBoundary(size_t Node)
+bool _CCircuitAnalyzer::IsBoundary(unsigned Node)
 {
 	return m_pBoundaryPins!=NULL && IsIn(*m_pBoundaryPins,Node);
 }
@@ -6191,7 +6185,7 @@ bool _CCircuitAnalyzer::CoincidentWithProcessed(const _CComponent& Component)
 void _CCircuitAnalyzer::_CSubciruitOutsData::PrepareMe()
 {
 	m_OriginalDescStates.resize(m_Analyzer.m_pCurrentStateCofactors->size(),_CStateCofactor(&m_Analyzer));
-	size_t Index=0;
+	unsigned long Index=0;
 	for(STATE_COFACTOR_SET::iterator it=m_Analyzer.m_pCurrentStateCofactors->begin(),
 		_e=m_Analyzer.m_pCurrentStateCofactors->end();it!=_e;it++,Index++)
 	{
@@ -6199,7 +6193,7 @@ void _CCircuitAnalyzer::_CSubciruitOutsData::PrepareMe()
 		m_OriginalDescStates[Index]=*pOrgCof;
 		pair<TEMP_VERTS_2_REDEFINE::iterator,TEMP_VERTS_2_REDEFINE::iterator>
 			Range=m_Analyzer.m_pCurrentTempVerts2Redefine->equal_range(pOrgCof);
-		size_t& Counter=m_Counter[Index];
+		auto& Counter=m_Counter[Index];
 		for(TEMP_VERTS_2_REDEFINE::iterator it2=Range.first;it2!=Range.second;it2++)
 		{
 			m_Vertex2OriginalDescIndex.insert(VERTEX_2_ORIGINAL_DESC_INDEX::value_type(
@@ -6227,7 +6221,7 @@ void _CCircuitAnalyzer::_CSubciruitOutsData::
 	m_BoundariesMap.insert(BOUNDARIES_MAP::value_type(&EqState,ppModelVertex));
 }
 
-void _CCircuitAnalyzer::_CSubciruitOutsData::PrepareDongle(size_t DongleNo,
+void _CCircuitAnalyzer::_CSubciruitOutsData::PrepareDongle(unsigned long DongleNo,
 	_CMultiDeletions& Deletions, _CModelVertex& ModelVertex, unsigned long& Counter)
 {
 	ASSERTPDD(DongleNo<m_OriginalDescStates.size());
@@ -6277,19 +6271,19 @@ void _CCircuitAnalyzer::_COptimizationComponentData::TestInfluence()
 	_CTestIncidentsWraper TestTable(m_Analyzer.m_IncidentTable);
 	COMPONENT_PINS_LIST PinsList;
 	TestTable.TestRemovalCompPins(m_MyComponent,PinsList);
-	m_NoOfRemovedPins = PinsList.size();
+	m_NoOfRemovedPins = (unsigned long)PinsList.size();
 	//m_Analyzer.m_IncidentTable.TestRemovalCompPins(m_MyComponent,PinsList);
 	//PrevTestRemovalCompPins(pPinsList);
 	//m_Analyzer.m_IncidentTable.TestRemovalCompPins(m_MyComponent,pPinsList);
 	m_Analyzer.ReportMinIncidences(m_MyComponent,m_MinIncidenceAfterReduction,m_NoOfPinsWithMinIncidence);
-	size_t NoOfDesc=m_MyComponent.NoOfEffevtiveDescendants();
+	auto NoOfDesc=m_MyComponent.NoOfEffevtiveDescendants();
 	int HollowDesc=m_MyComponent.HollowOutput(); 
 	IGNORE_COMP_SET IgnoreSet;
 	IgnoreSet.insert(&m_MyComponent);
 	//PrepareIgnoreCompSet(IgnoreSet);
 	typedef vector<const _CMultiBasicSetOfDeletions*> DESC_SETS_OFDELETIONS;
 	DESC_SETS_OFDELETIONS DescSetsOfDeletions(NoOfDesc);
-	for(size_t i=0;i<NoOfDesc;i++)
+	for(unsigned i=0;i<NoOfDesc;i++)
 	{
 		m_MyComponent.GetDescendantDeletions(i,DescSetsOfDeletions[i]);
 	}
@@ -6396,21 +6390,21 @@ int _CCircuitAnalyzer::_C2ndOrderOptimizationComponentData::Test2ndInfluence()
 	m_CreatedVertices1_2=m_CreatedVertices2_1=0;
 	typedef vector<bool> RES_VECTOR;
 	typedef vector<RES_VECTOR> RES_MATRIX;
-	size_t NoOfDesc1=m_My1stComponent.NoOfEffevtiveDescendants();
+	auto NoOfDesc1=m_My1stComponent.NoOfEffevtiveDescendants();
 	int HollowDesc1=m_My1stComponent.HollowOutput(); 
-	size_t NoOfDesc2=m_My2nComponent.NoOfEffevtiveDescendants();
+	auto NoOfDesc2=m_My2nComponent.NoOfEffevtiveDescendants();
 	int HollowDesc2=m_My2nComponent.HollowOutput(); 
 	//RES_MATRIX ResMatrix12(NoOfDesc1,RES_VECTOR(NoOfDesc2));
 
 	typedef vector<const _CMultiBasicSetOfDeletions*> DESC_SETS_OFDELETIONS;
 	DESC_SETS_OFDELETIONS DescSetsOfDeletions1(NoOfDesc1);
-	for(size_t i=0;i<NoOfDesc1;i++)
+	for(unsigned i=0;i<NoOfDesc1;i++)
 	{
 		m_My1stComponent.GetDescendantDeletions(i,DescSetsOfDeletions1[i]);
 	}
 
 	DESC_SETS_OFDELETIONS DescSetsOfDeletions2(NoOfDesc2);
-	for(size_t i=0;i<NoOfDesc2;i++)
+	for(unsigned i=0;i<NoOfDesc2;i++)
 	{
 		m_My2nComponent.GetDescendantDeletions(i,DescSetsOfDeletions2[i]);
 	}
@@ -7293,12 +7287,12 @@ bool _CFastGreedyAnalyser::IsComponentContradicted(const _CNewGreedyStateCofacto
 	//TopIncd.TestRemovalCompPins(*pComponent, Pins);
 	TestTable.TestRemovalCompPins(*pComponent, Pins);
 	//m_pAnlyser->m_IncidentTable.TestRemovalCompPins(*pComponent,Pins);
-	size_t NoOfDesc=pComponent->NoOfEffevtiveDescendants();
+	auto NoOfDesc=pComponent->NoOfEffevtiveDescendants();
 	//if(!pComponent->DeletionsAreForced() && pPins->empty())
 	if(!pComponent->DeletionsAreForced() && Pins.empty())
 		Result=false;
 	else
-		for(size_t i=0;i<NoOfDesc;i++)
+		for(unsigned i=0;i<NoOfDesc;i++)
 		{
 			const _CMultiBasicSetOfDeletions* pDels=NULL;
 			pComponent->GetDescendantDeletions(i,pDels);
@@ -7335,7 +7329,7 @@ _CCircuitAnalyzer::_CFastCompOptimizer::_CFastCompOptimizer(_CCircuitAnalyzer* p
 		Pins.unique();
 		for (COMPONENT_PINS_LIST::iterator pit = Pins.begin(), _pe = Pins.end(); pit != _pe; pit++)
 		{
-			size_t Pin = *pit;
+			auto Pin = *pit;
 			auto& Set = m_Map[Pin];
 			Set.insert(pComp);
 			size_t Size = Set.size();
@@ -7472,7 +7466,7 @@ void _CCircuitAnalyzer::_CFastCompOptimizer::GetTouchedAndLast(LIST_OF_COMPONENT
 	SET_OF_COMPONENTS AuxSet;
 	for (auto& VT : m_Map)
 	{
-		size_t Pin = VT.first;
+		auto Pin = VT.first;
 		auto& Set = VT.second;
 		if ((Pin!=m_TheMostCommon && IsIn(m_TouchedPinSet, Pin)) || Set.size() == 1)
 		{
@@ -7490,7 +7484,7 @@ void _CCircuitAnalyzer::_CFastCompOptimizer::GetSmallestIncds(LIST_OF_COMPONENTS
 	//for(INCD_MAP::iterator it=SmallestMap.begin(),_e=SmallestMap.end();it!=_e;it++)
 	for(INCD_MAP::iterator it=m_Map.begin(),_e=m_Map.end();it!=_e;it++)
 	{
-		size_t Pin=it->first;
+		auto Pin=it->first;
 		SET_OF_COMPONENTS& Set=it->second;
 		bool IsBoundary=m_pAnalyzer->IsBoundary(Pin);
 		bool IsTouched=m_pAnalyzer->IsTouchedPin(Pin);
@@ -7533,7 +7527,7 @@ void _CCircuitAnalyzer::_CFastCompOptimizer::GetSmallestIncds(INCD_MAP& IncdMap)
 	}
 	for(COMPONENT_PINS_LIST::iterator pit=m_PrevPins.begin(),_pe=m_PrevPins.end();pit!=_pe;pit++)
 	{
-		size_t Pin=*pit;
+		auto Pin=*pit;
 		INCD_MAP::iterator oit=IncdMap.find(Pin);
 		if(oit!=IncdMap.end()) continue;
 		oit=m_Map.find(Pin);

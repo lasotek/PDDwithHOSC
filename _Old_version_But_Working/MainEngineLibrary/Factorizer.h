@@ -245,15 +245,15 @@ public:
 	//	//PathStorage.PathSt2PathOrdr(m_PathOrder);
 	//}
 	void Init();
-	bool NotifyFactorizedValue(size_t CofId,size_t sPower, const _CFlatVertex* pVertex, short GlobalSgn);
+	bool NotifyFactorizedValue(unsigned long CofId,unsigned long sPower, const _CFlatVertex* pVertex, short GlobalSgn);
 	void ClearGarbage();
 	void SoE2Stream(txt_stream& stream) const {m_ValueUniqueList.List2Stream(stream);}
 	void Regular2Stream(txt_stream& stream) ;
-	SIGNED_ID GetValueId(size_t CofId,size_t sPower) const
+	SIGNED_ID GetValueId(unsigned long CofId,unsigned long sPower) const
 	{
 		return m_ResMap.GetValueId(CofId,sPower);
 	}
-	SIGNED_TERM GetTerm(size_t CofId,size_t sPower) const
+	SIGNED_TERM GetTerm(unsigned long CofId,unsigned long sPower) const
 	{
 		return m_ResMap.GetTerm(CofId,sPower);
 	}
@@ -265,8 +265,8 @@ public:
 	{
 		pContener->OneLevelEntry2Stream(stream);
 	}
-	size_t DefineTransferFunctionSimp(const string& Name, size_t NumeratorCof, const _CCofactor* pNumCof, 
-		size_t DenominatorCof, const _CCofactor* pDenCof)
+	unsigned long DefineTransferFunctionSimp(const string& Name, unsigned long NumeratorCof, const _CCofactor* pNumCof, 
+		unsigned long DenominatorCof, const _CCofactor* pDenCof)
 	{
 		return m_Manager.DefineTransferFunctionSimp(Name,NumeratorCof,pNumCof,DenominatorCof,pDenCof);
 	}
@@ -274,7 +274,7 @@ public:
 	void PrepareTrasferFuctions() {m_Manager.PrepareTrasferFuctions(); }
 	void WriteTransferFunctions(txt_stream& stream) {m_Manager.ToStream(stream);}
 	void WriteTransferFunction(size_t TrId, txt_stream& stream) {m_Manager.ToStream(TrId,stream);}
-	bool TranslateTrans2DenAndNum(size_t FunctionNo, size_t& Num, size_t& Den)
+	bool TranslateTrans2DenAndNum(size_t FunctionNo, unsigned long& Num, unsigned long& Den)
 	{
 		return m_Manager.TranslateTrans2DenAndNum(FunctionNo, Num, Den);
 	}
@@ -300,26 +300,26 @@ protected:
 	COMP_PATH_ORDER m_PathOrder;
 	_CFlatResultDevCache m_ResDevCache;
 	_CFlatValueUniqueList m_ValueUniqueList;
-	typedef map<ULONGLONG, const _CAbstractFlatValueCont*> AUX_LIST;
+	typedef map<size_t, const _CAbstractFlatValueCont*> AUX_LIST;
 	//AUX_LIST m_AuxList;
 	class _CResMap
 	{
 	public:
-		typedef map<size_t,SIGNED_TERM> COF_MAP;
+		typedef map<unsigned long,SIGNED_TERM> COF_MAP;
 		_CResMap(_CFlatValueUniqueList& ValueUniqueList):
 		  m_MaxCofId(0),m_MaxSPower(0),m_ValueUniqueList(ValueUniqueList) {}
-		SIGNED_TERM& GetTerm(size_t CofId,size_t SPower);
+		SIGNED_TERM& GetTerm(unsigned long CofId,unsigned long SPower);
 		void TouchResults(TOUCH_VECTOR& Vector);
 		void PrepareAuxList(AUX_LIST& AuxList) const;
-		SIGNED_ID GetValueId(size_t CofId,size_t sPower) const;
-		SIGNED_TERM GetTerm(size_t CofId,size_t sPower) const;
-		void GetCofCoeffs(size_t CofId,COF_MAP& OutMap) const;
+		SIGNED_ID GetValueId(unsigned long CofId, unsigned long sPower) const;
+		SIGNED_TERM GetTerm(unsigned long CofId, unsigned long sPower) const;
+		void GetCofCoeffs(unsigned long CofId,COF_MAP& OutMap) const;
 	protected:
-		typedef pair<size_t,size_t> ENTRY;
+		typedef pair<unsigned long, unsigned long> ENTRY;
 		typedef map<ENTRY,SIGNED_TERM> RES_MAP;
 		RES_MAP m_ResMap;
-		size_t m_MaxCofId;
-		size_t m_MaxSPower;
+		unsigned long m_MaxCofId;
+		unsigned long m_MaxSPower;
 		_CFlatValueUniqueList& m_ValueUniqueList;
 	};
 	_CResMap m_ResMap;
@@ -402,13 +402,13 @@ protected:
 	class _CTransferFunctPair
 	{
 	public:
-		_CTransferFunctPair(const string& Name, size_t DenCofId, const _CCofactor* pDenCof,
-			size_t NumCofId, const _CCofactor* pNumCof, _CFlatValueUniqueList& FlatValueUniqueList):m_Name(Name), m_DenCofId(DenCofId), 
+		_CTransferFunctPair(const string& Name, unsigned long DenCofId, const _CCofactor* pDenCof,
+			unsigned NumCofId, const _CCofactor* pNumCof, _CFlatValueUniqueList& FlatValueUniqueList):m_Name(Name), m_DenCofId(DenCofId), 
 			m_pDenCof(pDenCof),m_NumCofId(NumCofId),m_pNumCof(pNumCof),m_FlatValueUniqueList(FlatValueUniqueList),
 			Den(FlatValueUniqueList), Num(FlatValueUniqueList) {}
 		void PrepareTrasferFuctions(_CFlatResultFactorizer::_CResMap& ResMap);
 		void ToStream(txt_stream& stream);
-		void GetNumAndCoffId(size_t& Num, size_t& Den) 
+		void GetNumAndCoffId(unsigned long& Num, unsigned long& Den) 
 		{
 			Num = m_NumCofId;
 			Den = m_DenCofId;
@@ -417,7 +417,7 @@ protected:
 	protected:
 		//friend class _CCofResCont;
 		string m_Name;
-		size_t m_DenCofId, m_NumCofId;
+		unsigned long m_DenCofId, m_NumCofId;
 		_CCofResCont Den,Num;
 		const _CCofactor* m_pDenCof;
 		const _CCofactor* m_pNumCof;
@@ -430,17 +430,17 @@ protected:
 	public:
 		_CFunctionPairsManager(_CFlatValueUniqueList& FlatValueUniqueList,_CFlatResultFactorizer::_CResMap& ResMap):m_Counter(0x10),
 			m_FlatValueUniqueList(FlatValueUniqueList),m_ResMap(ResMap) {}
-		size_t DefineTransferFunctionSimp(const string& Name,size_t NumeratorCof, const _CCofactor* pNumCof, 
-			size_t DenominatorCof, const _CCofactor* pDenCof);
+		unsigned long DefineTransferFunctionSimp(const string& Name,unsigned long NumeratorCof, const _CCofactor* pNumCof, 
+			unsigned long DenominatorCof, const _CCofactor* pDenCof);
 		void PrepareTrasferFuctions();
 		void ToStream(txt_stream& stream);
 		void ToStream(size_t TrId,txt_stream& stream);
-		bool TranslateTrans2DenAndNum(size_t FunctionNo, size_t& Num, size_t& Den);
+		bool TranslateTrans2DenAndNum(size_t FunctionNo, unsigned long& Num, unsigned long& Den);
 		const string& Name(size_t FunctionNo) const;
 	protected:
 		typedef unordered_map<size_t,_CTransferFunctPair> FUNCTION_PAIRS;
 		FUNCTION_PAIRS m_FunctionPairs;
-		size_t m_Counter;
+		unsigned long m_Counter;
 		_CFlatValueUniqueList& m_FlatValueUniqueList;
 		//_CFlatResultFactorizer::RES_MAP& m_ResMap;
 		_CFlatResultFactorizer::_CResMap& m_ResMap;

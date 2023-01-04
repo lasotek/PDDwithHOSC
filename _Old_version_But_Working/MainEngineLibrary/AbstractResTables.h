@@ -25,9 +25,9 @@ public:
 			return NULL;
 		return pCoeffsTab->smart_at(sPower);
 	}
-	ResTableType& force_at(const string& Context,unsigned long long CofId, unsigned short sPower)
+	ResTableType& force_at(const string& Context,unsigned long CofId, unsigned long sPower)
 	{
-		return m_Map[&Context].force_at((size_t)CofId).force_at((size_t)sPower);
+		return m_Map[&Context].force_at(CofId).force_at(sPower);
 	}
 	//ResTableType& GetResult(const string& Context,unsigned long long CofId, unsigned short sPower)
 	//{

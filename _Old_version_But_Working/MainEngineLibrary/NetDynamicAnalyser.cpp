@@ -311,7 +311,7 @@ void _CNetDynamicAnalyser::PairGlobalLocal(int GlobalNode, int LocalNode)
 
 int _CNetDynamicAnalyser::DenominatorRank()
 {
-	return m_pMainCircuit->NoOfNodes()-m_pCommonDenCof->GetRank();
+	return (int)m_pMainCircuit->NoOfNodes()-m_pCommonDenCof->GetRank();
 }
 
 
@@ -352,7 +352,7 @@ void _CNetDynamicAnalyser::CreateNewACofItems(_CStateVar& StateInp, _CStateVar& 
 	m_AICofactors.insert(AI_COFACTOR_TABLE::value_type(A_STATE_COORDINATES(&StateInp,&StateOut),iCofactor));
 	string TrName="T("+StateInp.Description()+"=>"+StateOut.Description()+")";
 	long TrId=m_pMainCircuit->DefineTransferFunctionSimp(TrName,iCofactor,m_iCommonDenCof);
-	m_TransDefs.insert(TRANS_DEF_TABLE::value_type(A_STATE_COORDINATES(&StateInp,&StateOut),(size_t)TrId));
+	m_TransDefs.insert(TRANS_DEF_TABLE::value_type(A_STATE_COORDINATES(&StateInp,&StateOut),(unsigned long)TrId));
 	if(Symetric) return;
 	long iCofactorT=m_pMainCircuit->CreateNewCofactor();
 	_CCofactor* pCofactorT=m_pMainCircuit->GetCofactor(iCofactorT);
@@ -361,7 +361,7 @@ void _CNetDynamicAnalyser::CreateNewACofItems(_CStateVar& StateInp, _CStateVar& 
 	m_AICofactors.insert(AI_COFACTOR_TABLE::value_type(A_STATE_COORDINATES(&StateOut,&StateInp),iCofactorT));
 	string TrNameT="T("+StateOut.Description()+"=>"+StateInp.Description()+")";
 	long TrIdT=m_pMainCircuit->DefineTransferFunctionSimp(TrNameT,iCofactorT,m_iCommonDenCof);
-	m_TransDefs.insert(TRANS_DEF_TABLE::value_type(A_STATE_COORDINATES(&StateOut,&StateInp),(size_t)TrIdT));
+	m_TransDefs.insert(TRANS_DEF_TABLE::value_type(A_STATE_COORDINATES(&StateOut,&StateInp),(unsigned long)TrIdT));
 }
 
 void _CNetDynamicAnalyser::CreateNewBCofItems(const _CInput& Input, const _CStateVar& StateOut)
@@ -377,7 +377,7 @@ void _CNetDynamicAnalyser::CreateNewBCofItems(const _CInput& Input, const _CStat
 	m_BICofactors.insert(BI_COFACTOR_TABLE::value_type(B_STATE_COORDINATES(&Input,&StateOut),iCofactor));
 	string TrName="T("+Input.ValueName()+"=>"+StateOut.Description()+")";
 	long TrId=m_pMainCircuit->DefineTransferFunctionSimp(TrName,iCofactor,m_iCommonDenCof);
-	m_TransBaseDefs.insert(TRANS_BASE_DEF_TABLE::value_type(B_STATE_COORDINATES(&Input,&StateOut),(size_t)TrId));
+	m_TransBaseDefs.insert(TRANS_BASE_DEF_TABLE::value_type(B_STATE_COORDINATES(&Input,&StateOut),(unsigned long)TrId));
 }
 
 
@@ -578,7 +578,7 @@ _CIntNodes* _CNetDynamicAnalyser::_CLocalIntNodes::ToIntNodes(_CIntNodes* pIntNo
 {
 	ASSERTPDD(pIntNodes!=NULL);
 	pIntNodes->clear();
-	pIntNodes->resize(m_MaxLocalPin+1,-1);
+	pIntNodes->resize((size_t)m_MaxLocalPin+1,-1);
 	for(INT_INT_MAP::iterator it=m_Connections.begin(),_e=m_Connections.end();it!=_e;it++)
 		pIntNodes->at(it->first)=it->second;
 	return pIntNodes;

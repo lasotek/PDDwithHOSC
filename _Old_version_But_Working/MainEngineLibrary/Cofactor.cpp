@@ -155,7 +155,7 @@ int _CDeletions::Comp(const _CDeletions& Oper) const
 		return 1;
 	else return 0;
 }
-long _CDeletions::DetermineHashKey(long Core)
+size_t _CDeletions::DetermineHashKey(size_t Core)
 {
 	Core*=HASH_FACTOR;
 	Core^=size();
@@ -404,9 +404,9 @@ _CMultiDeletions::operator string() const
 	}
 	return Res;
 }
-long _CMultiDeletions::DetermineHashKey(long Core)
+size_t _CMultiDeletions::DetermineHashKey(size_t Core)
 {
-	for (auto DelsPair : *this)
+	for (auto& DelsPair : *this)
 	{
 		Core *= HASH_FACTOR;
 		Core ^= DelsPair.first;
@@ -438,9 +438,9 @@ void _CMultiDeletions::Load(_binary_filer& Filer)
 	}
 }
 
-size_t _CMultiDeletions::GetRank() const
+unsigned _CMultiDeletions::GetRank() const
 {
-	size_t Size = 0;
+	unsigned Size = 0;
 	for (auto& PairDesc : (*this))
 		Size = max(Size, PairDesc.second.GetRank());
 	return Size;

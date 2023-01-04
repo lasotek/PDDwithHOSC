@@ -7,16 +7,16 @@ bool _CDirectNumContainer::IsEqualTo(const _CAbstractDirectNumContainer& Right)
 	return m_Context == R.m_Context && m_pVertex == R.m_pVertex && m_pRedefEntry == R.m_pRedefEntry;
 }
 
-long _CDirectNumContainer::DetermineHashKey(long Core)
+size_t _CDirectNumContainer::DetermineHashKey(size_t Core)
 {
-	long long HKey = Core;
+	auto HKey = Core;
 	HKey *= HASH_FACTOR;
 	HKey ^= (long long)m_Context;
 	HKey *= HASH_FACTOR;
 	HKey ^= (long long)m_pVertex;
 	HKey *= HASH_FACTOR;
 	HKey ^= (long long)m_pRedefEntry;
-	return (long)HKey;
+	return HKey;
 }
 
 

@@ -20,7 +20,7 @@ public:
 		PrepareSet();
 	}
 	virtual ~_CTwoPort(void);
-	virtual long GetHash(long Core=HASH_CORE) const;
+	virtual size_t GetHash(size_t Core=HASH_CORE) const override;
 	/*virtual*/ void PlugInComponent(_CIntegrityTable& IntegrityTable);
 	///*virtual*/ void PrepareLState(_CGraphState& LState, int ParamId) const;
 	///*virtual*/ void PrepareHState(_CGraphState& HState, int ParamId) const;
@@ -29,7 +29,7 @@ public:
 	void CurrentPins(_CGraphTable& Tables,TWO_GRAPH_PINS& Pins) const;
 	virtual void ProcessDescendant(unsigned Desc, _CGraphState* pState) override;
 	virtual void CheckDisconnection(_CGraphState* pState) const override;
-	virtual size_t MaxDescRank() override {return 1;}
+	virtual unsigned MaxDescRank() override {return 1;}
 	virtual void ExchangeNumbers(const _CExchangMapWraper& Numbers2Exchange) override;
 	virtual void RaportConnections(COMPONENT_PINS& Pins) const override;
 protected:

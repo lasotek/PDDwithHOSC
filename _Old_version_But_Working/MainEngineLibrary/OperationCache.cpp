@@ -37,9 +37,9 @@
 //	ForceIntoCache(pResContainer);
 //}
 
-long _CRealGraphDevelopement::DetermineHashKey(long Core)
+size_t _CRealGraphDevelopement::DetermineHashKey(size_t Core)
 {
-	long long Res=Core;
+	auto Res=Core;
 	Res*=HASH_FACTOR;
 	Res^=m_InCofId;
 	Res*=HASH_FACTOR;

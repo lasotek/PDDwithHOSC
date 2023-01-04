@@ -14,16 +14,16 @@ using namespace stdext;
 typedef enum tagResState{IN_USE,TERM_ONE,TERM_SELFLOOP,TERM_DISCONNECTED,TERM_SIZE_REJECTED} RES_STATE;
 
 class _CCircuit;
-class _CListOfNodes : public vector<int>,public _streamable
+class _CListOfNodes : public vector<unsigned>,public _streamable
 {
 public:
 	~_CListOfNodes()
 	{
 	}
 	_CListOfNodes()/*:INIT_STREAMABLE(_CListOfNodes)*/ {}
-	_CListOfNodes(int Size, const int&   InitN):vector<int>(Size,InitN)/*,
+	_CListOfNodes(int Size, const int&   InitN):vector<unsigned>(Size,InitN)/*,
 		INIT_STREAMABLE(_CListOfNodes)*/{}
-	virtual long GetHashValue(long Core=HASH_CORE);
+	virtual size_t GetHashValue(size_t Core=HASH_CORE);
 protected:
 	DECLARE_DYNAMIC_CREATION(_CListOfNodes);
 	void Store(_binary_filer& Filer);
@@ -68,14 +68,14 @@ public:
 	{
 	}
 	int ValueAt(int Index);
-	virtual long GetHashValue(long Core=HASH_CORE);
+	virtual size_t GetHashValue(size_t Core=HASH_CORE) override;
 };
 
 class _CSparseGenericStateVector : public _CSparseListOfNodes
 {
 public:
 	int ValueAt(int Index);
-	virtual long GetHashValue(long Core=HASH_CORE);//Tutaj
+	virtual size_t GetHashValue(size_t Core=HASH_CORE);//Tutaj
 };
 
 class _CDeletions;
@@ -83,7 +83,7 @@ class _CMultiDeletions;
 class _CGraphTable : public _CInUseCheckpoint, public _CHashable, public _streamable
 {
 public:
-	_CGraphTable(int NoOfNodes=0);
+	_CGraphTable(unsigned NoOfNodes=0);
 	_CGraphTable(const _CGraphTable& Source)/*:INIT_STREAMABLE(_CGraphTable)*/ {Copy(Source);}
 	_CGraphTable(_CGraphTable& Source,unsigned NoOfBoundaries);
 	~_CGraphTable(void);
@@ -117,7 +117,7 @@ protected:
 	DECLARE_DYNAMIC_CREATION(_CGraphTable);
 	void Store(_binary_filer& Filer);
 	void Load(_binary_filer& Filer);
-	long DetermineHashKey(long Core=HASH_CORE);
+	virtual size_t DetermineHashKey(size_t Core=HASH_CORE) override;
 	void Copy(const _CGraphTable& Source);
 	_CGenericStateVector m_R,m_C,m_S;
 	short m_Sgn;
@@ -169,7 +169,7 @@ protected:
 	DECLARE_DYNAMIC_CREATION(_CSparseCommIntegrity);
 	void Store(_binary_filer& Filer);
 	void Load(_binary_filer& Filer);
-	long DetermineHashKey(long Core=HASH_CORE);
+	virtual size_t DetermineHashKey(size_t Core=HASH_CORE) override;
 };
 
 class _CSparseDeletionAnalyser : public _CInUseCheckpoint, public _CHashable, public _streamable
@@ -190,7 +190,7 @@ protected:
 	DECLARE_DYNAMIC_CREATION(_CSparseDeletionAnalyser);
 	void Store(_binary_filer& Filer);
 	void Load(_binary_filer& Filer);
-	long DetermineHashKey(long Core=HASH_CORE);
+	virtual size_t DetermineHashKey(size_t Core=HASH_CORE) override;
 	const _CSparseCommIntegrity* m_pIntegrity;
 	_CSparseGenericStateVector m_R,m_C,m_S;
 	short m_Sgn;
@@ -227,13 +227,13 @@ public:
 	//		delete this;
 	//}
 	void ReduceToNoOfNodes(unsigned NewNoOfNodes);
-	int Row(int a) {return m_R[a];}
-	int Column(int a) {return  m_C[a];}
+	int Row(unsigned a) {return m_R[a];}
+	int Column(unsigned a) {return  m_C[a];}
 protected:
 	DECLARE_DYNAMIC_CREATION(_CIntegrityTable);
 	void Store(_binary_filer& Filer); 
 	void Load(_binary_filer& Filer);
-	long DetermineHashKey(long Core=HASH_CORE);
+	virtual size_t DetermineHashKey(size_t Core=HASH_CORE) override;
 	void Copy(const _CIntegrityTable& Source);
 	_CListOfNodes m_R,m_C;
 	friend class _CGraphState;
@@ -356,7 +356,7 @@ protected:
 		ReleaseTables();
 		return (m_State=TERM_ONE);
 	}
-	virtual long DetermineHashKey(long Core=HASH_CORE);
+	virtual size_t DetermineHashKey(size_t Core=HASH_CORE) override;
 	void Copy(const _CGraphState& Source, bool ForceNewTables);
 	RES_STATE m_State;
 	virtual void TouchDepended();

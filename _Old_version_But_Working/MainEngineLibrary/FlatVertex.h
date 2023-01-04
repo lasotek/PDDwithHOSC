@@ -28,26 +28,26 @@ class _CModelVerticesPath
 {
 public:
 	typedef list<const _CModelVertex*> LIST;
-	_CModelVerticesPath(_CMainCircuit* pMainCircuit):m_pBaseCircuit(pMainCircuit) {}
+	_CModelVerticesPath(_CMainCircuit* pMainCircuit) :m_pBaseCircuit(pMainCircuit) {}
 	_CModelVerticesPath(const _CModelVerticesPath& Source)
 		:m_pBaseCircuit(Source.m_pBaseCircuit), m_List(Source.m_List) {}
-	void Step2NextVertex(const _CModelVertex* pNextVertex,_CSubModelNumericPattern* pNumPatt=NULL);
+	void Step2NextVertex(const _CModelVertex* pNextVertex, _CSubModelNumericPattern* pNumPatt = NULL);
 	void StepOutOneVertex();
 	_CSubCircuitSocket* GetParentSocket() const;
 	const _CModelVertex* GetParentMetaVertex() const;
-	_CMainCircuit* GetBaseCircuit() const {return m_pBaseCircuit;}
+	_CMainCircuit* GetBaseCircuit() const { return m_pBaseCircuit; }
 	bool operator==(const _CModelVerticesPath& Right) const
 	{
-		return (m_pBaseCircuit==Right.m_pBaseCircuit && m_List==Right.m_List);
+		return (m_pBaseCircuit == Right.m_pBaseCircuit && m_List == Right.m_List);
 	}
-	long long GetHash(long long Core=HASH_CORE) const;
-	void LeaveMetaVertex(const _CModelVertex*& pTopMacro,const _CSubModelNumericPattern*& pTopNumPatt);
-	void LeaveMetaVertex2(LIST& StoredHeep,const _CSubModelNumericPattern*& pTopNumPatt);
+	size_t GetHash(size_t Core = HASH_CORE) const;
+	void LeaveMetaVertex(const _CModelVertex*& pTopMacro, const _CSubModelNumericPattern*& pTopNumPatt);
+	void LeaveMetaVertex2(LIST& StoredHeep, const _CSubModelNumericPattern*& pTopNumPatt);
 	void Return2MetaVertex(LIST& StoredHeep);
-	void Return2MetaVertex(const _CModelVertex* pTopMacro,const _CSubModelNumericPattern* pTopNumPatt);
+	void Return2MetaVertex(const _CModelVertex* pTopMacro, const _CSubModelNumericPattern* pTopNumPatt);
 	const _CSubModelNumericPattern* GetTopSubModelNumericPatter() const;
-	const LIST& GetList() const {return m_List;}
-	bool IsInvalid() {return m_pBaseCircuit==NULL;}
+	const LIST& GetList() const { return m_List; }
+	bool IsInvalid() { return m_pBaseCircuit == NULL; }
 	const NumericType& GetNumericValue(_CCompRedefEntry& Entry) const;
 	const _CModelVertex* GetTopVertex() const
 	{
@@ -87,13 +87,13 @@ class COMPONENTS_PATH : public list<const _CComponent*>
 {
 public:
 	COMPONENTS_PATH() {}
-	COMPONENTS_PATH(const COMPONENTS_PATH& Source):list<const _CComponent*>(Source) {}
+	COMPONENTS_PATH(const COMPONENTS_PATH& Source) :list<const _CComponent*>(Source) {}
 	//COMPONENTS_PATH(const VERTICES_PATH& Source);
 	//COMPONENTS_PATH(const _CModelVerticesTraitor& Traitor);
 	COMPONENTS_PATH(const _CModelVerticesPath& Traitor);
 	COMPONENTS_PATH(const _CModelVerticesPath::LIST& TraitorLIST);
 	string ToString() const;
-	long long  GetHash(long long Core=HASH_CORE) const;
+	size_t  GetHash(size_t Core = HASH_CORE) const;
 	//double GetNumericValue() const;
 	const NumericType& GetNumericValue(_CCompRedefEntry& RedefEntry) const;
 	const NumericType& GetNumericValue() const;
@@ -102,28 +102,28 @@ protected:
 	void Copy(const _CModelVerticesPath& Source);
 };
 
-short PCompare(const COMPONENTS_PATH& Left, const COMPONENTS_PATH& Right,_CMainCircuit* pMainCircuit);
+short PCompare(const COMPONENTS_PATH& Left, const COMPONENTS_PATH& Right, _CMainCircuit* pMainCircuit);
 
 class COMPONENTS_PATH_KeyCompare
 {
 public:
-	COMPONENTS_PATH_KeyCompare(_CMainCircuit*& pMainCircuit):m_pMainCircuit(pMainCircuit) {}
+	COMPONENTS_PATH_KeyCompare(_CMainCircuit*& pMainCircuit) :m_pMainCircuit(pMainCircuit) {}
 	bool operator() (const COMPONENTS_PATH& Left, const COMPONENTS_PATH& Right) const
 	{
-		return ::PCompare(Left,Right,m_pMainCircuit)<0;
+		return ::PCompare(Left, Right, m_pMainCircuit) < 0;
 	}
 protected:
 	_CMainCircuit*& m_pMainCircuit;
 };
 
 //typedef unordered_map<const COMPONENTS_PATH*,size_t> COMP_PATH_ORDER;
-typedef unordered_map<COMPONENTS_PATH*,size_t> COMP_PATH_ORDER;
+typedef unordered_map<COMPONENTS_PATH*, size_t> COMP_PATH_ORDER;
 class _CCompPathStorage
 {
 public:
-	_CCompPathStorage():m_pMainCircuit(NULL),m_KeyComp(m_pMainCircuit),m_Stg(m_KeyComp) {}
+	_CCompPathStorage() :m_pMainCircuit(NULL), m_KeyComp(m_pMainCircuit), m_Stg(m_KeyComp) {}
 	//const COMPONENTS_PATH& GetUnique(const COMPONENTS_PATH& Source) {return *(m_Stg.insert(Source).first);}
-	const COMPONENTS_PATH& GetUnique(COMPONENTS_PATH& Source) {return *(m_Stg.insert(Source).first);}
+	const COMPONENTS_PATH& GetUnique(COMPONENTS_PATH& Source) { return *(m_Stg.insert(Source).first); }
 	//void PathSt2PathOrdr(COMP_PATH_ORDER& PO) const;
 	void PathSt2PathOrdr(COMP_PATH_ORDER& PO);
 	string ToString() const;
@@ -132,7 +132,7 @@ protected:
 	_CMainCircuit* m_pMainCircuit;
 	COMPONENTS_PATH_KeyCompare m_KeyComp;
 	//typedef set<const COMPONENTS_PATH,COMPONENTS_PATH_KeyCompare> COMP_STG;
-	typedef set<COMPONENTS_PATH,COMPONENTS_PATH_KeyCompare> COMP_STG;
+	typedef set<COMPONENTS_PATH, COMPONENTS_PATH_KeyCompare> COMP_STG;
 	COMP_STG m_Stg;
 };
 
@@ -166,7 +166,7 @@ bool IsOnlyOneDescendant(const vector<Desc*>& Descs, size_t& NonZeroDesc)
 			break;
 	if (Index == Descs.size())
 		return false;
-	if (Index == Descs.size()-1)
+	if (Index == Descs.size() - 1)
 	{
 		NonZeroDesc = Descs.size() - 1;
 		return true;
@@ -206,14 +206,14 @@ public:
 	string ToString(const _CFlatVertexCache& MyCache) const;
 	void ToStream(txt_stream& stream, const _CFlatVertexCache& MyCache, size_t& NoOfMults, size_t& NoOfAdds, size_t& NoOfMultsNonOne) const;
 	void WalkFlatResult(_CFlatVertexWalker& Walker) const;
-	string CompPathStr() const {return m_pComponentsPath==NULL?"":m_pComponentsPath->ToString();}
+	string CompPathStr() const { return m_pComponentsPath == NULL ? "" : m_pComponentsPath->ToString(); }
 	//bool NoZero() const;
 	bool IsOnlyOneDescendant(size_t& NonZeroDesc) const;
-	const COMPONENTS_PATH* GetPath() const {return m_pComponentsPath;}
+	const COMPONENTS_PATH* GetPath() const { return m_pComponentsPath; }
 	const _CFlatVertex* GetDescendant(size_t Index) const
 	{
 		ASSERTPDD(Index < m_Descendants.size());
-		return m_Descendants[Index]; 
+		return m_Descendants[Index];
 	}
 	short GetMult(size_t Index) const
 	{
@@ -225,9 +225,9 @@ public:
 	//short Get1Mult() const {return m_1Multiplier;}
 	//short Get0Mult() const {return m_0Multiplier;}
 	size_t GetNoOfDescs() const { return m_Descendants.size(); }
-	size_t GetCompPower() const { return m_Multipliers.size()-1; }
+	size_t GetCompPower() const { return m_Multipliers.size() - 1; }
 protected:
-	long long pDesc2Index(const _CFlatVertex* pDesc,const _CFlatVertexCache& MyCache) const;
+	long long pDesc2Index(const _CFlatVertex* pDesc, const _CFlatVertexCache& MyCache) const;
 	//const _CFlatVertex* m_1Descendent;
 	//const _CFlatVertex* m_0Descendent;
 	//short m_1Multiplier;
@@ -235,7 +235,7 @@ protected:
 	MULTIPLIERS m_Multipliers;
 	DESCENDANTS m_Descendants;
 	const COMPONENTS_PATH* m_pComponentsPath;
-	virtual long DetermineHashKey(long Core=HASH_CORE);
+	virtual size_t DetermineHashKey(size_t Core = HASH_CORE) override;
 };
 
 extern _CFlatVertex OneFlatVertex;
@@ -264,7 +264,7 @@ typedef list<SIGNED_COMPONENT_PATH_LIST> SIGNED_COMPONENT_PATH_MULTILIST;
 typedef list<const _CFlatVertex*> FLAT_VERT_LIST;
 typedef list<FLAT_VERT_LIST> FLAT_VERT_MULTILIST;
 
-typedef pair<const _CFlatVertex*,size_t> LEVEL_FLAT_VERTEX;
+typedef pair<const _CFlatVertex*, size_t> LEVEL_FLAT_VERTEX;
 typedef list<LEVEL_FLAT_VERTEX> LEVEL_FLAT_VERTEX_LIST;
 typedef list<LEVEL_FLAT_VERTEX_LIST> LEVEL_FLAT_VERTEX_MULTILIST;
 
@@ -272,8 +272,8 @@ class _CSignedComponentPath
 {
 public:
 	_CSignedComponentPath(const _CFlatVertex* pVertex);
-	SIGNED_COMPONENT_PATH& GetCurrent() {return m_Current;}
-	SIGNED_COMPONENT_PATH& GetNext() {return m_Next;}
+	SIGNED_COMPONENT_PATH& GetCurrent() { return m_Current; }
+	SIGNED_COMPONENT_PATH& GetNext() { return m_Next; }
 protected:
 	SIGNED_COMPONENT_PATH m_Current;
 	SIGNED_COMPONENT_PATH m_Next;
@@ -414,9 +414,11 @@ typedef vector<bool> BOOL_VECTOR;
 class _CFlatVertexCache : public _CStreamableCacheTmpl<_CFlatVertex>
 {
 public:
-	_CFlatVertexCache():m_CurrentCof(0),m_pMainCircuit(NULL),
-		/*m_ReversFlatVertexConfig(m_pMainCircuit),*/m_Comp(m_pMainCircuit), m_CPSet(m_Comp), m_SCPMap(m_Comp), m_Factorisation(false) 
-		{m_Id=2;}
+	_CFlatVertexCache() :m_CurrentCof(0), m_pMainCircuit(NULL),
+		/*m_ReversFlatVertexConfig(m_pMainCircuit),*/m_Comp(m_pMainCircuit), m_CPSet(m_Comp), m_SCPMap(m_Comp), m_Factorisation(false)
+	{
+		m_Id = 2;
+	}
 	long long GetIndex(const _CFlatVertex* pVertex) const;
 	string ToString() const;
 	void ToStream(txt_stream& stream) const;
@@ -431,17 +433,17 @@ public:
 	//}
 	//string PotSimpToString(size_t CofId) const;
 	//void PotSimpToStream(txt_stream& stream, size_t CofId) const;
-	void SwitchCofactor(size_t CofId) 
+	void SwitchCofactor(size_t CofId)
 	{
-		m_CurrentCof=CofId;
+		m_CurrentCof = CofId;
 	}
 	//void LeaveZeroDesc();
 	//void NotifySkipped(const COMPONENTS_PATH* pPath);
 	void ClearDividers()
 	{
-		bool IsFree=false;
-		for(FLAT_VERT_LIST::iterator it=m_FeasDivList.begin(),_e=m_FeasDivList.end();it!=_e;it++)
-			UnTouchVertex(*it,IsFree);
+		bool IsFree = false;
+		for (FLAT_VERT_LIST::iterator it = m_FeasDivList.begin(), _e = m_FeasDivList.end(); it != _e; it++)
+			UnTouchVertex(*it, IsFree);
 		m_FeasDivList.clear();
 		//m_ReversFlatVertexConfig.ClearDividers();
 	}
@@ -457,16 +459,16 @@ public:
 	void ReleaseVertex(const _CFlatVertex* pVertex);
 	void ReleaseAndKillVertex(const _CFlatVertex* pVertex);
 	void ClearReleased();
-	void ClearFeasDiv() {m_FeasDivList.clear();}
-	void ClearOperCache() {m_DivisionCache.Clear();}
-	bool UnTouchVertex(const _CFlatVertex* pVertex,bool& IsFree);
+	void ClearFeasDiv() { m_FeasDivList.clear(); }
+	void ClearOperCache() { m_DivisionCache.Clear(); }
+	bool UnTouchVertex(const _CFlatVertex* pVertex, bool& IsFree);
 	bool TouchVertex(const _CFlatVertex* pVertex);
 	void TouchDescendants(const _CFlatVertex* pVertex);
 	void UnTouchDescendants(const _CFlatVertex* pVertex, BOOL_VECTOR& AreFreed);
 	void TouchVertices(_CSExpFlatVertices& Vertices);
 	void TouchVertices(_CSExpFlatVerticesFactorized& Vertices);
 	bool IsRealised(const _CFlatVertex* pVertex);
-	typedef enum{None,Divider,HasReminder,InCompatible} DIV_STATUS;
+	typedef enum { None, Divider, HasReminder, InCompatible } DIV_STATUS;
 	//To be return
 	//const _CFlatVertex* MultiplyDiagrams(const _CFlatVertex* Left, const _CFlatVertex* Right, short& TopSgn);
 	//const _CFlatVertex* DivideByASingleValue(DIV_STATUS& Status, const _CFlatVertex* Left, const SIGNED_COMPONENT_PATH& Right, short& TopSgn);
@@ -491,7 +493,7 @@ protected:
 	//_CFlatVertex(const DESCENDANTS& Descendants, const MULTIPLIERS& Multipliers, const COMPONENTS_PATH& ComponentsPath);
 
 	const _CFlatVertex* GetVertex(const DESCENDANTS& Descendants,
-		const MULTIPLIERS& Multipliers, 
+		const MULTIPLIERS& Multipliers,
 		const COMPONENTS_PATH& ComponentsPath,
 		short& TopSgn);
 	//const _CFlatVertex* GetVertex(const _CFlatVertex* Descendent1,
@@ -504,31 +506,31 @@ protected:
 	{
 	public:
 		_CBinaryOperationContainer(const _CFlatVertex* LeftOperand,
-								   //short LeftMultiplier,
-								   const _CFlatVertex* RightOperand,
-								   //short RightMultiplier,
-								   const _CFlatVertex* Result=NULL,
-								   short ResultMultiplier=0):
+			//short LeftMultiplier,
+			const _CFlatVertex* RightOperand,
+			//short RightMultiplier,
+			const _CFlatVertex* Result = NULL,
+			short ResultMultiplier = 0) :
 			m_LeftOperand(LeftOperand), /*m_LeftMultiplier(LeftMultiplier),*/
 			m_RightOperand(RightOperand), /*m_RightMultiplier(RightMultiplier),*/
 			m_Result(Result), m_ResultMultiplier(ResultMultiplier) {}
-		_CBinaryOperationContainer(const _CBinaryOperationContainer& Source):
+		_CBinaryOperationContainer(const _CBinaryOperationContainer& Source) :
 			m_LeftOperand(Source.m_LeftOperand), /*m_LeftMultiplier(Source.m_LeftMultiplier),*/
-				m_RightOperand(Source.m_RightOperand), /*m_RightMultiplier(Source.m_RightMultiplier),*/
+			m_RightOperand(Source.m_RightOperand), /*m_RightMultiplier(Source.m_RightMultiplier),*/
 			m_Result(Source.m_Result), m_ResultMultiplier(Source.m_ResultMultiplier) {}
-		const _CFlatVertex* GetResult() const {return m_Result;}
-		short GetResMultiplier() const {return m_ResultMultiplier;}
+		const _CFlatVertex* GetResult() const { return m_Result; }
+		short GetResMultiplier() const { return m_ResultMultiplier; }
 		void SetResult(const _CFlatVertex* pResult, short Multiplier)
 		{
-			m_Result=pResult;
-			m_ResultMultiplier=Multiplier;
+			m_Result = pResult;
+			m_ResultMultiplier = Multiplier;
 		}
 		ULONGLONG GetHash();
 		bool operator==(const _CBinaryOperationContainer& Right)
 		{
-			return (m_LeftOperand==Right.m_LeftOperand &&
+			return (m_LeftOperand == Right.m_LeftOperand &&
 				//m_LeftMultiplier==Right.m_LeftMultiplier &&
-				m_RightOperand==Right.m_RightOperand /*&&
+				m_RightOperand == Right.m_RightOperand /*&&
 				m_RightMultiplier==Right.m_RightMultiplier*/);
 		}
 	protected:
@@ -543,17 +545,17 @@ protected:
 	{
 	public:
 		_CDivOperationContainer(const _CFlatVertex* LeftOperand,
-								   const _CFlatVertex* RightOperand,
-								   const _CFlatVertex* Result=NULL,
-								   short ResultMultiplier=0,
-								   //bool WithoutReminder=true,
-								   _CFlatVertexCache::DIV_STATUS Status=_CFlatVertexCache::None
-								   ):
-		    _CBinaryOperationContainer(LeftOperand,RightOperand,Result,ResultMultiplier),
+			const _CFlatVertex* RightOperand,
+			const _CFlatVertex* Result = NULL,
+			short ResultMultiplier = 0,
+			//bool WithoutReminder=true,
+			_CFlatVertexCache::DIV_STATUS Status = _CFlatVertexCache::None
+		) :
+			_CBinaryOperationContainer(LeftOperand, RightOperand, Result, ResultMultiplier),
 			/*m_WithoutReminder(WithoutReminder),*/m_Status(Status) {}
-		_CDivOperationContainer(const _CDivOperationContainer& Source):
+		_CDivOperationContainer(const _CDivOperationContainer& Source) :
 			_CBinaryOperationContainer(Source),/*m_WithoutReminder(Source.m_WithoutReminder),*/
-				m_Status(Source.m_Status) {}
+			m_Status(Source.m_Status) {}
 		//void SetResult(const _CFlatVertex* pResult, short Multiplier,bool WithoutReminder)
 		//{
 		//	m_Result=pResult;
@@ -563,12 +565,12 @@ protected:
 		void SetResult(const _CFlatVertex* pResult, short Multiplier,
 			_CFlatVertexCache::DIV_STATUS Status)
 		{
-			m_Result=pResult;
-			m_ResultMultiplier=Multiplier;
-			m_Status=Status;
+			m_Result = pResult;
+			m_ResultMultiplier = Multiplier;
+			m_Status = Status;
 		}
 		//bool GetWithoutReminder() const {return m_WithoutReminder;}
-		_CFlatVertexCache::DIV_STATUS GetStatus() const {return m_Status;}
+		_CFlatVertexCache::DIV_STATUS GetStatus() const { return m_Status; }
 	protected:
 		_CFlatVertexCache::DIV_STATUS m_Status;
 		//bool m_WithoutReminder;
@@ -579,25 +581,25 @@ protected:
 	public:
 		const ContainerType* FindRegistered(ContainerType& Container)
 		{
-			ULONGLONG Hash=Container.GetHash();
-			pair<MAP::iterator,MAP::iterator> range=m_Map.equal_range(Hash);
-			for(MAP::iterator it=range.first;it!=range.second;it++)
+			ULONGLONG Hash = Container.GetHash();
+			pair<MAP::iterator, MAP::iterator> range = m_Map.equal_range(Hash);
+			for (MAP::iterator it = range.first; it != range.second; it++)
 			{
-				ContainerType& ResCont=it->second;
-				if(ResCont==Container)
+				ContainerType& ResCont = it->second;
+				if (ResCont == Container)
 					return &ResCont;
 			}
 			return NULL;
 		}
 		const ContainerType* Register(ContainerType& Container)
 		{
-			ASSERTPDD(FindRegistered(Container)==NULL);
-			ULONGLONG Hash=Container.GetHash();
-			return &(m_Map.insert(MAP::value_type(Hash,Container))->second);
+			ASSERTPDD(FindRegistered(Container) == NULL);
+			ULONGLONG Hash = Container.GetHash();
+			return &(m_Map.insert(MAP::value_type(Hash, Container))->second);
 		}
-		void Clear() {m_Map.clear();}
+		void Clear() { m_Map.clear(); }
 	protected:
-		typedef unordered_multimap<ULONGLONG,ContainerType> MAP;
+		typedef unordered_multimap<ULONGLONG, ContainerType> MAP;
 		MAP m_Map;
 	};
 
@@ -612,13 +614,13 @@ protected:
 	class _CExtraData
 	{
 	public:
-		_CExtraData(unsigned long long Id):m_Id(Id),m_UsageCounter(0) {}
-		_CExtraData(const _CExtraData& Source):m_Id(Source.m_Id),m_UsageCounter(0) {}
-		void Touch() {m_UsageCounter++;}
-		bool UnTouch() {return --m_UsageCounter==0;}
-		bool IsFree() const {return m_UsageCounter==0;}
-		unsigned long long GetId() { return m_Id;}
-		bool IsMultiInheriter() const {return m_UsageCounter>1; }
+		_CExtraData(unsigned long long Id) :m_Id(Id), m_UsageCounter(0) {}
+		_CExtraData(const _CExtraData& Source) :m_Id(Source.m_Id), m_UsageCounter(0) {}
+		void Touch() { m_UsageCounter++; }
+		bool UnTouch() { return --m_UsageCounter == 0; }
+		bool IsFree() const { return m_UsageCounter == 0; }
+		unsigned long long GetId() { return m_Id; }
+		bool IsMultiInheriter() const { return m_UsageCounter > 1; }
 	protected:
 		unsigned long long m_Id;
 		size_t m_UsageCounter;
@@ -646,26 +648,26 @@ protected:
 	class _CCP_Comp
 	{
 	public:
-		_CCP_Comp(_CMainCircuit*& pMainCircuit):m_pMainCircuit(pMainCircuit) {}
-		bool operator()(const SIGNED_COMPONENT_PATH& Left,const SIGNED_COMPONENT_PATH& Right) const
+		_CCP_Comp(_CMainCircuit*& pMainCircuit) :m_pMainCircuit(pMainCircuit) {}
+		bool operator()(const SIGNED_COMPONENT_PATH& Left, const SIGNED_COMPONENT_PATH& Right) const
 		{
 			//short comp = PCompare(*Left.first, *Right.first, m_pMainCircuit);
 			short comp = PCompare(*get<0>(Left), *get<0>(Right), m_pMainCircuit);
 			if (comp != 0)
-				return comp<0;
+				return comp < 0;
 			comp = get<2>(Left);
 			comp -= get<2>(Right);
 			if (comp != 0)
 				return comp < 0;
-			return get<1>(Left)<get<1>(Right);
+			return get<1>(Left) < get<1>(Right);
 		}
 	protected:
 		_CMainCircuit*& m_pMainCircuit;
 	};
-	class _CPSet : public set<SIGNED_COMPONENT_PATH,_CCP_Comp>
+	class _CPSet : public set<SIGNED_COMPONENT_PATH, _CCP_Comp>
 	{
 	public:
-		_CPSet(_CCP_Comp& Comp):set<SIGNED_COMPONENT_PATH,_CCP_Comp>(Comp) {}
+		_CPSet(_CCP_Comp& Comp) :set<SIGNED_COMPONENT_PATH, _CCP_Comp>(Comp) {}
 		string ToString() const;
 		void ToStream(txt_stream& stream) const;
 	};
@@ -674,68 +676,68 @@ protected:
 	FLAT_VERT_LIST m_FeasDivList;
 	void PrepareFeasDivList();
 	bool m_Factorisation;
-	typedef multimap<SIGNED_COMPONENT_PATH,SIGNED_COMPONENT_PATH,_CCP_Comp> SCP_MAP;
+	typedef multimap<SIGNED_COMPONENT_PATH, SIGNED_COMPONENT_PATH, _CCP_Comp> SCP_MAP;
 	class _SCPMap : public SCP_MAP
 	{
 	public:
-		_SCPMap(_CCP_Comp& Comp): SCP_MAP(Comp) {}
+		_SCPMap(_CCP_Comp& Comp) : SCP_MAP(Comp) {}
 		bool Include(_CSignedComponentPath& CompPath);
 		void GetSolidPath(SIGNED_COMPONENT_PATH_MULTILIST& List);
 	protected:
 		void GetNextPathToken(SIGNED_COMPONENT_PATH_MULTILIST& GlobalLists,
-			SIGNED_COMPONENT_PATH_LIST& CurrentList, 
+			SIGNED_COMPONENT_PATH_LIST& CurrentList,
 			const SIGNED_COMPONENT_PATH& Next);
 	};
 	_SCPMap m_SCPMap;
 	//LEVEL_FLAT_VERTEX_MULTILIST m_FeasLevelDivList;
 	FLAT_VERT_MULTILIST m_FeasLevelDivList;
-	void PathList2VertList(FLAT_VERT_MULTILIST& Dest,SIGNED_COMPONENT_PATH_MULTILIST& Source);
+	void PathList2VertList(FLAT_VERT_MULTILIST& Dest, SIGNED_COMPONENT_PATH_MULTILIST& Source);
 };
 
 class _CFlatVertexCache;
 
-class _CSExpFlatVertices 
+class _CSExpFlatVertices
 {
 public:
 	class _CVertexContainer
 	{
 	public:
-		_CVertexContainer(short S=0, const _CFlatVertex* pV=NULL):Sgn(S),pVertex(pV) {}
-		_CVertexContainer(const _CVertexContainer& Source):Sgn(Source.Sgn),pVertex(Source.pVertex) {}
+		_CVertexContainer(short S = 0, const _CFlatVertex* pV = NULL) :Sgn(S), pVertex(pV) {}
+		_CVertexContainer(const _CVertexContainer& Source) :Sgn(Source.Sgn), pVertex(Source.pVertex) {}
 		_CVertexContainer& operator=(const _CVertexContainer& Right)
 		{
-			Sgn=Right.Sgn;
-			pVertex=Right.pVertex;
+			Sgn = Right.Sgn;
+			pVertex = Right.pVertex;
 			return *this;
 		}
 		short Sgn;
 		const _CFlatVertex* pVertex;
 	};
-	typedef enum {ZERO,ONE,MINUS_ONE,EMPTY} INIT_TYPE;
-	_CSExpFlatVertices(INIT_TYPE Type=EMPTY);
-	_CSExpFlatVertices(const _CSExpFlatVertices& Source):m_MaxPower(Source.m_MaxPower), 
-		m_IsEmpty(Source.m_IsEmpty),m_Map(Source.m_Map) {}
-	bool empty() {return m_IsEmpty;}
-	size_t size() const {return m_MaxPower;}
+	typedef enum { ZERO, ONE, MINUS_ONE, EMPTY } INIT_TYPE;
+	_CSExpFlatVertices(INIT_TYPE Type = EMPTY);
+	_CSExpFlatVertices(const _CSExpFlatVertices& Source) :m_MaxPower(Source.m_MaxPower),
+		m_IsEmpty(Source.m_IsEmpty), m_Map(Source.m_Map) {}
+	bool empty() { return m_IsEmpty; }
+	size_t size() const { return m_MaxPower; }
 	_CSExpFlatVertices& operator=(const _CSExpFlatVertices& Right)
 	{
-		m_MaxPower=Right.m_MaxPower;
-		m_IsEmpty=Right.m_IsEmpty;
-		m_Map=Right.m_Map;
+		m_MaxPower = Right.m_MaxPower;
+		m_IsEmpty = Right.m_IsEmpty;
+		m_Map = Right.m_Map;
 		return *this;
 	}
-	_declspec(property(get=getFlatCont,put=putFlatCont)) const _CVertexContainer* sPowerCont[];
+	_declspec(property(get = getFlatCont, put = putFlatCont)) const _CVertexContainer* sPowerCont[];
 	const _CVertexContainer* getFlatCont(size_t Index) const;
 	void putFlatCont(size_t Index,/*const*/ _CVertexContainer* pCont);
 
 	string ToString(const _CFlatVertexCache& MyCache) const;
-	void ToStream(txt_stream& stream,const _CFlatVertexCache& MyCache) const;
+	void ToStream(txt_stream& stream, const _CFlatVertexCache& MyCache) const;
 	void SoPToStream(txt_stream& stream) const;
 	_CSExpFlatVertices& operator*=(short Multiplier);
 	void TouchVertices(_CFlatVertexCache& Cache);
 protected:
 	//typedef map<size_t,const _CFlatVertex*,hash_compare<size_t,less<size_t>>> MAP_TYPE;
-	typedef map<size_t,_CVertexContainer,hash_compare<size_t,less<size_t>>> MAP_TYPE;
+	typedef map<size_t, _CVertexContainer, less<size_t>> MAP_TYPE;
 	MAP_TYPE m_Map;
 	size_t m_MaxPower;
 	bool m_IsEmpty;
@@ -744,13 +746,13 @@ protected:
 	friend class _CSExpFlatVerticesFactorized;
 };
 
-class _CFactorizedVertexContainer 
+class _CFactorizedVertexContainer
 {
 public:
 	~_CFactorizedVertexContainer();
-	_CFactorizedVertexContainer(short S=1,const _CFlatVertex* pVertex=NULL,_CMainCircuit* pMainCircuit=NULL);
+	_CFactorizedVertexContainer(short S = 1, const _CFlatVertex* pVertex = NULL, _CMainCircuit* pMainCircuit = NULL);
 	_CFactorizedVertexContainer(const _CFactorizedVertexContainer& Source);
-	_CFactorizedVertexContainer(const _CSExpFlatVertices::_CVertexContainer& Source,_CMainCircuit* pMainCircuit);
+	_CFactorizedVertexContainer(const _CSExpFlatVertices::_CVertexContainer& Source, _CMainCircuit* pMainCircuit);
 	//_CFactorizedVertexContainer& operator=(const _CSExpFlatVertices::_CVertexContainer& Right)
 	//{
 	//	Sgn=Right.Sgn;
@@ -760,15 +762,15 @@ public:
 	//}
 	_CFactorizedVertexContainer& operator=(const _CFactorizedVertexContainer& Right)
 	{
-		Sgn=Right.Sgn;
-		m_List=Right.m_List;
-		m_pMainCircuit=Right.m_pMainCircuit;
+		Sgn = Right.Sgn;
+		m_List = Right.m_List;
+		m_pMainCircuit = Right.m_pMainCircuit;
 		return *this;
 	}
 	short Sgn;
-	bool NotFactorize() {return m_AllreadyFactorized || m_List.front()==&OneFlatVertex;}
-	inline void SetFactorized() {m_AllreadyFactorized=true;}
-	const _CFlatVertex* GetNFVertx() {return m_List.front(); }
+	bool NotFactorize() { return m_AllreadyFactorized || m_List.front() == &OneFlatVertex; }
+	inline void SetFactorized() { m_AllreadyFactorized = true; }
+	const _CFlatVertex* GetNFVertx() { return m_List.front(); }
 protected:
 	void TouchAll();
 	void UnTouchAll();
@@ -780,43 +782,43 @@ protected:
 	friend class _CFlatVertexCache;
 };
 
-class _CSExpFlatVerticesFactorized 
+class _CSExpFlatVerticesFactorized
 {
 public:
-	_CSExpFlatVerticesFactorized(_CSExpFlatVertices::INIT_TYPE Type=_CSExpFlatVertices::EMPTY);
-	_CSExpFlatVerticesFactorized(const _CSExpFlatVerticesFactorized& Source):m_MaxPower(Source.m_MaxPower), 
-		m_IsEmpty(Source.m_IsEmpty),m_Map(Source.m_Map) {}
-	_CSExpFlatVerticesFactorized(const _CSExpFlatVertices& Source,_CMainCircuit* pMainCircuit);
-	bool empty() {return m_IsEmpty;}
-	size_t size() const {return m_MaxPower;}
+	_CSExpFlatVerticesFactorized(_CSExpFlatVertices::INIT_TYPE Type = _CSExpFlatVertices::EMPTY);
+	_CSExpFlatVerticesFactorized(const _CSExpFlatVerticesFactorized& Source) :m_MaxPower(Source.m_MaxPower),
+		m_IsEmpty(Source.m_IsEmpty), m_Map(Source.m_Map) {}
+	_CSExpFlatVerticesFactorized(const _CSExpFlatVertices& Source, _CMainCircuit* pMainCircuit);
+	bool empty() { return m_IsEmpty; }
+	size_t size() const { return m_MaxPower; }
 	_CSExpFlatVerticesFactorized& operator=(const _CSExpFlatVerticesFactorized& Right)
 	{
-		m_MaxPower=Right.m_MaxPower;
-		m_IsEmpty=Right.m_IsEmpty;
-		m_Map=Right.m_Map;
+		m_MaxPower = Right.m_MaxPower;
+		m_IsEmpty = Right.m_IsEmpty;
+		m_Map = Right.m_Map;
 		return *this;
 	}
-	_declspec(property(get=getFlatCont,put=putFlatCont)) /*const*/ _CFactorizedVertexContainer* sPowerCont[];
+	_declspec(property(get = getFlatCont, put = putFlatCont)) /*const*/ _CFactorizedVertexContainer* sPowerCont[];
 	/*const*/ _CFactorizedVertexContainer* getFlatCont(size_t Index) /*const*/;
 	void putFlatCont(size_t Index,/*const*/ _CFactorizedVertexContainer* pCont);
 
 	string ToString(const _CFlatVertexCache& MyCache) const;
-	void ToStream(txt_stream& stream,const _CFlatVertexCache& MyCache) const;
+	void ToStream(txt_stream& stream, const _CFlatVertexCache& MyCache) const;
 	void SoPToStream(txt_stream& stream) const;
 	_CSExpFlatVerticesFactorized& operator*=(short Multiplier);
 	void TouchVertices(_CFlatVertexCache& Cache);
 	void SetOwner(_CMainCircuit* pMainCircuit)
 	{
-		m_pMainCircuit=pMainCircuit;
+		m_pMainCircuit = pMainCircuit;
 	}
 	void clear()
 	{
 		m_Map.clear();
-		m_IsEmpty=true;
+		m_IsEmpty = true;
 	}
 protected:
 	//typedef map<size_t,const _CFlatVertex*,hash_compare<size_t,less<size_t>>> MAP_TYPE;
-	typedef map<size_t,_CFactorizedVertexContainer,hash_compare<size_t,less<size_t>>> MAP_TYPE;
+	typedef map<size_t, _CFactorizedVertexContainer, less<size_t>> MAP_TYPE;
 	MAP_TYPE m_Map;
 	size_t m_MaxPower;
 	bool m_IsEmpty;
@@ -828,7 +830,7 @@ protected:
 class _CSExpFlatVerticesFilter
 {
 public:
-	_CSExpFlatVertices* PutFiltered(_CSExpFlatVertices* pOrigin,short ExtraSgn);
+	_CSExpFlatVertices* PutFiltered(_CSExpFlatVertices* pOrigin, short ExtraSgn);
 protected:
 	typedef list<_CSExpFlatVertices> LIST;
 	LIST m_List;
@@ -842,11 +844,11 @@ class _CMultLevelSExpFlatVertices : public self_exp_vector< _CSExpFlatVertices*>
 {
 public:
 	typedef _CSExpFlatVertices* _BaseType;
-	typedef enum {ZERO,ONE,PLAIN} INIT_TYPE;
-	_CMultLevelSExpFlatVertices(INIT_TYPE Type=PLAIN);
-	_CMultLevelSExpFlatVertices(size_type _Count):self_exp_vector<_BaseType> (_Count),m_Type(PLAIN) {}
-	_CMultLevelSExpFlatVertices(size_type _Count, const _BaseType& _Val):self_exp_vector<_BaseType> (_Count, _Val),m_Type(PLAIN) {}
-    _CSExpFlatVertices* get_smart(size_t Index) const;
+	typedef enum { ZERO, ONE, PLAIN } INIT_TYPE;
+	_CMultLevelSExpFlatVertices(INIT_TYPE Type = PLAIN);
+	_CMultLevelSExpFlatVertices(size_type _Count) :self_exp_vector<_BaseType>(_Count), m_Type(PLAIN) {}
+	_CMultLevelSExpFlatVertices(size_type _Count, const _BaseType& _Val) :self_exp_vector<_BaseType>(_Count, _Val), m_Type(PLAIN) {}
+	_CSExpFlatVertices* get_smart(size_t Index) const;
 protected:
 	INIT_TYPE m_Type;
 };
@@ -860,9 +862,9 @@ class _CLeafsSExpVertices : public self_exp_vector<_CMultLevelSExpFlatVertices*>
 public:
 	//typedef _CSExpFlatVertices* _BaseType;
 	typedef _CMultLevelSExpFlatVertices* _BaseType;
-	_CLeafsSExpVertices():self_exp_vector<_BaseType> () {}
-	_CLeafsSExpVertices(size_type _Count):self_exp_vector<_BaseType> (_Count) {}
-	_CLeafsSExpVertices(size_type _Count, const _BaseType& _Val):self_exp_vector<_BaseType> (_Count, _Val) {}
+	_CLeafsSExpVertices() :self_exp_vector<_BaseType>() {}
+	_CLeafsSExpVertices(size_type _Count) :self_exp_vector<_BaseType>(_Count) {}
+	_CLeafsSExpVertices(size_type _Count, const _BaseType& _Val) :self_exp_vector<_BaseType>(_Count, _Val) {}
 	const _CMultLevelSExpFlatVertices* get_smart(size_t Index) const;
 	//const _CSExpFlatVertices* get_smart(size_t Index) const;
 };
@@ -879,81 +881,82 @@ class _CSPowerLimiter
 {
 public:
 	_CSPowerLimiter() {}
-	_CSPowerLimiter(const _CSparsePolynomial* pNumResult, const _CApproxCriterion* pAppCriterion,size_t FullSize)
+	_CSPowerLimiter(const _CSparsePolynomial* pNumResult, const _CApproxCriterion* pAppCriterion, unsigned long FullSize)
 	{
-		InitGlobal(pNumResult,pAppCriterion,FullSize);
+		InitGlobal(pNumResult, pAppCriterion, FullSize);
 	}
-	bool IsAllowed(unsigned short sPower) const;
-	void SetAllowed(unsigned short sPower) 
+	bool IsAllowed(unsigned sPower) const;
+	void SetAllowed(unsigned  sPower)
 	{
 		m_Set.insert(sPower);
 	}
-	void CancelAllowed(unsigned short sPower) 
+	void CancelAllowed(unsigned sPower)
 	{
-		if(IsAllowed(sPower))
+		if (IsAllowed(sPower))
 			m_Set.erase(sPower);
 	}
-	bool IsEmpty() const {return m_Set.empty();}
+	bool IsEmpty() const { return m_Set.empty(); }
 	void WorkOutNew(const _CSPowerLimiter& TopLimiter,
 		const _CSparsePolynomial& TopPattern,
 		const _CSparsePolynomial& CompPattern,
 		const _CSparsePolynomial& DescPattern,
 		const _CApproxCriterion& AppCriterion);
-	void InitGlobal(const _CSparsePolynomial* pNumResult, const _CApproxCriterion* pAppCriterion,size_t FullSize);
-	bool operator==(const _CSPowerLimiter& Right) const {return m_Set==Right.m_Set;}
-	long long GetHash(long long Core) const;
+	void InitGlobal(const _CSparsePolynomial* pNumResult, const _CApproxCriterion* pAppCriterion, unsigned long FullSize);
+	bool operator==(const _CSPowerLimiter& Right) const { return m_Set == Right.m_Set; }
+	size_t GetHash(size_t Core) const;
 protected:
 	//typedef set<unsigned short> SET;
-	SHORT_SET m_Set;
+	//SHORT_SET m_Set;
+	UNSIGNED_SET m_Set;
 	friend class _CMainCircuit;
 };
 
 class _CFlatVerticesResContainer2 : public _CAbstractOperationDataContainer<const _CFlatVertex*>
 {
 public:
-	_CFlatVerticesResContainer2(const _CModelVertex* pCurrentVertex,_CModelVerticesPath& Path,size_t Power,const string* Context,NumericType& Inacurracy):
-		  m_Path(Path),
-		  m_Power(Power),
-		  m_Context(Context),
-		  m_Result(NULL),
-		  m_Sign(1),
-		  m_Inaccuracy(Inacurracy),
-		  m_p_tmp_file(NULL)
+	_CFlatVerticesResContainer2(const _CModelVertex* pCurrentVertex, _CModelVerticesPath& Path, size_t Power, const string* Context, NumericType& Inacurracy) :
+		m_Path(Path),
+		m_Power(Power),
+		m_Context(Context),
+		m_Result(NULL),
+		m_Sign(1),
+		m_Inaccuracy(Inacurracy),
+		m_p_tmp_file(NULL)
 	{
 		m_Path.Step2NextVertex(pCurrentVertex);
 	}
-    _CFlatVerticesResContainer2(const _CFlatVerticesResContainer2& Source):
-		  m_Path(Source.m_Path),
-		  m_Power(Source.m_Power),
-		  m_Context(Source.m_Context),
-		  m_Result(Source.m_Result),
-		  m_Sign(Source.m_Sign),
-		  m_Inaccuracy(Source.m_Inaccuracy),
-		  m_p_tmp_file(NULL)
+	_CFlatVerticesResContainer2(const _CFlatVerticesResContainer2& Source) :
+		m_Path(Source.m_Path),
+		m_Power(Source.m_Power),
+		m_Context(Source.m_Context),
+		m_Result(Source.m_Result),
+		m_Sign(Source.m_Sign),
+		m_Inaccuracy(Source.m_Inaccuracy),
+		m_p_tmp_file(NULL)
 	{
 	}
-	virtual _CAbstractOperationDataContainer<const _CFlatVertex*>* AllocateCopy() {return this;}
+	virtual _CAbstractOperationDataContainer<const _CFlatVertex*>* AllocateCopy() { return this; }
 	void CachItToHD() {}//napisaæ
 	void Hibernate() {}//napisaæ
 	void ReleaseResult()
 	{
-		if(--m_UsageCounter==0)
+		if (--m_UsageCounter == 0)
 			CachItToHD();
 	}
-	const _CFlatVertex* GetVertex() {return m_Result;}
-	short GetSgn() {return m_Sign;}
-	const NumericType& GetInaccuracy() {return m_Inaccuracy;}
-	void SetResultVert(const _CFlatVertex* pVertex) {m_Result=pVertex;}
-	void SetResultSgn(short Sgn) {m_Sign=Sgn;}
-	void SetResults(const _CFlatVertex* pVertex,  short Sgn, NumericType& CurrentAccuracy) 
+	const _CFlatVertex* GetVertex() { return m_Result; }
+	short GetSgn() { return m_Sign; }
+	const NumericType& GetInaccuracy() { return m_Inaccuracy; }
+	void SetResultVert(const _CFlatVertex* pVertex) { m_Result = pVertex; }
+	void SetResultSgn(short Sgn) { m_Sign = Sgn; }
+	void SetResults(const _CFlatVertex* pVertex, short Sgn, NumericType& CurrentAccuracy)
 	{
-		m_Result=pVertex;
-		m_Sign=Sgn;
-		m_Inaccuracy-=CurrentAccuracy;
+		m_Result = pVertex;
+		m_Sign = Sgn;
+		m_Inaccuracy -= CurrentAccuracy;
 	}
 protected:
 	virtual bool IsEqualTo(const _CAbstractOperationDataContainer<const _CFlatVertex*>& Right);
-	virtual long DetermineHashKey(long Core=HASH_CORE);
+	virtual size_t DetermineHashKey(size_t Core = HASH_CORE) override;
 	_CModelVerticesPath m_Path;
 	const string* m_Context;
 	_CTempCacheFiler* m_p_tmp_file;
@@ -971,37 +974,37 @@ class _CFlatVerticesResCache2 : public _CAbstractOperationCache<const _CFlatVert
 extern _CSPowerLimiter ZeroSPowertLimiter;
 
 class _CFlatVerticesResContainer : public _CAbstractOperationDataContainer<_CSExpFlatVertices>
-//class _CFlatVerticesResContainer : public _CAbstractOperationDataContainer<_CMultLevelSExpFlatVertices>
+	//class _CFlatVerticesResContainer : public _CAbstractOperationDataContainer<_CMultLevelSExpFlatVertices>
 {
 public:
-	_CFlatVerticesResContainer(const _CModelVertex* pCurrentVertex,_CModelVerticesPath& Path,const _CSPowerLimiter& Limiter,const string* Context):
-		m_Path(Path), 
+	_CFlatVerticesResContainer(const _CModelVertex* pCurrentVertex, _CModelVerticesPath& Path, const _CSPowerLimiter& Limiter, const string* Context) :
+		m_Path(Path),
 		m_Limiter(Limiter),
 		m_Context(Context),
 		m_p_tmp_file(NULL)
-		{
-			m_Path.Step2NextVertex(pCurrentVertex);
-		}
+	{
+		m_Path.Step2NextVertex(pCurrentVertex);
+	}
 	//_CFlatVerticesResContainer(_CModelVerticesTraitor& Traitor,/*size_t Level,*/const string* Context);
-	_CFlatVerticesResContainer(const _CFlatVerticesResContainer& Source):
-	    m_Path(Source.m_Path), 
+	_CFlatVerticesResContainer(const _CFlatVerticesResContainer& Source) :
+		m_Path(Source.m_Path),
 		m_Limiter(Source.m_Limiter),
 		m_Context(Source.m_Context),
 		m_ResVertices(Source.m_ResVertices),
 		m_p_tmp_file(NULL)//,
 		//m_Level(Source.m_Level) 
-		{}
+	{}
 	//virtual _CAbstractOperationDataContainer<_CMultLevelSExpFlatVertices>* AllocateCopy() {return this;}
-	virtual _CAbstractOperationDataContainer<_CSExpFlatVertices>* AllocateCopy() {return this;}
+	virtual _CAbstractOperationDataContainer<_CSExpFlatVertices>* AllocateCopy() { return this; }
 	//_CMultLevelSExpFlatVertices& GetResult() {return m_ResVertices;}
-	_CSExpFlatVertices& GetResult() {return m_ResVertices;}
+	_CSExpFlatVertices& GetResult() { return m_ResVertices; }
 	void CachItToHD() {}//napisaæ
 	void Hibernate() {}//napisaæ
 	void ReleaseResult();
 protected:
 	//virtual bool IsEqualTo(const _CAbstractOperationDataContainer<_CMultLevelSExpFlatVertices>& Right);
 	virtual bool IsEqualTo(const _CAbstractOperationDataContainer<_CSExpFlatVertices>& Right);
-	virtual long DetermineHashKey(long Core=HASH_CORE);
+	virtual long DetermineHashKey(long Core = HASH_CORE);
 	_CModelVerticesPath m_Path;
 	const string* m_Context;
 	//size_t m_Level;
@@ -1015,20 +1018,20 @@ protected:
 class _CFlatVerticesResContainerWrapper
 {
 public:
-	_CFlatVerticesResContainerWrapper(_CFlatVerticesResContainer* pContainer=NULL)
+	_CFlatVerticesResContainerWrapper(_CFlatVerticesResContainer* pContainer = NULL)
 		:m_pContainer(pContainer) {}
 	~_CFlatVerticesResContainerWrapper()
 	{
-		if(m_pContainer!=NULL)
+		if (m_pContainer != NULL)
 			m_pContainer->ReleaseResult();
 	}
-	operator  _CFlatVerticesResContainer*&()  {return m_pContainer;}
+	operator _CFlatVerticesResContainer*& () { return m_pContainer; }
 protected:
-	 _CFlatVerticesResContainer* m_pContainer;
+	_CFlatVerticesResContainer* m_pContainer;
 };
 
 class _CFlatVerticesResCache : public _CAbstractOperationCache<_CSExpFlatVertices>
-//class _CFlatVerticesResCache : public _CAbstractOperationCache<_CMultLevelSExpFlatVertices>
+	//class _CFlatVerticesResCache : public _CAbstractOperationCache<_CMultLevelSExpFlatVertices>
 {
 public:
 	_CFlatVerticesResCache();
@@ -1050,7 +1053,7 @@ typedef self_exp_vector<_CFlatVerticesResContainerWrapper> _CFlatVerticesResCach
 class _CContextSExpFlatVertices
 {
 public:
-	_CSExpFlatVerticesFactorized& GetSExpFlatResVertices(size_t CofId,const string* Context);
+	_CSExpFlatVerticesFactorized& GetSExpFlatResVertices(unsigned long CofId, const string* Context);
 	//_CMultLevelSExpFlatVertices& GetSExpFlatResVertices(size_t CofId,const string* Context);
 	void clear()
 	{
@@ -1061,7 +1064,7 @@ public:
 		m_Map.erase(Context);
 	}
 	bool IsContextDetermined(const string* Context);
-	_CMainCircuit* GetMainCircuit() {return m_pMainCircuit;}
+	_CMainCircuit* GetMainCircuit() { return m_pMainCircuit; }
 protected:
 	typedef self_exp_vector<_CSExpFlatVerticesFactorized> VECTOR;
 	//typedef self_exp_vector<_CExpFlatVertices> VECTOR;
@@ -1069,7 +1072,7 @@ protected:
 	typedef unordered_map<const string*, VECTOR> MAP;
 	MAP m_Map;
 	friend class _CMainCircuit;
-	_CMainCircuit* m_pMainCircuit;
+	_CMainCircuit* m_pMainCircuit = nullptr;
 };
 
 
@@ -1082,19 +1085,19 @@ public:
 	bool IsSPowerAllowed(size_t EntryNo, unsigned short sPower) const;
 	bool IsEntryAllowed(size_t EntryNo) const;
 	void CancelSPowerAllowed(size_t EntryNo, unsigned short sPower);
-	void SetAllowedRange(size_t EntryNo, unsigned short sMinPower, unsigned short sMaxPower=numeric_limits<unsigned short>::max());
-	void CancelAllowedRange(size_t EntryNo, unsigned short sMinPower, unsigned short sMaxPower=numeric_limits<unsigned short>::max());
+	void SetAllowedRange(size_t EntryNo, unsigned short sMinPower, unsigned short sMaxPower = numeric_limits<unsigned short>::max());
+	void CancelAllowedRange(size_t EntryNo, unsigned short sMinPower, unsigned short sMaxPower = numeric_limits<unsigned short>::max());
 	void WorkOutNew(const _CFlatVerticesSPowerLimiter& TopLimiter,
 		const _CSubModelNumericPattern& TopPattern,
 		const _CSparsePolynomial& CompPattern,
 		const _CSubModelNumericPattern& DescPattern,
 		const _CApproxCriterion& AppCriterion);
 	bool IsEmpty() const;
-	_CSPowerLimiter& GetEntryLimiter(size_t EntryNo) {return m_Map[EntryNo];}
-	void RemoveEntryLimiter(size_t EntryNo) {m_Map.erase(EntryNo);}
-	const _CSPowerLimiter& GetSmartEntryLimiter(size_t EntryNo) const ;
+	_CSPowerLimiter& GetEntryLimiter(size_t EntryNo) { return m_Map[EntryNo]; }
+	void RemoveEntryLimiter(size_t EntryNo) { m_Map.erase(EntryNo); }
+	const _CSPowerLimiter& GetSmartEntryLimiter(size_t EntryNo) const;
 protected:
-	typedef map<size_t,_CSPowerLimiter,hash_compare<size_t,less<size_t>>> MAP_TYPE;
+	typedef map<size_t, _CSPowerLimiter, less<size_t>> MAP_TYPE;
 	MAP_TYPE m_Map;
 	//unsigned short m_MaxPower;
 };

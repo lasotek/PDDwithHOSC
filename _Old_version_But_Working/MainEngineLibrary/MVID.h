@@ -5,10 +5,10 @@ class MVIDS : public vector<long long>
 {
 public:
 	~MVIDS(void);
-	long long GetHash(long long& Core) const;
-	long long GetHashLess(long long& Core) const;
+	size_t GetHash(size_t& Core) const;
+	size_t GetHashLess(size_t& Core) const;
 	bool AlmostEq(const MVIDS& Right) const;
-	long long GetHashRev(long long& Core) const;
+	size_t GetHashRev(size_t& Core) const;
 	bool RevEq(const MVIDS& Right) const;
 	string ToStr() const;
 };

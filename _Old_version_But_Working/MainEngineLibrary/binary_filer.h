@@ -17,7 +17,7 @@ extern const char* UEF;
 extern const char* WFF;
 
 
-unsigned long stream_key(const char* Name);
+size_t stream_key(const char* Name);
 #define _ID_STREAM(Name) (#Name)
 //#define INIT_STREAMABLE(ClassName)\
 //{\

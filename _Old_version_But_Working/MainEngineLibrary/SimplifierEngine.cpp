@@ -119,7 +119,7 @@ NumericType& _CPreFlatMap::_UpdateValues(_CPreFlatVertexContainer* pTopContainer
 	return TopValue;
 }
 
-bool/*IsNew*/ _CSimplificationOrdinateur::RegisterEntry(size_t CofId,size_t Power,_CModelVertex* pEntryModelVertex,NumericType V1, NumericType V2,short TopSgn)
+bool/*IsNew*/ _CSimplificationOrdinateur::RegisterEntry(unsigned long CofId,unsigned long Power,_CModelVertex* pEntryModelVertex,NumericType V1, NumericType V2,short TopSgn)
 {
 	COORDINATES Coordinates(CofId,Power);
 	MAP::iterator it=m_Map.find(Coordinates);
@@ -131,7 +131,7 @@ bool/*IsNew*/ _CSimplificationOrdinateur::RegisterEntry(size_t CofId,size_t Powe
 	return true;
 }
 
-_CSimplificationEntry* _CSimplificationOrdinateur::GetPEntry(size_t CofId,size_t Power)
+_CSimplificationEntry* _CSimplificationOrdinateur::GetPEntry(unsigned long CofId,unsigned long Power)
 {
 	MAP::iterator it=m_Map.find(COORDINATES(CofId,Power));
 	if(it==m_Map.end())
@@ -173,7 +173,7 @@ void _CSimplificationEntry::FindSimplifications(_CNewSimplifierData& Data/*,size
 		PrevRes=NumRes;
 		Data.StartTrace();
 		m_OutSgn=m_TopSgn;
-		size_t TopPower=Data.m_TopCoordinates.second;
+		auto TopPower=Data.m_TopCoordinates.second;
 		m_pEntryModelVertex->PerformNewSimplyfyApprox(m_pOutputEntry, m_OutSgn, TopPower, Data, RedefEntry);
 		Data.GreadyFinished();
 		if(m_OutSgn!=0 && !Data.IsExact())
@@ -381,7 +381,7 @@ void _CSimplificationOrdinateur::MoveTo(_CContextSExpFlatVertices& OutContextSEx
 	}
 }
 
-bool/*IsNew*/ _CNewSimplifierData::RegisterEntry(size_t CofId,size_t Power,_CModelVertex* pEntryModelVertex,NumericType ExactValue, NumericType Tolerance,short TopSgn)
+bool/*IsNew*/ _CNewSimplifierData::RegisterEntry(unsigned long CofId,unsigned long Power,_CModelVertex* pEntryModelVertex,NumericType ExactValue, NumericType Tolerance,short TopSgn)
 {
 	ASSERTPDD(Tolerance>=0.0 && Tolerance<=1.0);
 	if(pEntryModelVertex->Is0())

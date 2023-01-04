@@ -61,7 +61,7 @@ _CComponent* _CNextComponentOptimizer2::GetNextComponent(bool& IsLastOne)
 				_CTreeForkComponent* pComonent=dynamic_cast<_CTreeForkComponent*>(*cit);
 				if(pComonent==NULL)
 					RISEPDD(eWrongComponentType,"Empty ot unexpected type of component");
-				size_t NoOfDesc=pComonent->NoOfDescendants();
+				auto NoOfDesc=pComonent->NoOfDescendants();
 				for(_CModelVerticesList::iterator vit=m_AnalyzeList.begin();vit!=m_AnalyzeList.end();vit++)
 				{
 					_CModelVertex* pVertex=(*vit);
@@ -69,7 +69,7 @@ _CComponent* _CNextComponentOptimizer2::GetNextComponent(bool& IsLastOne)
 					TWO_GRAPH_PINS Pins;
 					pComonent->CurrentPins(*TopState.GetGraphTable(),Pins);
 					TopState.GetIntegrityTable()->UnPlugComponent(Pins);
-					for(size_t DescNo=0;DescNo<NoOfDesc;DescNo++)
+					for(unsigned DescNo=0;DescNo<NoOfDesc;DescNo++)
 					{
 						_CGraphState* pNewState=new _CGraphState(TopState,true);//niebezpiecznie
 						pComonent->ProcessDescendant(DescNo,pNewState);

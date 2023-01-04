@@ -8,9 +8,9 @@ _CTwoPort::~_CTwoPort(void)
 {
 }
 
-long _CTwoPort::GetHash(long Core) const
+size_t _CTwoPort::GetHash(size_t Core) const
 {
-	long Res=_CSimplyComponent::GetHash(Core);
+	auto Res=_CSimplyComponent::GetHash(Core);
 	Res*=HASH_FACTOR;
 	Res^=m_NodeA;
 	Res*=HASH_FACTOR;

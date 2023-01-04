@@ -181,7 +181,7 @@ public:
 	void GetSimpleVertexApprox2(const _CFlatVertex*& pResultVertex,
 								short& ResultSgn,
 								//const _CSparsePolynomial& TopNumValue,
-								size_t Power,
+								unsigned long Power,
 								NumericType& AbsolutInaccuracyAllowed,  
 								//const _CSubModelNumericPattern& Scaler,
 								_CPathTraitor& MainTraitor,
@@ -189,7 +189,7 @@ public:
 								_CCompRedefEntry& RedefEntry);
 	bool/*NewAdded*/ PerformNewSimplyfyApprox(_CPreFlatVertexContainer*& pResultVertex,
 								  short& ResultSgn,
-								  size_t Power,
+								  unsigned long Power,
 								  _CNewSimplifierData& Data,
 								  _CCompRedefEntry& RedefEntry);
 	void PrepareDirectNumericValue(const _CSubModelNumericPattern*& pOutputPatern, _CDirectNumContainer*& pCacheContainer,const string* Context, 
@@ -229,7 +229,7 @@ public:
 	}
 	void RealiseState();
 	void RealiseIntTable();
-	size_t NoOfDescendants() const { return m_Descendants.size(); }
+	unsigned NoOfDescendants() const { return (unsigned)m_Descendants.size(); }
 	void GetNumberOfOperations(size_t& NoOfMults, size_t& NoOfAdds, size_t& NoOfMultsNonOne);
 protected:
 	DECLARE_DYNAMIC_CREATION(_CModelVertex);
@@ -240,7 +240,7 @@ protected:
 	}
 	_CCircuit* m_OwnerCircuit;
 //	_CModelVertex* GetNextNontube();
-	long DetermineHashKey(long Core=HASH_CORE);
+	virtual size_t DetermineHashKey(size_t Core=HASH_CORE) override;
 	bool IsEqual( _CModelVertex& Operand);
 	void Copy(const _CModelVertex& Source);
 	void Store(_binary_filer& Filer);
@@ -417,11 +417,11 @@ protected:
 //};
 
 typedef union tagGLOBAL_VERTEX_ID{
-	long long Global_Id;
+	unsigned long long Global_Id;
 	struct tagPARTS
 	{
-		long Local_Id;
-		long Circuit_Id;
+		unsigned long Local_Id;
+		unsigned long Circuit_Id;
 	}PARTS;
 } TGlobal_Vertex_Id;
 
@@ -449,7 +449,7 @@ public:
 	bool operator==(const _CVertex& Right) const;
 	short GetSPower() const {return m_pParameter->GetSShift();}
 protected:
-	long DetermineHashKey(long Core=HASH_CORE);
+	virtual size_t DetermineHashKey(size_t Core=HASH_CORE) override;
 	_CComponent* m_pParameter;
 	_CSimpleVertexContainer m_1Succ;
 	_CSimpleVertexContainer m_0Succ;

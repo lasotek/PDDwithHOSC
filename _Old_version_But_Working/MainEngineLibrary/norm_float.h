@@ -46,7 +46,7 @@ public:
 	//	stream<<ToString();
 	//	return stream;
 	//}
-	friend long long GetTypedHash(long long& Core,const norm_float& Value);
+	friend size_t GetTypedHash(size_t& Core,const norm_float& Value);
 	friend txt_stream& operator<<(txt_stream& stream, const norm_float& Value);
 	friend short sgn(const norm_float& Value);
 	friend norm_float abs(const norm_float& Value);
@@ -269,7 +269,7 @@ public:
 		else
 		{
 			m_Map.insert(value_type(Index,Value));
-			m_MaxPower=max(m_MaxPower,Index);
+			m_MaxPower = (unsigned long)max((size_t)m_MaxPower, Index);
 		}
 		return Value;
 	}
@@ -290,7 +290,7 @@ public:
 		m_MaxPower=S.m_MaxPower;
 		return *this;
 	}
-	sparse_poly& CopyWithLimit(const sparse_poly& S,size_t MaxPower)
+	sparse_poly& CopyWithLimit(const sparse_poly& S,unsigned long MaxPower)
 	{
 		m_Map.clear();
 		for(sparse_poly::const_iterator it=S.m_Map.begin(),_e=S.m_Map.end();it!=_e;it++)
@@ -361,7 +361,7 @@ public:
 				add_index(Power,lit->second*rit->second);
 			}
 	}
-	void MultWithLimit(sparse_poly& Result,const sparse_poly& R,size_t Limit) const
+	void MultWithLimit(sparse_poly& Result,const sparse_poly& R,unsigned long Limit) const
 	{
 		Result.ClearAll();
 		size_t MaxPower=min(Limit,m_MaxPower+R.m_MaxPower);
@@ -404,7 +404,7 @@ public:
 		return operator *=(R);
 	}
 	bool empty() const {return m_Map.empty();}
-	size_t get_order() const {return m_MaxPower;}
+	unsigned long get_order() const {return m_MaxPower;}
 	void WriteToTextStream(iostream& stream) const
 	{
 		if(empty())
@@ -565,7 +565,7 @@ public:
 			if(it->first<=MaxPower)
 				add_index(it->first,it->second);
 	}
-	long long GetHash(long long Core = HASH_CORE) const
+	size_t GetHash(size_t Core = HASH_CORE) const
 	{
 		for (auto& Elem : m_Map)
 		{
@@ -580,10 +580,10 @@ public:
 		return m_MaxPower == Right.m_MaxPower && m_Map == Right.m_Map;
 	}
 protected:
-	typedef typename /*hash_*/map<size_t,Type,hash_compare<size_t,less<size_t>>> MAP_TYPE;
+	typedef typename /*hash_*/map<size_t,Type,less<size_t>> MAP_TYPE;
 	typedef typename MAP_TYPE::iterator iterator;
 	typedef typename MAP_TYPE::const_iterator const_iterator;
-	size_t m_MaxPower;
+	unsigned long m_MaxPower;
 	const Type& add_index(size_t Index,const Type& Value)
 	{
 		iterator it=m_Map.find(Index);
@@ -689,7 +689,7 @@ _binary_filer& operator>>(_binary_filer& filer, sparse_poly<Type>& Value)
 }
 
 template<typename Type>
-long long GetTypedHash(long long Core, const sparse_poly<Type>& Poly)
+size_t GetTypedHash(size_t Core, const sparse_poly<Type>& Poly)
 {
 	return Poly.GetHash(Core);
 }
@@ -701,7 +701,7 @@ typedef vector<NumericType> NumericVector;
 
 void SpPoly2Roots(const _CSparsePolynomial& InPoly,NormVectComplex& Roots);
 
-void PrepareLinAngFreqSpace(NumericVector& Space, NumericType FFrom, NumericType FTo, size_t NoIntrervals);
+void PrepareLinAngFreqSpace(NumericVector& Space, NumericType FFrom, NumericType FTo, unsigned long NoIntrervals);
 void PrepareLogAngFreqSpace(NumericVector& Space, int MinDec, int MaxDec, size_t NoIntrervalsInDec);
 
 typedef complex<NumericType> NumericComplex;
@@ -864,7 +864,7 @@ public:
 			Result+=right.IsOne()?poly:poly*right.get(Index);
 		}
 	}
-	void ScalarProduct(element_poly& Result, const multi_sparse_poly& right,size_t PowerLimit) const
+	void ScalarProduct(element_poly& Result, const multi_sparse_poly& right,unsigned long PowerLimit) const
 	{
 		size_t lsize=size(),
 			rsize=right.size();
@@ -954,7 +954,7 @@ public:
 		}
 	}
 	void NewScaler(const multi_sparse_poly* pOldScaler,const _CDescModelNumericPattern& DescScalers,
-		const _CDescSigns2& Sgns,size_t MaxPower)//poprawiæ
+		const _CDescSigns2& Sgns,unsigned long MaxPower)//poprawiæ
 	{
 		m_Map.clear();
 		for(size_t i=0;i<DescScalers.size();i++)

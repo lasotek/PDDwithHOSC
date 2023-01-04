@@ -91,7 +91,7 @@ _CSExpandedCofactorValues& _CContextSExpandedCofactorValues::GetSExpandedCofValu
 	else
 		return *pRes;
 }
-_CSExpandedVertices& _CContextSExpandedCofactorValues::GetSExpandedVertices(const string& Context,TO_DO_IF_NOT_EXISTS ToDo,size_t CofId,const string** ppNewConetxt)
+_CSExpandedVertices& _CContextSExpandedCofactorValues::GetSExpandedVertices(const string& Context,TO_DO_IF_NOT_EXISTS ToDo,unsigned long CofId,const string** ppNewConetxt)
 {
 	_CSExpandedVertices* pRes=GetSExpandedVertices2(Context,ToDo,CofId,ppNewConetxt);
 	if(pRes==NULL)
@@ -102,7 +102,7 @@ _CSExpandedVertices& _CContextSExpandedCofactorValues::GetSExpandedVertices(cons
 		return *pRes;
 }
 
-_CSExpandedVertices* _CContextSExpandedCofactorValues::GetSExpandedVertices2(const string& Context,TO_DO_IF_NOT_EXISTS ToDo,size_t CofId,const string** ppNewConetxt)
+_CSExpandedVertices* _CContextSExpandedCofactorValues::GetSExpandedVertices2(const string& Context,TO_DO_IF_NOT_EXISTS ToDo,unsigned long CofId,const string** ppNewConetxt)
 {
 	_CSExpandedCofactorValues* pSECV=GetSExpandedCofValues2(Context,ToDo,ppNewConetxt);
 	if(pSECV==NULL)
@@ -110,7 +110,7 @@ _CSExpandedVertices* _CContextSExpandedCofactorValues::GetSExpandedVertices2(con
 	size_t _size=pSECV->size();
 	if(CofId>=_size)
 		if(ToDo==FORCE_IF_NOT_EXIST)
-			pSECV->resize(CofId+1);
+			pSECV->resize((size_t)CofId+1);
 		//else if(ToDo==INHERIT_FROM_PARENTS)
 		//	for(;;m_Counter++)
 		//	{
@@ -128,17 +128,17 @@ _CSExpandedVertices* _CContextSExpandedCofactorValues::GetSExpandedVertices2(con
 	return &((*pSECV)[(size_t)CofId]);
 }
 
-_CSimpleVertexContainer* _CContextSExpandedCofactorValues::GetSExpandedCoef2(const string& Context,TO_DO_IF_NOT_EXISTS ToDo,unsigned short sPower,size_t CofId,const string** ppNewConetxt)
+_CSimpleVertexContainer* _CContextSExpandedCofactorValues::GetSExpandedCoef2(const string& Context,TO_DO_IF_NOT_EXISTS ToDo,unsigned sPower,unsigned long CofId,const string** ppNewConetxt)
 {
 	return NULL;
 }
-_CSimpleVertexContainer& _CContextSExpandedCofactorValues::GetSExpandedCoef(const string& Context,TO_DO_IF_NOT_EXISTS ToDo,unsigned short sPower,size_t CofId,const string** ppNewConetxt, long* pSPowerShift)
+_CSimpleVertexContainer& _CContextSExpandedCofactorValues::GetSExpandedCoef(const string& Context,TO_DO_IF_NOT_EXISTS ToDo,unsigned sPower,unsigned long CofId,const string** ppNewConetxt, long* pSPowerShift)
 {
 	_CSExpandedVertices& SEV=GetSExpandedVertices(Context,ToDo,CofId,ppNewConetxt);
 	size_t _size=SEV.size();
 	if(sPower>=_size)
 		if(ToDo==FORCE_IF_NOT_EXIST)
-			SEV.resize(sPower+1);
+			SEV.resize((size_t)sPower+1);
 		else if(ToDo==MUST_EXIST)
 			throw eVertexEntryUndifined();
 		//else if(ToDo=INHERIT_FROM_PARENTS)
@@ -157,14 +157,14 @@ _CSimpleVertexContainer& _CContextSExpandedCofactorValues::GetSExpandedCoef(cons
 		throw eVertexEntryUndifined();
 	return Res;
 }
-_CSimpleVertexContainer* _CContextSExpandedCofactorValues::FindSimpleVertexContainer(const string& Context,unsigned short sPower, size_t CofId, const string** ppNewContext)
+_CSimpleVertexContainer* _CContextSExpandedCofactorValues::FindSimpleVertexContainer(const string& Context,unsigned sPower, unsigned long CofId, const string** ppNewContext)
 {
 	m_Counter=0;
 
 	return NULL;
 }
 
-bool _CContextSExpandedCofactorValues::Exists(const string& Context, unsigned short sPower, size_t CofId)
+bool _CContextSExpandedCofactorValues::Exists(const string& Context, unsigned sPower, unsigned long CofId)
 {
 	iterator it=m_vMap.find(Context);
 	if(it==m_vMap.end())
@@ -182,7 +182,7 @@ void _CContextSExpandedCofactorValues::SetNoOfCofactors(const string& Context, s
 	SECV.resize(NewNo);
 }
 
-void _CContextSExpandedCofactorValues::SetNoOfSCoef(const string& Context,size_t CofId,unsigned short sPowers)
+void _CContextSExpandedCofactorValues::SetNoOfSCoef(const string& Context,unsigned long CofId,unsigned sPowers)
 {
 	_CSExpandedVertices& SEV=GetSExpandedVertices(Context,FORCE_IF_NOT_EXIST,CofId);
 	SEV.resize(sPowers);
@@ -191,21 +191,21 @@ void _CContextSExpandedCofactorValues::SetNoOfSCoef(const string& Context,size_t
 _CSExpandedVertices& _CContextSExpandedCofactorValues::GetNewSVertices(const string& Context)
 {
 	_CSExpandedCofactorValues& SECV=GetSExpandedCofValues(Context);
-	return GetSExpandedVertices(Context,FORCE_IF_NOT_EXIST,SECV.size());
+	return GetSExpandedVertices(Context,FORCE_IF_NOT_EXIST, (unsigned long)SECV.size());
 }
 
-size_t _CContextSExpandedCofactorValues::PushUniqueSExpandedVertices(const string& Context,const _CSExpandedVertices& Vertices)
+unsigned long _CContextSExpandedCofactorValues::PushUniqueSExpandedVertices(const string& Context,const _CSExpandedVertices& Vertices)
 {
 	_CSExpandedCofactorValues& SECV=GetSExpandedCofValues(Context);
-	size_t i=0,_size=SECV.size();
+	unsigned long i=0,_size=(unsigned long)SECV.size();
 	for(;i<_size;i++)
 		if(SECV[i]==Vertices)
 			return i;
 	SECV.push_back(Vertices);
-	return SECV.size()-1;
+	return (unsigned long)SECV.size()-1;
 }
 
-size_t _CContextSExpandedCofactorValues::PushUniqueVertex(size_t EntryId, size_t PosId, 
+unsigned long _CContextSExpandedCofactorValues::PushUniqueVertex(unsigned long EntryId, unsigned long PosId, 
 														  _CSimpleVertexContainer& NewVertex, 
 														  const string& Context, const string& PostContext)
 {
@@ -213,7 +213,7 @@ size_t _CContextSExpandedCofactorValues::PushUniqueVertex(size_t EntryId, size_t
 	_CSExpandedVertices& SEV=GetSExpandedVertices(Context,FORCE_IF_NOT_EXIST,EntryId);
 	size_t _size=SEV.size();
 	if(PosId>=_size)
-		SEV.resize(PosId+1);
+		SEV.resize((size_t)PosId+1);
 	else
 	{
 		_CSimpleVertexContainer& Cont=SEV[PosId];
@@ -226,9 +226,9 @@ size_t _CContextSExpandedCofactorValues::PushUniqueVertex(size_t EntryId, size_t
 		{
 			for(size_t i=0;i<_size;i++)
 				if(SEV[i]==NewVertex)
-					return i;
-			PosId=_size;
+					return (unsigned long)i;
 			SEV.resize(_size+1);
+			PosId=(unsigned long)_size;
 		}
 	}
 	SEV[PosId]=NewVertex;
@@ -236,7 +236,7 @@ size_t _CContextSExpandedCofactorValues::PushUniqueVertex(size_t EntryId, size_t
 }
 
 bool /*Was Changed*/ _CContextSExpandedCofactorValues::RegisterAndPreparInputVertex
-	(size_t EntryId, size_t PosId, const _CSubCircuitSocket* pSocket, _CSubCircuitVerticesMap* pMap,
+	(unsigned long EntryId, unsigned long PosId, const _CSubCircuitSocket* pSocket, _CSubCircuitVerticesMap* pMap,
 	const MVIDS& MVId,
 	_CSimpleVertexContainer& NewVertex, const string& Context, const string& PostContext)
 {
@@ -245,7 +245,7 @@ bool /*Was Changed*/ _CContextSExpandedCofactorValues::RegisterAndPreparInputVer
 		//GetSExpandedCoef(Context,true,PosId,EntryId)=NewVertex;
 		return true;
 	}
-	size_t NewPosId=PushUniqueVertex(EntryId,PosId,NewVertex,Context,PostContext);
+	auto NewPosId=PushUniqueVertex(EntryId,PosId,NewVertex,Context,PostContext);
 	NewVertex=_CSimpleVertexContainer(EntryId,NewPosId,pSocket,pMap,MVId.back());
 	return PosId!=NewPosId;
 }
@@ -1131,7 +1131,7 @@ unsigned long _CCircuit::CreateNewCofactor()
 	try
 	{
 		m_Cofactors.push_back(pNewCofactor);
-		return m_Cofactors.size();
+		return (unsigned)m_Cofactors.size();
 	}
 	catch(bad_alloc)
 	{
@@ -1146,7 +1146,7 @@ unsigned long _CCircuit::CreateNewCofactor()
 long _CCircuit::getCofactor(unsigned long hCofactor, _CCofactor*& pCofacotor) {
 	if (hCofactor<=0 || m_Cofactors.size() > hCofactor)
 		return -1;
-	pCofacotor = m_Cofactors[hCofactor-1];
+	pCofacotor = m_Cofactors[(size_t)hCofactor-1];
 	return 0;
 }
 
@@ -1240,7 +1240,7 @@ void _CCircuit::TranslateTempVertices2ModelVertices()
 				}
 				_CComponent* pComponent=TVertex.GetComponent();
 				pNewVertex->m_pComponent=pComponent;
-				size_t NoOfVertices=pComponent->NoOfDescendants();
+				unsigned NoOfVertices=pComponent->NoOfDescendants();
 				pNewVertex->ResizeDescendants(NoOfVertices);
 				for(size_t i=0;i<NoOfVertices;i++)
 				{
@@ -1328,7 +1328,7 @@ _CCofactor* _CCircuit::GetCofactor(unsigned long CId)
 {
 	if(CId==0 || CId>m_Cofactors.size())
 		RISEPDD(out_of_range,oor);
-	_CCofactor* pCof=m_Cofactors[CId-1];
+	_CCofactor* pCof=m_Cofactors[(size_t)CId-1];
 	if(pCof==NULL)
 		RISEPDD(out_of_range,oor);
 	return pCof;
@@ -1484,7 +1484,7 @@ void _CCircuit::Load(_binary_filer& Filer)
 	_streamable::Load(Filer);
 //	Filer>>m_NewCreatedVertices;
 }
-_CVertex* _CCircuit::GlobalVertexFromId(long long Id) 
+_CVertex* _CCircuit::GlobalVertexFromId(unsigned long long Id) 
 {
 	if(Id==0 || Id==1 || Id==-1)
 		return NULL;
@@ -1495,7 +1495,7 @@ _CVertex* _CCircuit::GlobalVertexFromId(long long Id)
 
 long long _CCircuit::GlobalIdFromLocalVertex(_CVertex* pVertex) 
 {
-	TGlobal_Vertex_Id GVId;
+	TGlobal_Vertex_Id GVId {0};
 	GVId.PARTS.Circuit_Id=GetCircuitId(this);
 	GVId.PARTS.Local_Id=(long)m_SimpleLocalVerticesCache.GetIndexOf(pVertex,false);
 	return GVId.Global_Id;
@@ -1628,13 +1628,13 @@ void _CCircuit::WriteSimpleVertices(long CircuitId,iostream& stream, _CSimpleVer
 
 unsigned _CCircuit::GetSVerticesIndexForCofactor(_CCofactor* pCofactor)
 {
-	unsigned i=0,_size=m_Cofactors.size();
+	size_t i=0,_size=m_Cofactors.size();
 	for(;i<_size;i++)
 		if(m_Cofactors[i]==pCofactor)
 			break;
 	if(i>=_size)
 		RISEPDD(eIllegalOperation,"_CCircuit::GetSVerticesForCofactor(_CCofactor* pCofactor) - pCofactor is illegal reference");
-	return i;
+	return (unsigned)i;
 }
 
 _CSExpandedVertices& _CCircuit::GetMainSVertices(unsigned IdNo,bool ForceIfNotExist) 
@@ -1658,7 +1658,7 @@ _CSExpandedVertices& _CCircuit::GetNewSVertices()
 	//m_SimpleMainVertices.resize(_size+1);
 	//return m_SimpleMainVertices[_size];
 }
-size_t _CCircuit::PushLocalSVertices(const _CSExpandedVertices& Vertices,const string& Context)
+unsigned long _CCircuit::PushLocalSVertices(const _CSExpandedVertices& Vertices,const string& Context)
 {
 	return m_CSSimpleMainVertices.PushUniqueSExpandedVertices(Context,Vertices);
 }//poprawiamy 

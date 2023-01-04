@@ -53,7 +53,7 @@ public:
 	virtual _COperationDataContainer* AllocateCopy() {return new _CRealGraphDevelopement(*this);}
 protected:
 	bool IsEqualTo(const _COperationDataContainer& Right);
-	long DetermineHashKey(long Core=HASH_CORE);
+	virtual size_t DetermineHashKey(size_t Core=HASH_CORE) override;
 	unsigned m_InCofId;
 	_CSExpandedDescendends m_Leaves;
 	_CModelVertex* m_ModelVetex;

@@ -140,7 +140,7 @@ _CComponentPredicator& _CComponentPredicator::operator=(const _CComponentPredica
 }
 
 //**************_CListOfNodes**********************************
-long _CListOfNodes::GetHashValue(long Core)
+size_t _CListOfNodes::GetHashValue(size_t Core)
 {
 	for(_CListOfNodes::iterator it=begin();it!=end();it++)
 	{
@@ -167,10 +167,10 @@ int _CGenericStateVector::ValueAt(int Index)//!!!!!!!!
 }
 
 
-long _CGenericStateVector::GetHashValue(long Core)
+size_t _CGenericStateVector::GetHashValue(size_t Core)
 {
-	unsigned Size=size();
-	for(unsigned i=0;i<Size;i++)
+	auto Size=size();
+	for(auto i=0;i<Size;i++)
 	{
 		Core*=HASH_FACTOR;
 		Core^=ValueAt(i);
@@ -194,7 +194,7 @@ int _CSparseGenericStateVector::ValueAt(int Index)//!!!!!!!!
 }
 
 
-long _CSparseGenericStateVector::GetHashValue(long Core)
+size_t _CSparseGenericStateVector::GetHashValue(size_t Core)
 {
 	for(INT_INT_MAP::iterator it=begin(),_e=end();it!=_e;it++)
 	{
@@ -207,10 +207,10 @@ long _CSparseGenericStateVector::GetHashValue(long Core)
 }
 
 //**************_CGraphTable****************************
-_CGraphTable::_CGraphTable(int NoOfNodes)/*:INIT_STREAMABLE(_CGraphTable)*/
+_CGraphTable::_CGraphTable(unsigned NoOfNodes)/*:INIT_STREAMABLE(_CGraphTable)*/
 {
 	m_Sgn=1;
-	for(int i=0;i<NoOfNodes;i++)
+	for(unsigned i=0;i<NoOfNodes;i++)
 	{
 		m_R.push_back(i);
 		m_C.push_back(i);
@@ -238,15 +238,15 @@ _CGraphTable::~_CGraphTable(void)
 
 unsigned _CGraphTable::GetMaxNoNode() const
 {
-	unsigned Res=m_C.size();
+	auto Res=m_C.size();
 	ASSERTPDD(Res>0);
-	return Res;
+	return (unsigned)Res;
 }
 unsigned _CGraphTable::GetMaxDeletions() const
 {
-	unsigned Res=m_C.size();
+	auto Res=m_C.size();
 	ASSERTPDD(Res>1);
-	return Res-1;
+	return (unsigned)Res-1;
 } 
 
 void _CGraphTable::Copy(const _CGraphTable& Source)
@@ -276,7 +276,7 @@ bool _CGraphTable::operator==(_CGraphTable& Operand)
 	return true;
 }
 
-long _CGraphTable::DetermineHashKey(long Core)
+size_t _CGraphTable::DetermineHashKey(size_t Core)
 {
 	Core*=HASH_FACTOR;
 	Core^=m_Sgn;
@@ -421,7 +421,7 @@ bool _CGraphTable::Table2Deletions2(_CMultiDeletions& Deletions, const _CIntNode
 	typedef pair<int, int> DEL;
 	typedef vector<DEL> POT_DEL;
 	POT_DEL PotRows,PotCols;
-	int Highest=Nodes.size();
+	auto Highest=Nodes.size();
 	short sgn=1;
 	for(int P=0;P<Highest;P++)
 	{
@@ -623,7 +623,7 @@ void _CSparseCommIntegrity::Load(_binary_filer& Filer)
 	}
 }
 
-long _CSparseCommIntegrity::DetermineHashKey(long Core)
+size_t _CSparseCommIntegrity::DetermineHashKey(size_t Core)
 {
 	for(INT_INT_MAP::iterator it=m_IncidentCurNodes.begin(),_e=m_IncidentCurNodes.end();
 		it!=_e;it++)
@@ -743,7 +743,7 @@ void _CSparseDeletionAnalyser::Load(_binary_filer& Filer)
 	_streamable::Load(Filer);
 }
 
-long _CSparseDeletionAnalyser::DetermineHashKey(long Core)
+size_t _CSparseDeletionAnalyser::DetermineHashKey(size_t Core)
 {
 	Core=m_R.GetHashValue(Core);
 	Core=m_C.GetHashValue(Core);
@@ -780,7 +780,7 @@ bool _CIntegrityTable::operator==(_CIntegrityTable& Operand)
 			return false;
 	return true;
 }
-long _CIntegrityTable::DetermineHashKey(long Core)
+size_t _CIntegrityTable::DetermineHashKey(size_t Core)
 {
 	Core=m_C.GetHashValue(Core);
 	Core*=HASH_FACTOR;
@@ -802,10 +802,10 @@ RES_STATE _CIntegrityTable::CheckDisconnetions(const TWO_GRAPH_PINS& Pins)
 
 bool _CIntegrityTable::IsCompressedToNode()
 {
-	unsigned size=m_C.size();
+	auto size=m_C.size();
 	if(m_R[0]==0 && m_C[0]==0)
 	{
-		for(unsigned i=1;i<size;i++)
+		for(auto i=1;i<size;i++)
 			if(m_R[i]>-1 || m_C[i]>-1)
 				return false;
 		return true;
@@ -818,12 +818,12 @@ bool _CIntegrityTable::IsCompressedToNode()
 }
 RES_STATE _CIntegrityTable::TestState()
 {
-	unsigned size=m_R.size();
+	auto size=m_R.size();
 	RES_STATE Res=IN_USE;
 	if(m_R[0]==0 && m_C[0]==0)
 	{
 		Res=TERM_ONE;
-		for(unsigned i=2;i<size;i++)
+		for(auto i=2;i<size;i++)
 			if(m_R[i]!=-1 || m_C[i]!=-1)
 			{
 				Res=TERM_DISCONNECTED;
@@ -831,7 +831,7 @@ RES_STATE _CIntegrityTable::TestState()
 			}
 	}
 	else
-		for(unsigned i=1;i<size;i++)
+		for(auto i=1;i<size;i++)
 			if(m_R[i]==0 || m_C[i]==0)
 				return TERM_DISCONNECTED;
 	return Res;
@@ -1230,7 +1230,7 @@ bool _CGraphState::operator==(_CGraphState& Operand)
 	return true;
 }
 
-long _CGraphState::DetermineHashKey(long Core)
+size_t _CGraphState::DetermineHashKey(size_t Core)
 {
 	Core*=HASH_FACTOR;
 	Core^=(long)m_State;
@@ -1311,7 +1311,7 @@ void _CGraphState::FindTheSmallestIncidence(set<size_t>& RSet,set<size_t>& CSet,
 	Repetition=0;
 	for(TWO_GRAPH_PINS::iterator it=Pins.begin();it!=Pins.end();it++)
 	{
-		size_t rp=(*it).first;
+		auto rp=(*it).first;
 		if(rp>=MinPos && rp<=MaxPos && (RSet.find(rp)==RSet.end()))
 		{
 			RSet.insert(rp);

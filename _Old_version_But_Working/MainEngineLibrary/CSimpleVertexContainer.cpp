@@ -14,28 +14,27 @@ _CSExpandedVertices StaticZeroVertices(_CSExpandedVertices::ZERO);
 _CSExpandedVertices StaticOneVertices(_CSExpandedVertices::ONE);
 _CSExpandedVertices StaticMinusOneVertices(_CSExpandedVertices::MINUS_ONE);
 
-long long GetTypedHash(long long& Core, const _CSimpleVertexContainer& Vertex)
+size_t GetTypedHash(size_t& Core, const _CSimpleVertexContainer& Vertex)
 {
 	return Vertex.GetHash(Core);
 }
 
 //_CSimpleVertexContainer::_CSimpleVertexContainer(size_t EntryId, size_t PosId, const _CSubCircuitSocket* pSocket, _CSimpleVerticesMaps* pToSubcircuitLeves):
-_CSimpleVertexContainer::_CSimpleVertexContainer(size_t EntryId, size_t PosId, const _CSubCircuitSocket* pSocket, 
+_CSimpleVertexContainer::_CSimpleVertexContainer(unsigned long EntryId, unsigned long PosId, const _CSubCircuitSocket* pSocket, 
 												 _CSubCircuitVerticesMap* pToSubcircuitLeves,
 												 long long MVId):
 m_Multiplier(1), m_VertexType(VertType::InputConnector),m_pSocket(pSocket),
 m_pConnectionVector(pToSubcircuitLeves), m_MVId(MVId)
 {
-	TGlobal_Vertex_Id Id;
+	TGlobal_Vertex_Id Id {0};
 	Id.PARTS.Circuit_Id=EntryId;
 	Id.PARTS.Local_Id=PosId;
 	m_lVertex=Id.Global_Id;
 }
-void _CSimpleVertexContainer::DecomposeInputIdx(size_t& EntryId, size_t& PosId) const
+void _CSimpleVertexContainer::DecomposeInputIdx(unsigned long& EntryId, unsigned long& PosId) const
 {
 	ASSERTPDD(IsInputConnector() || IsLocalTerminal());
-	TGlobal_Vertex_Id Id;
-	Id.Global_Id=m_lVertex;
+	TGlobal_Vertex_Id Id {(unsigned long long)m_lVertex};
 	EntryId=Id.PARTS.Circuit_Id;
 	PosId=Id.PARTS.Local_Id;
 }
@@ -59,7 +58,7 @@ bool _CSimpleVertexContainer::IsLameLeg()
 	return false;
 }
 
-long long _CSimpleVertexContainer::GetHash(long long& Core) const
+size_t _CSimpleVertexContainer::GetHash(size_t& Core) const
 {
 	Core*=HASH_FACTOR;
 	Core^=(long long)m_VertexType;
@@ -68,9 +67,9 @@ long long _CSimpleVertexContainer::GetHash(long long& Core) const
 	Core*=HASH_FACTOR;
 	Core^=m_Multiplier;
 	Core*=HASH_FACTOR;
-	Core^=(long long)m_pSocket;
+	Core^=(size_t)m_pSocket;
 	Core*=HASH_FACTOR;
-	Core^=(long long)m_pConnectionVector;
+	Core^=(size_t)m_pConnectionVector;
 	Core*=HASH_FACTOR;
 	Core^=m_MVId;
 	return Core;
@@ -88,8 +87,8 @@ _CSimpleVertexContainer& _CSimpleVertexContainer::operator=(const _CSimpleVertex
 
 string _CSimpleVertexContainer::iVertex2string() const
 {
-	TGlobal_Vertex_Id ID;
-	ID.Global_Id=m_lVertex;
+	TGlobal_Vertex_Id ID {(unsigned long long)m_lVertex};
+	//ID.Global_Id=m_lVertex;
 	char Buffer[100];
 	sprintf_s(Buffer,100,"%u.%u",ID.PARTS.Circuit_Id,ID.PARTS.Local_Id);
 	return Buffer;
@@ -145,8 +144,8 @@ void _CSimpleVertexContainer::WriteToStream(iostream& stream, bool StopEmbading,
 {
 	if(IsLocalTerminal())
 	{
-		TGlobal_Vertex_Id Id;
-		Id.Global_Id=m_lVertex;
+		TGlobal_Vertex_Id Id {(unsigned long long)m_lVertex};
+		//Id.Global_Id=m_lVertex;
 		//stream<<"LT[e("<<Id.PARTS.Circuit_Id<<").s^"<<Id.PARTS.Local_Id<<"]";
 		stream<<"LT[e("<<Id.PARTS.Circuit_Id<<")]";//.s^"<<Id.PARTS.Local_Id<<"]";
 		//stream<<"LT[e("<<m_lVertex<<")]";
@@ -157,8 +156,8 @@ void _CSimpleVertexContainer::WriteToStream(iostream& stream, bool StopEmbading,
 		size_t LT=Set.Add(m_pConnectionVector);
 		long cId=m_pSocket->GetModelCircuit()->GetMyId();
 		const string& Name=m_pSocket->GetModelCircuit()->GetName();
-		TGlobal_Vertex_Id Id;
-		Id.Global_Id=m_lVertex;
+		TGlobal_Vertex_Id Id{ (unsigned long long)m_lVertex };
+		//Id.Global_Id=m_lVertex;
 		//stream<<"IC[m("<<cId<<").e("<<Id.PARTS.Circuit_Id<<").s^"<<Id.PARTS.Local_Id<<"]";
 		//stream<<"IC["<<Name<<".t("<<LT<<").e("<<Id.PARTS.Circuit_Id<<").s^"<<Id.PARTS.Local_Id<<"]";
 		stream<<"IC["<<Name<<".t("<<LT<<").e("<<Id.PARTS.Circuit_Id<<")]";
@@ -177,8 +176,8 @@ void _CSimpleVertexContainer::WriteToStream(iostream& stream, bool StopEmbading,
 				stream<<"(-"<<(-m_Multiplier)<<")*";
 			else
 				stream<<""<<m_Multiplier<<"*";
-		TGlobal_Vertex_Id ID;
-		ID.Global_Id=m_lVertex;
+		TGlobal_Vertex_Id ID {(unsigned long long)m_lVertex};
+		//ID.Global_Id=m_lVertex;
 		stream<<""<<ID.PARTS.Circuit_Id<<'.'<<ID.PARTS.Local_Id;
 	}
 	//if(!StopEmbading &&IsInputConnector())
@@ -205,14 +204,14 @@ bool _CSimpleVertexContainer::operator==(const _CSimpleVertexContainer& Right) c
 
 
 template<>
-long long GetInputOperatorHash(long long& Core, const _CSimpleVertexContainer* Arg) 
+size_t GetInputOperatorHash(size_t& Core, const _CSimpleVertexContainer* Arg) 
 {
 	//return (long long)Core*HASH_FACTOR^(Arg->GetLVertex());
 	return Arg->GetHash(Core);
 }
 
 template<>
-long long GetInputOperatorHash(long long& Core,_C2Args Arg) 
+size_t GetInputOperatorHash(size_t& Core,_C2Args Arg) 
 {
 	Core=Arg.first->GetHash(Core);
 	Core=Arg.second->GetHash(Core);
@@ -220,7 +219,7 @@ long long GetInputOperatorHash(long long& Core,_C2Args Arg)
 }
 
 
-long long _CSExpandedVertices::GetHash(long long& Core) const
+size_t _CSExpandedVertices::GetHash(size_t& Core) const
 {
 	for(const_iterator it=begin();it!=end();it++)
 	{
@@ -237,7 +236,7 @@ void _CSExpandedVertices::Copy(const _CSExpandedVertices& Source, _CSubCircuitSo
 		push_back(_CSimpleVertexContainer(Cont,pSocket,pToSubcircuitInput,MVId));
 }
 
-void _CSExpandedVertices::SetInputConnectorData(size_t LocalVerticesId,const _CSExpandedVertices& LocalSource,
+void _CSExpandedVertices::SetInputConnectorData(unsigned long LocalVerticesId,const _CSExpandedVertices& LocalSource,
 												//_CSubCircuitSocket* pSocket,_CSimpleVerticesMaps* pToSubcircuitInput)
 												_CSubCircuitSocket* pSocket,_CSubCircuitVerticesMap* pToSubcircuitInput,
 												long long MVId)
@@ -245,7 +244,7 @@ void _CSExpandedVertices::SetInputConnectorData(size_t LocalVerticesId,const _CS
 	clear();
 	size_t _size=LocalSource.size();
 	resize(_size);
-	for(size_t i=0;i<_size;i++)
+	for(unsigned long i=0;i<_size;i++)
 	{
 		const _CSimpleVertexContainer& SCont=LocalSource[i];
 		_CSimpleVertexContainer& TCont=at(i);
@@ -278,22 +277,22 @@ void _CSExpandedVertices::SetVertex(const _CSimpleVertexContainer& Vertex,int In
 	if(Index<0)
 		return;
 	if(Index>=(int)size())
-		resize(Index+1,ZeroSVertex);
-	at((unsigned)Index)=Vertex;
+		resize((size_t)Index+1,ZeroSVertex);
+	at((size_t)Index)=Vertex;
 }
 
-long long _CSExpandedDescendends::GetHash(long long& Core) const
+size_t _CSExpandedDescendends::GetHash(size_t& Core) const
 {
 	for(const_iterator it=begin();it!=end();it++)
 	{
 		Core*=HASH_FACTOR;
 		//Core=it->GetHash(Core);
-		Core=(long long)(*it);
+		Core^=(size_t)(*it);
 	}
 	return Core;
 }
 
-long long _CSExpandedCofactorValues::GetHash(long long& Core) const
+size_t _CSExpandedCofactorValues::GetHash(size_t& Core) const
 {
 	for(const_iterator it=begin();it!=end();it++)
 	{
@@ -360,7 +359,7 @@ void _CSExpandedVertices::WriteToStream(iostream& stream, _CSimpleVerticesMapsSe
 
 _CSExpandedVertices* _CSExpandedUniqeSet::GetUnique(_CSExpandedVertices& Source)
 {
-	long long hash=HASH_CORE;
+	size_t hash=HASH_CORE;
 	hash=Source.GetHash(hash);
 	RANGE range=m_Set.equal_range(hash);
 	for(iterator it=range.first;it!=range.second;it++)
@@ -692,7 +691,7 @@ _CSExpandedVertices* _CSExpandedUniqeSet::GetUnique(_CSExpandedVertices& Source)
 //	return PropId;
 //}
 
-bool _CSubCircuitVerticesMap::_Cache::check_if_exists(size_t& Entry, size_t& sPower, _CSimpleVertexContainer& VC)
+bool _CSubCircuitVerticesMap::_Cache::check_if_exists(unsigned long& Entry, unsigned long& sPower, _CSimpleVertexContainer& VC)
 {
 	long long Hash=HASH_CORE;
 	Hash=SCHash(Hash,VC);
@@ -704,7 +703,9 @@ bool _CSubCircuitVerticesMap::_Cache::check_if_exists(size_t& Entry, size_t& sPo
 			//sPower=it->second.m_sPower;
 			return true;
 		}
-	m_Map.insert(MAP::value_type(Hash,__Container(Entry,sPower,VC)));
+	m_Map.insert(MAP::value_type(Hash,
+		__Container(Entry,sPower,VC))
+	);
 	return false;
 }
 
@@ -738,17 +739,17 @@ void _CSubCircuitVerticesMap::TranslateLocalTerminals(_CSExpandedDescendends& De
 {
 	_Cache Cache;
 	size_t _esize=Descendants.size();
-	for(size_t en=0;en<_esize;en++)
+	for(unsigned long en=0;en<_esize;en++)
 	{
-		size_t enn=en/*_esize-en-1*/;
+		auto enn=en/*_esize-en-1*/;
 		_CSExpandedVertices* pEVCS=Descendants[enn];
 		size_t _ssize=pEVCS->size();
 		_CSExpandedVertices OutEVCs;
 		OutEVCs.resize(_ssize);
 		bool IsChanged=false;
-		for(size_t s=0;s<_ssize;s++)
+		for(unsigned long s=0;s<_ssize;s++)
 		{
-			size_t sn=s/*_ssize-s-1*/,
+			auto sn=s/*_ssize-s-1*/,
 				rsn=sn,
 				renn=enn;
 			_CSimpleVertexContainer& Cont=pEVCS->at(sn);
@@ -851,7 +852,7 @@ const _CSimpleVertexContainer& _CSubCircuitVerticesMap::get(T_INDEX Index,const 
 }
 
 _CSubCircuitVerticesMap::T_INDEX 
-_CSubCircuitVerticesMap::put(size_t Entry, size_t sPower,const string& Context, _CSimpleVertexContainer& Value, 
+_CSubCircuitVerticesMap::put(unsigned long Entry, unsigned long sPower,const string& Context, _CSimpleVertexContainer& Value, 
 		const string& PostTerminalContext, const string& BaseContext)
 {
 	T_INDEX Index=_l2ll(Entry,sPower);
@@ -861,21 +862,21 @@ _CSubCircuitVerticesMap::put(size_t Entry, size_t sPower,const string& Context, 
 		if(pNewPlace->first==Value && pNewPlace->second==&PostTerminalContext)
 			return Index;
 		_CSCoffTab& SCT=m_Map[&Context];
-		size_t _esize=SCT.size();
-		for(size_t e=0;e<_esize;e++)
+		unsigned long _esize=(unsigned long)SCT.size();
+		for(unsigned long e=0;e<_esize;e++)
 		{
 			_CSCoeffsTab& SCOEF=SCT[e];
-			size_t _ssize=SCOEF.size();
-			for(size_t s=0;s<_ssize;s++)
+			unsigned long _ssize=(unsigned long)SCOEF.size();
+			for(unsigned long s=0;s<_ssize;s++)
 			{
 				__Int_Type& OldPlace=SCOEF[s];
 				if(OldPlace.first==Value && OldPlace.second==&PostTerminalContext)
 					return _l2ll(e,s);
 			}
 		}
-		size_t NewEntry=m_Map[&BaseContext].size();
-		pNewPlace=&force_at(Context,NewEntry,(unsigned short)sPower);
-		Index=_l2ll(NewEntry,(unsigned short)sPower);
+		unsigned long NewEntry=(unsigned long)m_Map[&BaseContext].size();
+		pNewPlace=&force_at(Context,NewEntry,sPower);
+		Index=_l2ll(NewEntry,sPower);
 	}
 	pNewPlace->first=Value;
 	pNewPlace->second=&PostTerminalContext;
@@ -888,28 +889,28 @@ _CSubCircuitVerticesMap::T_INDEX
 _CSubCircuitVerticesMap::put(T_INDEX Index,const string& Context, _CSimpleVertexContainer& Value,
 							 const string& PostTerminalContext, const string& BaseContext)
 {
-	size_t Entry=_Hi(Index),
+	unsigned long Entry=_Hi(Index),
 		sPower=_Lo(Index);
-	__Int_Type* pNewPlace=&force_at(Context,Entry,(unsigned short)sPower);
+	__Int_Type* pNewPlace=&force_at(Context,Entry,sPower);
 	if(!pNewPlace->first.IsEmpty())
 	{
 		if(pNewPlace->first==Value && pNewPlace->second==&PostTerminalContext)
 			return Index;
 		_CSCoffTab& SCT=m_Map[&Context];
-		size_t _esize=SCT.size();
-		for(size_t e=0;e<_esize;e++)
+		unsigned long _esize=(unsigned long)SCT.size();
+		for(unsigned long e=0;e<_esize;e++)
 		{
 			_CSCoeffsTab& SCOEF=SCT[e];
-			size_t _ssize=SCOEF.size();
-			for(size_t s=0;s<_ssize;s++)
+			unsigned long _ssize=(unsigned long)SCOEF.size();
+			for(unsigned long s=0;s<_ssize;s++)
 			{
 				__Int_Type& OldPlace=SCOEF[s];
 				if(OldPlace.first==Value && OldPlace.second==&PostTerminalContext)
 					return _l2ll(e,s);
 			}
 		}
-		size_t NewEntry=m_Map[&BaseContext].size();
-		pNewPlace=&force_at(Context,NewEntry,(unsigned short)sPower);
+		unsigned long NewEntry=(unsigned long)m_Map[&BaseContext].size();
+		pNewPlace=&force_at(Context,NewEntry,sPower);
 		Index=_l2ll(NewEntry,sPower);
 	}
 	pNewPlace->first=Value;

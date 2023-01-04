@@ -8,7 +8,7 @@ public:
 	{
 	}
 	_CHashable() {}
-	operator long()
+	operator size_t()
 	{
 		if(!HashIsDetermined())
 		{
@@ -57,8 +57,8 @@ protected:
 		m_HashDetermined=(DETERM_STATE)Aux;
 		Filer>>m_HashKey;
 	}
-	virtual long DetermineHashKey(long Core=HASH_CORE)=0;
-	long m_HashKey = 0;
+	virtual size_t DetermineHashKey(size_t Core=HASH_CORE)=0;
+	size_t m_HashKey = 0;
 	bool m_IsRegistered = false;
 	enum class DETERM_STATE{UNDEFINED=0,DETERMINED,FIXED};
 	DETERM_STATE m_HashDetermined = DETERM_STATE::UNDEFINED;

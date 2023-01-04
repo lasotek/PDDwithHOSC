@@ -189,7 +189,7 @@ _CSubCircuit* _CMainCircuit::GetSubcircuit(const string& name)
 	return it->second.second;
 }
 
-_CSubCircuit* _CMainCircuit::GetSubcircuit(long Id)
+_CSubCircuit* _CMainCircuit::GetSubcircuit(unsigned long Id)
 {
 	INDECES_ITERATOR it=m_IndecesMap.find(Id);
 	if(it==m_IndecesMap.end())
@@ -201,7 +201,7 @@ _CSubCircuit* _CMainCircuit::GetSubcircuit(long Id)
 		return it2->second.second;
 }
 
-long _CMainCircuit::FindSubId(const string& Name)
+unsigned long _CMainCircuit::FindSubId(const string& Name)
 {
 	if(Name=="main")
 		return 0;
@@ -211,7 +211,7 @@ long _CMainCircuit::FindSubId(const string& Name)
 	return it->second.first;
 }
 
-long _CMainCircuit::GetCircuitId(const _CCircuit* pCircuit)
+unsigned long _CMainCircuit::GetCircuitId(const _CCircuit* pCircuit)
 {
 	if (pCircuit == NULL)
 		RISEPDD(eWrongCondition, "Invalid Cicircuit ref");
@@ -220,7 +220,7 @@ long _CMainCircuit::GetCircuitId(const _CCircuit* pCircuit)
 	return FindSubId(pCircuit->GetName());
 }
 
-_CCircuit* _CMainCircuit::GetCircuit(long Id)
+_CCircuit* _CMainCircuit::GetCircuit(unsigned long Id)
 {
 	if(Id==0)
 		return this;
@@ -231,7 +231,7 @@ _CCofactor* _CMainCircuit::GetCofactor(unsigned long Id)
 {
 	if(Id==0 || Id>m_Cofactors.size())
 		RISEPDD(out_of_range,CI);
-	_CCofactor* pRes=m_Cofactors[Id-1];
+	_CCofactor* pRes=m_Cofactors[(size_t)Id-1];
 	if(pRes==NULL)
 		RISEPDD(out_of_range,CI);
 	return pRes;
@@ -354,7 +354,7 @@ void _CMainCircuit::DetermineSimplePDD(bool sCExpanded, bool Approximated, const
 
 //#define _OLD_VERSION
 
-void _CMainCircuit::DetermineFlatSimplifiedPDD(long TrId, bool TryToFactorize)
+void _CMainCircuit::DetermineFlatSimplifiedPDD(unsigned long TrId, bool TryToFactorize)
 {
 	_CPathTraitor& Traitor=GetExistedPathTraitor(TrId);
 	if(m_ContextSExpFlatVertices.IsContextDetermined(&Traitor.StrApproxContext()))
@@ -429,16 +429,16 @@ void _CMainCircuit::DetermineFlatSimplifiedPDD(long TrId, bool TryToFactorize)
 	m_FlatVericesResCache.Clear();
 #else
 	_CNewSimplifierData Data(this, m_ContextSExpFlatVertices, Traitor);
-	for(size_t i=0;i<m_Cofactors.size();i++)
+	for(unsigned long i=0;i<m_Cofactors.size();i++)
 	{
-		size_t CofId=i+1;
+		unsigned long CofId=i+1;
 		_CSparsePolynomial NumResult;
 		GetNumericalCofactorAndReminder(CofId,TrId,NumResult);
 		_CSPowerLimiter Limiter(&NumResult,Traitor.GetApproxCriterion(),MaxPower());
 		_CCofactor& Cof=*m_Cofactors[i];
 		_CModelVertex* pMainVertex=Cof.GetMainVertex();
-		SHORT_SET& PowerSet=Limiter.m_Set;
-		for(SHORT_SET::iterator it=PowerSet.begin(),_e=PowerSet.end();it!=_e;it++)
+		auto& PowerSet=Limiter.m_Set;
+		for(auto it=PowerSet.begin(),_e=PowerSet.end();it!=_e;it++)
 			Data.RegisterEntry(CofId,*it,pMainVertex,NumResult.get(*it),Traitor.GetApproxCriterion()->GetAccurracy(),Cof.GetGlobalMultiplier());
 	}
 	time_stamp stamp(m_RaportFileName.empty()?"Raport.txt":m_RaportFileName,"FlatSimpolified determination");
@@ -474,12 +474,12 @@ void _CMainCircuit::DetermineFlatSimplifiedPDD(long TrId, bool TryToFactorize)
 		m_FlatResultFactorizer.Init();
 		string Header("Factorization of cofactor No. ");
 		//m_FlatVertexCache.PrepareDividersPaths();
-		for(size_t i=0;i<m_Cofactors.size();i++)
+		for(unsigned long i=0;i<m_Cofactors.size();i++)
 		{
-			size_t NewId=i/*+1*/;
+			unsigned long NewId=i/*+1*/;
 			_CSExpFlatVerticesFactorized& Vertices2Factorize=
 				m_ContextSExpFlatVertices.GetSExpFlatResVertices(NewId,&Traitor.StrApproxContext());
-			for(size_t s=0;s<=Vertices2Factorize.size();s++)
+			for(unsigned long s=0;s<=Vertices2Factorize.size();s++)
 			{
 				time_stamp stamp(m_RaportFileName.empty()?"Raport.txt":m_RaportFileName,Header+ulong2str(NewId)+" s power: "+ulong2str(s));
 				_CFactorizedVertexContainer* pCont=Vertices2Factorize.sPowerCont[s];
@@ -496,7 +496,7 @@ void _CMainCircuit::DetermineFlatSimplifiedPDD(long TrId, bool TryToFactorize)
 	//m_FlatVericesResCache.Clear();
 #endif
 }
-void _CMainCircuit::PrepareAndWriteFlatSimplifiedPDDDiagrams(long TrId, bool Factorize,const string& FileName, bool Append)
+void _CMainCircuit::PrepareAndWriteFlatSimplifiedPDDDiagrams(unsigned long TrId, bool Factorize,const string& FileName, bool Append)
 {
 	DetermineFlatSimplifiedPDD(TrId,Factorize);
 	time_stamp stamp(m_RaportFileName.empty()?"Raport.txt":m_RaportFileName,"Flat vertices report");
@@ -509,7 +509,7 @@ void _CMainCircuit::PrepareAndWriteFlatSimplifiedPDDDiagrams(long TrId, bool Fac
 	m_FlatVertexCache.ToStream(file);
 	file<<endl;
 }
-void _CMainCircuit::WriteFactorizedPDDList(long TrId,const string& FileName, bool Append)
+void _CMainCircuit::WriteFactorizedPDDList(unsigned long TrId,const string& FileName, bool Append)
 {
 	DetermineFlatSimplifiedPDD(TrId,true);
 	time_stamp stamp(m_RaportFileName.empty()?"Raport.txt":m_RaportFileName,"Factorization report");
@@ -524,7 +524,7 @@ void _CMainCircuit::WriteFactorizedPDDList(long TrId,const string& FileName, boo
 	file<<endl;
 	file<<"====Factorized====="<<endl;
 }
-bool _CMainCircuit::WriteFlatSimplifiedPDDEntry(iostream& Stream, long TrId, size_t CofId)
+bool _CMainCircuit::WriteFlatSimplifiedPDDEntry(iostream& Stream, unsigned long TrId, unsigned long CofId)
 {
 	CofId--;
 	_CPathTraitor& Traitor=GetExistedPathTraitor(TrId);
@@ -539,7 +539,7 @@ bool _CMainCircuit::WriteFlatSimplifiedPDDEntry(iostream& Stream, long TrId, siz
 	//Stream<<endl;
 	return true;
 }
-void _CMainCircuit::WriteFlatSimplifiedPDD(long TrId, bool TryToFactorize,bool Write1Level,const string& FileName, bool Append)
+void _CMainCircuit::WriteFlatSimplifiedPDD(unsigned long TrId, bool TryToFactorize,bool Write1Level,const string& FileName, bool Append)
 {
 	DetermineFlatSimplifiedPDD(TrId,TryToFactorize);
 	time_stamp stamp(m_RaportFileName.empty()?"Raport.txt":m_RaportFileName,"Flat vertices report");
@@ -567,7 +567,7 @@ void _CMainCircuit::WriteFlatSimplifiedPDD(long TrId, bool TryToFactorize,bool W
 	if(TryToFactorize)
 	{
 		m_FlatResultFactorizer.SoE2Stream(file);
-		for(unsigned i=0;i<m_Cofactors.size();i++)
+		for(unsigned long i=0;i<m_Cofactors.size();i++)
 		{
 			_CCofactor& Cof=*m_Cofactors[i];
 			_CModelVertex* pMainVertex=Cof.GetMainVertex();
@@ -575,7 +575,7 @@ void _CMainCircuit::WriteFlatSimplifiedPDD(long TrId, bool TryToFactorize,bool W
 			Cof.WriteCofactorDescription(file);
 			file<<" = ";
 			bool first=true;
-			for(size_t s=CofFlatVertices.size()+1;s!=0;s--)
+			for(unsigned long s=(unsigned long)CofFlatVertices.size()+1;s!=0;s--)
 			{
 				//_CFlatResultFactorizer::SIGNED_ID Entry=m_FlatResultFactorizer.GetValueId(i,s-1);
 				SIGNED_TERM Entry=m_FlatResultFactorizer.GetTerm(i,s-1);
@@ -613,18 +613,18 @@ void _CMainCircuit::WriteFlatSimplifiedPDD(long TrId, bool TryToFactorize,bool W
 		m_FlatResultFactorizer.WriteTransferFunctions(file);
 	}
 }
-size_t _CMainCircuit::GetPowerOfCofFlatVertices(long TrId,long CofId)
+unsigned long _CMainCircuit::GetPowerOfCofFlatVertices(unsigned long TrId, unsigned long CofId)
 {
 	CofId--;
-	ASSERTPDD(CofId>=0 && CofId<(long)m_Cofactors.size());
+	ASSERTPDD(CofId>=0 && CofId<(unsigned long)m_Cofactors.size());
 	_CPathTraitor& Traitor=GetExistedPathTraitor(TrId);
 	_CSExpFlatVerticesFactorized& CofFlatVertices=m_ContextSExpFlatVertices.GetSExpFlatResVertices(CofId,&Traitor.StrApproxContext());
-	return CofFlatVertices.size();
+	return (unsigned long)CofFlatVertices.size();
 }
-void _CMainCircuit::FactorizedCofFlat1LevelVertices2Stream(iostream& Stream,long TrId,long CofId)
+void _CMainCircuit::FactorizedCofFlat1LevelVertices2Stream(iostream& Stream,unsigned long TrId, unsigned long CofId)
 {
 	bool first=true;
-	for(size_t s=GetPowerOfCofFlatVertices(TrId,CofId)+1;s!=0;s--)
+	for(auto s=GetPowerOfCofFlatVertices(TrId,CofId)+1;s!=0;s--)
 	{
 		//_CFlatResultFactorizer::SIGNED_ID Entry=m_FlatResultFactorizer.GetValueId(i,s-1);
 		SIGNED_TERM Entry=m_FlatResultFactorizer.GetTerm(CofId-1,s-1);
@@ -660,10 +660,10 @@ void _CMainCircuit::FactorizedCofFlat1LevelVertices2Stream(iostream& Stream,long
 	Stream<<endl;
 }
 
-void _CMainCircuit::FactorizedCofFlatVertices2Stream(iostream& Stream,long TrId,long CofId)
+void _CMainCircuit::FactorizedCofFlatVertices2Stream(iostream& Stream, unsigned long TrId, unsigned long CofId)
 {
 	bool first=true;
-	for(size_t s=GetPowerOfCofFlatVertices(TrId,CofId)+1;s!=0;s--)
+	for(auto s=GetPowerOfCofFlatVertices(TrId,CofId)+1;s!=0;s--)
 	{
 		//_CFlatResultFactorizer::SIGNED_ID Entry=m_FlatResultFactorizer.GetValueId(i,s-1);
 		SIGNED_TERM Entry=m_FlatResultFactorizer.GetTerm(CofId-1,s-1);
@@ -1243,7 +1243,7 @@ long _CMainCircuit::PerformFullCofRemTest(const string& ElementPath,
 {
 	time_stamp Timer(m_RaportFileName.empty()?"Raport.txt":m_RaportFileName,string("Test of Divider and Reminder for ")+ElementPath);
 	long TrId=GetFreePathTraitor(EmptyString);
-	for(size_t i=0;i<m_Cofactors.size();i++)
+	for(unsigned long i=0;i<m_Cofactors.size();i++)
 	{
 		const _CSubModelNumericPattern *pCompPattern=NULL;
 		ClearPathTraitor(TrId);
@@ -1365,18 +1365,18 @@ void _CMainCircuit::WriteOrderedSimpleVertices(iostream& stream)
 {
 	stream<<endl;
 	_CVertex2TextOperator Vertex2Text(this, 0,stream,EmptyString);
-	size_t _csize=m_Cofactors.size();
-	for(size_t i=0;i<_csize;i++)
+	unsigned long _csize = (unsigned long)m_Cofactors.size();
+	for(unsigned long i=0;i<_csize;i++)
 	{
 		_CCofactor& Cof=*m_Cofactors[i];
 //		_CSExpandedVertices& VCS=m_SimpleMainVertices[i]; 
 		_CSExpandedVertices& VCS=m_CSSimpleMainVertices.GetSExpandedVertices(EmptyString,
 			_CContextSExpandedCofactorValues::MUST_EXIST,i); 
 //		_CSExpandedVertices VCS=pCof->GetMainSVertices();
-		size_t _ssize=VCS.size();
-		for(size_t j=0;j<_ssize;j++)
+		unsigned long _ssize=(unsigned long)VCS.size();
+		for(unsigned long j=0;j<_ssize;j++)
 		{
-			size_t a=_ssize-j-1;
+			auto a=_ssize-j-1;
 			//_CSimpleVertexContainer& StartVertex=VCS[a];
 			_CSimpleVertexContainer& StartVertex=VCS[j];
 			if(StartVertex.Is0())
@@ -2203,21 +2203,21 @@ long _CMainCircuit::DefineTransferFunctionSimp(const string& Name,unsigned  long
 	NumeratorCof--;DenominatorCof--;
 	const _CCofactor* pNumCof=m_Cofactors[NumeratorCof];
 	const _CCofactor* pDenCof=m_Cofactors[DenominatorCof];
-	return m_FlatResultFactorizer.DefineTransferFunctionSimp(Name,(size_t)NumeratorCof,pNumCof,(size_t)DenominatorCof,pDenCof);
+	return m_FlatResultFactorizer.DefineTransferFunctionSimp(Name,NumeratorCof,pNumCof,DenominatorCof,pDenCof);
 }
 
 long _CMainCircuit::RaportTransferFunctionValuesLog(long long hTransfer, const string& Context, int LowestDec, int HighestDec, size_t NoOfPointsPerDec, bool Transfer2MagPhase)
 {
-	size_t NumId=0, DenId = 0;
+	unsigned long NumId=0, DenId = 0;
 	if (!m_FlatResultFactorizer.TranslateTrans2DenAndNum((size_t)hTransfer, NumId, DenId))
 		return -1;
 	NumericVector FreqVector;
 	PrepareLogAngFreqSpace(FreqVector, LowestDec, HighestDec, NoOfPointsPerDec);
 	return RaportTransferFunctionValues(m_FlatResultFactorizer.FuncName((size_t)hTransfer),Context,FreqVector, NumId, DenId, Transfer2MagPhase);
 }
-long _CMainCircuit::RaportTransferFunctionValuesLin(long long hTransfer, const string& Context, long double LowestAngFreq, long double HighestAngFreq, size_t NoOfGlobalPoints, bool Transfer2MagPhase)
+long _CMainCircuit::RaportTransferFunctionValuesLin(long long hTransfer, const string& Context, long double LowestAngFreq, long double HighestAngFreq, unsigned long NoOfGlobalPoints, bool Transfer2MagPhase)
 {
-	size_t NumId = 0, DenId = 0;
+	unsigned long NumId = 0, DenId = 0;
 	if (!m_FlatResultFactorizer.TranslateTrans2DenAndNum((size_t)hTransfer, NumId, DenId))
 		return -1;
 	NumericVector FreqVector;
@@ -2225,7 +2225,7 @@ long _CMainCircuit::RaportTransferFunctionValuesLin(long long hTransfer, const s
 	return RaportTransferFunctionValues(m_FlatResultFactorizer.FuncName((size_t)hTransfer), Context, FreqVector, NumId, DenId, Transfer2MagPhase);
 }
 
-long _CMainCircuit::RaportTransferFunctionValues(const string& Name, const string& Context, NumericVector& FreqVector, size_t NumId, size_t DenId, bool Transfer2MagPhase)
+long _CMainCircuit::RaportTransferFunctionValues(const string& Name, const string& Context, NumericVector& FreqVector, unsigned long NumId, unsigned long DenId, bool Transfer2MagPhase)
 {
 	_CSparsePolynomial NumPoly, DenPoly;
 	long StateN = GetDirectNmericalPolynomial(NumId+1, Context, NumPoly);//Context

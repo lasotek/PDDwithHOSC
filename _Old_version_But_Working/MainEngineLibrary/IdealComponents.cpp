@@ -15,7 +15,7 @@ _CNullor::_CNullor(_CCircuit* pOwner,int p, int r, int k, int l):_CIdealComponen
 	AddDeletions();
 }
 
-long _CNullor::GetHash(long Core) const
+size_t _CNullor::GetHash(size_t Core) const
 {
 	Core*=HASH_FACTOR;
 	Core^=m_p;
@@ -57,7 +57,7 @@ bool _CNullor::IsEqualIfSameType(const _CComponent& RightComp)
 void _CNullor::WritePos(iostream& stream)
 {
 	stream<<"(O+="<<m_pBaseCircuit->ConvertNode(m_p)<<", O-="<<m_pBaseCircuit->ConvertNode(m_r)<<
-		", I-="<<m_pBaseCircuit->ConvertNode(m_k)<<", I+="<<m_pBaseCircuit->ConvertNode(m_l)<<")";
+		", I+="<<m_pBaseCircuit->ConvertNode(m_k)<<", I-="<<m_pBaseCircuit->ConvertNode(m_l)<<")";
 }
 
 void _CNullor::ExchangeNumbers(const _CExchangMapWraper& Numbers2Exchange) 
@@ -108,7 +108,7 @@ IMPLEMENT_DYNAMIC_CREATION(_COpAmp);
 //{
 //	LState.DoShortCircuit(m_X,(m_Type==CCIIp || m_Type==ICCIIp)?-m_Z:m_Z,m_X,(m_Type==ICCIIm || m_Type==ICCIIp)?-m_Y:m_Y,true);
 //}
-long _CCurrentConveyor::GetHash(long Core) const
+size_t _CCurrentConveyor::GetHash(size_t Core) const
 {
 	Core*=HASH_FACTOR;
 	Core^=m_Type;

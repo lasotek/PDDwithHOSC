@@ -42,7 +42,7 @@ public:
 
 	long long DefineTransferFunctionSimp(const string& Name, long long hNumerator, long long hDenominator);
 	long RaportTransferFunctionValuesLog(long long hCircuit, long long hTransfer, const string& Context,int LowestDec, int HighestDec, size_t NoOfPointsPerDec, bool Transfer2MagPhase = false);
-	long RaportTransferFunctionValuesLin(long long hCircuit, long long hTransfer, const string& Context, long double LowestAngFreq, long double HighestAngFreq, size_t NoOfGlobalPoints, bool Transfer2MagPhase = false);
+	long RaportTransferFunctionValuesLin(long long hCircuit, long long hTransfer, const string& Context, long double LowestAngFreq, long double HighestAngFreq, unsigned long NoOfGlobalPoints, bool Transfer2MagPhase = false);
 	long AddExtraTransferFunctionSimp(long long PairId, long long hExtraCofactor);
 	long DeclareGlobalRefNode(long long hCircuit, const string& sRefNode);
 	long DoTheCalculation(long long hCircuit);

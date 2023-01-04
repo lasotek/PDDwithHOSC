@@ -9,7 +9,7 @@ using namespace std;
 using namespace stdext;
 
 template<typename Type>
-long GetHash(Type& Obj) {return  (unsigned long)Obj;}
+unsigned long GetHash(Type& Obj) {return  (unsigned long)Obj;}
 
 
 template<class StoredObject>   //StoredClass - Should be pointer at heap 
@@ -28,7 +28,7 @@ protected:
 	typedef typename INDEX2OBJECT_MAP::const_iterator INDEX2OBJECT_MAP_C_ITERATOR;
 	//typedef typename INDEX2OBJECT_MAP::reverse_iterator INDEX2OBJECT_MAP_R_ITERATOR;
 	INDEX2OBJECT_MAP m_Index2ObjectMap;
-	long long m_Id;
+	unsigned long m_Id;
 public:
 	virtual void ProcessIndex(long long Index, StoredObject* pObject) {}
 	StoredObject* FindExisting(StoredObject* pObject) 

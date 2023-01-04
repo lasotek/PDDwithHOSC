@@ -243,7 +243,7 @@ bool _CFlatResultDevCache::GetRegistered(short& Sgn,_CFlatProductCont& Product,c
 	return true;
 }
 
-bool _CFlatResultFactorizer::NotifyFactorizedValue(size_t CofId,size_t sPower, const _CFlatVertex* pVertex, short GlobalSgn)
+bool _CFlatResultFactorizer::NotifyFactorizedValue(unsigned long CofId,unsigned long sPower, const _CFlatVertex* pVertex, short GlobalSgn)
 {
 	//m_MaxCofId=max(m_MaxCofId,CofId);
 	//m_MaxSPower=max(m_MaxCofId,sPower);
@@ -1084,7 +1084,7 @@ void _CFlatSumCont::OneLevelEntry2String(string& OutStr) const
 	OutStr+=')';
 }
 
-SIGNED_TERM& _CFlatResultFactorizer::_CResMap::GetTerm(size_t CofId,size_t SPower)
+SIGNED_TERM& _CFlatResultFactorizer::_CResMap::GetTerm(unsigned long CofId,unsigned long SPower)
 {
 	m_MaxCofId=max(m_MaxCofId,CofId);
 	m_MaxSPower=max(m_MaxSPower,SPower);
@@ -1105,7 +1105,7 @@ void _CFlatResultFactorizer::_CResMap::PrepareAuxList(AUX_LIST& AuxList) const
 		AuxList.insert(AUX_LIST::value_type(Id,pCont));
 	}
 }
-_CFlatResultFactorizer::SIGNED_ID _CFlatResultFactorizer::_CResMap::GetValueId(size_t CofId,size_t sPower) const
+_CFlatResultFactorizer::SIGNED_ID _CFlatResultFactorizer::_CResMap::GetValueId(unsigned long CofId,unsigned long sPower) const
 {
 	SIGNED_ID Res(0,0);
 	RES_MAP::const_iterator it=m_ResMap.find(ENTRY(CofId,sPower));
@@ -1116,14 +1116,14 @@ _CFlatResultFactorizer::SIGNED_ID _CFlatResultFactorizer::_CResMap::GetValueId(s
 	}
 	return Res;
 }
-SIGNED_TERM _CFlatResultFactorizer::_CResMap::GetTerm(size_t CofId,size_t sPower) const
+SIGNED_TERM _CFlatResultFactorizer::_CResMap::GetTerm(unsigned long CofId,unsigned long sPower) const
 {
 	RES_MAP::const_iterator it=m_ResMap.find(ENTRY(CofId,sPower));
 	return it!=m_ResMap.end()?it->second:ZERO_TERM;
 }
 
-size_t _CFlatResultFactorizer::_CFunctionPairsManager::DefineTransferFunctionSimp(const string& Name, size_t NumeratorCof, const _CCofactor* pNumCof, 
-		size_t DenominatorCof, const _CCofactor* pDenCof)
+unsigned long _CFlatResultFactorizer::_CFunctionPairsManager::DefineTransferFunctionSimp(const string& Name, unsigned long NumeratorCof, const _CCofactor* pNumCof, 
+		unsigned long DenominatorCof, const _CCofactor* pDenCof)
 {
 	m_FunctionPairs.insert(FUNCTION_PAIRS::value_type(m_Counter,
 		_CTransferFunctPair(Name,DenominatorCof,pDenCof,NumeratorCof,pNumCof,m_FlatValueUniqueList)));
@@ -1232,7 +1232,7 @@ void _CFlatResultFactorizer::_CCofResCont::FindCommonFactor()
 	}
 }
 
-bool _CFlatResultFactorizer::_CFunctionPairsManager::TranslateTrans2DenAndNum(size_t FunctionNo, size_t& Num, size_t& Den)
+bool _CFlatResultFactorizer::_CFunctionPairsManager::TranslateTrans2DenAndNum(size_t FunctionNo, unsigned long& Num, unsigned long& Den)
 {
 	auto fit = m_FunctionPairs.find(FunctionNo);
 	if (fit == m_FunctionPairs.end())
@@ -1277,7 +1277,7 @@ void _CFlatResultFactorizer::_CTransferFunctPair::ToStream(txt_stream& stream)
 		SkipNumCom=!Num.GetComStr(ComNumStr),
 		SkipDen=Den.GetSExpStr(SPDenStr),
 		SkipNum=Num.GetSExpStr(SPNumStr);
-	if(SkipDen && SkipNum && SkipDenCom & SkipNumCom)
+	if(SkipDen && SkipNum && SkipDenCom && SkipNumCom)
 	{
 		stream<<m_Name<<" = 1\n";
 		return;
@@ -1293,8 +1293,8 @@ void _CFlatResultFactorizer::_CTransferFunctPair::ToStream(txt_stream& stream)
 		ComLen=max(ComDenLen,ComNumLen),
 		SPLen=max(SPNumLen,SPDenLen),
 		Space11=m_Name.size()+3,
-		Space12=SkipCommon?0:ComLen-ComNumLen+SkipAll?0:3,
-		Space32=SkipCommon?0:ComLen-ComDenLen+SkipAll?0:3;
+		Space12=SkipCommon?0:ComLen-ComNumLen+(SkipAll?0:3),
+		Space32=SkipCommon?0:ComLen-ComDenLen+(SkipAll?0:3);
 	if(!(SkipDen && SkipDenCom))
 	{
 		FillStream(stream,Space11,' ');
@@ -1392,7 +1392,7 @@ void _CFlatResultFactorizer::_CTransferFunctPair::ReduceCommonFactors()
 	while(n_it!=n_e || d_it!=d_e);
 }
 
-void _CFlatResultFactorizer::_CResMap::GetCofCoeffs(size_t CofId,COF_MAP& OutMap) const
+void _CFlatResultFactorizer::_CResMap::GetCofCoeffs(unsigned long CofId,COF_MAP& OutMap) const
 {
 	for(RES_MAP::const_iterator it=m_ResMap.begin(),_e=m_ResMap.end();it!=_e;it++)
 		if(it->first.first==CofId)

@@ -20,12 +20,12 @@ public:
 	_CSubCircuitSocket(_CCircuit* pOwner, const string& InstanceName, _CSubCircuit *pModel,
 		const _CIntNodes& ConnectedNodes, long hInternalCofactor);
 	virtual ~_CSubCircuitSocket(void);
-	virtual int GetNoOfPorts() const {return m_ConnectedNodes.size();}
-	virtual int GetNoOfParametes() const {return 1;}
-	virtual const string& GetParameterName() const {return m_InstanceName;}
-	virtual const NumericType& GetParameterValue() const {return EmptyFloat;}
-	virtual long GetHash(long Core=HASH_CORE) const;
-	virtual void PlugInComponent(_CIntegrityTable& IntegrityTable);
+	virtual unsigned GetNoOfPorts() const override {return (unsigned)m_ConnectedNodes.size();}
+	virtual unsigned GetNoOfParametes() const {return 1;}
+	virtual const string& GetParameterName() const override {return m_InstanceName;}
+	virtual const NumericType& GetParameterValue() const override {return EmptyFloat;}
+	virtual size_t GetHash(size_t Core=HASH_CORE) const override;
+	virtual void PlugInComponent(_CIntegrityTable& IntegrityTable) override;
 	virtual short sPower(int ParamId) {return 0;}
 	bool IsReadyToPlug() {return m_pModel && m_pModel->IsReady();}
 	bool IsMacroDependant() const {return true;}
@@ -82,19 +82,19 @@ public:
 	virtual unsigned NoOfEffevtiveDescendants() override
 	{
 		PrepareSetOfDeletions();
-		return m_BasicSetOfDeletions.size();
+		return (unsigned)m_BasicSetOfDeletions.size();
 	}
 
-	virtual size_t NoOfDescendants() const override
+	virtual unsigned NoOfDescendants() const override
 	{
 		//return m_RealParameters.size();
-		return m_AllParamConnections.size();
+		return (unsigned)m_AllParamConnections.size();
 	}
-	virtual size_t GreedyNoOfDescendants() override
+	virtual unsigned GreedyNoOfDescendants() override
 	{
 		//return m_RealParameters.size();
 		PrepareSetOfDeletions();
-		return m_GreedyDeletions.size();
+		return (unsigned)m_GreedyDeletions.size();
 	}
 	virtual size_t Desc2RealDesc(size_t Index) {return m_AllParamConnections[Index];}
 	virtual const _CSubModelNumericPattern* GetMyNumPattern(_CCompRedefEntry& RedefEntry, _CPathTraitor& PathTraitor) override;
@@ -105,7 +105,7 @@ public:
 	virtual void GetSimplyFlatVertex2(const _CModelVertex* pCallerVertex,
 		_CModelVerticesPath& VerticesPath,
 		_CPathTraitor& PathTraitor,
-		size_t SPower,
+		unsigned long SPower,
 		NumericType& CurrentAllowedInaccuracy,
 		const _CFlatVertex*& pResultVertex,
 		short& TopSgn,
@@ -113,7 +113,7 @@ public:
 		_CCompRedefEntry& RedefEntry) override;
 	virtual bool /*NewPath*/ PerformSimplyFlatVertexTravers(
 		 _CModelVertex* pCallerVertex,
-		size_t SPower,
+		unsigned long SPower,
 		_CPreFlatVertexContainer*& pResultVertex,
 		short& TopSgn,
 		_CNewSimplifierData& Data,
@@ -129,7 +129,7 @@ public:
 	void CurrentPins(_CGraphTable& Tables,TWO_GRAPH_PINS& Pins) const;
 	virtual void ProcessDescendant(unsigned Desc, _CGraphState* pState) override;
 	virtual void CheckDisconnection(_CGraphState* pState) const override;
-	virtual size_t MaxDescRank() override;
+	virtual unsigned MaxDescRank() override;
 	virtual void ExchangeNumbers(const _CExchangMapWraper& Numbers2Exchange) override;
 	//virtual void GetDescendantDeletions(unsigned Descendant, const _CBasicSetOfDeletions*& pDeletions) override;
 	virtual void GetDescendantDeletions(unsigned Descendant, const _CMultiBasicSetOfDeletions*& pDeletions) override;
@@ -209,7 +209,7 @@ protected:
 	typedef TContextSubModelNumericPattern::iterator iContextSubModelNumericPatter;
 	TContextSubModelNumericPattern m_LocalResPolynomials;
 	//_CSubCircuitSocket* m_IAmNumericCopyOf;//ci¹æ
-	size_t m_MaxRank;
+	unsigned m_MaxRank;
 	//typedef map<size_t,_CBasicSetOfDeletions> BASIC_SET_OF_DELETIONS;
 	//BASIC_SET_OF_DELETIONS m_BasicSetOfDeletions;
 	MULTI_BASIC_SET_OF_DELETIONS m_BasicSetOfDeletions;

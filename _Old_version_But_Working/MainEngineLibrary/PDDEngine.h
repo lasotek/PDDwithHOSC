@@ -20,8 +20,8 @@ public:
 	long CreateNewCircuit();
 	_CMainCircuit* GetCircuit(long long Id);
 	long CreateNewNetAnalyser(const string& NetName,bool BySubcircuit,string& CommonNodeName=EmptyString);
-	_CNetDynamicAnalyser* GetNetAnalyser(long Id);
-	long RemoveCircuit(long Id);
+	_CNetDynamicAnalyser* GetNetAnalyser(unsigned long Id);
+	long RemoveCircuit(unsigned long Id);
 	void SetPath2Models(const path_str& ModelPath) {m_ModelPath=ModelPath;}
 	const path_str& GetModelsPath();
 	bool IsSExpanded() {return m_sExpanded; }

@@ -29,7 +29,7 @@ _pCreateObj _streamable::ManageClasses(S_OPER Oper,string name,_pCreateObj func)
 	}
 }
 
-unsigned long stream_key(const char* Name) 
+size_t stream_key(const char* Name) 
 {
 	return GetStrHash(Name);
 }
@@ -268,7 +268,7 @@ _binary_filer& _binary_filer::operator>>(long double& x)
 	return *this;
 }
 
-const long HCS=GetStrHash("CS");
+const auto HCS=GetStrHash("CS");
 _binary_filer& _binary_filer::operator<<(const string& str)
 {
 	if(fwrite(&HCS,sizeof(HCS),1,m_stream)<1)
@@ -304,7 +304,7 @@ _binary_filer& _binary_filer::operator>>(string& str)
 	return *this;
 }
 
-const long HWS=GetStrHash("WS");
+const size_t HWS=GetStrHash("WS");
 _binary_filer& _binary_filer::operator<<(const wstring& str)
 {
 	if(fwrite(&HWS,sizeof(HWS),1,m_stream)<1)

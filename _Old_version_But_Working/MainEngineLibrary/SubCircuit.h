@@ -22,9 +22,9 @@ public:
 	bool AddBoudaryNode(int Node);
 	~_CSubCircuit(void);
 	virtual _CSubCircuit* GetSubcircuit(const string& name);
-	virtual _CSubCircuit* GetSubcircuit(long Id);
-	long GetCircuitId(const _CCircuit* pCircuit) {return m_Owner->GetCircuitId(pCircuit);}
-	_CCircuit* GetCircuit(long Id) {return m_Owner->GetCircuit(Id);}
+	virtual _CSubCircuit* GetSubcircuit(unsigned long Id) override;
+	unsigned long GetCircuitId(const _CCircuit* pCircuit) override {return m_Owner->GetCircuitId(pCircuit);}
+	_CCircuit* GetCircuit(unsigned long Id) {return m_Owner->GetCircuit(Id);}
 //	unsigned GetNoOfBoudnaryNodes() {return m_NoOfBoundaryNodes;}
 	const string& GetNameOfBoundaryNodes(unsigned Index) {return m_BoundaryNodes[Index];}
 	void ForceGlobalRefNode(const string& RefName);
@@ -38,7 +38,7 @@ public:
 	void LoadModel();
 	void StoreModel();
 	unsigned NoOfBoundaryNodes();
-	unsigned NoOfBoundaryParams() {return m_BoundaryParameters.size();}
+	unsigned NoOfBoundaryParams() {return (unsigned)m_BoundaryParameters.size();}
 	//unsigned NoOfPotentialBoundaryParams() {return m_}
 	_CMultiDeletions* PushIntoCache(_CMultiDeletions* pObject);
 	bool GetBoundaryParamsEntry(path_str& Path);
@@ -141,7 +141,7 @@ public:
 	void GetSimpleVertexApprox2(const _CFlatVertex*& pResultVertex,
 								short& ResultSgn,
 								//const _CSparsePolynomial& TopNumValue,
-								size_t Power,
+								unsigned long Power,
 								NumericType& AbsolutInaccuracyAllowed,  
 								//const _CSubModelNumericPattern& Scaler,
 								_CPathTraitor& MainTraitor,
@@ -149,7 +149,7 @@ public:
 								_CCompRedefEntry& RedefEntry);
 	bool/*NewAdded*/ PerformNewSimplyfyApprox(_CPreFlatVertexContainer*& pResultVertex,
 								  short& ResultSgn,
-								  size_t Power,
+								  unsigned long Power,
 								  _CNewSimplifierData& Data, _CCompRedefEntry& RedefEntry);
 	bool IsModelSymetric() const;
 	virtual bool IsPromising(_CGraphState* pState) override;
@@ -171,7 +171,7 @@ protected:
 	virtual void CleanExtraMaps();
 	//void TranslateExtVertices2LocTerm(const _CSimpleVertexVector& External,_CSimpleVertexMap& Local);
 	virtual void WriteOutParamsToTextStream(iostream& stream);
-	long FindSubId(const string& Name) {return m_Owner->FindSubId(Name);}
+	unsigned long FindSubId(const string& Name) {return m_Owner->FindSubId(Name);}
 	void TermLeave2Param(_CModelVertex* pVertex,MVERTEX_2_SIGN& MVertex2Sgn);
 	long long GetBoundaryParamIndex(_CMultiDeletions* pDel)
 	{

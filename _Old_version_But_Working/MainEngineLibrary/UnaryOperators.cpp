@@ -587,7 +587,7 @@ const _CCofactorReminderSuplement& _CSuplementStorage::GetCofRemSuplement(_CCons
 }
 
 //************************************_CResVertexOperator
-void _CResVertexOperator::PostOperateSubCircuitResult(size_t EntryId, size_t PosId, _CSimpleVertexContainer& NewRes)
+void _CResVertexOperator::PostOperateSubCircuitResult(unsigned long EntryId, unsigned long PosId, _CSimpleVertexContainer& NewRes)
 {
 	if(NewRes.Is01M1())
 		return;

@@ -78,11 +78,11 @@ void _CMetaComponent::RaportConnections(COMPONENT_PINS& Pins) const
 
 void _CMetaComponent::CheckDeletins(_CComponent* pComponent)
 {
-	size_t NoOfDescs = pComponent->NoOfDescendants();
+	auto NoOfDescs = pComponent->NoOfDescendants();
 	DESC_DELS AuxDescDels;
 	AuxDescDels.resize(m_DescDels.size() + NoOfDescs - 1);
 	//int HollowDesc = pComponent->HollowOutput();
-	for (size_t i = 0; i < NoOfDescs; i++)
+	for (unsigned i = 0; i < NoOfDescs; i++)
 	{
 		const _CMultiBasicSetOfDeletions* pMultiSet = NULL;
 		pComponent->GetDescendantDeletions(i, pMultiSet);
@@ -124,7 +124,7 @@ void _CMetaComponent::GenerateAllDeletins()
 	{
 		_CComponent* pComponent = *cit;
 		DESC_DELS AuxDescDels(m_CompList.size() + 1);
-		for (size_t i = 0; i < 2; i++)
+		for (unsigned i = 0; i < 2; i++)
 		{
 			const _CMultiBasicSetOfDeletions* pMultiSet = NULL;
 			pComponent->GetDescendantDeletions(i, pMultiSet);
@@ -163,25 +163,25 @@ void _CMetaComponent::GetDescendantDeletions(unsigned Descendant, const _CMultiB
 	pDeletions = &m_DescDels[Descendant];
 }
 
-int _CMetaComponent::GetNoOfPorts() const
+unsigned _CMetaComponent::GetNoOfPorts() const
 { 
-	return m_CurrPinsSet.size();
+	return (unsigned)m_CurrPinsSet.size();
 }
 
 unsigned _CMetaComponent::NoOfDescendants() const
 { 
 	ASSERTPDD(!m_CompList.empty());
 	if (m_DescDels.size()<=1)
-		return m_CompList.size() + 1;
+		return (unsigned)m_CompList.size() + 1;
 	else
-		return m_DescDels.size();
+		return (unsigned)m_DescDels.size();
 }
 
 unsigned _CMetaComponent::NoOfEffevtiveDescendants()
 {
 	if (m_DescDels.size()<=1)
 		GenerateAllDeletins();
-	return m_DescDels.size();
+	return (unsigned)m_DescDels.size();
 }
 
 const NumericType& _CMetaComponent::GetParameterValue() const
@@ -190,7 +190,7 @@ const NumericType& _CMetaComponent::GetParameterValue() const
 	return m_CompList.back()->GetParameterValue();
 }
 
-size_t _CMetaComponent::MaxDescRank()
+unsigned _CMetaComponent::MaxDescRank()
 {
 	size_t Rank = 0;
 	for (auto& MultiSet : m_DescDels)
@@ -199,10 +199,10 @@ size_t _CMetaComponent::MaxDescRank()
 		auto& BaseSetOfDels = MultiSet.front();
 		Rank = max(Rank, BaseSetOfDels.size());
 	}
-	return Rank;
+	return (unsigned)Rank;
 }
 
-long _CMetaComponent::GetHash(long Core) const
+size_t _CMetaComponent::GetHash(size_t Core) const
 {
 	for (auto& pBComp : m_CompList)
 		Core = pBComp->GetHash(Core);
@@ -288,7 +288,7 @@ void _CMetaComponent::ExchangeNumbers(const _CExchangMapWraper& Numbers2Exchange
 void _CMetaComponent::GetSimplyFlatVertex2(const _CModelVertex* pCallerVertex,
 	_CModelVerticesPath& VerticesPath,
 	_CPathTraitor& PathTraitor,
-	size_t Power,
+	unsigned long Power,
 	NumericType& CurrentAllowedInaccuracy,
 	const _CFlatVertex*& pResultVertex,
 	short& TopSgn,
@@ -393,7 +393,7 @@ m_INp(Source.m_INp), m_INn(Source.m_INn), m_OUTp(Source.m_OUTp), m_OUTn(Source.m
 	//Prepare();
 }
 
-long _CIdealFollowers::GetHash(long Core) const
+size_t _CIdealFollowers::GetHash(size_t Core) const
 {
 	Core *= HASH_FACTOR;
 	Core ^= m_INp;
@@ -519,7 +519,7 @@ void _CCurrentFollower::PrepareDeletions()
 //****************************_CConveyors*******************************
 //IMPLEMENT_DYNAMIC_CREATION(_CConveyors);
 
-long _CConveyors::GetHash(long Core) const
+size_t _CConveyors::GetHash(size_t Core) const
 {
 	Core *= HASH_FACTOR;
 	Core ^= m_x;
@@ -1013,7 +1013,7 @@ void _CFDCFOA_RM_INF::PrepareDeletions()
 	m_SetDeletion.push_back(Set);
 }
 
-long _CFDCFOA_RM_INF::GetHash(long Core) const
+size_t _CFDCFOA_RM_INF::GetHash(size_t Core) const
 {
 	Core *= HASH_FACTOR;
 	Core ^= m_Vyp;
@@ -1117,7 +1117,7 @@ void _CDDOMA::PrepareDeletions()
 	m_SetDeletion.push_back(_CBasicSetOfDeletions(_CBasicPairOfDeletion(m_Von, -m_Vop, m_V3, m_V4)));
 }
 
-long _CDDOMA::GetHash(long Core) const
+size_t _CDDOMA::GetHash(size_t Core) const
 {
 	Core *= HASH_FACTOR;
 	Core ^= m_V1;
@@ -1212,7 +1212,7 @@ void _CFBDDA::PrepareDeletions()
 	m_SetDeletion.push_back(_CBasicSetOfDeletions(_CBasicPairOfDeletion(m_Ion, m_Iop, m_V3, m_V4)));
 }
 
-long _CFBDDA::GetHash(long Core) const
+size_t _CFBDDA::GetHash(size_t Core) const
 {
 	Core *= HASH_FACTOR;
 	Core ^= m_V1;
@@ -1312,7 +1312,7 @@ void _CDVCFOA::PrepareDeletions()
 	m_SetDeletion.push_back(Set2);
 }
 
-long _CDVCFOA::GetHash(long Core) const
+size_t _CDVCFOA::GetHash(size_t Core) const
 {
 	Core *= HASH_FACTOR;
 	Core ^= m_Vx;
@@ -1414,7 +1414,7 @@ void _CDDCCFOA::PrepareDeletions()
 	m_SetDeletion.push_back(Set4);
 }
 
-long _CDDCCFOA::GetHash(long Core) const
+size_t _CDDCCFOA::GetHash(size_t Core) const
 {
 	Core *= HASH_FACTOR;
 	Core ^= m_Vx;
@@ -1524,8 +1524,8 @@ _CCustomOneParameterIdealizedComponent::_CCustomOneParameterIdealizedComponent(_
 	const DELETIONS& multDels, const DELETIONS& remDels, long double Value ) {
 }
 
-int _CCustomOneParameterIdealizedComponent::GetNoOfPorts() const { return 1; }
-long _CCustomOneParameterIdealizedComponent::GetHash(long Core ) const { return 0; }
+unsigned _CCustomOneParameterIdealizedComponent::GetNoOfPorts() const { return 1; }
+size_t _CCustomOneParameterIdealizedComponent::GetHash(size_t Core ) const { return 0; }
 void _CCustomOneParameterIdealizedComponent::ExchangeNumbers(const _CExchangMapWraper& Numbers2Exchange) {
 
 }
@@ -1563,7 +1563,7 @@ void _CDDCCpm::PrepareDeletions()
 	m_SetDeletion.push_back(_CBasicSetOfDeletions(_CBasicPairOfDeletion(m_Iz1, m_Iz2, m_Vx, m_Vy3)));
 }
 
-long _CDDCCpm::GetHash(long Core) const
+size_t	 _CDDCCpm::GetHash(size_t Core) const
 {
 	Core *= HASH_FACTOR;
 	Core ^= m_Vx;
@@ -1657,7 +1657,7 @@ void _CDXCCII::PrepareDeletions()
 	m_SetDeletion.push_back(_CBasicSetOfDeletions(_CBasicPairOfDeletion(m_Iz2, m_Vx2, m_Vx2, -m_Vy)));
 }
 
-long _CDXCCII::GetHash(long Core) const
+size_t _CDXCCII::GetHash(size_t Core) const
 {
 	Core *= HASH_FACTOR;
 	Core ^= m_Vx1;
@@ -1748,7 +1748,7 @@ void _CFDVDCCIIpm::PrepareDeletions()
 	m_SetDeletion.push_back(Set2);
 }
 
-long _CFDVDCCIIpm::GetHash(long Core) const
+size_t _CFDVDCCIIpm::GetHash(size_t Core) const
 {
 	Core *= HASH_FACTOR;
 	Core ^= m_Vx1;
@@ -1925,7 +1925,7 @@ void _CDVCCII::PrepareDeletions()
 	m_SetDeletion.push_back(_CBasicSetOfDeletions(_CBasicPairOfDeletion(m_z1, m_z2, m_y1, m_y2)));
 }
 
-long _CDVCCII::GetHash(long Core ) const
+size_t _CDVCCII::GetHash(size_t Core ) const
 {
 	Core *= HASH_FACTOR;
 	Core ^= m_x;
@@ -2035,7 +2035,7 @@ void _CFDCCII::PrepareDeletions()
 	m_SetDeletion.push_back(Set);
 }
 
-long _CFDCCII::GetHash(long Core) const
+size_t _CFDCCII::GetHash(size_t Core) const
 {
 	Core *= HASH_FACTOR;
 	Core ^= m_x1;
@@ -2143,7 +2143,7 @@ _CSimplyComponent(pOwnerCircuit, Name, Value), m_Ports(Ports)
 {
 }
 
-long _CMultiPortOneParam::GetHash(long Core) const
+size_t _CMultiPortOneParam::GetHash(size_t Core) const
 {
 	Core = _CSimplyComponent::GetHash(Core);
 	for (auto Pin : m_Ports)
@@ -2181,7 +2181,7 @@ void _CMultiPortOneParam::GetDescendantGreedyDeletion(unsigned ImportanceLevel, 
 {
 	if (m_0Deletions.empty() && m_1Deletions.empty())
 		PrepareDeletions();
-	int Comp = m_0Deletions.front().size() - m_1Deletions.front().size();
+	auto Comp = m_0Deletions.front().size() - m_1Deletions.front().size();
 	switch (ImportanceLevel)
 	{
 	case 0:

@@ -39,9 +39,9 @@ void _CSubCircuitSocket::PlugInComponent(_CIntegrityTable& IntegrityTable)
 	IntegrityTable.PlugComponents(Pins);
 }
 
-long _CSubCircuitSocket::GetHash(long Core) const
+size_t _CSubCircuitSocket::GetHash(size_t Core) const
 {
-	long long lCore=Core;
+	auto lCore=Core;
 	lCore=Hash_value(lCore,m_InstanceName);
 	lCore*=HASH_FACTOR;
 	lCore=Hash_value(lCore,m_pModel->m_Name.c_str());
@@ -50,7 +50,7 @@ long _CSubCircuitSocket::GetHash(long Core) const
 		lCore*=HASH_FACTOR;
 		lCore^=Node;
 	}
-	return (long)lCore;
+	return lCore;
 }
 //void _CSubCircuitSocket::PrepareLHStates(_CGraphState& HState, _CGraphState& LState)
 //{
@@ -110,7 +110,7 @@ void _CSubCircuitSocket::CheckDisconnection(_CGraphState* pState) const
 			break;
 	}
 }
-size_t _CSubCircuitSocket::MaxDescRank()  
+unsigned _CSubCircuitSocket::MaxDescRank()  
 {
 	if(m_MaxRank==0)
 		for(size_t i=0;i<NoOfDescendants();i++)
@@ -165,7 +165,7 @@ void _CSubCircuitSocket::Store(_binary_filer& Filer)
 	Filer<<m_InstanceName;
 	Filer<<(m_pModel->GetName());
 	Filer<<m_pModel->PrepareShortFileName();
-	unsigned Size=m_ConnectedNodes.size();
+	size_t Size=m_ConnectedNodes.size();
 	Filer<<Size;
 	for each(int Node in m_ConnectedNodes)
 		Filer<<Node;
@@ -185,8 +185,8 @@ bool _CSubCircuitSocket::IsEqualIfSameType(const _CComponent& RightComp)
 		return false;
 	if(m_ConnectedNodes.size()!=RC.m_ConnectedNodes.size())
 		return false;
-	unsigned Size=m_ConnectedNodes.size();
-	for(unsigned i=0;i<Size;i++)
+	auto Size=m_ConnectedNodes.size();
+	for(auto i=0;i<Size;i++)
 		if(m_ConnectedNodes[i]!=RC.m_ConnectedNodes[i])
 			return false;
 	return true;
@@ -242,7 +242,7 @@ void _CSubCircuitSocket::SimplyModelTranslation(_CBounderyParametersCache& BPC)
 		}
 		pMultDels->InvalidateHash();
 		pMultDels = m_RealParameters.PushInCache(pMultDels, true);
-		m_AllParamConnections[i] = (PARAM_CONNECTIONS::size_type)m_RealParameters.GetIndexOf(pMultDels, false);
+		m_AllParamConnections[i] = (int)m_RealParameters.GetIndexOf(pMultDels, false);
 	}
 }
 
@@ -288,7 +288,7 @@ void _CSubCircuitSocket::NewModelTranslation(/*_CBounderyParametersCache& BPC*/)
 		_CMultiDeletions* pMultDels = new _CMultiDeletions(m_pBaseCircuit);
 		pState->ReverseCofactor(*pMultDels);
 		pMultDels = m_RealParameters.PushInCache(pMultDels, true);
-		size_t Index = (PARAM_CONNECTIONS::size_type)m_RealParameters.GetIndexOf(pMultDels, false);
+		auto Index = (int)m_RealParameters.GetIndexOf(pMultDels, false);
 		for(_CBounadryStatesVector::TERMINALS_LIST::iterator it=List.begin(),_e=List.end();it!=_e;it++)
 			m_AllParamConnections[*it]=Index;
 	}
@@ -470,7 +470,7 @@ void _CSubCircuitSocket::AdvancedModelTranslation(_CBounderyParametersCache& BPC
 			m_AllParamConnections[i]=-2;
 			continue;
 		}
-		_CGraphTable TestTable(m_ConnectedNodes.size());
+		_CGraphTable TestTable((unsigned)m_ConnectedNodes.size());
 		if(!pDels->AddDeletions(&TestTable))
 		{
 			m_AllParamConnections[i]=-2;
@@ -487,7 +487,7 @@ void _CSubCircuitSocket::AdvancedModelTranslation(_CBounderyParametersCache& BPC
 			continue;
 		}//dopisaæ
 		pMulDels=m_RealParameters.PushInCache(pMulDels,true);
-		m_AllParamConnections[i]=(PARAM_CONNECTIONS::size_type)m_RealParameters.GetIndexOf(pMulDels,false); 
+		m_AllParamConnections[i]=(int)m_RealParameters.GetIndexOf(pMulDels,false); 
 	}
 }
 
@@ -803,7 +803,7 @@ void _CSubCircuitSocket::GetSimplyVertex(_CModelVertex* pBaseVertex,_CSExpandedV
 		}
 		//if(ResVertices.IsEmpty())
 		//	m_pModel->DevelopeRealTree(m_InstanceName,ResVertices, ModelDescendents);
-		size_t LocalCofId=m_pModel->PushLocalSVertices(*pResVertices);//poprawiamy
+		auto LocalCofId=m_pModel->PushLocalSVertices(*pResVertices);//poprawiamy
 		Container.SetResult(pResVertices,TopSgn);
 		m_pModel->RegisterResult(&Container);	
 		//Vertices.SetInputConnectorData(LocalCofId, ResVertices, this, &m_VerticesMaps);
@@ -821,7 +821,7 @@ void _CSubCircuitSocket::GetSimplyVertex(_CModelVertex* pBaseVertex,_CSExpandedV
 void _CSubCircuitSocket::GetSimplyFlatVertex2(const _CModelVertex* pCallerVertex,
 	_CModelVerticesPath& VerticesPath,
 	_CPathTraitor& PathTraitor,
-	size_t SPower,
+	unsigned long SPower,
 	NumericType& CurrentAllowedInaccuracy,
 	const _CFlatVertex*& pResultVertex,
 	short& TopSgn,
@@ -845,7 +845,7 @@ void _CSubCircuitSocket::GetSimplyFlatVertex2(const _CModelVertex* pCallerVertex
 
 bool /*NewPath*/ _CSubCircuitSocket::PerformSimplyFlatVertexTravers(
 		_CModelVertex* pCallerVertex,
-		size_t SPower,
+		unsigned long SPower,
 		_CPreFlatVertexContainer*& pResultVertex,
 		short& TopSgn,
 		_CNewSimplifierData& Data,

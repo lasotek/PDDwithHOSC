@@ -97,9 +97,9 @@ void _CComponent::SetOwnerCircuit(_CCircuit *pOwner)
 
 void _CComponent::GetCompleteOfDeletions(DESC_DELETIONS& DescDeletions)
 {
-	size_t DescNo=NoOfEffevtiveDescendants();
+	auto DescNo=NoOfEffevtiveDescendants();
 	DescDeletions.resize(DescNo);
-	for(size_t i=0;i<DescNo;i++)
+	for(unsigned i=0;i<DescNo;i++)
 		GetDescendantDeletions(i,DescDeletions[i]);
 }
 
@@ -127,7 +127,7 @@ void _CComponent::GetSimplyVertex(_CModelVertex* pBaseVertex,_CSExpandedVertices
 	short Bottom1Sgn=BottomSgn[0],
 		  Bottom0Sgn=BottomSgn[1];
 	unsigned short S=GetSShift();
-	int _size=max(Desc1.size()+S,Desc0.size());
+	auto _size=max(Desc1.size()+S,Desc0.size());
 	for(int i=0;i<_size;i++)
 		Vertices.SetVertex(	m_pBaseCircuit->GetSimpleVertexId(this,Desc1.GetVertex(i-S),Desc0.GetVertex(i),Bottom1Sgn,Bottom0Sgn,TopSgn),i);
 }
@@ -177,9 +177,9 @@ bool _CComponent::IsTheSameCompType(const _CComponent* pOtherComp) const
 
 
 //******************************_CSimplyComponent***********************
-long _CSimplyComponent::GetHash(long Core) const
+size_t _CSimplyComponent::GetHash(size_t Core) const
 {
-	long long lCore=Core;
+	auto lCore=Core;
 	lCore=Hash_value(lCore,GetClassNameId());
 	lCore*=HASH_FACTOR;
 	lCore=Hash_value(lCore,m_Name);
@@ -246,7 +246,7 @@ void _CTreeForkComponent::CheckNextStep(_CPredictionResult& PredictionResult, co
 	pIntegrityTable->UnPlugComponent(Pins);
 	TestState.CheckCompressionToNode();
 	int ZeroOut=HollowOutput();
-	for(size_t i=0;i<NoOfDescendants();i++)
+	for(unsigned long i=0;i<NoOfDescendants();i++)
 	{
 		if(IsAllways0(i))
 		{
@@ -406,7 +406,7 @@ const _CSubModelNumericPattern* _CSimplyComponent::GetMyBaseNumPattern(_CCompRed
 void _CSimplyComponent::GetSimplyFlatVertex2(const _CModelVertex* pCallerVertex,
 	_CModelVerticesPath& VerticesPath,
 	_CPathTraitor& PathTraitor,
-	size_t Power,
+	unsigned long Power,
 	NumericType& CurrentAllowedInaccuracy,
 	const _CFlatVertex*& pResultVertex,
 	short& TopSgn,
@@ -415,7 +415,7 @@ void _CSimplyComponent::GetSimplyFlatVertex2(const _CModelVertex* pCallerVertex,
 {
 	const _CSubModelNumericPattern* pScaler=VerticesPath.GetTopSubModelNumericPatter();
 	_CSparsePolynomial DescPat0,DescPat1; 
-	size_t Power1=sPower();
+	unsigned long Power1=sPower();
 	const _CSubModelNumericPattern* pNumPat1=DescNumValues[0];
 	if(pNumPat1!=NULL)
 		pNumPat1->ScalarProduct(DescPat0,*pScaler,Power);
@@ -428,7 +428,7 @@ void _CSimplyComponent::GetSimplyFlatVertex2(const _CModelVertex* pCallerVertex,
 	}
 	else
 		Power1=0;
-	size_t DescPowers[2]={Power,Power1};
+	unsigned long DescPowers[2]={Power,Power1};
 	NumericType DescNum0=DescPat0.get(Power), DescNum1=DescPat1.get(Power1);
 	typedef pair<unsigned char/*Index*/,NumericType/*Error?*/> DESC_WEIGHT;
 	NumericType Value=GetParameterValue();
@@ -509,14 +509,14 @@ void _CSimplyComponent::GetSimplyFlatVertex2(const _CModelVertex* pCallerVertex,
 
 bool /*NewPath*/ _CTreeForkComponent::PerformSimplyFlatVertexTravers(
 		_CModelVertex* pCallerVertex,
-		size_t SPower,
+		unsigned long SPower,
 		_CPreFlatVertexContainer*& pResultVertex,
 		short& TopSgn,
 		_CNewSimplifierData& Data,
 		_CCompRedefEntry& RedefEntry
 		)
 {
-	unsigned short s_Power = TraversSPower();
+	unsigned long s_Power = TraversSPower();
 	size_t NoOfDescs = NoOfDescendants();
 	unsigned short CompPower = NoOfDescendants() - 1;
 	unsigned short MaxCompPower = 0;
@@ -535,7 +535,7 @@ bool /*NewPath*/ _CTreeForkComponent::PerformSimplyFlatVertexTravers(
 		vector<_CPreFlatVertexContainer*> PreFlatDescs(NoOfDescs, nullptr);
 		MULTIPLIERS TopSgns(NoOfDescs, 1);
 		bool IsEmpty = true;
-		for (size_t i = 0; i <= MaxCompPower; i++)
+		for (unsigned long i = 0; i <= MaxCompPower; i++)
 		{
 			_CPreFlatVertexContainer*& pPreFlat = PreFlatDescs[i];
 			short& TopSgn = TopSgns[i];
@@ -664,10 +664,10 @@ bool /*NewPath*/ _CTreeForkComponent::PerformSimplyFlatVertexTravers(
 #ifdef _GREEDY
 		}
 #endif
-		for (size_t i = 0; i <= MaxCompPower;i++)
+		for (unsigned long i = 0; i <= MaxCompPower;i++)
 			if (ConsiderVector[i])
 			{
-				size_t Power0 = SPower - i*s_Power;
+				unsigned long Power0 = SPower - i*s_Power;
 #ifdef _DEBUG
 				Data.m_PrevResult = pNumDesc->get2(i, Power0);
 #endif
@@ -1026,10 +1026,10 @@ void _CSimplyComponent::_GetSimplyFlatVertex(_CModelVerticesPath& VerticesPath,
 	//size_t _level_size=pDesc1->size();
 	//ASSERTPDD(pDesc0->size()==_level_size);
 	unsigned short S=sPower();
-	size_t MP1=pDesc1==NULL?0:pDesc1->size();
-	size_t MP0=pDesc0==NULL?0:pDesc0->size();
-	size_t MaxPower=max(MP1+S,MP0);
-	for(unsigned short n=0;n<=(unsigned short)MaxPower;n++)
+	unsigned long MP1=pDesc1==NULL?0:(unsigned long)pDesc1->size();
+	unsigned long MP0=pDesc0==NULL?0:(unsigned long)pDesc0->size();
+	unsigned long MaxPower=max(MP1+S,MP0);
+	for(unsigned long n=0;n<=MaxPower;n++)
 	{
 		if(!TopLimiter.IsAllowed(n))
 			continue;
@@ -1040,7 +1040,7 @@ void _CSimplyComponent::_GetSimplyFlatVertex(_CModelVerticesPath& VerticesPath,
 		//const _CFlatVertex* p1Desc=NULL;
 		//const _CFlatVertex* p0Desc=NULL;
 		if(n>=S && pDesc1!=NULL && SPowerLimiter1.IsAllowed(n-S))
-			p1Cont=pDesc1->sPowerCont[n-S];
+			p1Cont=pDesc1->sPowerCont[(size_t)n-S];
 			//p1Desc=pDesc1->sPowerCoeff[n-S];
 		if(pDesc0!=NULL && SPowerLimiter0.IsAllowed(n))
 			p0Cont=pDesc0->sPowerCont[n];
@@ -1351,9 +1351,9 @@ void _CComponents::Interpcept(_CComponents& Source)
 	Source.ClearMaps();
 	ClearMaps();
 }
-size_t _CComponents::MaxPower() const
+unsigned long _CComponents::MaxPower() const
 {
-	size_t Res=0;
+	unsigned Res=0;
 	for(const_iterator it=begin(),_e=end();it!=_e;it++)
 	{
 		Res+=(*it)->sPower();

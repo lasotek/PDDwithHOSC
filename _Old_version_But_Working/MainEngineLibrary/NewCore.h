@@ -191,7 +191,7 @@ public:
 	void SetTouched(INT_LIST& ExpectedList, CONTR_LIST& ContrList) const;
 	bool GlueItIfCanBeGluedTogether(const _CSubNodeContractionsSimpl& Another,short Sgn, short& OutSgn);
 	int GetCurrZero() const { return m_CurrZero; }
-	virtual bool IsBoundaryNode(size_t Node) { return false; }
+	virtual bool IsBoundaryNode(unsigned long Node) { return false; }
 	_NODE_RES Contract(int ANode, int BNode);
 	bool FastLoopTest(int& ANode, int& BNode) const;
 	bool operator==(const _CSubNodeContractionsSimpl& Other) const { return IsEqual(Other); }
@@ -301,7 +301,7 @@ public:
 	bool IsPinConnected(const COMPONENT_PINS_SET& DisconnnectedPins) const;
 	bool IsPinConnected(const COMPONENT_PINS_LIST& DisconnnectedPins) const;
 	bool IsEnough() const;
-	virtual bool IsBoundaryNode(size_t Node) override;
+	virtual bool IsBoundaryNode(unsigned long Node) override;
 	const _CCircuitAnalyzer* GetAnalyser() const { return m_pAnalyser; }
 protected:
 	_CCircuitAnalyzer* m_pAnalyser;
@@ -599,8 +599,8 @@ public:
 		return m_Contractions.NoOfDels();
 		//return m_NoOfDeletions;
 	}
-	virtual long DetermineHashKey(long Core=HASH_CORE) override;
-	virtual unsigned long long GetHash(unsigned long long Core=HASH_CORE);
+	virtual size_t DetermineHashKey(size_t Core=HASH_CORE) override;
+	virtual size_t GetHash(size_t Core=HASH_CORE);
 	//virtual bool IsEqualIgnoreSgn(_CCommonStateCofactor& Other);
 	//const _CSubNodeContractions& R() const {return m_R;}
 	//const _CSubNodeContractions& C() const {return m_C;}
@@ -771,7 +771,7 @@ public:
 	//bool Translate2Nodes(const PINS_COLOCATIONS& PinsColocations, 
 	//	const COMPONENT_PINS_SET& DisconnnectedPins);
 	//bool ReDisconnectNodes(const COMPONENT_PINS_LIST& ReDisconnectedPins);
-	virtual unsigned long long GetHash(unsigned long long Core=HASH_CORE) override;
+	virtual unsigned long long GetHash(unsigned long long Core=HASH_CORE);
 	//virtual bool IsEqualIgnoreSgn(_CCommonStateCofactor& Other) override;
 protected:
 	//unsigned short FlattenAndReMismatch();
@@ -1031,7 +1031,7 @@ public:
 		const COMPONENT_PINS_LIST& NewSeparateNodes = EmptyPinList);
 	AD_DELETION ReduceSeparateNodes(const COMPONENT_PINS_LIST& SeparateNodes);
 	//AD_DELETION ReduceSeparateNode(int Node);
-	virtual unsigned long long GetHash(unsigned long long Core=HASH_CORE) override;
+	virtual unsigned long long GetHash(unsigned long long Core=HASH_CORE);
 	bool operator==(_CNewGreedyStateCofactor& Right) const
 	{
 		return m_ZeroWasRemoved==Right.m_ZeroWasRemoved &&
@@ -1261,12 +1261,12 @@ public:
 	STATE_COFACTOR_SET* GetBaseStates() {return m_pCurrentStateCofactors;}
 	//virtual STATE_COFACTOR_SET* GetMyCofState() override {return m_pCurrentStateCofactors;}
 	bool IsSubmodel() {return m_pBoundaryPins!=NULL;}
-	bool IsBoundary(size_t Node);
+	bool IsBoundary(unsigned Node);
 	//bool IsGreedyFeasible(_CGreedyResContainer& ResContainer)
 	//{
 	//	return m_GreedyResCache.IsFeasible(ResContainer);
 	//}
-	bool IsPinIgnored(size_t Node)
+	bool IsPinIgnored(unsigned Node)
 	{
 		return IsIn(m_IgnoredPins,Node);
 	}
@@ -1284,9 +1284,9 @@ public:
 	void RegisterTempVertex2ModelVertex(_CTempVertex* const * ppTempVertex,_CModelVertex** ppModelVertex);
 	typedef unordered_multimap<_CStateCofactor*, _CModelVertex**> BOUNDARIES_MAP;
 	const BOUNDARIES_MAP& GetBoundariesMap();
-	size_t GetNoOfSubciruitDongles() const;
+	unsigned long GetNoOfSubciruitDongles() const;
 	//void PrepareDongle(size_t DongleNo, _CDeletions& Deletions, _CModelVertex& ModelVertex, unsigned long& Counter);
-	void PrepareDongle(size_t DongleNo, _CMultiDeletions& Deletions, _CModelVertex& ModelVertex, unsigned long& Counter);
+	void PrepareDongle(unsigned long DongleNo, _CMultiDeletions& Deletions, _CModelVertex& ModelVertex, unsigned long& Counter);
 	void ClearGarbage();
 	const ORIGINAL_DESC_STATES& GetOriginalDescState();
 	size_t DonglIndex(const _CTempVertex** ppDongleAdress) const
@@ -1301,7 +1301,7 @@ public:
 protected:
 	bool IsDescEmpty(const _CTempVertex::DESC_DATA* pDescData);
 	bool IsVertexHollow(const _CTempVertex& Vertex);
-	void ReportMinIncidences(_CComponent& Component,unsigned& MinValue, unsigned& MinNumber); 
+	void ReportMinIncidences(_CComponent& Component,unsigned long& MinValue, unsigned long& MinNumber); 
 	int DetermineNoOfIcidenceInNode(int Node);//-1 means boundary
 	typedef list<VERTICES_LIST::iterator> VERTICES_IT_LIST;
 	void PrepareVertItList(VERTICES_IT_LIST& List);
@@ -1416,9 +1416,9 @@ protected:
 		size_t NoOfDescendants() {return m_OriginalDescStates.size();}
 		void RegisterTempVertex2ModelVertex(_CTempVertex* const * ppTempVertex,_CModelVertex** ppModelVertex);
 		const BOUNDARIES_MAP& GetBoundariesMap() { return m_BoundariesMap; }
-		size_t GetNoOfSubciruitDongles() const {return m_OriginalDescStates.size();}
+		unsigned long GetNoOfSubciruitDongles() const { return (unsigned long)m_OriginalDescStates.size(); }
 		//void PrepareDongle(size_t DongleNo, _CDeletions& Deletions, _CModelVertex& ModelVertex, unsigned long& Counter);
-		void PrepareDongle(size_t DongleNo, _CMultiDeletions& Deletions, _CModelVertex& ModelVertex, unsigned long& Counter);
+		void PrepareDongle(unsigned long DongleNo, _CMultiDeletions& Deletions, _CModelVertex& ModelVertex, unsigned long& Counter);
 		const ORIGINAL_DESC_STATES& GetOriginalDescState() { return m_OriginalDescStates; }
 		size_t DongleIndex(const _CTempVertex** ppDongleAddres) const;
 	protected:
@@ -1428,7 +1428,7 @@ protected:
 		ORIGINAL_DESC_STATES m_OriginalDescStates;
 		typedef unordered_map<const _CTempVertex**,size_t>  VERTEX_2_ORIGINAL_DESC_INDEX;
 		VERTEX_2_ORIGINAL_DESC_INDEX m_Vertex2OriginalDescIndex;
-		typedef map<size_t/*Index*/,size_t/*Counter*/> COUNTER;
+		typedef map<unsigned long/*Index*/,unsigned long/*Counter*/> COUNTER;
 		COUNTER m_Counter;
 		//typedef hash_multimap<_CStateCofactor*, _CModelVertex**> BOUNDARIES_MAP;
 		BOUNDARIES_MAP m_BoundariesMap;
@@ -1497,16 +1497,16 @@ protected:
 		//{
 		//	m_Analyzer.m_IncidentTable.RemoveTest();
 		//}
-		size_t GetDescendantsInNextLevel() const {return m_DescendantsInNextLevel;}
-		size_t GetHollowedVertices() const {return m_HollowedVertices;}
-		size_t GetCreatedVertices() const {return m_CreatedVertices;}
-		size_t GetGlobalPossibleDescendants() const {return m_GlobalPossibleDescendants;}
-		size_t Get1Descendants() const {return m_1Descendants;}
-		size_t GetRelativeDescendantsInNextLevel() const { return 1000 * m_DescendantsInNextLevel / m_GlobalPossibleDescendants; }
+		unsigned GetDescendantsInNextLevel() const {return m_DescendantsInNextLevel;}
+		unsigned GetHollowedVertices() const {return m_HollowedVertices;}
+		unsigned GetCreatedVertices() const {return m_CreatedVertices;}
+		unsigned GetGlobalPossibleDescendants() const {return m_GlobalPossibleDescendants;}
+		unsigned Get1Descendants() const {return m_1Descendants;}
+		unsigned GetRelativeDescendantsInNextLevel() const { return 1000 * m_DescendantsInNextLevel / m_GlobalPossibleDescendants; }
 		typedef enum{
 			DescendantsInNextLevel, RelativeDescendantsInNextLevel, VerticesHollowed, VerticesCreated,
 			GlobalPossibleDedcendants,Vertices1Suppressed,MinIncidence,MinIncidenceCounter,LastIncidence, NodesRemoved} VERT_TYPE;
-		size_t Criterion(VERT_TYPE Type)
+		unsigned Criterion(VERT_TYPE Type)
 		{
 			switch(Type)
 			{
@@ -1529,14 +1529,14 @@ protected:
 		//const _CStateCofactor* Get
 		const STATE_COFACTOR_SET* GetMyTopStates() {return m_pMyTopStates;};
 	protected:
-		size_t m_HollowedVertices;
-		size_t m_CreatedVertices;
-		size_t m_GlobalPossibleDescendants;
-		size_t m_1Descendants;
-		size_t m_DescendantsInNextLevel;
-		size_t m_MinIncidenceAfterReduction;
-		size_t m_NoOfPinsWithMinIncidence;
-		size_t m_NoOfRemovedPins;
+		unsigned long m_HollowedVertices;
+		unsigned long m_CreatedVertices;
+		unsigned long m_GlobalPossibleDescendants;
+		unsigned long m_1Descendants;
+		unsigned long m_DescendantsInNextLevel;
+		unsigned long m_MinIncidenceAfterReduction;
+		unsigned long m_NoOfPinsWithMinIncidence;
+		unsigned long m_NoOfRemovedPins;
 		_CComponent& m_MyComponent;
 		STATE_COFACTOR_SET* m_pMyTopStates;
 		STATE_COFACTOR_SET& m_MyProductStates;
@@ -1620,7 +1620,7 @@ protected:
 		for each (auto Pin in List)
 			m_TouchedPinSet.erase(Pin);
 	}
-	void TouchPin(size_t Pin)
+	void TouchPin(unsigned Pin)
 	{
 		m_TouchedPinSet.insert(Pin);
 	}
@@ -1654,7 +1654,7 @@ protected:
 		TouchPin(abs(Deletion.L()));
 	}
 	
-	bool IsTouchedPin(size_t Pin)
+	bool IsTouchedPin(unsigned Pin)
 	{
 		return IsIn(m_TouchedPinSet,Pin);
 	}
@@ -1670,7 +1670,7 @@ protected:
 	public:
 		_CFastCompOptimizer(_CCircuitAnalyzer* pAnalyzer, _CComponents& MainList, COMPONENT_PINS_SET& TouchedPinSet);
 		_CComponent* GetNextComponent();//NULL - no components, extracts component from optimizer
-		typedef map<size_t,SET_OF_COMPONENTS> INCD_MAP;
+		typedef map<unsigned,SET_OF_COMPONENTS> INCD_MAP;
 		void GetSmallestIncds(LIST_OF_COMPONENTS& Components);
 		void GetTouchedAndLast(LIST_OF_COMPONENTS& Components);
 		void RemovComp(_CComponent* pComp);

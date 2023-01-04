@@ -7,8 +7,8 @@ public:
 	_CControledSource(_CCircuit* pOwnerCircuit);
 	_CControledSource(_CCircuit* pOwnerCircuit,string Name,int p, int r, int k, int l, long double Value,int sPower=0);
 	virtual ~_CControledSource(void);
-	virtual int GetNoOfPorts() const {return 4;}
-	virtual long GetHash(long Core=HASH_CORE) const;
+	virtual unsigned GetNoOfPorts() const {return 4;}
+	virtual size_t GetHash(size_t Core=HASH_CORE) const override;
 	virtual void PlugInComponent(_CIntegrityTable& IntegrityTable);
 	//virtual void PrepareHState(_CGraphState& HState, int ParamId) const;
 	//virtual void PredictLHStates(_CGraphState& AscState, _CComponentPredicator& PredictedState) const;
@@ -54,7 +54,7 @@ public:
 	virtual void ProcessDescendant(unsigned Desc, _CGraphState* pState) override;
 	virtual void GetDescendantGreedyDeletion(unsigned ImportanceLevel, const _CMultiBasicSetOfDeletions*& pDeletions) override;
 	//virtual void GetDescendantGreedyDeletion(unsigned ImportanceLevel, const _CBasicSetOfDeletions*& pDeletions) override;
-	virtual size_t MaxDescRank() override { return 1; }
+	virtual unsigned MaxDescRank() override { return 1; }
 protected:
 	void WriteType(iostream& stream) {stream<<"Transconductance: ";}
 	DECLARE_DYNAMIC_CREATION(_CTransconductance);
@@ -81,7 +81,7 @@ public:
 	virtual void ProcessDescendant(unsigned Desc, _CGraphState* pState) override;
 	//virtual void GetDescendantGreedyDeletion(unsigned ImportanceLevel, const _CBasicSetOfDeletions*& pDeletions) override;
 	virtual void GetDescendantGreedyDeletion(unsigned ImportanceLevel, const _CMultiBasicSetOfDeletions*& pDeletions) override;
-	virtual size_t MaxDescRank() override { return 2; }
+	virtual unsigned MaxDescRank() override { return 2; }
 	virtual bool DeletionsAreForced()  override {return true;}
 protected:
 	void Add0Deletions() 
@@ -115,7 +115,7 @@ public:
 	virtual void ProcessDescendant(unsigned Desc, _CGraphState* pState) override;
 	//virtual void GetDescendantGreedyDeletion(unsigned ImportanceLevel, const _CBasicSetOfDeletions*& pDeletions) override;
 	virtual void GetDescendantGreedyDeletion(unsigned ImportanceLevel, const _CMultiBasicSetOfDeletions*& pDeletions) override;
-	virtual size_t MaxDescRank() override { return 1; }
+	virtual unsigned MaxDescRank() override { return 1; }
 	virtual bool DeletionsAreForced()  override {return true;}
 protected:
 	void Add0Deletions() 
@@ -149,7 +149,7 @@ public:
 	virtual void ProcessDescendant(unsigned Desc, _CGraphState* pState) override;
 	//virtual void GetDescendantGreedyDeletion(unsigned ImportanceLevel, const _CBasicSetOfDeletions*& pDeletions) override;
 	virtual void GetDescendantGreedyDeletion(unsigned ImportanceLevel, const _CMultiBasicSetOfDeletions*& pDeletions) override;
-	virtual size_t MaxDescRank() override { return 1; }
+	virtual unsigned MaxDescRank() override { return 1; }
 	virtual bool DeletionsAreForced()  override {return true;}
 protected:
 	void Add0Deletions() 

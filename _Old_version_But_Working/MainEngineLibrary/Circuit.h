@@ -27,15 +27,15 @@ public:
 	_CContextSExpandedCofactorValues():m_pBaseCircuit(NULL),m_Counter(0) {}
 	typedef enum{MUST_EXIST, FORCE_IF_NOT_EXIST/*,INHERIT_FROM_PARENTS*/} TO_DO_IF_NOT_EXISTS;
 	_CSExpandedCofactorValues& GetSExpandedCofValues(const string& Context,TO_DO_IF_NOT_EXISTS ToDo=FORCE_IF_NOT_EXIST,const string** ppNewConetxt=NULL);
-	_CSExpandedVertices& GetSExpandedVertices(const string& Context,TO_DO_IF_NOT_EXISTS ToDo=FORCE_IF_NOT_EXIST,size_t CofId=0,const string** ppNewConetxt=NULL);
-	_CSimpleVertexContainer& GetSExpandedCoef(const string& Context,TO_DO_IF_NOT_EXISTS ToDo=MUST_EXIST,unsigned short sPower=0,size_t CofId=0,const string** ppNewConetxt=NULL, long* pSPowerShift=NULL);
-	bool Exists(const string& Context, unsigned short sPower, size_t CofId);
+	_CSExpandedVertices& GetSExpandedVertices(const string& Context,TO_DO_IF_NOT_EXISTS ToDo=FORCE_IF_NOT_EXIST,unsigned long CofId=0,const string** ppNewConetxt=NULL);
+	_CSimpleVertexContainer& GetSExpandedCoef(const string& Context,TO_DO_IF_NOT_EXISTS ToDo=MUST_EXIST,unsigned sPower=0, unsigned long CofId=0,const string** ppNewConetxt=NULL, long* pSPowerShift=NULL);
+	bool Exists(const string& Context, unsigned sPower, unsigned long CofId);
 	void SetNoOfCofactors(const string& Context, size_t NewNo);
-	void SetNoOfSCoef(const string& Context,size_t CofId,unsigned short sPowers);
+	void SetNoOfSCoef(const string& Context,unsigned long CofId,unsigned sPowers);
 	_CSExpandedVertices& GetNewSVertices(const string& Context);
-	size_t PushUniqueSExpandedVertices(const string& Context,const _CSExpandedVertices& Vertices);
+	unsigned long PushUniqueSExpandedVertices(const string& Context,const _CSExpandedVertices& Vertices);
 	//bool /*Was Changed*/ RegisterAndPreparInputVertex(size_t EntryId, size_t PosId, const _CSubCircuitSocket* pSocket, _CSimpleVerticesMaps* pMap, _CSimpleVertexContainer& NewVertex, const string& Context, const string& PostContext); 
-	bool /*Was Changed*/ RegisterAndPreparInputVertex(size_t EntryId, size_t PosId, 
+	bool /*Was Changed*/ RegisterAndPreparInputVertex(unsigned long EntryId, unsigned long PosId, 
 		const _CSubCircuitSocket* pSocket, _CSubCircuitVerticesMap* pMap, const MVIDS& MVId,
 		_CSimpleVertexContainer& NewVertex, const string& Context, const string& PostContext); 
 	void WriteToStream(iostream& stream, _CSimpleVerticesMapsSet& Set);
@@ -43,9 +43,9 @@ public:
 	//void WriteToStream(iostream& stream);
 	//void WriteToStream(size_t CofId, iostream& stream);
 protected:
-	_CSimpleVertexContainer* FindSimpleVertexContainer(const string& Context,unsigned short sPower, size_t CofId, const string** ppNewContext);
+	_CSimpleVertexContainer* FindSimpleVertexContainer(const string& Context,unsigned sPower, unsigned long CofId, const string** ppNewContext);
 	friend class _CCircuit;
-	size_t PushUniqueVertex(size_t EntryId, size_t PosId, _CSimpleVertexContainer& NewVertex, 
+	unsigned long PushUniqueVertex(unsigned long EntryId, unsigned long PosId, _CSimpleVertexContainer& NewVertex, 
 		const string& Context, const string& PostContext);
 	typedef unordered_map<string,_CSExpandedCofactorValues> VMAP;
 	typedef VMAP::iterator iterator;
@@ -72,22 +72,22 @@ protected:
 	class _COutMap : public unordered_map<const string*,_CPos2Out<typename OutType,EmptyValue> > 
 	{
 	protected:
-	unsigned long long Compose(size_t EntryId, size_t PosId)
+	unsigned long long Compose(unsigned long EntryId, unsigned long PosId)
 		{
-			TGlobal_Vertex_Id ID;
+			TGlobal_Vertex_Id ID{0};
 			ID.PARTS.Circuit_Id=EntryId;
 			ID.PARTS.Local_Id=PosId;
 			return ID.Global_Id;
 		}
 	public:
-		void put(const string* CurrContext,size_t EntryId,size_t PosId, typename OutType OutValue)
+		void put(const string* CurrContext,unsigned long EntryId, unsigned long PosId, typename OutType OutValue)
 		{
 			if(OutValue==EmptyValue)
 				return;
 			unsigned long long Id=Compose(EntryId,PosId);
 			(*this)[CurrContext].put(Id,OutValue);
 		}
-		typename OutType get(const string* CurrContext,size_t EntryId,size_t PosId)
+		typename OutType get(const string* CurrContext,unsigned long EntryId,unsigned long PosId)
 		{
 			iterator it=find(CurrContext);
 			if(it!=end())
@@ -108,8 +108,8 @@ protected:
 	size_t m_Counter;
 	void SetCircuit(_CCircuit* pBase) {m_pBaseCircuit=pBase;}
 	_CSExpandedCofactorValues* GetSExpandedCofValues2(const string& Context,TO_DO_IF_NOT_EXISTS ToDo=FORCE_IF_NOT_EXIST,const string** ppNewConetxt=NULL);
-	_CSExpandedVertices* GetSExpandedVertices2(const string& Context,TO_DO_IF_NOT_EXISTS ToDo=FORCE_IF_NOT_EXIST,size_t CofId=0,const string** ppNewConetxt=NULL);
-	_CSimpleVertexContainer* GetSExpandedCoef2(const string& Context,TO_DO_IF_NOT_EXISTS ToDo=MUST_EXIST,unsigned short sPower=0,size_t CofId=0,const string** ppNewConetxt=NULL);
+	_CSExpandedVertices* GetSExpandedVertices2(const string& Context,TO_DO_IF_NOT_EXISTS ToDo=FORCE_IF_NOT_EXIST,unsigned long CofId=0,const string** ppNewConetxt=NULL);
+	_CSimpleVertexContainer* GetSExpandedCoef2(const string& Context,TO_DO_IF_NOT_EXISTS ToDo=MUST_EXIST,unsigned sPower=0,unsigned long CofId=0,const string** ppNewConetxt=NULL);
 };
 
 
@@ -125,11 +125,11 @@ public:
 	_CVertex* PushIntoCache(_CVertex* pObject);
 	virtual void SetOptimizeComponentOrder(bool Optimize) {m_OptimizeComponentOrder=Optimize;}
 	virtual _CSubCircuit* GetSubcircuit(const string& name)=0;
-	virtual _CSubCircuit* GetSubcircuit(long Id)=0;
-	virtual long GetCircuitId(const _CCircuit* pCircuit)=0;
+	virtual _CSubCircuit* GetSubcircuit(unsigned long Id)=0;
+	virtual unsigned long GetCircuitId(const _CCircuit* pCircuit)=0;
 	virtual bool IsSExpanded()=0;
-	long GetMyId() {return GetCircuitId(this);}
-	virtual _CCircuit* GetCircuit(long Id)=0;
+	unsigned long GetMyId() {return GetCircuitId(this);}
+	virtual _CCircuit* GetCircuit(unsigned long Id)=0;
 	vector<int> TranslateOrAddNodes(const vector<string>& Nodes);
 	int TranslateOrAddNode(const string& Node);
 	int TranslateNode(const string& Node);
@@ -195,7 +195,7 @@ public:
 	virtual const path_str& GetModelsPath() =0;
 	void Skip0SuppresesVertices();
 	virtual _CSubCircuit* PrepareSubcircuitFromName(const string& Name, const path_str& ModelFile)=0;
-	_CVertex* GlobalVertexFromId(long long Id);
+	_CVertex* GlobalVertexFromId(unsigned long long Id);
 	long long GlobalIdFromLocalVertex(_CVertex* pVertex);
 	void TouchVertex(long long iVertex);
 	void UnTouchVertex(long long iVertex);
@@ -252,7 +252,7 @@ public:
 	//}
 	_CSExpandedVertices& GetMainSVertices(unsigned IdNo,bool ForceIfNotExist);
 	_CSExpandedVertices& GetNewSVertices();
-	size_t PushLocalSVertices(const _CSExpandedVertices& Vertices,const string& Context=EmptyString);
+	unsigned long PushLocalSVertices(const _CSExpandedVertices& Vertices,const string& Context=EmptyString);
 	unsigned GetSVerticesIndexForCofactor(_CCofactor* pCofactor);
 	_CSExpandedVertices& GetSVerticesForCofactor(_CCofactor* pCofactor,const string& Context=EmptyString) 
 	{
@@ -281,7 +281,7 @@ public:
 		return m_LocalComponentsList.ComparePosition(pLeft,pRight);
 	}
 	bool /*Was Changed*/ RegisterAndPreparInputVertex
-		(size_t EntryId, size_t PosId, const _CSubCircuitSocket* pSocket, _CSubCircuitVerticesMap* pMap,
+		(unsigned long EntryId, unsigned long PosId, const _CSubCircuitSocket* pSocket, _CSubCircuitVerticesMap* pMap,
 		const MVIDS& MVId,
 		_CSimpleVertexContainer& NewVertex, const string& Context, const string& PostContext)
 	{
@@ -324,7 +324,7 @@ public:
 	virtual void PostProcessComponent(_CComponent* pJustProcessedComponent) {}
 	long IncludeSubcircuit(const string& InstanceName, _CSubCircuit* pModel, const _CNodesConnections& Connections, long InternalCofactor = 1);
 	long IncludeSubcircuit(const string& InstanceName, _CSubCircuit* pModel, const _CIntNodes& ConnectionsTable, long InternalCofactor = 1);
-	size_t MaxPower() {return m_LocalComponentsList.MaxPower();}
+	unsigned long MaxPower() {return m_LocalComponentsList.MaxPower();}
 	_CMainCircuit* GetMainTopCircuit();
 	bool ModifySubParameter(const string& ParamPath, long double NewValue);
 	const _CCompRedefEntry& GetComponentRedefEntry(_CComponent* pComp);
@@ -356,7 +356,7 @@ protected:
 	DECLARE_CLASS_NAME(_CCircuit);
 	void Store(_binary_filer& Filer);
 	void Load(_binary_filer& Filer);
-	virtual long FindSubId(const string& Name)=0;
+	virtual unsigned long FindSubId(const string& Name)=0;
 	void ClearGarbage(MVERTEX_2_SIGN* pMVertex2Sgn=NULL,bool IgnoreSgnPropagation=false);
 	//void CNodesConnections2IntNodes(const _CNodesConnections& Connections, _CIntNodes IntNodes);
 	bool m_IsGlobal0Node;
@@ -372,8 +372,8 @@ protected:
 	{
 	public:
 		_CAdvIntegrityTableCache():m_Counter(0),m_2Cache(2) {}
-		_CIntegrityTableCache& GetSource() {return m_2Cache[m_Counter%2];}
-		_CIntegrityTableCache& GetTarget() {return m_2Cache[(m_Counter+1)%2];}
+		_CIntegrityTableCache& GetSource() {return m_2Cache[(size_t)m_Counter%2];}
+		_CIntegrityTableCache& GetTarget() {return m_2Cache[((size_t)m_Counter+1)%2];}
 		void SwapAndPrepare()
 		{
 			m_Counter++;
@@ -427,7 +427,7 @@ protected:
 	_CContextSExpandedCofactorValues m_CSSimpleMainVertices;
 	typedef set<string> UQSet;
 	UQSet m_UniqeNamesSet;
-	size_t m_LargestDescs; 
+	unsigned m_LargestDescs; 
 	_CCircuitAnalyzer* m_pNewAnalyxer;
 	typedef map<string, _CComponent*> UNIQ_NAMES_MAP;
 	UNIQ_NAMES_MAP m_UniqNamesMap;

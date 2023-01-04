@@ -362,17 +362,17 @@ class _CSimplificationOrdinateur
 {
 public:
 	_CSimplificationOrdinateur():m_MaxCofId(0),m_MaxPower(0) {}
-	bool/*IsNew*/ RegisterEntry(size_t CofId,size_t Power,_CModelVertex* pEntryModelVertex,NumericType V1, NumericType V2,short TopSg);
-	_CSimplificationEntry* GetPEntry(size_t CofId,size_t Power);
+	bool/*IsNew*/ RegisterEntry(unsigned long CofId, unsigned long Power,_CModelVertex* pEntryModelVertex,NumericType V1, NumericType V2,short TopSg);
+	_CSimplificationEntry* GetPEntry(unsigned long CofId, unsigned long Power);
 	void FindSimplifications(_CNewSimplifierData& Data, _CCompRedefEntry& RedefEntry);
 	void TranslatePreFlat2Flat(_CNewSimplifierData& Data,_CFlatVertexCache& OutCache);
 	void MoveTo(_CContextSExpFlatVertices& OutContextSExpFlatVertices,const string* Context);
-	typedef pair<size_t/*CofId*/,size_t/*Power*/> COORDINATES;
+	typedef pair<unsigned long/*CofId*/,unsigned long/*Power*/> COORDINATES;
 protected:
 	typedef map<COORDINATES,_CSimplificationEntry> MAP;
 	MAP m_Map;
-	size_t m_MaxCofId;
-	size_t m_MaxPower;
+	unsigned long m_MaxCofId;
+	unsigned long m_MaxPower;
 };
 
 class _CNewSimplifierData
@@ -392,9 +392,9 @@ public:
 		m_GreadyPentration(true),
 		m_pPreFlatMap(NULL){} 
 	_CMainCircuit* GetMainCircuit() const {return m_pMainCircuit;}
-	size_t MaxPower() const {return m_MaxPower;}
+	unsigned long MaxPower() const {return m_MaxPower;}
 	void FindSimplifications(_CCompRedefEntry& RedefEntry);
-	bool/*IsNew*/ RegisterEntry(size_t CofId,size_t Power,_CModelVertex* pEntryModelVertex,NumericType ExactValue, NumericType Tolerance,short TopSgn);
+	bool/*IsNew*/ RegisterEntry(unsigned long CofId,unsigned long Power,_CModelVertex* pEntryModelVertex,NumericType ExactValue, NumericType Tolerance,short TopSgn);
 	void NotifyParentsToBeUpdated(_CPreFlatVertexContainer* pChildVertex);
 	void RegisterParent(_CPreFlatVertexContainer* pParentVertex);
 	void RegisterParentAndUpdateValues(_CPreFlatVertexContainer* pParentVertex,_CPreFlatMap::TRACE_RESULTS Res);
@@ -450,7 +450,7 @@ protected:
 	_CSubModelNumericParrernStorage SubModelNumericParrernStorage; 
 	_CFlatVertexCache& GetFlatVertexCache();
 	_CMainCircuit* m_pMainCircuit;
-	size_t m_MaxPower;
+	unsigned long m_MaxPower;
 	typedef unordered_multimap<_CPreFlatVertexContainer*,_CPreFlatVertexContainer*> PARENT_MAP;
 	PARENT_MAP m_ParentMap;
 	BACK_STATUS m_BackStatus;

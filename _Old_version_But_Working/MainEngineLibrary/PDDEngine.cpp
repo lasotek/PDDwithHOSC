@@ -37,10 +37,10 @@ long _CPDDEngine::CreateNewCircuit()
 		if(it==m_Circuits.end())
 		{
 			m_Circuits.push_back(pMainCircuit);
-			return m_Circuits.size();
+			return (long)m_Circuits.size();
 		}
 		(*it)=pMainCircuit;
-		return it-m_Circuits.begin()+1;
+		return (long)(it-m_Circuits.begin()+1);
 	}
 	catch(bad_alloc& e)
 	{
@@ -66,10 +66,10 @@ long _CPDDEngine::CreateNewNetAnalyser(const string& NetName,bool BySubcircuit,s
 		if(it==m_NetAnalysers.end())
 		{
 			m_NetAnalysers.push_back(pNetDynamic);
-			return m_NetAnalysers.size();
+			return (long)m_NetAnalysers.size();
 		}
 		(*it)=pNetDynamic;
-		return it-m_NetAnalysers.begin()+1;
+		return (long)(it-m_NetAnalysers.begin()+1);
 	}
 	catch(bad_alloc& e)
 	{
@@ -79,21 +79,21 @@ long _CPDDEngine::CreateNewNetAnalyser(const string& NetName,bool BySubcircuit,s
 	return 0;
 }
 
-_CNetDynamicAnalyser* _CPDDEngine::GetNetAnalyser(long Id)
+_CNetDynamicAnalyser* _CPDDEngine::GetNetAnalyser(unsigned long Id)
 {
-	if(Id<0 || Id>(long)m_NetAnalysers.size())
+	if(Id>m_NetAnalysers.size())
 		return NULL;
-	return m_NetAnalysers[Id-1];
+	return m_NetAnalysers[(size_t)Id-1];
 }
 
-long _CPDDEngine::RemoveCircuit(long Id)
+long _CPDDEngine::RemoveCircuit(unsigned long Id)
 {
-	if(Id>=(long)m_Circuits.size())
+	if(Id>=m_Circuits.size())
 	{
 		LastErrorInfo=invalid_circuit_msg+"_CPDDEngine::RemoveCircuit"; 
 		return INVALID_CIRCUIT_HANDLER;
 	}
-	_CMainCircuit*& pCircuit=m_Circuits[Id-1];
+	_CMainCircuit*& pCircuit=m_Circuits[(size_t)Id-1];
 	if(pCircuit==NULL)
 	{
 		LastErrorInfo=invalid_circuit_msg+"_CPDDEngine::RemoveCircuit"; 

@@ -34,7 +34,7 @@ class _CSimilarVertMapsStack;
 bool operator==(_CSubCircuitVerticesMap& Left, _CSubCircuitVerticesMap& Right);
 
 template<class InputArguments>
-long long GetInputOperatorHash(long long& Core, InputArguments Arg);
+size_t GetInputOperatorHash(size_t& Core, InputArguments Arg);
 
 class _CSuplementParameters
 {
@@ -480,13 +480,13 @@ public:
 		m_Vertices(Source.m_Vertices), m_Context(Source.m_Context),
 			//m_pVerticesMap(Source.m_pVerticesMap), /*m_FullPath(Source.m_FullPath),*/
 			m_SPower(Source.m_SPower), m_MVId(Source.m_MVId), m_Result(Source.m_Result) {}
-		long long GetHash(long long& Core)
+		virtual size_t GetHash(size_t& Core)
 		{
 			Core=Hash_value(Core,m_Context);
 			Core*=HASH_FACTOR;
 			Core=GetInputOperatorHash(Core,m_Vertices);
 			Core*=HASH_FACTOR;
-			Core^=(long long)m_SPower;
+			Core^=(size_t)m_SPower;
 			Core*=HASH_FACTOR;
 			Core=m_MVId.GetHash(Core);
 			return Core;
@@ -564,13 +564,13 @@ public:
 		}
 		void Register(_CNResContainer& ResContainer)
 		{
-			long long Hash=HASH_CORE;
+			size_t Hash=HASH_CORE;
 			Hash=ResContainer.GetHash(Hash);
 			m_Map2.insert(MAP2::value_type(Hash,ResContainer));
 		}
 		bool GetExisted(_CNResContainer& ResContainer,typename OutputType& Result)
 		{
-			long long Hash=HASH_CORE;
+			size_t Hash=HASH_CORE;
 			Hash=ResContainer.GetHash(Hash);
 			pair<MAP2::iterator,MAP2::iterator> res=m_Map2.equal_range(Hash);
 			for(MAP2::iterator it=res.first;it!=res.second;it++)
@@ -1346,7 +1346,7 @@ public:
 			return SVertex.GetLocalMultiplier();
 		if(SVertex.IsInputConnector())
 		{
-			size_t EntryId,PosId;
+			unsigned long EntryId{0}, PosId{0};
 			SVertex.DecomposeInputIdx(EntryId,PosId);
 			_CCircuit* pModel=SVertex.GetSocket()->GetModelCircuit();
 			const string* pTopContext=&GetBaseContext();
@@ -1452,10 +1452,10 @@ public:
 	//	//m_PrevMVId=m_CurrentMVIds.empty()?0:m_CurrentMVIds.back();
 	//	m_PrevMVId=m_CurrentMVIds;
 	//}
-	void ReSetSPower(long sPower) {m_CurrentSPower=sPower;}
+	void ReSetSPower(unsigned long sPower) {m_CurrentSPower=sPower;}
 	long GetCurrentSPower() const {return m_CurrentSPower;}
-	void IncCurrentSPower(long Value) {m_CurrentSPower+=Value;}
-	void DecCurrentSPower(long Value) {m_CurrentSPower-=Value;}
+	void IncCurrentSPower(unsigned long Value) {m_CurrentSPower+=Value;}
+	void DecCurrentSPower(unsigned long Value) {m_CurrentSPower-=Value;}
 protected:
 	//typedef enum {oNormal=0x01, 
 	//	         oDownLocalToSerchExisted=0x02, 
@@ -1695,7 +1695,7 @@ public:
 	{
 	}
 	//_CSimpleVertexContainer(size_t EntryId, size_t PosId, const _CSubCircuitSocket* pSocket, _CSimpleVerticesMaps* pToSubcircuitLeves);
-	_CSimpleVertexContainer(size_t EntryId, size_t PosId, const _CSubCircuitSocket* pSocket, 
+	_CSimpleVertexContainer(unsigned long EntryId, unsigned long PosId, const _CSubCircuitSocket* pSocket, 
 		_CSubCircuitVerticesMap* pToSubcircuitLeves,long long MVId);
 	bool IsEmpty() const {return m_VertexType==VertType::Empty;}
 	bool IsLocal() const {return m_VertexType==VertType::Local;}
@@ -1727,7 +1727,7 @@ public:
 		if(m_Multiplier!=0) 
 			m_Multiplier=1;
 	}
-	long long GetHash(long long& Core) const;
+	size_t GetHash(size_t& Core) const;
 	string iVertex2string() const;
 	//***************DoUnaryOprtationForWholeTree*****************
 	template<typename OutputType, typename OutputType* pEmptyResult, bool DistinguishPaths>
@@ -1744,7 +1744,7 @@ public:
    		if(IsInputConnector())
 		{
 			//size_t EntryId,PosId;
-			unsigned int EntryId,PosId;
+			unsigned long EntryId{0}, PosId{0};
 			DecomposeInputIdx(EntryId, PosId);
 			_CCircuit* pModel=m_pSocket->GetModelCircuit();
 			const string* pTopContext=&Operator.GetBaseContext();
@@ -1781,7 +1781,7 @@ public:
 			ASSERTPDD(pTempSocket!=NULL);
 			const string* pCurrContext=&Operator.GetBaseContext();
 			const string* pNewContext=pCurrContext;
-			size_t EntryId,PosId;
+			unsigned long EntryId{0}, PosId{0};
 			DecomposeInputIdx(EntryId, PosId);
 			size_t SPower=(size_t)Operator.GetCurrentSPower();
 			const _CSimpleVertexContainer& OutVertex=pTempVector->get(EntryId,SPower,pNewContext);
@@ -1833,7 +1833,7 @@ public:
 	}
 	void WriteToStream(iostream& stream, bool StopEmbading, _CSimpleVerticesMapsSet& Set) const;
 	//void WriteToStream(iostream& stream, bool StopEmbading) const;
-	void DecomposeInputIdx(size_t& EntryId, size_t& PosId) const;
+	void DecomposeInputIdx(unsigned long& EntryId, unsigned long& PosId) const;
 	long long ConsiderInHash(long long& Seed) const;
 	short GetSPowerShift() 
 	{
@@ -1897,7 +1897,7 @@ public:
 	//void Copy(const _CSExpandedVertices& Source, _CSubCircuitSocket* pSocket,_CSimpleVerticesMaps* pToSubcircuitInput);
 	void Copy(const _CSExpandedVertices& Source, _CSubCircuitSocket* pSocket,_CSubCircuitVerticesMap* pToSubcircuitInput,long long MVId);
 	//void SetInputConnectorData(size_t LocalVerticesId,const _CSExpandedVertices& LocalSource,_CSubCircuitSocket* pSocket,_CSimpleVerticesMaps* pToSubcircuitInput);
-	void SetInputConnectorData(size_t LocalVerticesId,const _CSExpandedVertices& LocalSource,
+	void SetInputConnectorData(unsigned long LocalVerticesId,const _CSExpandedVertices& LocalSource,
 		_CSubCircuitSocket* pSocket,_CSubCircuitVerticesMap* pToSubcircuitInput, long long MVId);
 	//reference at(size_type Index)
 	//{
@@ -1907,7 +1907,7 @@ public:
 	//		resize(Index+1);
 	//	vector<_CSimpleVertexContainer>::at(Index);
 	//}
-	long long GetHash(long long& Core) const;
+	size_t GetHash(size_t& Core) const;
 	void SetZero() {resize(0); push_back(_CSimpleVertexContainer(0,0));}
 	void SetOne() {resize(0); push_back(_CSimpleVertexContainer(1,1));}
 	void SetMinusOne() {resize(0);push_back(_CSimpleVertexContainer(1,-1));}
@@ -1948,7 +1948,7 @@ class _CSExpandedDescendends : public vector<_CSExpandedVertices*>
 public:
 	~_CSExpandedDescendends() {}
 	_CSExpandedDescendends(size_type n=0): vector<_CSExpandedVertices*>(n) {}
-	long long GetHash(long long& Core) const;
+	size_t GetHash(size_t& Core) const;
 };
 
 class _CSExpandedCofactorValues : public vector<_CSExpandedVertices>
@@ -1956,7 +1956,7 @@ class _CSExpandedCofactorValues : public vector<_CSExpandedVertices>
 public:
 	~_CSExpandedCofactorValues() {}
 	_CSExpandedCofactorValues(size_type n=0): vector<_CSExpandedVertices>(n) {}
-	long long GetHash(long long& Core) const;
+	size_t GetHash(size_t& Core) const;
 };
 //typedef _CSExpandedDescendends _CSExpandedCofactorValues;
 
@@ -2063,7 +2063,7 @@ public:
 	const _CSimpleVertexContainer* smart_get(size_t EntryNo, size_t SPower,const string*& pContext) const;
 	T_INDEX put(T_INDEX Index,const string& Context, _CSimpleVertexContainer& Value, 
 		const string& PostTerminalContext, const string& BaseContext); 
-	T_INDEX put(size_t EntryNo, size_t SPower,const string& Context, _CSimpleVertexContainer& Value, 
+	T_INDEX put(unsigned long EntryNo, unsigned long SPower,const string& Context, _CSimpleVertexContainer& Value, 
 		const string& PostTerminalContext, const string& BaseContext); 
 	//iostream& operator<<(iostream& stream) const;
 	void WriteToStream(iostream& stream,_CSimpleVerticesMapsSet& Set) const;
@@ -2076,18 +2076,18 @@ protected:
 class _Cache
 {
 public:
-	bool check_if_exists(size_t& Entry, size_t& sPower, _CSimpleVertexContainer& VC);
+	bool check_if_exists(unsigned long& Entry, unsigned long& sPower, _CSimpleVertexContainer& VC);
 	bool CleanGarbage();
 protected:
 	class __Container
 	{
 	public:
-		__Container(size_t& Entry, size_t& sPower, _CSimpleVertexContainer& VC):
+		__Container(unsigned long& Entry, unsigned long& sPower, _CSimpleVertexContainer& VC):
 		m_Entry(Entry), m_sPower(sPower), m_VC(VC) {}
 		__Container(const __Container& Source):
 		m_Entry(Source.m_Entry), m_sPower(Source.m_sPower),m_VC(Source.m_VC) {}
-		const size_t m_Entry;
-		const size_t m_sPower;
+		const unsigned long m_Entry;
+		const unsigned long m_sPower;
 		const _CSimpleVertexContainer m_VC;
 	};
 	typedef unordered_multimap<long long,__Container> MAP;

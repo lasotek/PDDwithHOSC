@@ -10,7 +10,7 @@ const char* ErrorMessage(const char* Comment, const char* Filename, int LineNumb
 	sprintf_s(str2,sizeof(str2),"%i",LineNumber);
 	str="File: ";
 	str3=Filename;
-	unsigned pos=str3.find_last_of("\\");
+	unsigned long pos = (unsigned long)str3.find_last_of("\\");
 	str3.erase(0,pos+1);
 	str+=str3;
 	str+=", line: ";

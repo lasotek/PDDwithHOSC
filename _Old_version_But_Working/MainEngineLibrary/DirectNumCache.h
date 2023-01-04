@@ -42,7 +42,7 @@ public:
 	void Hibernate();
 protected:
 	virtual bool IsEqualTo(const _CAbstractDirectNumContainer& Right);
-	virtual long DetermineHashKey(long Core = HASH_CORE);
+	virtual size_t DetermineHashKey(size_t Core = HASH_CORE) override;
 	shared_ptr<_CSubModelNumericPattern> m_pRes = {};
 	//_CSubModelNumericPattern m_Res;
 	_CModelVertex* m_pVertex;

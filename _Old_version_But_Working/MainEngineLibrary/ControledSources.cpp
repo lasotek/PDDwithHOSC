@@ -29,9 +29,9 @@ _CControledSource::~_CControledSource(void)
 {
 }
 
-long _CControledSource::GetHash(long Core) const
+size_t _CControledSource::GetHash(size_t Core) const
 {
-	long Res=_CSimplyComponent::GetHash(Core);
+	auto Res=_CSimplyComponent::GetHash(Core);
 	Res*=HASH_FACTOR;
 	Res^=m_p;
 	Res*=HASH_FACTOR;
@@ -43,7 +43,7 @@ long _CControledSource::GetHash(long Core) const
 	Res*=HASH_FACTOR;
 	Res^=m_sPower;
 	Res*=HASH_FACTOR;
-	Res ^= (long)m_IsInverted;
+	Res ^= (size_t)m_IsInverted;
 	return Res;
 }
 

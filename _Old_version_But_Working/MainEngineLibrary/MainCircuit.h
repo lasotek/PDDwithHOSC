@@ -34,10 +34,10 @@ public:
 	_CSubCircuit* DefineNewNetDynSubcircuit(const string& name,bool ForceNewIfExist);
 	//long TryToGetSubcircuitFromLibrary(const string& name, const _CStrNodes& BoundNodes,const SIZE_T_SET* pDeletionAdmissible);
 	long TryToGetSubcircuitFromLibrary(const string& name, const _CStrNodes& BoundNodes,const SIZE_T_RANGE* pDeletionAdmissible);
-	virtual _CSubCircuit* GetSubcircuit(const string& name);
-	virtual _CSubCircuit* GetSubcircuit(long Id);
-	long GetCircuitId(const _CCircuit* pCircuit);
-	virtual _CCircuit* GetCircuit(long Id) override;
+	virtual _CSubCircuit* GetSubcircuit(const string& name) override;
+	virtual _CSubCircuit* GetSubcircuit(unsigned long Id) override;
+	unsigned long GetCircuitId(const _CCircuit* pCircuit);
+	virtual _CCircuit* GetCircuit(unsigned long Id) override;
 	_CCofactor* GetCofactor(unsigned long Id);
 	void DoTheCalculations();
 	long DeclareGlobalRefNode(const string& sRefNode);
@@ -48,15 +48,15 @@ public:
 	virtual size_t GetOuterVertexIndex(_CModelVertex* pMVertex);
 	virtual short GetOuterVertexSign(_CModelVertex* pMVertex);
 	void DetermineSimplePDD(bool sCExpanded, bool Approximated, const NumericType& Accuracy);
-	void DetermineFlatSimplifiedPDD(long TrId, bool TryToFactorize);
+	void DetermineFlatSimplifiedPDD(unsigned long TrId, bool TryToFactorize);
 	//void TestFlatPDDRemoval(long TrId);
-	bool WriteFlatSimplifiedPDDEntry(iostream& Stream, long TrId, size_t CofId);
-	void WriteFlatSimplifiedPDD(long TrId, bool TryToFactorize,bool Write1Level,const string& FileName, bool Append);
-	size_t GetPowerOfCofFlatVertices(long TrId,long CofId);
-	void FactorizedCofFlatVertices2Stream(iostream& Stream,long TrId,long CofId);
-	void FactorizedCofFlat1LevelVertices2Stream(iostream& Stream,long TrId,long CofId);
-	void PrepareAndWriteFlatSimplifiedPDDDiagrams(long TrId, bool Factorize,const string& FileName, bool Append);
-	void WriteFactorizedPDDList(long TrId,const string& FileName, bool Append);
+	bool WriteFlatSimplifiedPDDEntry(iostream& Stream, unsigned long TrId, unsigned long CofId);
+	void WriteFlatSimplifiedPDD(unsigned long TrId, bool TryToFactorize,bool Write1Level,const string& FileName, bool Append);
+	unsigned long GetPowerOfCofFlatVertices(unsigned long TrId,unsigned long CofId);
+	void FactorizedCofFlatVertices2Stream(iostream& Stream, unsigned long TrId, unsigned long CofId);
+	void FactorizedCofFlat1LevelVertices2Stream(iostream& Stream, unsigned long TrId, unsigned long CofId);
+	void PrepareAndWriteFlatSimplifiedPDDDiagrams(unsigned long TrId, bool Factorize,const string& FileName, bool Append);
+	void WriteFactorizedPDDList(unsigned long TrId,const string& FileName, bool Append);
 	//void WriteFlatSimplifiedSoP(long TrId, bool TryToFactorize,const string& FileName, bool Append);
 	//void WriteFlatSimplifiedFeasibleDividers(long TrId,const string& FileName, bool Append);
 	long WriteModelsToTextFile(const string& FileName);
@@ -208,13 +208,13 @@ public:
 	}
 	long DefineTransferFunctionSimp(const string& Name,unsigned  long NumeratorCof, unsigned  long  DenominatorCof);
 	long RaportTransferFunctionValuesLog(long long hTransfer, const string& Context, int LowestDec, int HighestDec, size_t NoOfPointsPerDec, bool Transfer2MagPhase = false);
-	long RaportTransferFunctionValuesLin(long long hTransfer, const string& Context, long double LowestAngFreq, long double HighestAngFreq, size_t NoOfGlobalPoints, bool Transfer2MagPhase = false);
+	long RaportTransferFunctionValuesLin(long long hTransfer, const string& Context, long double LowestAngFreq, long double HighestAngFreq, unsigned long NoOfGlobalPoints, bool Transfer2MagPhase = false);
 	long AddExtraTransferFunctionSimp(long PairId, unsigned long DenominatorCof);
 	const string& GetModelFileName() { return m_ModelFileName; }
 	const string& GetCircuitFileName() { return m_CircuitFileName; }
 	const string& GetRaportFileName() { return m_RaportFileName; }
 protected:
-	long RaportTransferFunctionValues(const string& Name, const string& Context, NumericVector& FreqVector, size_t NumId, size_t DenId, bool Transfer2MagPhase);
+	long RaportTransferFunctionValues(const string& Name, const string& Context, NumericVector& FreqVector, unsigned long NumId, unsigned long DenId, bool Transfer2MagPhase);
 	virtual void PrepareNewCircuitAnalyser() override
 	{
 		m_pNewAnalyxer=new _CCircuitAnalyzer(this,m_IdealComponentsList,m_LocalComponentsList,true,NULL,
@@ -226,7 +226,7 @@ protected:
 	_CPathTraitor& GetExistedPathTraitor(long TrId);
 	//void RegisterInFile(const char* FileName,string ParameterName,long double Value);
 	//long DeterminPathWeights(unsigned long CofId, unsigned short sPower, const string& Context, long double& NumericalResult,_CLSPath& Path);
-	long FindSubId(const string& Name);
+	unsigned long FindSubId(const string& Name);
 	typedef pair<long,_CSubCircuit*> SUBCIRCUIT_DATA;
 	typedef unordered_map<string, SUBCIRCUIT_DATA> SUBCIRCUIT_MAP;
 	typedef SUBCIRCUIT_MAP::iterator SUBCIRCUIT_ITERATOR;
