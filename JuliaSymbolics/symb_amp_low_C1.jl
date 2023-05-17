@@ -10,7 +10,7 @@ const A = AMRVW;
 gr(dpi=600);
 # pgfplotsx();
 
-out_file_name = "symb_amp_high.txt"
+out_file_name = "symb_amp_low_C1.txt"
 
 open(out_file_name, "w") do f
     println(f, "Path: $out_file_name")
@@ -176,9 +176,11 @@ function get_characteristic_fs(symbolic_poly_s_c::Vector; δ=0.31)
     if (vl ==2 || vl == 1)
         if (vl == 1)
             f1 = 1 / symbolic_poly_s[1].val / 2 / π
-        end
-        if (vl == 2)
+        elseif (vl == 2)
             f1 = abs(symbolic_poly_s[1] / symbolic_poly_s[2]).val / 2 / π
+        end
+        if (f1 < 0.0)
+            f1 *= -1
         end
         start = 10.0^(floor(Int16, log10(f1)) - 2)
         stop = 10.0^(ceil(Int16, log10(f1)) + 2)
@@ -404,76 +406,76 @@ d1_v = substitute.(d_1, (com_values,))[1]
 append_to_file("d1_v = $d1_v")
 
 
-d_bebecece2 = d_bebecece1 + s * C_μ * (d_bece1 + d_bebe1 + d_cece1)
-append_to_file("d_bebece2 = $d_bebecece2")
-d_bebecece2_v = substitute.(d_bebecece2, (com_values,))[1]
-append_to_file("d_bebece2_v = $d_bebecece2_v")
-d_bebecece2_s = s_expand(d_bebecece2)
-append_to_file("d_bebecece2_s = $d_bebecece2_s")
-# d_bebecece2_v_s = s_expand(d_bebecece2_v)
-d_bebecece2_v_s = substitute.(d_bebecece2_s, (com_values,))
-append_to_file("d_bebecece2_v_s = $d_bebecece2_v_s")
-first_order_s_presentation("d_bebecece2", d_bebecece2_v_s, "d_{bebecece_2}")
+# d_bebecece2 = d_bebecece1 + s * C_μ * (d_bece1 + d_bebe1 + d_cece1)
+# append_to_file("d_bebece2 = $d_bebecece2")
+# d_bebecece2_v = substitute.(d_bebecece2, (com_values,))[1]
+# append_to_file("d_bebece2_v = $d_bebecece2_v")
+# d_bebecece2_s = s_expand(d_bebecece2)
+# append_to_file("d_bebecece2_s = $d_bebecece2_s")
+# # d_bebecece2_v_s = s_expand(d_bebecece2_v)
+# d_bebecece2_v_s = substitute.(d_bebecece2_s, (com_values,))
+# append_to_file("d_bebecece2_v_s = $d_bebecece2_v_s")
+# first_order_s_presentation("d_bebecece2", d_bebecece2_v_s, "d_{bebecece_2}")
 
-d_bece2 = d_bece1
-d_bebe2 = d_bebe1
-d_cece2 = d_cece1
-
-d_bcbc2 = s * C_μ * d_1
-append_to_file("d_bcbc2 = $d_bcbc2")
-d_bcbc2_v = substitute.(d_bcbc2, (com_values,))[1]
-append_to_file("d_bcbc2_v = $d_bcbc2_v")
-d_bcbc2_s = s_expand(d_bcbc2)
-append_to_file("d_bcbc2_s = $d_bcbc2_s")
-# d_bcbc2_v_s = s_expand(d_bcbc2_v)
-d_bcbc2_v_s = substitute.(d_bcbc2_s, (com_values,))
-append_to_file("d_bcbc2_v_s = $d_bcbc2_v_s")
-first_order_s_presentation("d_bcbc2", d_bcbc2_v_s, "d_{bcbc_2}")
-
-d_2 = d_1
-
-# d_bebecece2 = d_bebecece1
 # d_bece2 = d_bece1
 # d_bebe2 = d_bebe1
 # d_cece2 = d_cece1
-# d_bcbc2 = 0
+
+# d_bcbc2 = s * C_μ * d_1
+# append_to_file("d_bcbc2 = $d_bcbc2")
+# d_bcbc2_v = substitute.(d_bcbc2, (com_values,))[1]
+# append_to_file("d_bcbc2_v = $d_bcbc2_v")
+# d_bcbc2_s = s_expand(d_bcbc2)
+# append_to_file("d_bcbc2_s = $d_bcbc2_s")
+# # d_bcbc2_v_s = s_expand(d_bcbc2_v)
+# d_bcbc2_v_s = substitute.(d_bcbc2_s, (com_values,))
+# append_to_file("d_bcbc2_v_s = $d_bcbc2_v_s")
+# first_order_s_presentation("d_bcbc2", d_bcbc2_v_s, "d_{bcbc_2}")
+
 # d_2 = d_1
 
-d_bebecece3 = d_bebecece2 + s * C_π * (d_cece2 + d_bcbc2)
-append_to_file("d_bebecece3 = $d_bebecece3")
-d_bebecece3_v = substitute.(d_bebecece3, (com_values,))[1]
-append_to_file("d_bebecece3_v = $d_bebecece3_v")
-d_bebecece3_s = s_expand(d_bebecece3)
-append_to_file("d_bebecece3_s = $d_bebecece3_s")
-# d_bebecece3_v_s = s_expand(d_bebecece3_v)
-d_bebecece3_v_s = substitute.(d_bebecece3_s, (com_values,))
-append_to_file("d_bebecece3_v_s = $d_bebecece3_v_s")
-first_order_s_presentation("d_bebecece3", d_bebecece3_v_s, "d_{bebecece_3}")
+d_bebecece2 = d_bebecece1
+d_bece2 = d_bece1
+d_bebe2 = d_bebe1
+d_cece2 = d_cece1
+d_bcbc2 = 0
+d_2 = d_1
+
+# d_bebecece3 = d_bebecece2 + s * C_π * (d_cece2 + d_bcbc2)
+# append_to_file("d_bebecece3 = $d_bebecece3")
+# d_bebecece3_v = substitute.(d_bebecece3, (com_values,))[1]
+# append_to_file("d_bebecece3_v = $d_bebecece3_v")
+# d_bebecece3_s = s_expand(d_bebecece3)
+# append_to_file("d_bebecece3_s = $d_bebecece3_s")
+# # d_bebecece3_v_s = s_expand(d_bebecece3_v)
+# d_bebecece3_v_s = substitute.(d_bebecece3_s, (com_values,))
+# append_to_file("d_bebecece3_v_s = $d_bebecece3_v_s")
+# first_order_s_presentation("d_bebecece3", d_bebecece3_v_s, "d_{bebecece_3}")
 
 
-d_bece3 = d_bece2
-
-d_bebe3 = d_bebe2 + s * C_π * d_2
-append_to_file("d_bebe3 = $d_bebe3")
-d_bebe3_v = substitute.(d_bebe3, (com_values,))[1]
-append_to_file("d_bebe3_v = $d_bebe3_v")
-d_bebe3_s = s_expand(d_bebe3)
-append_to_file("d_bebe3_s = $d_bebe3_s")
-# d_bebe3_v_s = s_expand(d_bebe3_v)
-d_bebe3_v_s = substitute.(d_bebe3_s, (com_values,))
-append_to_file("d_bebe3_v_s = $d_bebe3_v_s")
-first_order_s_presentation("d_bebe3", d_bebe3_v_s, "d_{bebe_3}")
-
-d_cece3 = d_cece2
-d_bcbc3 = d_bcbc2
-d_3 = d_2
-
-# d_bebecece3 = d_bebecece2
 # d_bece3 = d_bece2
-# d_bebe3 = d_bebe2
+
+# d_bebe3 = d_bebe2 + s * C_π * d_2
+# append_to_file("d_bebe3 = $d_bebe3")
+# d_bebe3_v = substitute.(d_bebe3, (com_values,))[1]
+# append_to_file("d_bebe3_v = $d_bebe3_v")
+# d_bebe3_s = s_expand(d_bebe3)
+# append_to_file("d_bebe3_s = $d_bebe3_s")
+# # d_bebe3_v_s = s_expand(d_bebe3_v)
+# d_bebe3_v_s = substitute.(d_bebe3_s, (com_values,))
+# append_to_file("d_bebe3_v_s = $d_bebe3_v_s")
+# first_order_s_presentation("d_bebe3", d_bebe3_v_s, "d_{bebe_3}")
+
 # d_cece3 = d_cece2
 # d_bcbc3 = d_bcbc2
 # d_3 = d_2
+
+d_bebecece3 = d_bebecece2
+d_bece3 = d_bece2
+d_bebe3 = d_bebe2
+d_cece3 = d_cece2
+d_bcbc3 = d_bcbc2
+d_3 = d_2
 
 
 d_bebecece4 = d_bebecece3
@@ -758,12 +760,12 @@ first_order_s_presentation("d_8", d_8_v_s, "d_8")
 # d_bcbc9 = s * C_1 * d_bcbc8
 # d_9 = s * C_1 * d_8 + d_bb8 + d_bcbc8
 
-d_bbcc9 = d_bbcc8
-d_bc9 = d_bc8
-d_bb9 = d_bb8
-d_cc9 = d_cc8
-d_bcbc9 = d_bcbc8
-d_9 = d_8
+# d_bbcc9 = d_bbcc8
+# d_bc9 = d_bc8
+# d_bb9 = d_bb8
+# d_cc9 = d_cc8
+# d_bcbc9 = d_bcbc8
+# d_9 = d_8
 
 
 # d_bbcc10 = s * C_2 * d_bbcc9
@@ -773,6 +775,73 @@ d_9 = d_8
 # d_bcbc10 = s * C_2 * d_bcbc9
 # d_10 = s * C_2 * d_9 + d_cc9 + d_bcbc9
 
+# d_bbcc10 = d_bbcc9
+# d_bc10 = d_bc9
+# d_bb10 = d_bb9
+# d_cc10 = d_cc9
+# d_bcbc10 = d_bcbc9
+# d_10 = d_9
+
+d_bbcc9 = s * C_1 * d_bbcc8
+append_to_file("d_bbcc9 = $d_bbcc9")
+d_bbcc9_v = substitute.(d_bbcc9, (com_values,))[1]
+append_to_file("d_bbcc9_v = $d_bbcc9_v")
+d_bbcc9_s = s_expand(d_bbcc9)
+append_to_file("d_bbcc9_s = $d_bbcc9_s")
+d_bbcc9_v_s = substitute.(d_bbcc9_s, (com_values,))
+append_to_file("d_bbcc9_v_s = $d_bbcc9_v_s")
+first_order_s_presentation("d_bbcc9", d_bbcc9_v_s, "d_{bbcc_9}")
+
+d_bc9 = s * C_1 * d_bc8
+append_to_file("d_bc9 = $d_bc9")
+d_bc9_v = substitute.(d_bc9, (com_values,))[1]
+append_to_file("d_bc9_v = $d_bc9_v")
+d_bc9_s = s_expand(d_bc9)
+append_to_file("d_bc9_s = $d_bc9_s")
+d_bc9_v_s = substitute.(d_bc9_s, (com_values,))
+append_to_file("d_bc9_v_s = $d_bc9_v_s")
+first_order_s_presentation("d_bc9", d_bc9_v_s, "d_{bc_9}")
+
+d_bb9 = s * C_1 * d_bb8
+append_to_file("d_bb9 = $d_bb9")
+d_bb9_v = substitute.(d_bb9, (com_values,))[1]
+append_to_file("d_bb9_v = $d_bb9_v")
+d_bb9_s = s_expand(d_bb9)
+append_to_file("d_bb9_s = $d_bb9_s")
+d_bb9_v_s = substitute.(d_bb9_s, (com_values,))
+append_to_file("d_bb9_v_s = $d_bb9_v_s")
+first_order_s_presentation("d_bb9", d_bb9_v_s, "d_{bb_9}")
+
+d_cc9 = s * C_1 * d_cc8 + d_bbcc8
+append_to_file("d_cc9 = $d_cc9")
+d_cc9_v = substitute.(d_cc9, (com_values,))[1]
+append_to_file("d_cc9_v = $d_cc9_v")
+d_cc9_s = s_expand(d_cc9)
+append_to_file("d_cc9_s = $d_cc9_s")
+d_cc9_v_s = substitute.(d_cc9_s, (com_values,))
+append_to_file("d_cc9_v_s = $d_cc9_v_s")
+first_order_s_presentation("d_cc9", d_cc9_v_s, "d_{cc_9}")
+
+d_bcbc9 = s * C_1 * d_bcbc8
+append_to_file("d_bcbc9 = $d_bcbc9")
+d_bcbc9_v = substitute.(d_bcbc9, (com_values,))[1]
+append_to_file("d_bcbc9_v = $d_bcbc9_v")
+d_bcbc9_s = s_expand(d_bcbc9)
+append_to_file("d_bcbc9_s = $d_bcbc9_s")
+d_bcbc9_v_s = substitute.(d_bcbc9_s, (com_values,))
+append_to_file("d_bcbc9_v_s = $d_bcbc9_v_s")
+first_order_s_presentation("d_bcbc9", d_bcbc9_v_s, "d_{bcbc_9}")
+
+d_9 = s * C_1 * d_8 + d_bb8 + d_bcbc8
+append_to_file("d_9 = $d_9")
+d_9_v = substitute.(d_9, (com_values,))[1]
+append_to_file("d_9_v = $d_9_v")
+d_9_s = s_expand(d_9)
+append_to_file("d_9_s = $d_9_s")
+d_9_v_s = substitute.(d_9_s, (com_values,))
+append_to_file("d_9_v_s = $d_9_v_s")
+first_order_s_presentation("d_9", d_9_v_s, "d_9")
+
 d_bbcc10 = d_bbcc9
 d_bc10 = d_bc9
 d_bb10 = d_bb9
@@ -780,65 +849,6 @@ d_cc10 = d_cc9
 d_bcbc10 = d_bcbc9
 d_10 = d_9
 
-# d_bbcc9 = s * C_1 * d_bbcc8
-# append_to_file("d_bbcc9 = $d_bbcc9")
-# d_bbcc9_v = substitute.(d_bbcc9, (com_values,))[1]
-# append_to_file("d_bbcc9_v = $d_bbcc9_v")
-# d_bbcc9_s = s_expand(d_bbcc9)
-# append_to_file("d_bbcc9_s = $d_bbcc9_s")
-# d_bbcc9_v_s = substitute.(d_bbcc9_s, (com_values,))
-# append_to_file("d_bbcc9_v_s = $d_bbcc9_v_s")
-# first_order_s_presentation("d_bbcc9", d_bbcc9_v_s, "d_{bbcc_9}")
-
-# d_bc9 = s * C_1 * d_bc8
-# append_to_file("d_bc9 = $d_bc9")
-# d_bc9_v = substitute.(d_bc9, (com_values,))[1]
-# append_to_file("d_bc9_v = $d_bc9_v")
-# d_bc9_s = s_expand(d_bc9)
-# append_to_file("d_bc9_s = $d_bc9_s")
-# d_bc9_v_s = substitute.(d_bc9_s, (com_values,))
-# append_to_file("d_bc9_v_s = $d_bc9_v_s")
-# first_order_s_presentation("d_bc9", d_bc9_v_s, "d_{bc_9}")
-
-# d_bb9 = s * C_1 * d_bb8
-# append_to_file("d_bb9 = $d_bb9")
-# d_bb9_v = substitute.(d_bb9, (com_values,))[1]
-# append_to_file("d_bb9_v = $d_bb9_v")
-# d_bb9_s = s_expand(d_bb9)
-# append_to_file("d_bb9_s = $d_bb9_s")
-# d_bb9_v_s = substitute.(d_bb9_s, (com_values,))
-# append_to_file("d_bb9_v_s = $d_bb9_v_s")
-# first_order_s_presentation("d_bb9", d_bb9_v_s, "d_{bb_9}")
-
-# d_cc9 = s * C_1 * d_cc8 + d_bbcc8
-# append_to_file("d_cc9 = $d_cc9")
-# d_cc9_v = substitute.(d_cc9, (com_values,))[1]
-# append_to_file("d_cc9_v = $d_cc9_v")
-# d_cc9_s = s_expand(d_cc9)
-# append_to_file("d_cc9_s = $d_cc9_s")
-# d_cc9_v_s = substitute.(d_cc9_s, (com_values,))
-# append_to_file("d_cc9_v_s = $d_cc9_v_s")
-# first_order_s_presentation("d_cc9", d_cc9_v_s, "d_{cc_9}")
-
-# d_bcbc9 = s * C_1 * d_bcbc8
-# append_to_file("d_bcbc9 = $d_bcbc9")
-# d_bcbc9_v = substitute.(d_bcbc9, (com_values,))[1]
-# append_to_file("d_bcbc9_v = $d_bcbc9_v")
-# d_bcbc9_s = s_expand(d_bcbc9)
-# append_to_file("d_bcbc9_s = $d_bcbc9_s")
-# d_bcbc9_v_s = substitute.(d_bcbc9_s, (com_values,))
-# append_to_file("d_bcbc9_v_s = $d_bcbc9_v_s")
-# first_order_s_presentation("d_bcbc9", d_bcbc9_v_s, "d_{bcbc_9}")
-
-# d_9 = s * C_1 * d_8 + d_bb8 + d_bcbc8
-# append_to_file("d_9 = $d_9")
-# d_9_v = substitute.(d_9, (com_values,))[1]
-# append_to_file("d_9_v = $d_9_v")
-# d_9_s = s_expand(d_9)
-# append_to_file("d_9_s = $d_9_s")
-# d_9_v_s = substitute.(d_9_s, (com_values,))
-# append_to_file("d_9_v_s = $d_9_v_s")
-# first_order_s_presentation("d_9", d_9_v_s, "d_9")
 
 # d_bbcc10 = s * C_2 * d_bbcc9
 # append_to_file("d_bbcc10 = $d_bbcc10")

@@ -10,7 +10,7 @@ const A = AMRVW;
 gr(dpi=600);
 # pgfplotsx();
 
-out_file_name = "symb_amp_high.txt"
+out_file_name = "symb_amp_high_C_mu.txt"
 
 open(out_file_name, "w") do f
     println(f, "Path: $out_file_name")
@@ -439,41 +439,41 @@ d_2 = d_1
 # d_bcbc2 = 0
 # d_2 = d_1
 
-d_bebecece3 = d_bebecece2 + s * C_π * (d_cece2 + d_bcbc2)
-append_to_file("d_bebecece3 = $d_bebecece3")
-d_bebecece3_v = substitute.(d_bebecece3, (com_values,))[1]
-append_to_file("d_bebecece3_v = $d_bebecece3_v")
-d_bebecece3_s = s_expand(d_bebecece3)
-append_to_file("d_bebecece3_s = $d_bebecece3_s")
-# d_bebecece3_v_s = s_expand(d_bebecece3_v)
-d_bebecece3_v_s = substitute.(d_bebecece3_s, (com_values,))
-append_to_file("d_bebecece3_v_s = $d_bebecece3_v_s")
-first_order_s_presentation("d_bebecece3", d_bebecece3_v_s, "d_{bebecece_3}")
+# d_bebecece3 = d_bebecece2 + s * C_π * (d_cece2 + d_bcbc2)
+# append_to_file("d_bebecece3 = $d_bebecece3")
+# d_bebecece3_v = substitute.(d_bebecece3, (com_values,))[1]
+# append_to_file("d_bebecece3_v = $d_bebecece3_v")
+# d_bebecece3_s = s_expand(d_bebecece3)
+# append_to_file("d_bebecece3_s = $d_bebecece3_s")
+# # d_bebecece3_v_s = s_expand(d_bebecece3_v)
+# d_bebecece3_v_s = substitute.(d_bebecece3_s, (com_values,))
+# append_to_file("d_bebecece3_v_s = $d_bebecece3_v_s")
+# first_order_s_presentation("d_bebecece3", d_bebecece3_v_s, "d_{bebecece_3}")
 
 
-d_bece3 = d_bece2
-
-d_bebe3 = d_bebe2 + s * C_π * d_2
-append_to_file("d_bebe3 = $d_bebe3")
-d_bebe3_v = substitute.(d_bebe3, (com_values,))[1]
-append_to_file("d_bebe3_v = $d_bebe3_v")
-d_bebe3_s = s_expand(d_bebe3)
-append_to_file("d_bebe3_s = $d_bebe3_s")
-# d_bebe3_v_s = s_expand(d_bebe3_v)
-d_bebe3_v_s = substitute.(d_bebe3_s, (com_values,))
-append_to_file("d_bebe3_v_s = $d_bebe3_v_s")
-first_order_s_presentation("d_bebe3", d_bebe3_v_s, "d_{bebe_3}")
-
-d_cece3 = d_cece2
-d_bcbc3 = d_bcbc2
-d_3 = d_2
-
-# d_bebecece3 = d_bebecece2
 # d_bece3 = d_bece2
-# d_bebe3 = d_bebe2
+
+# d_bebe3 = d_bebe2 + s * C_π * d_2
+# append_to_file("d_bebe3 = $d_bebe3")
+# d_bebe3_v = substitute.(d_bebe3, (com_values,))[1]
+# append_to_file("d_bebe3_v = $d_bebe3_v")
+# d_bebe3_s = s_expand(d_bebe3)
+# append_to_file("d_bebe3_s = $d_bebe3_s")
+# # d_bebe3_v_s = s_expand(d_bebe3_v)
+# d_bebe3_v_s = substitute.(d_bebe3_s, (com_values,))
+# append_to_file("d_bebe3_v_s = $d_bebe3_v_s")
+# first_order_s_presentation("d_bebe3", d_bebe3_v_s, "d_{bebe_3}")
+
 # d_cece3 = d_cece2
 # d_bcbc3 = d_bcbc2
 # d_3 = d_2
+
+d_bebecece3 = d_bebecece2
+d_bece3 = d_bece2
+d_bebe3 = d_bebe2
+d_cece3 = d_cece2
+d_bcbc3 = d_bcbc2
+d_3 = d_2
 
 
 d_bebecece4 = d_bebecece3
